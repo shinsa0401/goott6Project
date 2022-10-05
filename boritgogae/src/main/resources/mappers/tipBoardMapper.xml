@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.boritgogae.tipBoardMapper">
+  	<select id="listAll" resultType="BoardVo">
+  		select * from tipBoard
+  	</select>
+  	<select id="detail" resultType="BoardVo">
+  		select * from tipBoard where bno = #{bno}
+  	</select>
+  	<insert id="addBoard">
+  		insert into tipBoard(memberId,title,categories,content,pwd) values(#{memberId},#{title},#{categories},#{content},#{pwd})
+  	</insert>
+  	<delete id="deleteBoard">
+  		delete from tipBoard where bno = #{bno}
+  	</delete>
+  	
+  </mapper>

@@ -47,7 +47,7 @@
 </head>
 
 <body>
-	
+
 	<!-- Page Preloder -->
 	<div id="preloder">
 		<div class="loader"></div>
@@ -249,36 +249,42 @@
 	<section class="checkout spad">
 		<div class="container">
 			<div class="checkout__form">
-				<h4>${board.categories } 에 관한글</h4>
-				<form action="#">
-					<div class="row">
-						<div class="col-lg-8 col-md-6">
-							<div class="row">
-								<div class="col-lg-6">
-									<div class="checkout__input">
-										<p>글쓴이</p>
-										<input type="text" value="${board.memberId}" readonly>
-									</div>
+				<h4>${board.categories }에관한글</h4>
+				<div class="row">
+					<div class="col-lg-8 col-md-6">
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="checkout__input">
+									<p>글쓴이</p>
+									<input type="text" value="${board.memberId}" readonly>
 								</div>
 							</div>
-							<div class="checkout__input">
-								<p>제목</p>
-								<input type="text" value="${board.title}" readonly>
-							</div>
-
-							<div class="mb-3 mt-3">
-								<label for="content" class="form-label">내용:</label>
-								<div id="content" name="content">${board.content} </div>
-							</div>
-
-							<!-- 이미지파일 넣어야함 -->
-							<div class="row">
-								<div class="col-lg-4 col-md-6"></div>
-							</div>
 						</div>
-				</form>
+						<div class="checkout__input">
+							<p>제목</p>
+							<input type="text" value="${board.title}" readonly>
+						</div>
+
+						<div class="mb-3 mt-3">
+							<label for="content" class="form-label">내용:</label>
+							<div id="content" name="content">${board.content}</div>
+						</div>
+
+						<!-- 이미지파일 넣어야함 -->
+						<div class="row">
+							<div class="col-lg-4 col-md-6"></div>
+						</div>
+						<button type="button" class="btn btn-secondary">글 수정</button>
+						<form action="/boardTip/${board.bno }" method="post">
+							
+							<button type="submit" class="btn btn-warning">글 삭제</button>
+						</form>
+					</div>
+
+
+
+				</div>
 			</div>
-		</div>
 	</section>
 	<!-- Checkout Section End -->
 

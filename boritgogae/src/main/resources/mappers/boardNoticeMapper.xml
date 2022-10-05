@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.boritgogae.boardNoticeMapper">
+  	<select id="getNoticeList" resultType="com.boritgogae.board.notice.domain.NoticeVo">
+  		select * from noticeBoard order by bno desc
+  	</select>
+  	
+  	<select id="getLastNo" resultType="int">
+		select max(bno) as lastpk from noticeBoard
+	</select>
+  	
+  	<insert id="register">
+  		insert into noticeBoard(memberId, title, content) values (#{memberId}, #{title}, #{content})
+  	</insert>
+  	
+  </mapper>

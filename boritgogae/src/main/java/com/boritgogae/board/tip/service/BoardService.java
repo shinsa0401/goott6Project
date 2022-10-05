@@ -11,4 +11,8 @@ public interface BoardService {
 	public List<BoardVo> getListBoard() throws Exception;
 
 	public BoardVo getDetail(int bno) throws Exception;
+
+	public boolean addBoard(BoardVo board) throws Exception;
+
+	public boolean delBoard(int bno)  throws Exception;
 }

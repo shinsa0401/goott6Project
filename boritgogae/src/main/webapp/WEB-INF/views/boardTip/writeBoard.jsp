@@ -3,12 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <meta name="description" content="Ogani Template">
 <meta name="keywords" content="Ogani, unica, creative, html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Ogani | Template</title>
 
 <!-- Google Font -->
 <link
@@ -22,8 +24,9 @@
 	type="text/css">
 <link rel="stylesheet" href="../resources/css/elegant-icons.css"
 	type="text/css">
-<link rel="stylesheet" href="../resources/css/nice-select.css"
-	type="text/css">
+<!-- <link rel="stylesheet" href="../resources/css/nice-select.css"
+	type="text/css"> -->
+
 <link rel="stylesheet" href="../resources/css/jquery-ui.min.css"
 	type="text/css">
 <link rel="stylesheet" href="../resources/css/owl.carousel.min.css"
@@ -32,28 +35,25 @@
 	type="text/css">
 <link rel="stylesheet" href="../resources/css/style.css" type="text/css">
 
-<!-- Js Plugins -->
+<!-- Js Plugins  <script src="../resources/js/jquery.nice-select.min.js"></script>-->
 <script src="../resources/js/jquery-3.3.1.min.js"></script>
 <script src="../resources/js/bootstrap.min.js"></script>
-<script src="../resources/js/jquery.nice-select.min.js"></script>
+
 <script src="../resources/js/jquery-ui.min.js"></script>
 <script src="../resources/js/jquery.slicknav.js"></script>
 <script src="../resources/js/mixitup.min.js"></script>
 <script src="../resources/js/owl.carousel.min.js"></script>
 <script src="../resources/js/main.js"></script>
- 
-<script>
-	$(function() {
-		
-	});
-	function goDetail(bno){
-		
-		location.href = "/boardTip/"+bno;
-	}
-</script>
-<title>boritgogae</title>
+
 </head>
+
 <body>
+
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
 	<!-- Humberger Begin -->
 	<div class="humberger__menu__overlay"></div>
 	<div class="humberger__menu__wrapper">
@@ -85,7 +85,7 @@
 		</div>
 		<nav class="humberger__menu__nav mobile-menu">
 			<ul>
-				<li class="active"><a href="./index.html">Home</a></li>
+				<li class="active"><a href="../index">Home</a></li>
 				<li><a href="./shop-grid.html">Shop</a></li>
 				<li><a href="#">Pages</a>
 					<ul class="header__menu__dropdown">
@@ -113,13 +113,12 @@
 	</div>
 	<!-- Humberger End -->
 
-
 	<!-- Header Section Begin -->
 	<header class="header">
 		<div class="header__top">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-6 col-md-6">
+					<div class="col-lg-6">
 						<div class="header__top__left">
 							<ul>
 								<li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
@@ -127,7 +126,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="col-lg-6 col-md-6">
+					<div class="col-lg-6">
 						<div class="header__top__right">
 							<div class="header__top__right__social">
 								<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
@@ -162,8 +161,8 @@
 				<div class="col-lg-6">
 					<nav class="header__menu">
 						<ul>
-							<li class="active"><a href="./index.html">Home</a></li>
-							<li><a href="./shop-grid.html">Shop</a></li>
+							<li><a href="./index.html">Home</a></li>
+							<li class="active"><a href="./shop-grid.html">Shop</a></li>
 							<li><a href="#">Pages</a>
 								<ul class="header__menu__dropdown">
 									<li><a href="./shop-details.html">Shop Details</a></li>
@@ -195,9 +194,8 @@
 	</header>
 	<!-- Header Section End -->
 
-
 	<!-- Hero Section Begin -->
-	<section class="hero">
+	<section class="hero hero-normal">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3">
@@ -206,7 +204,7 @@
 							<i class="fa fa-bars"></i> <span>All departments</span>
 						</div>
 						<ul>
-							<li><a href="/boardTip">팁 게시판</a></li>
+							<li><a href="#">Fresh Meat</a></li>
 							<li><a href="#">Vegetables</a></li>
 							<li><a href="#">Fruit & Nut Gifts</a></li>
 							<li><a href="#">Fresh Berries</a></li>
@@ -241,38 +239,6 @@
 							</div>
 						</div>
 					</div>
-					<div class="hero__item set-bg" data-setbg="img/hero/banner.jpg">
-						<div class="container mt-3">
-							<div class="hero__text">
-								<span>여러분들의 가족을 위한</span>
-								<h2>팁 게시판</h2>
-								<p>We will solve your problems</p>
-							</div>
-							<table class="table table-hover">
-								<thead>
-									<tr>
-										<th>번호</th>
-										<th>제목</th>
-										<th>글쓴이</th>
-										<th>등록일</th>
-										<th>조회</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="board" items="${BoardLst}">
-										<tr onclick="goDetail(${board.bno});">
-											<td>${board.bno }</td>
-											<td>[${board.categories}]${board.title }</td>
-											<td>${board.memberId }</td>
-											<td>${board.createDate }</td>
-											<td>${board.readCount }</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-							<button type="button" class="btn btn-success" onclick="location.href='/boardTip/writeBoard';">글등록</button>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -280,59 +246,63 @@
 	<!-- Hero Section End -->
 
 
-	<!-- Categories Section Begin -->
-	<section class="categories">
+	<!-- Checkout Section Begin -->
+	<section class="checkout spad">
 		<div class="container">
-			<div class="row">
-				<div class="categories__slider owl-carousel">
-					<div class="col-lg-3">
-						<div class="categories__item set-bg"
-							data-setbg="img/categories/cat-1.jpg">
-							<h5>
-								<a href="#">Fresh Fruit</a>
-							</h5>
+			<div class="checkout__form">
+				<h4></h4>
+				<form action="/boardTip" method="post">
+					<div class="row">
+						<div class="col-lg-8 col-md-6">
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="checkout__input">
+										<p>글쓴이</p>
+										<input type="text" id="memberId" name="memberId">
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="checkout__input">
+										<p>비밀번호</p>
+										<input type="text" id="pwd" name="pwd">
+									</div>
+								</div>
+							</div>
+							<div class="checkout__input">
+								<p>제목</p>
+								<select name="categories" id="categories">
+									<option selected disabled>--- 카테고리 선택---</option>
+									<option value="강아지">강아지</option>
+									<option value="고양이">고양이</option>
+								</select>
+								<input type="text" id="title" name="title">
+							</div>
+							<div class="mb-3 mt-3">
+								<label for="content" class="form-label">내용:</label>
+								<textarea id="content" name="content" rows="10" cols="100"></textarea>
+							</div>
+
+							<!-- 이미지파일 넣어야함 -->
+							<div class="row">
+								<div class="col-lg-4 col-md-6"></div>
+							</div>
 						</div>
 					</div>
-					<div class="col-lg-3">
-						<div class="categories__item set-bg"
-							data-setbg="img/categories/cat-2.jpg">
-							<h5>
-								<a href="#">Dried Fruit</a>
-							</h5>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="categories__item set-bg"
-							data-setbg="img/categories/cat-3.jpg">
-							<h5>
-								<a href="#">Vegetables</a>
-							</h5>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="categories__item set-bg"
-							data-setbg="img/categories/cat-4.jpg">
-							<h5>
-								<a href="#">drink fruits</a>
-							</h5>
-						</div>
-					</div>
-					<div class="col-lg-3">
-						<div class="categories__item set-bg"
-							data-setbg="img/categories/cat-5.jpg">
-							<h5>
-								<a href="#">drink fruits</a>
-							</h5>
-						</div>
-					</div>
-				</div>
+					<button type="submit" class="btn btn-primary">저장</button>
+					<button type="button" class="btn btn-danger">취소</button>
+				</form>
 			</div>
 		</div>
 	</section>
-	<!-- Categories Section End -->
+	<!-- Checkout Section End -->
+
+	<!-- Footer Section Begin -->
+	<!-- Footer Section End -->
 
 
 	<jsp:include page="../footer.jsp"></jsp:include>
 
+
 </body>
+
 </html>

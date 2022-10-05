@@ -19,13 +19,25 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	@Override
 	public List<BoardVo> selectAllBoard() throws Exception {
-		System.out.println("DAOImpl" + ses.toString());
+//		System.out.println("DAOImpl" + ses.toString());
 		return ses.selectList(ns+".listAll");
 	}
 
 	@Override
 	public BoardVo selectDetail(int bno) throws Exception {
 		return ses.selectOne(ns+".detail",bno);
+	}
+
+	@Override
+	public int insertBoard(BoardVo board) throws Exception {
+		
+		return ses.insert(ns+".addBoard", board);
+	}
+
+	@Override
+	public int deleteBoard(int bno) throws Exception {
+		
+		return ses.delete(ns+".deleteBoard", bno);
 	}
 
 }
