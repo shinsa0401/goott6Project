@@ -9,5 +9,17 @@
   		select * from questionBoard
   	</select>
   	
+  	<insert id="writeBoard">
+  		insert into questionBoard(writer, title, content, pwd) 
+  		values(#{writer}, #{title}, #{content}, sha1(md5(#{pwd})))
+  	</insert>
+  	
+  	<select id="getBoardByNo" resultType="BoardVo">
+  		select * from questionBoard where no = #{no}
+  	</select>
+  	
+  	<update id="modifyBoard">
+		update questionBoard set title = #{title}, content = #{content} where no = #{no} and pwd = sha1(md5(#{pwd}))
+  	</update>
   	
   </mapper>

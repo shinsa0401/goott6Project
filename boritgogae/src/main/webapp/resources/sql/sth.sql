@@ -214,6 +214,7 @@ select * from board where no = #{no}
 
 -- 게시판 n번 게시글 수정하기
 update board set title = #{title}, content = #{content} where no = #{no} and pwd = sha1(md5(#{pwd}))
+update questionBoard set title = '수정테스트', content = '수정되나' where no = 6 and pwd = sha1(md5('1234'));
 
 -- 게시판 n번 게시글 첨부파일 수정하기(기존첨부파일 삭제하고)
 delete 
