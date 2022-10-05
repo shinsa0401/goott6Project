@@ -10,7 +10,10 @@
 <meta name="keywords" content="Ogani, unica, creative, html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<script src="${pageContext.request.contextPath}/resources/summernote/js/summernote-lite.js"></script>
+<script src="${pageContext.request.contextPath}/resources/summernote/lang/summernote-ko-KR.js"></script>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/summernote/css/summernote-lite.css">
 
 <title>공지사항 글 작성</title>
 <script>
@@ -22,7 +25,6 @@
 
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
-
 	<div class="container">
 		<h1>공지사항 글 작성</h1>
 
@@ -40,7 +42,7 @@
 						</div>
 						<div class="checkout__input">
 							<p>내용</p>
-							<textarea rows="10" cols=100" name="content"></textarea>
+							<div id="summernote" name="content">Hello Summernote</div>
 						</div>
 						
 						<div class="checkout__input">
