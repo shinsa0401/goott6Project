@@ -25,10 +25,21 @@ public class NoticeDAOImpl implements NoticeDAO {
 		
 	}
 	
-
 	@Override
 	public int registerBoard(NoticeVo board) throws Exception {	
 		return ses.insert(ns + ".register", board);
+	}
+
+
+	@Override
+	public NoticeVo viewBoard(int bno) throws Exception {
+		return ses.selectOne(ns + ".getBoardByNo", bno);
+	}
+
+
+	@Override
+	public int deleteBoard(int bno) throws Exception {
+		return ses.delete(ns + ".deleteBoard", bno);
 	}
 
 	

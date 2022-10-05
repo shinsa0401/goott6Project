@@ -11,8 +11,12 @@ public interface NoticeService {
 	// 공지사항 글 등록 하는 메서드
 	public boolean registerBoard(NoticeVo board) throws Exception;
 	
+	// 공지사항 글 상세 보기 메서드
+	public NoticeVo viewBoard(int bno) throws Exception;
+	
 	// 공지사항 글 수정 하는 메서드
 	
 	
 	// 공지사항 글 삭제 하는 메서드
+	public boolean deleteBoard(int bno) throws Exception;
 }

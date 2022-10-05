@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.boritgogae.boardNoticeMapper">
-  	<select id="getNoticeList" resultType="com.boritgogae.board.notice.domain.NoticeVo">
+  	<select id="getNoticeList" resultType="NoticeVo">
   		select * from noticeBoard order by bno desc
   	</select>
   	
@@ -13,7 +13,15 @@
 	</select>
   	
   	<insert id="register">
-  		insert into noticeBoard(memberId, title, content) values (#{memberId}, #{title}, #{content})
+  		insert into noticeBoard(memberId, title, content, nickName) values (#{memberId}, #{title}, #{content}, "관리자")
   	</insert>
+  	
+  	<select id="getBoardByNo" resultType="NoticeVo">
+  		select * from noticeBoard where bno = #{bno}
+  	</select>
+  	
+  	<delete id="deleteBoard">
+  		delete from noticeBoard where bno = #{bno}
+  	</delete>
   	
   </mapper>

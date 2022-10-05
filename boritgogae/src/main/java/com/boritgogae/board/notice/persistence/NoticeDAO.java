@@ -11,8 +11,12 @@ public interface NoticeDAO {
 	// 공지사항 글 작성하는 메서드
 	public int registerBoard(NoticeVo board) throws Exception;
 	
+	// 공지사항 글 상세 보기 메서드
+	public NoticeVo viewBoard(int bno) throws Exception;
+	
 	// 공지사항 글 수정 하는 메서드
 	
 	
 	// 공지사항 글 삭제 하는 메서드
+	public int deleteBoard(int bno) throws Exception;
 }

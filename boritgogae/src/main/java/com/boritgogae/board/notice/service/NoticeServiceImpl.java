@@ -25,13 +25,29 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public boolean registerBoard(NoticeVo board) throws Exception {
 		boolean result = false;
-		board.setContent(board.getContent().replace("\r\n", "<br />"));
 		
 		
 		if(dao.registerBoard(board) == 1) {
 			result = true;
 		}
 		
+		return result;
+	}
+
+	@Override
+	public NoticeVo viewBoard(int bno) throws Exception {
+		NoticeVo board = dao.viewBoard(bno);
+		
+		return board;
+	}
+
+	@Override
+	public boolean deleteBoard(int bno) throws Exception {
+		boolean result = false;
+		
+		if (dao.deleteBoard(bno) == 1) {
+			result = true;
+		}
 		return result;
 	}
 	

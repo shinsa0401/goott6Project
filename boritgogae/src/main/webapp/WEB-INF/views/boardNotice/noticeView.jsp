@@ -1,41 +1,51 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page session="false"%>
+
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- Google Font -->
-	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-<!-- Css Styles -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css" type="text/css">
+<title>공지사항 상세</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-<!-- Js Plugins -->
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery.nice-select.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery.slicknav.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/mixitup.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
-<title>Insert title here</title>
 <script type="text/javascript">
-
-	function deleteBoard() {
+	function showDelModal() {
 		$("#deleteModal").show(200);
 	}
+	function deleteBoard() {
+		$("#deleteModal").hide(200);
+		$.ajax({
+            url : "/board/notice/delete", // 데이터 송수신될 주소 
+			data : {"bno" : ${board.bno }}, // 송신할 데이터
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+            success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+            	console.log(data);
+            	if(data == "success") {
+            		$("#delStatusModal").show();
+            		$("#delStatus").html("삭제되었습니다.");
+           	 	} else if(data == "fail") {
+           	 		$("#delStatusModal").show();
+            		$("#delStatus").html("삭제 실패했습니다.");
+            	}
+            }, error : function(request, status, error) {
+            	console.log(
+						"code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:"
+								+ error);
+			}
+         });
+	}
+	
 
-	
-	
-	$(function() {
+	$(document).ready(function() {
 		$(".closeModal").click(function() {
 			$("#deleteModal").hide(200);
 		});
@@ -46,15 +56,10 @@
 #notice {
 	margin: 2px;
 }
-
-.btn-group :hover {
-	background-color: #aaa;
-	border-color: #aaa;
-}
 </style>
+
 </head>
 <body>
-	${board }
 
 	<jsp:include page="../header.jsp"></jsp:include>
 
@@ -73,7 +78,7 @@
 					onclick="location.href='/board/notice/list'">목록으로</button>
 				<button type="button" class="btn btn-success"
 					style="background-color: #7fad39; color: white; border-color: #7fad39;"
-					onclick="deleteBoard();">글 삭제</button>
+					onclick="showDelModal();">글 삭제</button>
 				<button type="button" class="btn btn-success"
 					style="background-color: #7fad39; color: white; border-color: #7fad39;"
 					onclick="">글 수정</button>
@@ -103,11 +108,30 @@
 
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger closeModal" 
+					<button type="button" class="btn btn-danger closeModal"
 						data-bs-dismiss="modal">취소</button>
 					<button type="button" class="btn btn-success"
-						data-bs-dismiss="modal"
-						onclick="location.href='/board/notice/delete'">확인</button>
+						data-bs-dismiss="modal" onclick="deleteBoard();">확인</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="modal" id="delStatusModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title" id="delStatus"></h4>
+					<button type="button" class="btn-close close closeModal"
+						data-bs-dismiss="modal">X</button>
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success"
+						data-bs-dismiss="modal" onclick="location.href='/board/notice/list'">확인</button>
 				</div>
 
 			</div>
