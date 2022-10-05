@@ -120,7 +120,7 @@
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
 			                        <li><a href="./shoping-cart.html">질문게시판</a></li>
-			                        <li><a href="/boardMarket/writeBoardMarket">장터게시판</a></li>
+			                        <li><a href="/boardMarket/listAll">장터게시판</a></li>
 			                        <li><a href="./blog-details.html">고개팁</a></li>
 			                    </ul>
 			                </li>
@@ -196,11 +196,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="hero__item set-bg" data-setbg="img/hero/banner.jpg">
-                        <div class="hero__text">
-                            
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
         </div>

@@ -1,6 +1,8 @@
 package com.boritgogae.board.market.dao;
 
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -20,6 +22,18 @@ public class BoardDAOImpl implements BoardDAO {
 	public int write(BoardVO board) throws Exception {
 		
 		return ses.insert(ns+".write", board);
+	}
+
+	@Override
+	public List<BoardVO> getAllBoard() throws Exception { //페이징 아직 안함
+		
+		return ses.selectList(ns+".getAllBoard");
+	}
+
+	@Override
+	public BoardVO getContent(int no) throws Exception {
+		
+		return ses.selectOne(ns+".getContent",no);
 	}
 	
 	

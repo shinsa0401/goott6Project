@@ -1,6 +1,8 @@
 package com.boritgogae.board.market.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -23,6 +25,27 @@ public class BoardServiceImpl implements BoardService {
 		
 		return result;
 	
+	}
+
+	@Override
+	public Map<String, Object> getAllBoard() throws Exception { //페이징, 검색어 아직 안함
+		List<BoardVO>List = dao.getAllBoard();
+		
+		Map<String, Object> ListMap = new HashMap<String, Object>();
+		ListMap.put("boardList", List);
+		
+		return ListMap;
+	}
+	
+	//이미지파일, 조회수 안함
+	@Override
+	public Map<String, Object> viewContent(int no) throws Exception {
+		BoardVO board = dao.getContent(no);
+		
+		Map<String, Object> ListMap = new HashMap<String, Object>();
+		ListMap.put("board", board);
+		
+		return ListMap;
 	}
 
 }
