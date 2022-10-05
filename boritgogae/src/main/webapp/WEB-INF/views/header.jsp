@@ -66,7 +66,7 @@
             <ul>
                 <li class="active"><a href="./index.html">Home</a></li>
                 <li><a href="./shop-grid.html">Shop</a></li>
-                <li><a href="./blog.html">병원????</a></li>
+                <li><a href="../hospitalList.jsp">병원찾기</a></li>
                 <li><a href="./contact.html">게시판</a>
                 	<ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">자유게시판</a></li>
@@ -115,7 +115,7 @@
                         <ul>
 			                <li class="active"><a href="./index.html">Home</a></li>
 			                <li><a href="./shop-grid.html">Shop</a></li>
-			                <li><a href="./blog.html">병원</a></li>
+			                <li><a href="../hospitalList.jsp">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
