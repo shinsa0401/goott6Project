@@ -22,12 +22,34 @@ public class BoardDaoImpl implements BoardDao {
 
 	@Override
 	public List<BoardVo> selectList() throws Exception {
+	
 		
-		List<BoardVo> lst = ses.selectOne(ns+".selectAll");
-		System.out.println("다오"+lst);
+		List<BoardVo> lst = ses.selectList(ns+".selectAll");
+		System.out.println(lst);
 		return lst;
 		
 		 
+	}
+
+	@Override
+	public int insertWriter(BoardVo vo) throws Exception {
+	
+		
+		
+		return ses.insert(ns+".insertWriter", vo);
+		
+	}
+
+	@Override
+	public BoardVo detail(int bno) throws Exception {
+		
+		return ses.selectOne(ns+".detail", bno);
+	}
+
+	@Override
+	public void boardUpdate(BoardVo vo) throws Exception {
+		
+		ses.update(ns+".boardUpdate", vo);
 	}
 
 }

@@ -7,14 +7,27 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script type="text/javascript">
+
+	
+
+
+	
+
+
+	function detail(bno) {
+		location.href ="/boardFree/detail?bno="+bno;
+		
+	}
+</script>
+
 <body>
 <jsp:include page="../header.jsp"></jsp:include>
 
 <div class="container">
   <h2>게시판 전체 페이지</h2>
-          
   <table class="table table-bordered">
-    
+
       <tr>
         <th>글번호</th>
         <th>제 목</th>
@@ -24,7 +37,7 @@
       </tr>
       
       <c:forEach var="board" items="${boardList }">
-      	<tr>
+      	<tr onclick="detail(${board.bno});">
       		<td>${board.bno }</td>
       		<td>${board.title }</td>
       		<td>${board.writer }</td>
@@ -37,12 +50,14 @@
       </c:forEach>
       
       
-      
+     
    
     
   
   </table>
+   
 </div>
+<button type="button" class="btn btn-success" id="writerBoard"><a href="/boardFree/writer">글작성</button>
 
 	<jsp:include page="../footer.jsp"></jsp:include>
 

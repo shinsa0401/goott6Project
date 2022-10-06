@@ -1,6 +1,6 @@
 package com.boritgogae.board.free.domain;
 
-import com.google.protobuf.Timestamp;
+import java.sql.Timestamp;
 
 public class BoardVo {
 
