@@ -1,6 +1,8 @@
 package com.boritgogae.board.tip.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -61,6 +63,32 @@ public class TipBoardController {
 
 		return mav;
 	}
+	
+	// 게시판 글 수정페이지로 이동
+	@RequestMapping(value = "/modifyBoard/{bno}")
+	public ModelAndView modiBoard(@PathVariable("bno") int bno) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		BoardVo detail = service.getDetail(bno);
+		
+		mav.setViewName("boardTip/modifyBoard");
+		mav.addObject("board", detail);
+		
+		return mav;
+		
+	}
+	
+	// 게시판 글 수정완료했을시
+		@RequestMapping(value = "/modifyBoard/{bno}", method = RequestMethod.POST)
+		public ModelAndView updateBoard(@PathVariable("bno") int bno,BoardVo vo) throws Exception {
+			ModelAndView mav = new ModelAndView();
+			
+			BoardVo detail = service.modiBoard(bno,vo);
+			mav.setViewName("boardTip/detail");
+			mav.addObject("board", detail);
+			
+			return mav;
+			
+		}
 
 	// 글등록 버튼클릭시
 	@RequestMapping(value = "/writeBoard")

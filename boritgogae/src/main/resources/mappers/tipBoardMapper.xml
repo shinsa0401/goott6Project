@@ -16,5 +16,7 @@
   	<delete id="deleteBoard">
   		delete from tipBoard where bno = #{bno}
   	</delete>
-  	
+  	<update id="updateBoard">
+  		update tipBoard set title = #{vo.title} , content = #{vo.content}, categories = #{vo.categories} where bno = #{vo.bno}
+  	</update>
   </mapper>

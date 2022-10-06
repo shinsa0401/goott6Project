@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/nice-select.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slicknav.min.css" type="text/css">
@@ -25,7 +24,6 @@
 <!-- Js Plugins -->
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery.nice-select.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/jquery.slicknav.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/mixitup.min.js"></script>
@@ -72,7 +70,7 @@
                         <li><a href="./shop-details.html">자유게시판</a></li>
                         <li><a href="./shoping-cart.html">질문게시판</a></li>
                         <li><a href="./checkout.html">장터게시판</a></li>
-                        <li><a href="./blog-details.html">고개팁</a></li>
+                        <li><a href="/boardTip">고개팁</a></li>
                     </ul>
                 </li>
                 <li><a href="./contact.html">고객센터</a>
@@ -121,7 +119,7 @@
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
 			                        <li><a href="./shoping-cart.html">질문게시판</a></li>
 			                        <li><a href="./checkout.html">장터게시판</a></li>
-			                        <li><a href="./blog-details.html">고개팁</a></li>
+			                        <li><a href="/boardTip">고개팁</a></li>
 			                    </ul>
 			                </li>
 			                <li><a href="./contact.html">고객센터</a>

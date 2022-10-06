@@ -1,6 +1,7 @@
 package com.boritgogae.board.tip.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -40,13 +41,25 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean delBoard(int bno) throws Exception {
 		boolean result = false;
-		System.out.println(bno + "제대로 왔나?");
+//		System.out.println(bno + "제대로 왔나?");
 		int row = dao.deleteBoard(bno);
-		System.out.println(row+"여기까지는 오나?");
+//		System.out.println(row+"여기까지는 오나?");
 		if (row == 1) {
 			result = true;
 		}
 		return result;
 	}
+
+	@Override
+	public BoardVo modiBoard(int bno, BoardVo vo) throws Exception {
+		int row = dao.updateBoard(bno,vo);
+//		System.out.println("업데이트 성공했냐? : "+row);
+
+		if (row==1){
+			return dao.selectDetail(bno);
+		}
+		return dao.selectDetail(bno);
+	}
+
 
 }

@@ -1,6 +1,7 @@
 package com.boritgogae.board.tip.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -14,5 +15,7 @@ public interface BoardService {
 
 	public boolean addBoard(BoardVo board) throws Exception;
 
-	public boolean delBoard(int bno)  throws Exception;
+	public boolean delBoard(int bno) throws Exception;
+
+	public BoardVo modiBoard(int bno, BoardVo vo) throws Exception;
 }

@@ -1,6 +1,8 @@
 package com.boritgogae.board.tip.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -39,5 +41,17 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		return ses.delete(ns+".deleteBoard", bno);
 	}
+
+	@Override
+	public int updateBoard(int bno, BoardVo vo) throws Exception {
+		Map<String,Object> map = new HashMap<>();
+		map.put("vo", vo);
+		map.put("no", bno+"");
+//		System.out.println(map.get("board"));
+//		System.out.println(map.get("bno"));
+		return ses.update(ns+".updateBoard", map);
+		
+	}
+
 
 }
