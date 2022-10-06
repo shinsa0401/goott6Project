@@ -78,22 +78,14 @@
 	
 	<!-- 아래의 패키지를 스캔하여 스프링 컨테이너가 관리할 객체 수집 -->
 	<context:component-scan base-package="com.boritgogae.aop"></context:component-scan>
-	<context:component-scan base-package="com.boritgogae.controlloer"></context:component-scan>
 	<context:component-scan base-package="com.boritgogae.interceptor"></context:component-scan>
-	<context:component-scan base-package="com.boritgogae.etc"></context:component-scan>
 	<context:component-scan base-package="com.boritgogae.service"></context:component-scan>
-	<context:component-scan base-package="com.boritgogae.domain"></context:component-scan>
 	<context:component-scan base-package="com.boritgogae.persistence"></context:component-scan>
 	
 	<!-- 게시판 패키지 -->
-	<context:component-scan base-package="com.boritgogae.board.notice"></context:component-scan>
-	<context:component-scan base-package="com.boritgogae.board.free"></context:component-scan>
-	<context:component-scan base-package="com.boritgogae.board.ask"></context:component-scan>
-	<context:component-scan base-package="com.boritgogae.board.question"></context:component-scan>
-	<context:component-scan base-package="com.boritgogae.board.prodReply"></context:component-scan>
-	<context:component-scan base-package="com.boritgogae.board.tip"></context:component-scan>
-	<context:component-scan base-package="com.boritgogae.board.market"></context:component-scan>
-	<context:component-scan base-package="com.boritgogae.board.hospReply"></context:component-scan>
+	<context:component-scan base-package="com.boritgogae.board.*.service"></context:component-scan>
+	<context:component-scan base-package="com.boritgogae.board.*.persistence"></context:component-scan>
+	
 	
 	
 	

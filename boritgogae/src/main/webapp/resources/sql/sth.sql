@@ -1,8 +1,5 @@
 use elrek1991;
 
-
-
-
 -- 생일 쿠폰
 -- 로그인시 회원정보 가져와서 (밑에 로그인) --------
 -- 미완 shell script // 서버에서 자정이 되면 일괄적으로 처리 ??
@@ -13,14 +10,11 @@ use elrek1991;
 -- useDate = (select date_add(now(), interval 6 month)), issueDate = now(), couponWhy = '생일쿠폰')
 
 
-
-
 -- 자동 로그인
 -- select * from members where sessionId = #{sessionId} and sessionLimit > now()
 select * from members where sessionId = 'AaBbCc112233' and sessionLimit > now();
 -- update members set sessionId = #{sessionId}, sessionLimit = #{sessionLimit} where memberId = #{memberId}
 update members set sessionId = 'AaBbCc112233', sessionLimit = date_add(now(), interval 6 month) where memberId = 'abcd';
-
 
 
 -------- 회원 로그인
@@ -36,7 +30,6 @@ where lastPwdUpdate + (select date_add(now(), interval 6 month)) < now();
 -- 일시 비밀번호(회원정보)수정 화면
 
 
-
 ----- 로그아웃
 -- 로그아웃시간 업데이트
 -- 세션아이디 만료, 삭제 
@@ -44,14 +37,13 @@ update members set logOutDate = now() where sessionId = 'AaBbCc112233';
 
 
 -- 비회원 주문내역조회
--- select * from orders where guestName = #{guestName} and phoneNumber= #{phoneNumber} and guestPwd= #{guestPwd}
+-- select * from orders where name = #{name} and phoneNumber= #{phoneNumber} and guestPwd= #{guestPwd}
 select * from orders
 where name = '게스트' and phoneNumber= '01078941115' and guestPwd= '1234';
 
 -- 비회원 주문비밀번호 찾기
 select guestPwd from orders
 where name = '게스트' and phoneNumber = '01078941115' and orderNo = 2;
-
 
 
 -- 아이디찾기
@@ -81,7 +73,6 @@ select * from authentication where authNumber = 113355;
 update authentication set authCheck = 'Y' where email = 'shinsa0401@naver.com' and authNumber = 113355;
 -- 비밀번호업데이트 비밀번호수정페이지로 이동후 새로운비밀번호 설정
 update members set memberPwd = '12341234' where memberId = 'shin';
-
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -139,8 +130,64 @@ CREATE TABLE `elrek1991`.`questionReadCount` (
 CREATE TABLE `elrek1991`.`questionCategories` (
   `category` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`category`));
+  
+-- 카테고리 목록
+INSERT INTO `elrek1991`.`questionCategories` (`category`) VALUES ('강아지');
+INSERT INTO `elrek1991`.`questionCategories` (`category`) VALUES ('고양이');
+INSERT INTO `elrek1991`.`questionCategories` (`category`) VALUES ('상품');
+INSERT INTO `elrek1991`.`questionCategories` (`category`) VALUES ('기타');
+
+-- 질문게시판 테이블 카테고리 -> 카테고리스 테이블 카테고리 FK 참조
+ALTER TABLE `elrek1991`.`questionBoard` 
+ADD CONSTRAINT `questionBoard_category_fk`
+  FOREIGN KEY (`category`)
+  REFERENCES `elrek1991`.`questionCategories` (`category`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+-- 질문게시판 테이블 글쓴이 -> 회원 테이블 아이디 FK 참조
+ALTER TABLE `elrek1991`.`questionBoard` 
+ADD CONSTRAINT `questionBoard_writer_fk`
+  FOREIGN KEY (`writer`)
+  REFERENCES `elrek1991`.`members` (`memberId`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+  
+-- 첨부파일 테이블 글번호 -> 질문게시판 글번호 FK 참조
+ALTER TABLE `elrek1991`.`questionUploadFile` 
+ADD CONSTRAINT `questionUploadFile_bno_fk`
+  FOREIGN KEY (`bno`)
+  REFERENCES `elrek1991`.`questionBoard` (`no`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+-- 조회수 테이블 조회글번호 -> 질문게시판 글번호 FK 참조
+ALTER TABLE `elrek1991`.`questionReadCount` 
+ADD CONSTRAINT `questionReadCount_bno_fk`
+  FOREIGN KEY (`bno`)
+  REFERENCES `elrek1991`.`questionBoard` (`no`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+
+-- 댓글 테이블 글번호 -> 질문게시판 글번호 FK 참조
+ALTER TABLE `elrek1991`.`questionReply` 
+ADD CONSTRAINT `questionReply_bno_fk`
+  FOREIGN KEY (`bno`)
+  REFERENCES `elrek1991`.`questionBoard` (`no`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+  
+-- 댓글 테이블 댓글작성자 -> 회원 테이블 아이디 FK 참조
+ALTER TABLE `elrek1991`.`questionReply` 
+ADD CONSTRAINT `questionReply_replyWriter_fk`
+  FOREIGN KEY (`replyWriter`)
+  REFERENCES `elrek1991`.`members` (`memberId`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
 
 
+
+-----------------------------------------------------------------------------------------
 -- 페이징 처리하며 게시판 전체목록보기
 select * from board order by ref desc, reforder asc limit #{startNum}, #{postPerPage}
 
@@ -160,7 +207,6 @@ values(#{lastNo}, #{savedOriginalImgFile}, #{thumbnailFile})
 -- 게시글 등록시 업로드된 파일이 이미지가 아닌경우 (5개까지..?)
 insert into uploadfile(bno, originalFile) 
 values(#{lastNo}, #{savedOriginalImgFile})
-
 
 
 -- 수정/삭제하기위해 얻어온 n번 게시글의 번호

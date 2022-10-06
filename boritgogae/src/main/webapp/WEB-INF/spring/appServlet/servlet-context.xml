@@ -21,9 +21,9 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.boritgogae.controller" />
-	<context:component-scan base-package="com.boritgogae.board.tip.controller" />
 	
+	<context:component-scan base-package="com.boritgogae.controller" />
+	<context:component-scan base-package="com.boritgogae.board.*.controller" />
 	
 	
 </beans:beans>
