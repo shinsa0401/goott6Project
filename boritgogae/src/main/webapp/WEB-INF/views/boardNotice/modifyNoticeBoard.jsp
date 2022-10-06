@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-<title>공지사항 글 작성</title>
+<title>공지사항 글 수정</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 		<link
@@ -46,13 +46,11 @@
 					imgUpload(files[0],this);
 				}
 			}
-
-
-		});	
-
+		});
+		$('#summernote').summernote('code', "${board.content}");
 	});
 	
-	function addBoard(form) {
+	function modiBoard(form) {
 		let content = form.content.value;
 		let memberId = form.memberId.value;
 		let title = form.title.value;
@@ -85,17 +83,23 @@
 
 
 	<div class="container">
+		<h1>공지사항 글 수정</h1>
+
 		<div class="checkout__form">
-			<h4>공지사항 글 작성</h4>
-			<form action="/board/notice/register" method="post">
+			<h4>No. ${board.bno }</h4>
+			<form action="/board/notice/modify" method="post">
 				<div class="row">
 					<div class="col-lg-8 col-md-6">
 						<div class="checkout__input">
-							<p>제목</p>
-							<input type="text" name="title">
-						</div>	
+							<input type="hidden" name="bno" value="${board.bno }">
+						</div>
 						<div class="checkout__input">
-							작성자 <input type="text" name="memberId">
+							<p>제목</p>
+							<input type="text" name="title" value="${board.title }">
+						</div>
+						<div class="checkout__input">
+							<p>작성자</p>
+							<input type="text" name="memberId" value="${board.memberId }">
 						</div>
 						<div class="checkout__input">
 							<p>내용</p>
@@ -106,14 +110,11 @@
 
 				</div>
 
-				<button type="button" class="btn btn-success" onclick="addBoard(this.form);">등록</button>
+				<p><button type="button" class="btn btn-success" onclick="modiBoard(this.form)">수정</button></p>
 			</form>
-
 
 		</div>
 	</div>
-
-
 
 	<jsp:include page="../footer.jsp"></jsp:include>
 

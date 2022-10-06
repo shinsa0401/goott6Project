@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
 import com.boritgogae.board.notice.persistence.NoticeDAO;
 
@@ -49,6 +50,44 @@ public class NoticeServiceImpl implements NoticeService {
 			result = true;
 		}
 		return result;
+	}
+
+	@Override
+	public boolean modifyBoard(NoticeVo board) throws Exception {
+		boolean result = false;
+		if(dao.modifyBoard(board) == 1) {
+			result = true;
+		}
+		return result;
+	}
+
+	@Override
+	public boolean registerReply(NoticeReplyVo replyBoard) throws Exception {
+		boolean result = false;
+		if(dao.registerReply(replyBoard) == 1) {
+			result = true;
+		}
+		return result;
+	}
+
+	@Override
+	public List<NoticeReplyVo> getReplyList(int bno) throws Exception {
+		return dao.getReplyList(bno);
+	}
+
+	@Override
+	public boolean deleteReplyBoard(int rno) throws Exception {
+boolean result = false;
+		
+		if (dao.deleteReplyBoard(rno) == 1) {
+			result = true;
+		}
+		return result;
+	}
+
+	@Override
+	public String getNickName(String memberId) throws Exception {
+		return dao.getNickName(memberId);
 	}
 	
 }
