@@ -1,6 +1,8 @@
 package com.boritgogae.board.question.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -10,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boritgogae.board.question.domain.BoardVo;
@@ -43,7 +46,7 @@ public class BoardController {
 	
 	
 	/**
-	 * @methodName : writeBoard
+	 * @methodName : newWriteBoard
 	 * @author : 
 	 * @date : 2022. 10. 4.
 	 * @입력 param :
@@ -57,26 +60,30 @@ public class BoardController {
 	
 	
 	/**
-	 * @methodName : createBoard
+	 * @methodName : writeBoard
 	 * @author : 
 	 * @date : 2022. 10. 5.
 	 * @입력 param :
 	 * @returnType : String
 	 */
 	@RequestMapping(value = "/question/write", method = RequestMethod.POST)
-	public String writeBoard(BoardVo board, RedirectAttributes rttr) throws Exception {
+	public String writeBoard(BoardVo board) throws Exception {
 		System.out.println("컨트롤러 : 글쓰기 요청");
 		
+		String result = "";
 		
-		if (service.writeBoard(board)) {
-			rttr.addFlashAttribute("status", "success");
+		Map<String, Object> map = new HashMap<>();
+		map = service.writeBoard(board);
+		
+		if ((boolean) map.get("result")) {
+			result = "redirect:/board/question/view?no="+ map.get("lastNo");
 		} else {
-			rttr.addFlashAttribute("status", "fail");
+			result = "redirect:/board/question";
 		}
 		
-		// /boardQuestion/viewAllBoard 로 Redirect
-		return "redirect:/boardQuestion/viewAllBoard";
+		return result;
 	}
+	
 	
 	/**
 	 * @methodName : viewBoard
@@ -133,6 +140,33 @@ public class BoardController {
 		System.out.println(board.toString());
 		return "/boardQuestion/viewBoard";
 	}
+	
+	
+	
+	/**
+	 * @methodName : removeBoard
+	 * @author : 
+	 * @date : 2022. 10. 6.
+	 * @입력 param :
+	 * @returnType : String
+	 */
+	@RequestMapping(value = "/question/remove", method = RequestMethod.POST)
+	public @ResponseBody String removeBoard(@RequestParam("no")int no, @RequestParam("pwd")String pwd) throws Exception {
+		String result = null;
+		System.out.println("삭제 요청");
+		if (service.removeBoard(no, pwd)) {
+			result = "success";
+			System.out.println("삭제 성공");
+		} else {
+			result = "fail";
+			System.out.println("삭제 실패");
+		}
+		
+		return result;
+	}
+	
+	
+	
 	
 	
 }

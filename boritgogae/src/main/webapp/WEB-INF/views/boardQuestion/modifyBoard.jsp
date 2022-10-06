@@ -7,6 +7,10 @@
 <head> 
 <title>글수정</title>
 <script>
+
+	function writeCancel(no) {
+		location.href='/board/question/view?no=' + no;
+	}
 </script>
 <style>
 </style>
@@ -27,11 +31,6 @@
 				<div class="mb-3 mt-3">
 					<label for="writer" class="form-label">작성자:</label> 
 					<input type="text" class="form-control" id="writer" name="writer" value="${board.writer }" readonly>
-				</div>
-				
-				<div class="mb-3 mt-3">
-					<label for="pwd" class="form-label">비밀번호:</label> 
-					<input type="password" class="form-control" id="pwd" name="pwd">
 				</div>
 				
 				<div class="mb-3 mt-3">
@@ -74,6 +73,12 @@
 						</c:forEach>
 					</div>
 				</div>
+				
+				<div class="mb-3 mt-3">
+					<label for="pwd" class="form-label">비밀번호:</label> 
+					<input type="password" class="form-control" id="pwd" name="pwd">
+				</div>
+				
 			</div>
 		
 		
@@ -81,7 +86,7 @@
 			<div class="btns" style="text-align: center;">
 					<button type="submit" class="btn text-white" style="background-color: #7FAD39;">저장</button>
 					<button type="reset" class="btn text-white" style="background-color: #7FAD39;"
-						onclick="writeCancel();">취소</button>
+						onclick="writeCancel(${board.no});">취소</button>
 			</div>
 	
 		</form>

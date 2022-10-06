@@ -7,6 +7,10 @@
 <head>  
 <title>글쓰기</title>
 <script>
+
+	function writeCancel() {
+		location.href='/board/question';
+	}
 </script>
 <style>
 </style>
