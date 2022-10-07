@@ -89,5 +89,16 @@ boolean result = false;
 	public String getNickName(String memberId) throws Exception {
 		return dao.getNickName(memberId);
 	}
+
+	@Override
+	public boolean modifyReplyBoard(NoticeReplyVo board) throws Exception {
+		boolean result = false;
+		
+		if (dao.modifyReplyBoard(board) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
 	
 }

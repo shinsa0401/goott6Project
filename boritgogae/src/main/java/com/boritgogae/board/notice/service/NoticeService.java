@@ -32,4 +32,7 @@ public interface NoticeService {
 	
 	// 댓글 삭제 하는 메서드
 	public boolean deleteReplyBoard(int rno) throws Exception;
+	
+	// 댓글 수정 하는 메서드
+	public boolean modifyReplyBoard(NoticeReplyVo board) throws Exception;
 }

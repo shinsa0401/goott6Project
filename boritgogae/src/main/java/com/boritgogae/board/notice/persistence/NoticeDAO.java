@@ -32,4 +32,7 @@ public interface NoticeDAO {
 	
 	// 댓글 삭제 하는 메서드
 	public int deleteReplyBoard(int rno) throws Exception;
+	
+	// 댓글 수정하는 메서드
+	public int modifyReplyBoard(NoticeReplyVo board) throws Exception;
 }

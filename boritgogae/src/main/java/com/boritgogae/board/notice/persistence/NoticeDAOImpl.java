@@ -69,6 +69,11 @@ public class NoticeDAOImpl implements NoticeDAO {
 		return ses.selectOne(ns + ".getNickName", memberId);
 	}
 
+	@Override
+	public int modifyReplyBoard(NoticeReplyVo board) throws Exception {
+		return ses.update(ns + ".modifyReply", board);
+	}
+
 	
 
 }

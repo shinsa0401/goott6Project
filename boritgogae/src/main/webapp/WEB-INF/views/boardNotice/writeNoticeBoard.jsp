@@ -45,10 +45,16 @@
 				onImageUpload : function(files){
 					imgUpload(files[0],this);
 				}
+		
 			}
 
 
 		});	
+		
+		$("#summernote").on("summernote.enter", function(we, e) {
+		     $(this).summernote("pasteHTML", "<br><br>");
+		     e.preventDefault();
+		});
 
 	});
 	
@@ -58,10 +64,10 @@
 		let title = form.title.value;
 		console.log(content, memberId, title);
 		
-		content = content.replace(/<(\/?)p>/gi,"\r\n");
+		content = content.replace(/<(\/?)p>/gi,"");
 		form.content.value = content;
 		
-		form.submit();
+		return true;
 	}
 
 </script>
@@ -106,7 +112,7 @@
 
 				</div>
 
-				<button type="button" class="btn btn-success" onclick="addBoard(this.form);">등록</button>
+				<button type="button" class="btn btn-success" onclick="return addBoard(this.form);">등록</button>
 			</form>
 
 

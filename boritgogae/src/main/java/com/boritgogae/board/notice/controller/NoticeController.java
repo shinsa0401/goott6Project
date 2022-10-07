@@ -123,7 +123,7 @@ public class NoticeController {
 	// 댓글 관련
 	
 	// 댓글 등록
-	@RequestMapping(value="/replyregister", method = RequestMethod.POST)
+	@RequestMapping(value="/replyRegister", method = RequestMethod.POST)
 	public ResponseEntity<String> registerReplyBoard(@RequestBody NoticeReplyVo replyBoard) throws Exception {
 		replyBoard.setNickName(service.getNickName(replyBoard.getMemberId()));
 		System.out.println(replyBoard + "글 등록");
@@ -140,7 +140,7 @@ public class NoticeController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/replylist/{bno}")
+	@RequestMapping(value = "/replyList/{bno}")
 	public ResponseEntity<List<NoticeReplyVo>> getEntireReplies(@PathVariable("bno") int bno) {
 		System.out.println(bno);
 		ResponseEntity<List<NoticeReplyVo>> result = null;
@@ -163,18 +163,35 @@ public class NoticeController {
 	}
 	
 	// 공지 글 삭제
-		@RequestMapping(value = "/replyDelete", method = RequestMethod.POST)
-		public ResponseEntity<String> deleteReplyBoard(String rno) throws Exception {
-			int no = Integer.parseInt(rno);
+	@RequestMapping(value = "/replyDelete", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteReplyBoard(String rno) throws Exception {
+		int no = Integer.parseInt(rno);
 			
-			ResponseEntity<String> result = null;
+		ResponseEntity<String> result = null;
 			
-			if(service.deleteReplyBoard(no)) {
-				result = new ResponseEntity<String>("success", HttpStatus.OK);
-			} else {
-				result = new ResponseEntity<String>("fail", HttpStatus.OK);
-			}
-			
-			return result;
+		if(service.deleteReplyBoard(no)) {
+			result = new ResponseEntity<String>("success", HttpStatus.OK);
+		} else {
+			result = new ResponseEntity<String>("fail", HttpStatus.OK);
 		}
+			
+		return result;
+	}
+		
+	// 공지 글 수정
+	@RequestMapping(value = "/replyModify", method = RequestMethod.POST)
+	public ResponseEntity<String> modify(@RequestBody NoticeReplyVo board) throws Exception{
+		System.out.println(board );
+		
+		ResponseEntity<String> result = null;
+		
+		if(service.modifyReplyBoard(board)) {
+			result = new ResponseEntity<String>("success", HttpStatus.OK);
+		} else {
+			result = new ResponseEntity<String>("fail", HttpStatus.OK);
+		}
+			
+		return result;
+	}
+	
 }

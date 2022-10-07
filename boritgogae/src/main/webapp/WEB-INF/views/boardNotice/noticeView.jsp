@@ -45,6 +45,11 @@
 			}
 		});	
 		
+		$("#summernote").on("summernote.enter", function(we, e) {
+		     $(this).summernote("pasteHTML", "<br><br>");
+		     e.preventDefault();
+		});
+		
 		getReply();
 
 	});
@@ -52,7 +57,7 @@
 	// 댓글 가져오기
 	function getReply() {
 		let bno = ${board.bno };
-		let url = "/board/notice/replylist/" + bno;
+		let url = "/board/notice/replyList/" + bno;
 		
 		$.ajax({
             url : url, // 데이터 송수신될 주소 
@@ -66,32 +71,6 @@
 				console.log(e);
 			}
          });
-	}
-	
-	function readReply(data) {
-		let output = "";
-		output += '<ul class="list-group list-group-flush">';
-		$.each(data, function(i, item) {
-			output += "<li class='list-group-item'>";
-			output += "<div>";
-			output += "<div class='replyer'>" + item.nickName + "</div>";
-			output += "<div class='icons'>";
-			//output += "<img src='../resources/img/modify.png' class='icon replyIcon' onclick='modifyReply(" + item.rno+ ")'; />";
-			output += "<p class='replyIcon' style='text-decoration: underline;' onclick='delReply(" + item.rno + ")';>";
-			output += "삭제<img src='../../resources/img/delete_icon.png' class='icon' /></p>";
-			output += "</div>";
-			output += "<div class='replyContents' style='margin:2px;'>&nbsp;&nbsp;&nbsp;&nbsp;" + item.content + "</div>";
-			output += "<div class='writtenDate' style='font-size:14px; position:relative; top:8px;'>" + calcDate(item.writtenDate) + "</div>";
-			output += "</div></li>";
-		});
-		
-		
-		output += '<li class="list-group-item"></li>';
-		output += '<ul>';
-		
-		
-		
-		$("#replyList").html(output);
 	}
 	
 	function calcDate(wd) {
@@ -116,7 +95,11 @@
 		$.ajax({
             url : "/board/notice/replyDelete", // 데이터 송수신될 주소 
 			data : {"rno" : rno}, // 송신할 데이터
-			type : "post", // 전송 방식
+			type : "delete", // 전송 방식
+			headers : {
+				"content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+				"X-HTTP-Method-Override" : "POST" // 구 버전의 웹 브라우저에서 (PUT / DELETE) 방식이 호환이 안되는 버전에서 호환 되도록
+			},
 			dataType : "text", // 수신할 데이터
             success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
             	console.log(data);
@@ -133,14 +116,43 @@
          });
 	}
 	
+	function readReply(data) {
+		let output = "";
+		output += '<ul class="list-group list-group-flush reply-list-group">';
+		$.each(data, function(i, item) {
+			console.log(item.content);
+			output += "<li class='list-group-item'>"; 	
+			output += "<div>";
+			output += "<div class='replyer'>" + item.nickName + "</div>";
+			output += "<p class='replyIcon'>";
+			output += "<span id='deleteIcon' style='text-decoration: underline;' onclick='delReply(" + item.rno + ")';>";
+			output += "삭제<img src='../../resources/img/delete_icon.png' class='icon' /></span>&nbsp;&nbsp;&nbsp;";
+			output += "<span id='modifyIcon' style='text-decoration: underline;'";
+			output += " onclick='modiReply(" + item.rno + ",\"" + item.content.trim() + "\",\"" + item.memberId + "\")';>";
+			output += "수정<img src='../../resources/img/modify_icon.png' class='icon' /></span>";
+			output += "</p>";
+			output += "<div class='replyContents' style='margin:2px;'>" + item.content + "</div>";
+			output += "<div class='writtenDate' style='font-size:14px; position:relative; top:8px;'>" + calcDate(item.writtenDate) + "</div>";
+			output += "</div></li><div id='modiRegister" + item.rno + "'></div>";
+		});
+		
+		
+		output += '<li class="list-group-item"></li>';
+		output += '</ul>';
+		
+		
+		
+		$("#replyList").html(output);
+	}
+	
 	// 댓글 등록
 	function addReply() {
 		let bno = ${board.bno };
 		let memberId = $("#memberId").val();
 		let content = $(".content").val();
-		content = content.replace(/<(\/?)p>/gi,"\r\n");
+		content = content.replace(/<(\/?)p>/gi,"");
 		
-		let url = "/board/notice/replyregister";
+		let url = "/board/notice/replyRegister";
 		let sendData = JSON.stringify({
 			"bno" : bno, "memberId" : memberId, "content" : content
 		});
@@ -172,8 +184,46 @@
          });
 	}
 	
-	
+	function modiReply(rno, content, memberId) {
+		content = content.replace("<br>", "\r\n");
+		let output = "";
+		output += "<textarea style='width:70%' rows='5' class='form-control replyContent' name='content'>" + content + "</textarea>";
+		output += '<div><button type="button" class="btn btn-success" onclick="modiReplySubmit(' + rno + ',\'' + content.replace("\r\n", "<br>").trim() + '\',\'' + memberId + '\')";>수정</button></div>';
 
+		$("#modiRegister" + rno).html(output);
+	}
+	
+	function modiReplySubmit(rno, content, memberId) {
+		console.log(rno, content, memberId);
+		content = $(".replycontent").val();
+		
+		let url = "/board/notice/replyModify";
+		let sendData = JSON.stringify({"rno" : rno, "content" : content, "memberId" : memberId});
+		$.ajax({
+            url : url, // 데이터 송수신될 주소 
+			data : sendData, // 송신할 데이터
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			headers : {
+				"content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+				"X-HTTP-Method-Override" : "POST" // 구 버전의 웹 브라우저에서 (PUT / DELETE) 방식이 호환이 안되는 버전에서 호환 되도록
+			},
+            success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+               console.log(data);
+            	if(data == "success") {
+            		$("#delReplyStatusModal").show(200);
+            		$("#delReplyStatus").html("수정이 완료되었습니다.");
+            		
+            	} else if(data == "fail") {
+            		
+            	}
+            
+            }, error : function(e) {
+				console.log(e);
+			}
+         });
+	}
+	
 	function showDelModal() {
 		$("#deleteModal").show(200);
 	}
@@ -249,14 +299,37 @@
 }
 
 .replyIcon {
+	position: relative;
 	float: right;
+	bottom: 26px;
+	
+}
+#deleteIcon {
+	cursor: pointer;
+}
+#modifyIcon {
+	cursor: pointer;
+	
+}
+
+.replyContents {
+	position: relative;
+	left:30px;
+	max-width:60%;
+	white-space:normal;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+
+.reply-list-group {
+	max-width:80%;
 }
 </style>
 
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
-
+	
 	<!-- summer note -->
 
 	<script

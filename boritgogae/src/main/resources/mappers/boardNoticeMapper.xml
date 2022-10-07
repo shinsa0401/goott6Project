@@ -44,4 +44,7 @@
   		select nickName from members where memberId = #{memberId}
   	</select>
   	
+  	<update id="modifyReply">
+  		update noticeReplyBoard set content = #{content} where rno = #{rno}
+  	</update>
   </mapper>
