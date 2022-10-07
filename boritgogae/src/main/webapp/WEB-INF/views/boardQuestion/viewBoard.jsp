@@ -70,7 +70,6 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div class="container">
-	
 		<h4>글상세보기</h4>
 		
 		<div class="board">
@@ -170,6 +169,7 @@
 		    </div>
 		  </div>
 		</div>
+		
 		
 	
 	<jsp:include page="../footer.jsp"></jsp:include>

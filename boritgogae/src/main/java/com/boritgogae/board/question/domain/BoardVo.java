@@ -16,23 +16,13 @@ public class BoardVo {
 	private int step;
 	private int refOrder;
 	private String isDelete;
-<<<<<<< HEAD
-	private String category;
-=======
->>>>>>> sth
 	
 	public BoardVo() {
 		super();
 	}
-<<<<<<< HEAD
-	
-	public BoardVo(int no, String writer, String pwd, Timestamp writtenDate, int readCount, int likeCount, String title,
-			String content, String uploadFile, int ref, int step, int refOrder, String isDelete, String category) {
-=======
 
 	public BoardVo(int no, String writer, String pwd, Timestamp writtenDate, int readCount, int likeCount, String title,
 			String content, String uploadFile, int ref, int step, int refOrder, String isDelete) {
->>>>>>> sth
 		super();
 		this.no = no;
 		this.writer = writer;
@@ -160,5 +150,7 @@ public class BoardVo {
 				+ ", uploadFile=" + uploadFile + ", ref=" + ref + ", step=" + step + ", refOrder=" + refOrder
 				+ ", isDelete=" + isDelete + "]";
 	}
-
+	
+	
+	
 }
