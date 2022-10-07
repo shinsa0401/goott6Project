@@ -5,9 +5,50 @@
   
   <mapper namespace="com.boritgogae.boardQuestionMapper">
   
+<<<<<<< HEAD
   	<select id="viewAllBoard" resultType="BoardVo">
   		select * from questionBoard
   	</select>
   	
+=======
+  	<!-- 게시판 -->
+  	<select id="selectAllBoard" resultType="BoardVo">
+  		select * from questionBoard where isDelete = 'N'
+  	</select>
+  	
+  	<insert id="insertBoard">
+  		insert into questionBoard(writer, title, content, pwd) 
+  		values(#{writer}, #{title}, #{content}, sha1(md5(#{pwd})))
+  	</insert>
+  	
+  	<select id="getLastNo" resultType="int">
+  		select max(no) as lastNo from questionBoard
+  	</select>
+  	
+  	<update id="updateRef">
+  		update questionBoard set ref = #{lastNo} where no = #{lastNo}
+  	</update>
+  	
+  	<select id="getBoardByNo" resultType="BoardVo">
+  		select * from questionBoard where no = #{no}
+  	</select>
+  	
+  	<update id="updateBoard">
+		update questionBoard set title = #{title}, content = #{content} where no = #{no} and pwd = sha1(md5(#{pwd}))
+  	</update>
+  	
+  	<select id="boardPwdCheck" resultType="int">
+  		select count(*) as cnt from questionBoard where no = #{no} and pwd = sha1(md5(#{pwd}))
+  	</select>
+  	
+  	<update id="deleteBoard">
+  		update questionBoard set isDelete = 'Y' where no = #{no} and pwd = sha1(md5(#{pwd}))
+  	</update>
+  	
+  	
+  	<!-- 댓글 -->
+  	
+  	
+>>>>>>> sth
   	
   </mapper>
