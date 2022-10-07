@@ -1,19 +1,11 @@
 package com.boritgogae.board.question.service;
 
 import java.util.List;
-<<<<<<< HEAD
-=======
 import java.util.Map;
->>>>>>> sth
 
 import com.boritgogae.board.question.domain.BoardVo;
 
 public interface BoardService {
-<<<<<<< HEAD
-	// 게시판 전체목록 보기
-	public List<BoardVo> viewAllBoard() throws Exception;
-	
-=======
 	// 게시판 전체목록
 	public List<BoardVo> viewAllBoard() throws Exception;
 	
@@ -28,5 +20,4 @@ public interface BoardService {
 	
 	// 게시글 삭제(삭제여부 업데이트)
 	public boolean removeBoard(int no, String pwd) throws Exception;
->>>>>>> sth
 }

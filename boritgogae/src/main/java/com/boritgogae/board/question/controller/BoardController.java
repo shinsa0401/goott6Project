@@ -1,12 +1,9 @@
 package com.boritgogae.board.question.controller;
 
-<<<<<<< HEAD
-import java.util.List;
-=======
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
->>>>>>> sth
 
 import javax.inject.Inject;
 
@@ -14,14 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-<<<<<<< HEAD
-=======
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
->>>>>>> sth
-
 import com.boritgogae.board.question.domain.BoardVo;
 import com.boritgogae.board.question.service.BoardService;
 
@@ -53,25 +46,12 @@ public class BoardController {
 	
 	
 	/**
-<<<<<<< HEAD
-	 * @methodName : writeBoard
-=======
 	 * @methodName : newWriteBoard
->>>>>>> sth
 	 * @author : 
 	 * @date : 2022. 10. 4.
 	 * @입력 param :
 	 * @returnType : String
 	 */
-<<<<<<< HEAD
-	@RequestMapping(value = "/write")
-	public String writeBoard() throws Exception {
-		System.out.println("컨트롤러 : 게시판 글쓰기 페이지 요청");
-		
-		return "board/writeBoard";
-		
-	}
-=======
 	@RequestMapping(value = "/question/newWrite")
 	public String newWriteBoard() throws Exception {
 		System.out.println("컨트롤러 : 게시판 글쓰기 페이지 요청");
@@ -189,5 +169,4 @@ public class BoardController {
 	
 	
 	
->>>>>>> sth
 }

@@ -1,12 +1,8 @@
 package com.boritgogae.board.question.persistence;
 
-<<<<<<< HEAD
-import java.util.List;
-=======
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
->>>>>>> sth
 
 import javax.inject.Inject;
 
@@ -26,13 +22,6 @@ public class BoardDAOImpl implements BoardDAO {
 	private SqlSession ses;
 	
 	
-<<<<<<< HEAD
-	// 게시판 전체목록 보기 
-	@Override
-	public List<BoardVo> viewAllBoard() throws Exception {
-		System.out.println("다오 : 게시판 전체목록 요청");
-		return ses.selectList(ns + ".viewAllBoard");
-=======
 	
 	// 게시판 전체목록 보기 
 	@Override
@@ -103,7 +92,6 @@ public class BoardDAOImpl implements BoardDAO {
 	public int updateReadCount(int no) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
->>>>>>> sth
 	}
 
 }

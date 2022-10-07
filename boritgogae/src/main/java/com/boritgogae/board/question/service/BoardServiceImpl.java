@@ -1,12 +1,8 @@
 package com.boritgogae.board.question.service;
 
-<<<<<<< HEAD
-import java.util.List;
-=======
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
->>>>>>> sth
 
 import javax.inject.Inject;
 
@@ -22,15 +18,6 @@ public class BoardServiceImpl implements BoardService {
 	@Inject
 	private BoardDAO dao;
 	
-<<<<<<< HEAD
-	@Override
-	public List<BoardVo> viewAllBoard() throws Exception {
-		System.out.println("서비스 : 게시판 전체목록 요청");
-		List<BoardVo> lst = dao.viewAllBoard();
-		return lst;
-	}
-
-=======
 	// 게시판 글 전체 목록
 	@Override
 	public List<BoardVo> viewAllBoard() throws Exception {
@@ -106,5 +93,4 @@ public class BoardServiceImpl implements BoardService {
 		return result;
 	}
 
->>>>>>> sth
 }

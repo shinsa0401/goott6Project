@@ -5,12 +5,6 @@
   
   <mapper namespace="com.boritgogae.boardQuestionMapper">
   
-<<<<<<< HEAD
-  	<select id="viewAllBoard" resultType="BoardVo">
-  		select * from questionBoard
-  	</select>
-  	
-=======
   	<!-- 게시판 -->
   	<select id="selectAllBoard" resultType="BoardVo">
   		select * from questionBoard where isDelete = 'N'
@@ -49,6 +43,5 @@
   	<!-- 댓글 -->
   	
   	
->>>>>>> sth
   	
   </mapper>

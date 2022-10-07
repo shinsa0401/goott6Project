@@ -5,10 +5,6 @@ import java.util.List;
 import com.boritgogae.board.question.domain.BoardVo;
 
 public interface BoardDAO {
-<<<<<<< HEAD
-	// 게시판 전체목록 보기
-	public List<BoardVo> viewAllBoard() throws Exception;
-=======
 	// 게시판 전체목록을 가져오는 메서드
 	public List<BoardVo> selectAllBoard() throws Exception;
 	
@@ -37,7 +33,6 @@ public interface BoardDAO {
 	
 	// 게시글 비밀번호 확인하는 메서드
 	public int boardPwdCheck(int no, String pwd) throws Exception;
->>>>>>> sth
 	
 	
 }
