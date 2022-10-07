@@ -241,13 +241,15 @@ update questionBoard set ref = 6 where no = 6;
 
 -- 게시글 n번글 조회수증가(읽은 뒤 24시간후 증가)
 -- 조회수 처리를 위한 ip주소, 글번호 얻어오는 메서드
+select * from questionReadCount where bno = 1 and ipAddr = '211.21.31.43';
 -- select * from readCount where bno = #{bno} and ipAddr = #{ipAddr}
 -- 조회수 처리를 위한 ip주소, 글번호, 현재시간을 insert하는 메서드
 -- insert into readCount(ipAddr, bno) values(#{ipAddr}, #{bno})
 -- 조회수 처리를 위한 ip주소, 글번호로 현재시간을 update 메서드
+-- update readCount set readDate = now() where bno = #{bno} and ipAddr = #{ipAddr}
+-- 조회수 증가
 -- update board set readCount = readCount + 1 where no = #{no}
--- 조회수 업데이트후 조회시간을 현재시간으로 갱신
--- update readcount set readTime = now() where bno = #{bno} and ipAddr = #{ipAddr}
+
 
 
 

@@ -47,14 +47,6 @@
 					<span id="likeCount">${board.likeCount }</span> 
 				</div>
 				
-				<div class="mb-3 mt-3">
-					<label for="attachFiles" class="form-label">첨부파일:</label>
-					<c:forEach var="file" items="${fileList }">
-						<c:if test="${file.thumbnailFileName == null }">
-							<div class="files"><a href="/resources/uploads/${file.originFileName }">${file.originFileName }</a></div>
-						</c:if>
-					</c:forEach>
-				</div>
 				
 				<div class="mb-3 mt-3">
 					<label for="title" class="form-label">제목:</label>
@@ -65,13 +57,7 @@
 					<label for="content" class="form-label">내용:</label>
 					<textarea class="form-control" rows="10" id="content" name="content">${board.content }</textarea>
 					
-					<div class="attachImgFiles">
-						<c:forEach var="imgFiles" items="${fileList }">
-							<c:if test="${imgFiles.thumbnailFileName != null }">
-								<div class="imgFile"><img src="/resources/uploads/${imgFiles.originFileName }"></div>
-							</c:if>
-						</c:forEach>
-					</div>
+					
 				</div>
 				
 				<div class="mb-3 mt-3">

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boritgogae.board.question.domain.BoardVo;
+import com.boritgogae.board.question.etc.IPCheck;
 import com.boritgogae.board.question.service.BoardService;
 
 @Controller // 컨트롤러 단임을 명시

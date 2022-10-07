@@ -40,7 +40,7 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div class="container mt-3">
-		<h3 id="boardTitle">질문 게시판</h3>
+		<h2 id="boardTitle">질문 게시판</h2>
 		
 		<div id="viewAllBoard">
 			<table id="viewTable" class="table table-hover">

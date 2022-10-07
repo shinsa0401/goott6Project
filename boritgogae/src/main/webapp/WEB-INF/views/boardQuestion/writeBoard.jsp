@@ -4,9 +4,47 @@
 <%@ page session="false" %>
 
 <html>
-<head>  
+<head>
+
+<!-- 서머노트부분 -->
+<script src="${pageContext.request.contextPath}/resources/summernote/summernote-lite.js"></script>
+<script src="${pageContext.request.contextPath}/resources/summernote/lang/summernote-ko-KR.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/summernote/summernote-lite.css">
+<!--  -->
+
 <title>글쓰기</title>
 <script>
+
+	$(function () {
+		
+		// 서머노트
+		$('#summernote').summernote({
+			height: 300,                 // 에디터 높이
+			minHeight: null,             // 최소 높이
+			maxHeight: null,             // 최대 높이
+			focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+			lang: "ko-KR",					// 한글 설정
+			placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+			
+				
+		});
+		
+		
+		
+	});
+	
+	// 서머노트에 text 쓰기
+	$('#summernote').summernote('insertText', 써머노트에 쓸 텍스트);
+	// 서머노트 쓰기 비활성화
+	$('#summernote').summernote('disable');
+	// 서머노트 쓰기 활성화
+	$('#summernote').summernote('enable');
+	// 서머노트 리셋
+	$('#summernote').summernote('reset');
+	// 마지막으로 한 행동 취소 ( 뒤로가기 )
+	$('#summernote').summernote('undo');
+	// 앞으로가기
+	$('#summernote').summernote('redo');
 
 	function writeCancel() {
 		location.href='/board/question';
@@ -22,6 +60,10 @@
 	
 	<div class="container">
 		<h1>질문 게시판</h1>
+		
+		<div>
+			<textarea id="summernote" name="editordata"></textarea> 
+		</div>
 		
 		<form action="/board/question/write" method="post">
 			<div class="board">

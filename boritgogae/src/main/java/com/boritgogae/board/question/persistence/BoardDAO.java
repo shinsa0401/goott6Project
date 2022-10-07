@@ -1,8 +1,11 @@
 package com.boritgogae.board.question.persistence;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import com.boritgogae.board.question.domain.BoardVo;
+import com.boritgogae.board.question.domain.ReadCountVo;
 
 public interface BoardDAO {
 	// 게시판 전체목록을 가져오는 메서드
@@ -20,10 +23,21 @@ public interface BoardDAO {
 	// 게시판 글 상세 조회 하는 메서드
 	public BoardVo getBoard(int no) throws Exception;
 	
+	// 게시글 조회 시간 검색하는 메서드
+	public ReadCountVo getLastReadDate(Map<String, Object> readCount) throws Exception;
+	
+	// 조회수 처리를 위한 ip주소, 글번호, 현재시간을 insert 하는 메서드
+	public int insertReadCount(Map<String, Object> readCount) throws Exception;
+	
+	// 조회수 처리를 위한 ip주소, 글번호, 현재시간으로 update 하는 메서드
+	public int updateReadCount(Map<String, Object> readCount) throws Exception;
+	
 	// 조회된 글의 조회수 증가하는 메서드
-	public int updateReadCount(int no) throws Exception;
+	public int updateReadCountBoard(int no) throws Exception;
 	
 	// 좋아요수 증가하는 메서드
+	
+	
 
 	// 게시판 글 수정하는 메서드
 	public int updateBoard(BoardVo board) throws Exception;

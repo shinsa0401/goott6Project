@@ -1,5 +1,6 @@
 package com.boritgogae.board.question.persistence;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.boritgogae.board.question.domain.BoardVo;
+import com.boritgogae.board.question.domain.ReadCountVo;
 
 @Repository // DAO단임을 명시
 public class BoardDAOImpl implements BoardDAO {
@@ -87,11 +89,33 @@ public class BoardDAOImpl implements BoardDAO {
 		return ses.update(ns + ".updateRef", lastNo);
 	}
 	
+	// 게시글 조회시간 검색하기
+	@Override
+	public ReadCountVo getLastReadDate(Map<String, Object> readCount) throws Exception {
+		
+		return ses.selectOne(ns + ".selectReadCountCheck", readCount);
+	}
+	
+	// 조회수 처리를 위해 글번호, ip주소, 조회시간 insert
+	@Override
+	public int insertReadCount(Map<String, Object> readCount) throws Exception {
+		
+		return ses.insert(ns + ".insertReadCount", readCount);
+		
+	}
+	
 	// 조회수 증가
 	@Override
-	public int updateReadCount(int no) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateReadCountBoard(int no) throws Exception {
+		
+		return ses.update(ns + ".updateReadCountBoard", no);
+	}
+
+	// 조회수 처리를 위해 글번호, ip주소, 조회시간 update
+	@Override
+	public int updateReadCount(Map<String, Object> readCount) throws Exception {
+		
+		return ses.update(ns + ".updateReadCount", readCount);
 	}
 
 }

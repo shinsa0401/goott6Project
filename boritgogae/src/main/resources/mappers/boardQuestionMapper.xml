@@ -6,38 +6,69 @@
   <mapper namespace="com.boritgogae.boardQuestionMapper">
   
   	<!-- 게시판 -->
+  	
+  	<!-- 게시글 전체목록 검색 -->
   	<select id="selectAllBoard" resultType="BoardVo">
   		select * from questionBoard where isDelete = 'N'
   	</select>
   	
+  	<!-- 새 글 작성 -->
   	<insert id="insertBoard">
   		insert into questionBoard(writer, title, content, pwd) 
   		values(#{writer}, #{title}, #{content}, sha1(md5(#{pwd})))
   	</insert>
   	
+  	<!-- 최근등록된 글의 번호 검색 -->
   	<select id="getLastNo" resultType="int">
   		select max(no) as lastNo from questionBoard
   	</select>
   	
+  	<!-- ref 업데이트 -->
   	<update id="updateRef">
   		update questionBoard set ref = #{lastNo} where no = #{lastNo}
   	</update>
   	
+  	<!-- 글번호로 게시글 검색 -->
   	<select id="getBoardByNo" resultType="BoardVo">
   		select * from questionBoard where no = #{no}
   	</select>
   	
+  	<!-- 글 수정 -->
   	<update id="updateBoard">
 		update questionBoard set title = #{title}, content = #{content} where no = #{no} and pwd = sha1(md5(#{pwd}))
   	</update>
   	
+  	<!-- 수정/삭제시 비밀번호 확인 -->
   	<select id="boardPwdCheck" resultType="int">
   		select count(*) as cnt from questionBoard where no = #{no} and pwd = sha1(md5(#{pwd}))
   	</select>
   	
+  	<!-- 글 삭제 (삭제여부 업데이트) -->
   	<update id="deleteBoard">
   		update questionBoard set isDelete = 'Y' where no = #{no} and pwd = sha1(md5(#{pwd}))
   	</update>
+  	
+  	<!-- 조회된글인지 검색 -->
+  	<select id="selectReadCountCheck" resultType="ReadCountVo">
+  		select * from questionReadCount where bno = #{bno} and ipAddr = #{ipAddr}
+  	</select>
+  	
+  	<!-- 처음 읽은 글이라면 글번호, ip주소 추가 -->
+  	<insert id="insertReadCount">
+  		insert into questionReadCount(bno, ipAddr) values(#{bno}, #{ipAddr})
+  	</insert>
+  	
+  	<!-- 게시글 조회수 업데이트 -->
+  	<update id="updateReadCountBoard">
+  		update questionBoard set readCount = readCount + 1 where no = #{bno}
+  	</update>
+  	
+  	<!-- 전에 조회했던 글이라면 글번호, ip주소, 조회시간 업데이트 -->
+  	<update id="updateReadCount">
+  		update questionReadCount set readDate = now() where bno = #{bno} and ipAddr = #{ipAddr}
+  	</update>
+  	
+  	
   	
   	
   	<!-- 댓글 -->
