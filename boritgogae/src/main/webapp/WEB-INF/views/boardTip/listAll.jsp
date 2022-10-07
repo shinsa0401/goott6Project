@@ -70,7 +70,7 @@
 <title>boritgogae</title>
 </head>
 <body>
-	<jsp:include page="../header.jsp"></jsp:include>
+	<jsp:include page="../head.jsp"></jsp:include>
 	<div class="container mt-3">
 		<div class="hero__text">
 			<span>여러분들의 가족을 위한</span>

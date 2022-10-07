@@ -62,7 +62,7 @@
 </head>
 
 <body>
-	<jsp:include page="../header.jsp"></jsp:include>
+	<jsp:include page="../head.jsp"></jsp:include>
 	<!-- Checkout Section Begin -->
 	<section class="checkout spad">
 		<div class="container">

@@ -18,4 +18,6 @@ public interface BoardService {
 	public boolean delBoard(int bno) throws Exception;
 
 	public BoardVo modiBoard(int bno, BoardVo vo) throws Exception;
+
+	public boolean addReadCnt(int bno) throws Exception;
 }

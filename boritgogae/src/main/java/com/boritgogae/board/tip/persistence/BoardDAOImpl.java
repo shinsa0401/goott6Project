@@ -53,5 +53,11 @@ public class BoardDAOImpl implements BoardDAO {
 		
 	}
 
+	@Override
+	public int plusReadCnt(int bno) throws Exception {
+		
+		return ses.update(ns+".updateReadCnt", bno);
+	}
+
 
 }

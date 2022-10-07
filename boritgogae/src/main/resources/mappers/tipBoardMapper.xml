@@ -19,4 +19,7 @@
   	<update id="updateBoard">
   		update tipBoard set title = #{vo.title} , content = #{vo.content}, categories = #{vo.categories} where bno = #{vo.bno}
   	</update>
+  	<update id="updateReadCnt">
+  		update tipBoard set readCount = (readCount + 1) where bno = #{bno} 
+  	</update>
   </mapper>

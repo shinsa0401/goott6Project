@@ -61,5 +61,15 @@ public class BoardServiceImpl implements BoardService {
 		return dao.selectDetail(bno);
 	}
 
+	@Override
+	public boolean addReadCnt(int bno) throws Exception {
+		boolean result = false;
+		int row = dao.plusReadCnt(bno);
+		if (row == 1) {
+			result = true;
+		}
+		return result; 
+	}
+
 
 }

@@ -35,15 +35,19 @@ public class TipBoardController {
 		return mav;
 	}
 
-	// 게시판 글조회
+	// 게시판 글조회 , 조회수 증가
 	@RequestMapping(value = "/{bno}")
 	public ModelAndView detail(@PathVariable("bno") int bno) throws Exception {
 		ModelAndView mav = new ModelAndView();
 //		System.out.println(bno+"왔냐???"); //  왔네
-		mav.setViewName("boardTip/detail");
-		BoardVo detail = service.getDetail(bno);
-//		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+ detail);
-		mav.addObject("board", detail);
+		boolean cnt = service.addReadCnt(bno); // 조회수 증가 메서드
+		
+		if (cnt) {
+			mav.setViewName("boardTip/detail");
+			BoardVo detail = service.getDetail(bno);
+			mav.addObject("board", detail);
+		}
+		
 		return mav;
 	}
 
