@@ -12,8 +12,7 @@
 <script type="text/javascript" src="../resources/js/commonJS.js"></script>
 <script type="text/javascript">
 	window.onload = function() {
-		let pageNo = getParameter("pageNo");
-
+		 let pageNo = request.getParameter("pageNo");
 		//	if(pageNo < 1 || pageNo > ${pagingInfo.totalPage }) {
 		//		alert(pageNo + "페이지는 존재하지 않습니다!");
 
@@ -58,6 +57,7 @@
 				<br></br>비밀글이 아닌 글만 조회할 수 있습니다.
 			</p>
 			<p>FAQ 혹은 원하는 답변이 없을 시 문의를 남겨주세요.</p>
+			<p>${ipTest }</p>
 		</div>
 
 		<div>

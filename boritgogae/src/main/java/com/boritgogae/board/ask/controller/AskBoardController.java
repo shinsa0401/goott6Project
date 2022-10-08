@@ -41,7 +41,7 @@ public class AskBoardController {
 	
 	@RequestMapping(value = "/ask")
 	public String listAll(Model model, @RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo,
-			RedirectAttributes rttr, SearchCriteria sc) throws Exception {
+			RedirectAttributes rttr, SearchCriteria sc, HttpServletRequest request) throws Exception {
 		System.out.println("컨트롤러 : 게시판 전체 목록 요청 페이지 번호 : " + pageNo);
 		if(pageNo < 1) {
 			pageNo = 1;
@@ -51,10 +51,11 @@ public class AskBoardController {
 		PagingInfo pi = (PagingInfo)map.get("pagingInfo");
 		List<AskCodeVo> askCodeList = service.loadAskCode();
 		
-		
+		String test = getClientIP(request);
 		model.addAttribute("askBoardList", lst); // 바인딩
 		model.addAttribute("pagingInfo", pi); // 바인딩
 		model.addAttribute("askCodeList", askCodeList); // 바인딩
+		model.addAttribute("ipTest", test); 
 		
 		rttr.addFlashAttribute("pageNo", pageNo);
 		return "boardAsk/viewAskAll";
@@ -210,6 +211,29 @@ public class AskBoardController {
 		return "boardAsk/viewAskBoard";
 	}
 	
-	
+	public static String getClientIP(HttpServletRequest request) {
+	    String ip = request.getHeader("X-Forwarded-For");
+
+	    if (ip == null) {
+	        ip = request.getHeader("Proxy-Client-IP");
+	    }
+	    if (ip == null) {
+	        ip = request.getHeader("WL-Proxy-Client-IP");
+	    }
+	    if (ip == null) {
+	        ip = request.getHeader("HTTP_CLIENT_IP");
+	    }
+	    if (ip == null) {
+	        ip = request.getHeader("HTTP_X_FORWARDED_FOR");;
+	    }
+	    if (ip == null) {
+	        ip = request.getRemoteAddr();
+	    }
+	    
+	    if("0:0:0:0:0:0:0:1".equals(ip)) {
+	    	ip = "127.0.0.1";
+	    }
+	    return ip;
+	}
 	
 }
