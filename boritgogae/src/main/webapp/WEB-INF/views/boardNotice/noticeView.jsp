@@ -295,6 +295,7 @@
 }
 
 #replys {
+	margin-top : 80px;
 	overflow: auto;
 }
 
@@ -324,6 +325,14 @@
 .reply-list-group {
 	max-width:80%;
 }
+
+.likeBtn {
+	width : 50px;
+	margin-bottom: 10px;
+	position: absolute;
+	left: 50%;
+
+}
 </style>
 
 </head>
@@ -348,9 +357,9 @@
 						<fmt:formatDate value="${board.writtenDate }"
 							pattern="yyyy-MM-dd HH:mm" />
 					</div> &nbsp; <span id="icons"><img
-						src="${pageContext.request.contextPath}/resources/img/view_icon.png"
+						src="${pageContext.request.contextPath}/resources/notice/icon/view_icon.png"
 						class="icon"> ${board.readCount } &nbsp; <img
-						src="${pageContext.request.contextPath}/resources/img/like_icon.png"
+						src="${pageContext.request.contextPath}/resources/notice/icon/like_icon.png"
 						class="icon"> ${board.likeCount } </span>
 			</span>
 				<h3 id="title">
@@ -372,8 +381,25 @@
 					style="background-color: #7fad39; color: white; border-color: #7fad39;"
 					onclick="modify();">글 수정</button>
 			</div>
+			
 		</div>
-
+		<div class="likeBtnDiv">
+			<c:choose>
+				<c:when test="">
+					<button type="button" class="btn btn-success likeBtn"
+					style="background-color: #7fad39; color: white; border-color: #7fad39;"
+					onclick=""><img src="${pageContext.request.contextPath}/resources/notice/icon/full_like_icon.png"></button>
+				</c:when>
+				<c:otherwise>
+					<button type="button" class="btn btn-success likeBtn"
+						style="background-color: #7fad39; color: white; border-color: #7fad39;"
+						onclick=""><img src="${pageContext.request.contextPath}/resources/notice/icon/empty_like_icon.png"></button>
+				</c:otherwise>
+			
+			</c:choose>
+		</div>
+		
+		
 		<!-- 댓글 -->
 		<div id="replys">
 			<div>

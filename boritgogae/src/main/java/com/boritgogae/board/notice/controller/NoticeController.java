@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
+import com.boritgogae.board.notice.etc.PagingInfo;
 import com.boritgogae.board.notice.service.NoticeServiceImpl;
 
 @Controller
@@ -33,14 +35,23 @@ public class NoticeController {
 	
 	// 공지사항 가져오기
 	@RequestMapping(value="/list")
-	public String getNoticeBoard(Model model) throws Exception {
+	public String getNoticeBoard(Model model, @RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo, RedirectAttributes rttr) throws Exception {
 		System.out.println("noticeController");
 		
-		List<NoticeVo> list = service.getNoticeBoard();
+		if(pageNo < 1) {
+			pageNo = 1;
+		}
+		
+		Map<String, Object> map = this.service.getNoticeBoard(pageNo);
+		List<NoticeVo> list = (List<NoticeVo>)map.get("boardList");
+		PagingInfo pi = (PagingInfo)map.get("pagingInfo");
 		
 		System.out.println(list);
-
+		
+		model.addAttribute("pagingInfo", pi);
 		model.addAttribute("list", list);
+		rttr.addFlashAttribute("pageNo", pageNo);
+		
 		return "boardNotice/noticeBoardList";
 		
 	}
@@ -82,7 +93,6 @@ public class NoticeController {
 	// 공지 글 삭제
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteBoard(String bno) throws Exception {
-		System.out.println(bno);
 		int no = Integer.parseInt(bno);
 		
 		ResponseEntity<String> result = null;
@@ -142,12 +152,12 @@ public class NoticeController {
 	
 	@RequestMapping(value = "/replyList/{bno}")
 	public ResponseEntity<List<NoticeReplyVo>> getEntireReplies(@PathVariable("bno") int bno) {
-		System.out.println(bno);
+		
 		ResponseEntity<List<NoticeReplyVo>> result = null;
 		
 		try {
 			List<NoticeReplyVo> lst = service.getReplyList(bno);
-			System.out.println(lst);
+			
 			if(lst.size() < 1) {
 				result = null;
 			} else {
@@ -181,7 +191,6 @@ public class NoticeController {
 	// 공지 글 수정
 	@RequestMapping(value = "/replyModify", method = RequestMethod.POST)
 	public ResponseEntity<String> modify(@RequestBody NoticeReplyVo board) throws Exception{
-		System.out.println(board );
 		
 		ResponseEntity<String> result = null;
 		

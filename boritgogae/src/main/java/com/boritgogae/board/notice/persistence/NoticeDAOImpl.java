@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
+import com.boritgogae.board.notice.etc.PagingInfo;
 
 @Repository
 public class NoticeDAOImpl implements NoticeDAO {
@@ -20,10 +21,8 @@ public class NoticeDAOImpl implements NoticeDAO {
 	private static String ns = "com.boritgogae.boardNoticeMapper";
 	
 	@Override
-	public List<NoticeVo> getNoticeBoard() throws Exception {
-		System.out.println("NoticeDAO");
-		return ses.selectList(ns + ".getNoticeList");
-		
+	public List<NoticeVo> getNoticeBoard(PagingInfo pi) throws Exception {
+		return ses.selectList(ns + ".getNoticeList", pi);
 	}
 	
 	@Override
@@ -60,7 +59,6 @@ public class NoticeDAOImpl implements NoticeDAO {
 
 	@Override
 	public int deleteReplyBoard(int rno) throws Exception {
-		// TODO Auto-generated method stub
 		return ses.delete(ns + ".deleteReply", rno);
 	}
 
@@ -74,6 +72,15 @@ public class NoticeDAOImpl implements NoticeDAO {
 		return ses.update(ns + ".modifyReply", board);
 	}
 
+	@Override
+	public int updateReadCount(int bno) throws Exception {
+		return ses.update(ns + ".updateReadCount", bno);
+	}
+
+	@Override
+	public int getNoticeBoardCnt() throws Exception {
+		return ses.selectOne(ns + ".getNoticeBoardCnt");
+	}
 	
 
 }

@@ -62,11 +62,11 @@
 		let content = form.content.value;
 		let memberId = form.memberId.value;
 		let title = form.title.value;
-		console.log(content, memberId, title);
 		
 		content = content.replace(/<(\/?)p>/gi,"");
 		form.content.value = content;
-		
+
+		console.log(content, memberId, title);
 		return true;
 	}
 
@@ -112,7 +112,7 @@
 
 				</div>
 
-				<button type="button" class="btn btn-success" onclick="return addBoard(this.form);">등록</button>
+				<button type="submit" class="btn btn-success" onclick="return addBoard(this.form);">등록</button>
 			</form>
 
 

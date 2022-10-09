@@ -1,13 +1,14 @@
 package com.boritgogae.board.notice.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
 
 public interface NoticeService {
 	// 공지사항 전체 글 가져오는 메서드
-	public List<NoticeVo> getNoticeBoard() throws Exception;
+	public Map<String, Object> getNoticeBoard(int pageNo) throws Exception;
 	
 	// 공지사항 글 등록 하는 메서드
 	public boolean registerBoard(NoticeVo board) throws Exception;

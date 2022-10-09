@@ -1,6 +1,8 @@
 package com.boritgogae.board.notice.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
+import com.boritgogae.board.notice.etc.PagingInfo;
 import com.boritgogae.board.notice.persistence.NoticeDAO;
 
 @Service
@@ -17,10 +20,19 @@ public class NoticeServiceImpl implements NoticeService {
 	private NoticeDAO dao;
 	
 	@Override
-	public List<NoticeVo> getNoticeBoard() throws Exception {
-		System.out.println("noticeService");
-		return dao.getNoticeBoard();
+	public Map<String, Object> getNoticeBoard(int pageNo) throws Exception {
 		
+		PagingInfo pi = pagingProcess(pageNo);
+
+		List<NoticeVo> lst = null;
+
+		lst = dao.getNoticeBoard(pi);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("boardList", lst);
+		resultMap.put("pagingInfo", pi);
+		
+		return resultMap;
 	}
 
 	@Override
@@ -37,8 +49,9 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	public NoticeVo viewBoard(int bno) throws Exception {
-		NoticeVo board = dao.viewBoard(bno);
+		dao.updateReadCount(bno);
 		
+		NoticeVo board = dao.viewBoard(bno);
 		return board;
 	}
 
@@ -77,7 +90,7 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	public boolean deleteReplyBoard(int rno) throws Exception {
-boolean result = false;
+		boolean result = false;
 		
 		if (dao.deleteReplyBoard(rno) == 1) {
 			result = true;
@@ -100,5 +113,27 @@ boolean result = false;
 		
 		return result;
 	}
+	
+	private PagingInfo pagingProcess(int pageNo) throws Exception {
+		PagingInfo result = new PagingInfo();
+
+		result.setTotalPostCnt(dao.getNoticeBoardCnt()); // 전체 글의 갯수 setting
+		
+		// ------------------------------ 페이징 구현 ------------------------------
+		
+		result.setTotalPage(result.getTotalPostCnt()); // 전체 페이지 수 setting
+		result.setStartNum(pageNo); // 현재 페이지에서 출력을 시작할 글 번호(index)
+		
+		// ------------------------------ 페이징 블럭을 위한 부분 ------------------------------
+		result.setTotalPagingBlock(result.getTotalPage()); // 전체 페이징 블럭 수 setting
+		result.setCurrentPagingBlock(pageNo); // 현재 페이지가 속한 페이징 블럭 setting
+		result.setStartNumOfCurPagingBlock(result.getCurrentPagingBlock()); // 현재 페이징 블럭의 출력 시작 번호 setting
+		result.setEndNumOfCurPagingBlock(result.getStartNumOfCurPagingBlock()); // 현재 페이징 블럭의 출력 끝 번호 setting
+		
+		System.out.println(result.toString());
+		
+		return result;
+	}
+	
 	
 }

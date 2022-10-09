@@ -5,12 +5,8 @@
   
   <mapper namespace="com.boritgogae.boardNoticeMapper">
   	<select id="getNoticeList" resultType="NoticeVo">
-  		select * from noticeBoard order by bno desc
+  		select * from noticeBoard order by bno desc limit #{startNum}, #{postPerPage}
   	</select>
-  	
-  	<select id="getLastNo" resultType="int">
-		select max(bno) as lastpk from noticeBoard
-	</select>
   	
   	<insert id="register">
   		insert into noticeBoard(memberId, title, content, nickName) values (#{memberId}, #{title}, #{content}, "관리자")
@@ -27,6 +23,10 @@
   	<update id="modifyBoard">
   		update noticeBoard set title = #{title}, content = #{content} where bno = #{bno}
   	</update>
+  	
+  	<select id="getNoticeBoardCnt" resultType="int">
+  		select count(*) as cnt from noticeBoard
+  	</select>
   	
   	<insert id="registerReply">
   		insert into noticeReplyBoard(memberId, content, bno, nickName) values (#{memberId}, #{content}, #{bno}, #{nickName})
@@ -47,4 +47,8 @@
   	<update id="modifyReply">
   		update noticeReplyBoard set content = #{content} where rno = #{rno}
   	</update>
+  	
+  	<update id="updateReadCount">
+		update noticeBoard set readCount = readCount + 1 where bno = #{bno}
+	</update>
   </mapper>

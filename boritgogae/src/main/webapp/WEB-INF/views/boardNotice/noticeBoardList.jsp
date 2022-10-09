@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <html>
 <head>
@@ -12,15 +12,29 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 <title>공지사항</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/notice/js/commonJS.js"></script>
 <script>
+	
+	let pageNo = getParameter("pageNo");
+	
+	if(pageNo < 1 || pageNo > ${pagingInfo.totalPage }) {
+		location.href="/board/notice/list?pageNo=1";
+	}
+
 	function viewBoard(bno) {
 		location.href="/board/notice/view?no=" + bno;
 	}
 </script>
 <style>
-	tr {
-		text-align: center;
-	}
+tr {
+	text-align: center;
+}
+
+#paging {
+	margin-bottom: 20px;
+}
 </style>
 </head>
 <body>
@@ -45,7 +59,7 @@
 					<tr onclick="viewBoard(${board.bno});">
 						<td>${board.bno }</td>
 						<td>${board.title }</td>
-						<td>${board.memberId }</td>
+						<td>${board.nickName }</td>
 						<td>${fn:substring(board.writtenDate,0,10) }</td>
 						<td>${board.readCount }</td>
 						<td>${board.likeCount }</td>
@@ -53,11 +67,53 @@
 				</c:forEach>
 			</table>
 		</div>
-		
+
 		<div id="boardBtn">
-			<button class="btn btn-success" onclick="location.href='/board/notice/writeBoard'">글 등록</button>
+			<button class="btn btn-success"
+				onclick="location.href='/board/notice/writeBoard'">글 등록</button>
 		</div>
-		
+
+	</div>
+
+
+	<div id="paging">
+		<ul class="pagination justify-content-center">
+			<c:if test="${pagingInfo.startNumOfCurPagingBlock != 1 }">
+				<li class="page-item"><a class="page-link"
+					href="/board/notice/list?pageNo=1"><<</a></li>
+				<li class="page-item"><a class="page-link"
+					href="/board/notice/list?pageNo=${pagingInfo.startNumOfCurPagingBlock -1 }">이전</a></li>
+			</c:if>
+
+			<c:choose>
+				<c:when
+					test="${pagingInfo.endNumOfCurPagingBlock > pagingInfo.totalPage }">
+					<c:forEach var="i" begin="${pagingInfo.startNumOfCurPagingBlock }"
+						end="${pagingInfo.totalPage }" step="1">
+						<li class="page-item"><a class="page-link"
+							href="/board/notice/list?pageNo=${i }">${i }</a></li>
+					</c:forEach>
+				</c:when>
+
+				<c:otherwise>
+					<c:forEach var="i" begin="${pagingInfo.startNumOfCurPagingBlock }"
+						end="${pagingInfo.endNumOfCurPagingBlock }" step="1">
+						<li class="page-item"><a class="page-link"
+							href="/board/notice/list?pageNo=${i }">${i }</a></li>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+			<!--  -->
+			<c:if
+				test="${pagingInfo.endNumOfCurPagingBlock < pagingInfo.totalPage }">
+				<li class="page-item"><a class="page-link"
+					href="/board/notice/list?pageNo=${pagingInfo.endNumOfCurPagingBlock +1 }">다음</a></li>
+
+				<li class="page-item"><a class="page-link"
+					href="/board/notice/list?pageNo=${pagingInfo.totalPage }">>></a></li>
+			</c:if>
+
+		</ul>
 	</div>
 
 

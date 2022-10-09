@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
+import com.boritgogae.board.notice.etc.PagingInfo;
 
 public interface NoticeDAO {
 	// 공지사항 전체 글 가져오는 메서드
-	public List<NoticeVo> getNoticeBoard() throws Exception;
+	public List<NoticeVo> getNoticeBoard(PagingInfo pi) throws Exception;
 	
 	// 공지사항 글 작성하는 메서드
 	public int registerBoard(NoticeVo board) throws Exception;
@@ -24,6 +25,9 @@ public interface NoticeDAO {
 	//작성자의 닉네임 가져오는 메서드
 	public String getNickName(String memberId) throws Exception;
 	
+	// 공지사항 전체 글 갯수 가져오기
+	public int getNoticeBoardCnt()throws Exception;
+	
 	// 댓글 등록 메서드
 	public int registerReply(NoticeReplyVo replyBoard) throws Exception;
 	
@@ -35,4 +39,8 @@ public interface NoticeDAO {
 	
 	// 댓글 수정하는 메서드
 	public int modifyReplyBoard(NoticeReplyVo board) throws Exception;
+	
+	// 조회된 글의 조회수 증가
+	public int updateReadCount(int bno) throws Exception;
+		
 }
