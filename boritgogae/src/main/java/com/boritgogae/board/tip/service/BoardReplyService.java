@@ -12,4 +12,6 @@ public interface BoardReplyService {
 
 	Boolean delReply(int rno) throws Exception;
 
+	Boolean updateReply(int rno, ReplyVo vo) throws Exception;
+
 }

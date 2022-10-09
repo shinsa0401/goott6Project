@@ -146,36 +146,41 @@ function calc(time) {
 	return new Date(time).toLocaleString();
 }
 
-// 댓글수정
+// 댓글 수정후 
+function sendModi(rno) {
+	let bno = ${board.bno};
+	let content = $("#modiContent").val();
+	let memberId = "${board.memberId}";// 로그인기능이 아직 구현되지않아 모든 댓글의 작성자를 글쓴이로 하였음 추후수정
+	let url = "/reply/"+bno+"/"+rno;
+	let sendData = JSON.stringify({bno : bno, content : content, memberId : memberId, rno : rno});
+	
+	$.ajax({
+		url : url,
+		data : sendData,
+		dataType : "text", 
+		type : "post",
+		headers : {// ajax post 방식은 dataType 이 json일떄 오류가 뜨네.. text로 바꾸고 headers로 명시
+			"content-type" : "application/json", // 송신데이터의 타입이 json임을 명시 이떄 문자열이 json으로
+			"X-HTTP-Method-Override" : "POST" // 구버전의 웹브라우저에서 (PUT/DELETE) 방식이 호환이 안되는 버전에서 호환되도록
+		},
+		success : function(data) {
+			viewAllReplies();
+		},
+		error : function(e) { 
+			console.log(e);
+		}
+	});
+}
+
+// 댓글수정입력모달
 function modiReply(rno,memberId){
-	//$("#modiModal").show();
-	//$("#modiMem").val($("#"+rno).val());
-	let output = "<div class='modal' id='modiModal'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><h4 class='modal-title' id='modiMem'>"+ memberId +"</h4><button type='button' class='btn-close' data-bs-dismiss='modal'></button></div>"
+	let output = "<div class='modal' id='modiModal'><div class='modal-dialog'><div class='modal-content'><div class='modal-header'><h4 class='modal-title' id='modiMem'>"+"</h4><button type='button' class='btn-close' data-bs-dismiss='modal'></button></div>"
 	output += "<div class='modal-body'><input type='text' id='modiContent'></div>";
 	output += "<div class='modal-footer'>";
-	output += "<button type='button' class='btn btn-danger' data-bs-dismiss='modal'>Close</button></div></div></div></div>";
+	output += "<button type='button' class='btn btn-danger' onclick='sendModi(rno);'>수정</button><button type='button' class='btn btn-danger' data-bs-dismiss='modal'>Close</button></div></div></div></div>";
 	
 	$("#modiDiv").html(output);
 	$("#modiModal").show();
-	/*
-	<!-- The Modal -->
-		
-		
-			
-
-				<!-- Modal Header -->
-				
-					
-					
-// 경로 el 				
-
-				<!-- Modal body -->
-				
-
-				<!-- Modal footer -->
-				
-					
-	*/
 }
 
 function delReply(rno){

@@ -45,4 +45,15 @@ public class BoardReplyServiceImpl implements BoardReplyService {
 		return result;
 	}
 
+	@Override
+	public Boolean updateReply(int rno, ReplyVo vo) throws Exception {
+		boolean result = false;
+		int row = dao.modiReply(rno,vo);
+		if(row == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
 }

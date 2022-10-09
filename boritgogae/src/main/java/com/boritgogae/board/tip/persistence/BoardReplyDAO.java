@@ -12,4 +12,6 @@ public interface BoardReplyDAO {
 
 	int deleteReply(int rno) throws Exception;
 
+	int modiReply(int rno, ReplyVo vo) throws Exception;
+
 }

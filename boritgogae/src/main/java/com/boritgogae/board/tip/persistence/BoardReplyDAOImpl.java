@@ -41,4 +41,14 @@ public class BoardReplyDAOImpl implements BoardReplyDAO {
 		return ses.delete(ns+".deleteReply", rno);
 	}
 
+	@Override
+	public int modiReply(int rno, ReplyVo vo) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("rno", rno);
+		map.put("vo", vo);
+		
+		
+		return ses.update(ns+".updateReply", map);
+	}
+
 }
