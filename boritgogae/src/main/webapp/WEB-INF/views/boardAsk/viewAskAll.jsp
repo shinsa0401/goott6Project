@@ -122,7 +122,7 @@
 			</table>
 		</div>
 		<div id="searchBar">
-			<form action="/board/ask" method="get">
+			<form action="/board/ask/list" method="get">
 				<select name="searchType" id="searchType">
 					<option value="">검색옵션</option>
 					<option value="writer">글쓴이</option>
@@ -137,16 +137,16 @@
 			<ul class="pagination justify-content-center">
 				<c:if test="${pagingInfo.startNumOfCurPagingBlock != 1 }">
 					<li class="page-item"><a class="page-link"
-						href="/board/ask?pageNo=1"><<</a></li>
+						href="/board/ask/list?pageNo=1"><<</a></li>
 					<c:choose>
 						<c:when
 							test="${param.searchType == '' and param.searchWord == '' }">
 							<li class="page-item"><a class="page-link"
-								href="/board/ask?pageNo=${pagingInfo.startNumOfCurPagingBlock -1 }">이전</a></li>
+								href="/board/ask/list?pageNo=${pagingInfo.startNumOfCurPagingBlock -1 }">이전</a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="page-item"><a class="page-link"
-								href="/board/ask?pageNo=${pagingInfo.startNumOfCurPagingBlock -1 }
+								href="/board/ask/list?pageNo=${pagingInfo.startNumOfCurPagingBlock -1 }
 							&searchType=${param.searchType}&searchWord=${param.searchWord}">이전</a></li>
 						</c:otherwise>
 					</c:choose>
@@ -163,7 +163,7 @@
 									begin="${pagingInfo.startNumOfCurPagingBlock }"
 									end="${pagingInfo.totalPage }" step="1">
 									<li class="page-item"><a class="page-link"
-										href="/board/ask?pageNo=${i }">${i }</a></li>
+										href="/board/ask/list?pageNo=${i }">${i }</a></li>
 								</c:forEach>
 							</c:when>
 							<c:otherwise>
@@ -171,7 +171,7 @@
 									begin="${pagingInfo.startNumOfCurPagingBlock }"
 									end="${pagingInfo.endNumOfCurPagingBlock }" step="1">
 									<li class="page-item"><a class="page-link"
-										href="/board/ask?pageNo=${i }">${i }</a></li>
+										href="/board/ask/list?pageNo=${i }">${i }</a></li>
 								</c:forEach>
 							</c:otherwise>
 						</c:choose>
@@ -185,7 +185,7 @@
 									begin="${pagingInfo.startNumOfCurPagingBlock }"
 									end="${pagingInfo.totalPage }" step="1">
 									<li class="page-item"><a class="page-link"
-										href="/board/ask?pageNo=${i }&searchType=${param.searchType}&searchWord=${param.searchWord}">${i }</a></li>
+										href="/board/ask/list?pageNo=${i }&searchType=${param.searchType}&searchWord=${param.searchWord}">${i }</a></li>
 								</c:forEach>
 							</c:when>
 							<c:otherwise>
@@ -193,7 +193,7 @@
 									begin="${pagingInfo.startNumOfCurPagingBlock }"
 									end="${pagingInfo.endNumOfCurPagingBlock }" step="1">
 									<li class="page-item"><a class="page-link"
-										href="/board/ask?pageNo=${i }&searchType=${param.searchType}&searchWord=${param.searchWord}">${i }</a></li>
+										href="/board/ask/list?pageNo=${i }&searchType=${param.searchType}&searchWord=${param.searchWord}">${i }</a></li>
 								</c:forEach>
 							</c:otherwise>
 
@@ -208,17 +208,17 @@
 						<c:when
 							test="${param.searchType == '' and param.searchWord == '' }">
 							<li class="page-item"><a class="page-link"
-								href="/board/ask?pageNo=${pagingInfo.endNumOfCurPagingBlock +1 }">다음</a></li>
+								href="/board/ask/list?pageNo=${pagingInfo.endNumOfCurPagingBlock +1 }">다음</a></li>
 						</c:when>
 						<c:otherwise>
 							<li class="page-item"><a class="page-link"
-								href="/board/ask?pageNo=${pagingInfo.endNumOfCurPagingBlock +1 }
+								href="/board/ask/list?pageNo=${pagingInfo.endNumOfCurPagingBlock +1 }
 							&searchType=${param.searchType}&searchWord=${param.searchWord}">다음</a></li>
 						</c:otherwise>
 					</c:choose>
 
 					<li class="page-item"><a class="page-link"
-						href="/board/ask?pageNo=${pagingInfo.totalPage }">>></a></li>
+						href="/board/ask/list?pageNo=${pagingInfo.totalPage }">>></a></li>
 				</c:if>
 
 			</ul>

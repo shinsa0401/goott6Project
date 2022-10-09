@@ -22,9 +22,13 @@ public interface AskBoardService {
 	public boolean create(AskBoardVo board, List<UploadFile> uploadFileLst) throws Exception;
 
 	// 게시판 조회
-	public Map<String, Object> viewBoard(int bno) throws Exception;
+	public Map<String, Object> viewBoard(int bno, String clientIp) throws Exception;
 
 	// 문의코드를 보내고 그에 맞는 문의옵션을 가져오는 메서드 
-	public String readAskOptionByAskCode(String askCode);
+	public String readAskOptionByAskCode(String askCode) throws Exception;
+
+	// 글번호에 따른 조회수를 가져오는 메서드
+	public int getReadCountByBno(int askBno) throws Exception;
+	
 	
 }

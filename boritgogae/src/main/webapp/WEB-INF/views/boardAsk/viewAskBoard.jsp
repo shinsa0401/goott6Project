@@ -13,6 +13,10 @@
 <script type="text/javascript"
 	src="../../../resources/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+
+	$(document).ready(function() {
+		// 일단 비워놓기
+	});
 	function addAskReply() {
 		let askBno = ${board.askBno}
 		let replyer = $("#replyer").val();
@@ -37,17 +41,17 @@
             success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
                console.log(data);
             	if(data == "success") {
-            		viewAllReplies();
+            		// 일단 보류 viewAllReplies();
             	} else if(data == "fail") {
             		alert("댓글 등록 실패");
             	}
             }, error : function(e) {
 				console.log(e);
 			}
-         });
-		
-		
+         });		
 	}
+	
+	// 현재 글의 모든 댓글을 얻어오는 메서드
 
 	
 </script>
@@ -62,7 +66,7 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 	<div class="container">
 		<div class="container p-5 my-5 bg-success text-white test2">
-			<a href="/board/ask"><h3>문의게시판</h3></a>
+			<a href="/board/ask/list"><h3>문의게시판</h3></a>
 		</div>
 		<div class="row">
 			<div class="col-sm-4 ">
@@ -72,7 +76,7 @@
 				<div style="margin: auto;">작성시간 : ${board.writtenDate }</div>
 			</div>
 			<div class="col-sm-4 ">
-				<div style="float: right;">조회수 : ${board.readCount }
+				<div style="float: right;">조회수 : ${readCount }
 					&nbsp|&nbsp 추천수 : ${board.likeCount }</div>
 			</div>
 		</div>
@@ -134,7 +138,7 @@
 						onclick="location.href='/board/ask/remove?no=${board.askBno}';">글
 						삭제</button>
 					<button type="button" class="btn btn-info"
-						onclick="location.href='/board/ask';">목록으로</button>
+						onclick="location.href='/board/ask/list';">목록으로</button>
 				</div>
 			</div>
 		</div>

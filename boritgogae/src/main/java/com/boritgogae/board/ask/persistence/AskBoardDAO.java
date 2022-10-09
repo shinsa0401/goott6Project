@@ -1,5 +1,6 @@
 package com.boritgogae.board.ask.persistence;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -43,16 +44,20 @@ public interface AskBoardDAO {
 	public void fileInsert(int lastNo, String savedOriginImageFileName) throws Exception;
 
 	// 게시글 조회하기
-	public AskBoardVo getBoard(int bno);
+	public AskBoardVo getBoard(int bno)throws Exception;
 
 	// 게시글 번호에 맞는 첨부파일 조회하기
-	public List<UploadFileVo> getAttachFile(int bno);
-
-	// 조회된 글의 조회수 증가
-	public int updateReadCount(int bno) throws Exception;
-
+	public List<UploadFileVo> getAttachFile(int bno)throws Exception;
 
 	// 문의코드를 보내고 그에 맞는 문의옵션을 가져오는 메서드 
-	public String readAskOptionByAskCode(String askCode);
-	
+	public String readAskOptionByAskCode(String askCode)throws Exception;
+
+	// 조회된 글의 조회수 증가 (컬럼 만들기)
+	public int createReadCount(int bno, String clientIp) throws Exception;
+
+	// 특정 IP와 글번호에 대해 가장 최근 읽은 시간을 불러오는 메서드
+	public String checkRecentlyRead(int bno, String clientIp)throws Exception;
+
+	// 글번호에 따른 조회수를 가져오는 메서드
+	public int getReadCountByBno(int askBno) throws Exception;
 }

@@ -31,7 +31,7 @@ import com.boritgogae.board.ask.etc.UploadFileProcess;
 import com.boritgogae.board.ask.service.AskBoardService;
 
 @Controller // 컨트롤러단
-@RequestMapping("/board/*") // board/ 인 요청들 매핑
+@RequestMapping("/board/ask/") // board/ 인 요청들 매핑
 public class AskBoardController {
 	
 	@Inject
@@ -39,7 +39,7 @@ public class AskBoardController {
 	
 	private List<UploadFile> UploadFileLst = new ArrayList();
 	
-	@RequestMapping(value = "/ask")
+	@RequestMapping(value = "/list")
 	public String listAll(Model model, @RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo,
 			RedirectAttributes rttr, SearchCriteria sc, HttpServletRequest request) throws Exception {
 		System.out.println("컨트롤러 : 게시판 전체 목록 요청 페이지 번호 : " + pageNo);
@@ -51,6 +51,16 @@ public class AskBoardController {
 		PagingInfo pi = (PagingInfo)map.get("pagingInfo");
 		List<AskCodeVo> askCodeList = service.loadAskCode();
 		
+		// 화면에 보여줄 글번호들을 리스트에 넣어줌.
+		// 미구현 상태
+		List<String> askBnoList = new ArrayList<String>();
+		for (AskBoardVo askBoard : lst) {
+			System.out.println();
+			askBnoList.add(askBoard.getAskBno()+"");
+		}
+		System.out.println(askBnoList);
+		
+		
 		String test = getClientIP(request);
 		model.addAttribute("askBoardList", lst); // 바인딩
 		model.addAttribute("pagingInfo", pi); // 바인딩
@@ -61,7 +71,7 @@ public class AskBoardController {
 		return "boardAsk/viewAskAll";
 	}
 	
-	@RequestMapping(value = "/ask/register")
+	@RequestMapping(value = "/register")
 	public String registerBoard(Model model) throws Exception {
 		System.out.println("컨트롤러 : 게시판 글쓰기 요청");
 		System.out.println("컨트롤러 : 문의코드 가져오기");
@@ -74,7 +84,7 @@ public class AskBoardController {
 
 	
 	
-	@RequestMapping(value = "/ask/uploadFile", method = RequestMethod.POST)
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	public ResponseEntity<UploadFile> uploadFile(MultipartFile upfile, HttpServletRequest request) {
 		System.out.println("컨트롤러 : 파일 업로드요청");
 		System.out.println("업로드된 파일 이름 : " + upfile.getOriginalFilename());
@@ -107,7 +117,7 @@ public class AskBoardController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/ask/delFile", method = RequestMethod.POST)
+	@RequestMapping(value = "/delFile", method = RequestMethod.POST)
 	public @ResponseBody String delFile(@RequestParam("deleteFileName") String deleteFileName,
 			HttpServletRequest request) {
 		System.out.println(deleteFileName + "지우기");
@@ -146,7 +156,7 @@ public class AskBoardController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/ask/writeCancel", method = RequestMethod.POST)
+	@RequestMapping(value = "/writeCancel", method = RequestMethod.POST)
 	public @ResponseBody String writeCancel(HttpServletRequest request) {
 		// 파일이 실제 저장될 경로
 		String upPath = request.getSession().getServletContext().getRealPath("resources/askBoard/uploads");
@@ -165,7 +175,7 @@ public class AskBoardController {
 	}
 	
 	
-	@RequestMapping(value = "/ask/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String createBoard(AskBoardVo board, RedirectAttributes rttr) throws Exception {
 		System.out.println(board.toString());
 		
@@ -181,8 +191,8 @@ public class AskBoardController {
 	}
 	
 	
-	@RequestMapping(value="/ask/view")
-	public String viewAskBoard(@RequestParam("no") String no, Model model) {
+	@RequestMapping(value="/view")
+	public String viewAskBoard(@RequestParam("no") String no, Model model, HttpServletRequest request) {
 		int bno = Integer.parseInt(no);
 		System.out.println(no + "번 글 조회하기");
 		
@@ -190,12 +200,17 @@ public class AskBoardController {
 		AskBoardVo board = null;
 		List<UploadFileVo> fileList = null;
 		String askOption = "";
-		
+		String clientIp = getClientIP(request);
+		int readCount = 0;
 		try {
-			map = service.viewBoard(bno);
+			map = service.viewBoard(bno, clientIp);
 			board = (AskBoardVo)map.get("board");
 			fileList = (List<UploadFileVo>)map.get("fileList");
+			// ask코드를 통해 옵션 알아오기
 			askOption = service.readAskOptionByAskCode(board.getAskCode());
+			// 글번호에 따른 조회수 가져오기
+			readCount = service.getReadCountByBno(board.getAskBno());
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -203,10 +218,13 @@ public class AskBoardController {
 		model.addAttribute("board", board);
 		model.addAttribute("fileList", fileList);
 		model.addAttribute("askOption", askOption);
+		model.addAttribute("readCount", readCount);
 		
+				
 		System.out.println(board);
 		System.out.println(fileList);
 		System.out.println(askOption);
+		System.out.println("조회수 : " + readCount);
 		
 		return "boardAsk/viewAskBoard";
 	}
@@ -230,9 +248,6 @@ public class AskBoardController {
 	        ip = request.getRemoteAddr();
 	    }
 	    
-	    if("0:0:0:0:0:0:0:1".equals(ip)) {
-	    	ip = "127.0.0.1";
-	    }
 	    return ip;
 	}
 	

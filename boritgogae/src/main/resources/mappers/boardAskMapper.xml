@@ -90,14 +90,21 @@
 		where askBno = #{bno}
 	</select>
 
-	<update id="updateReadCount">
-		update board set readcount = readcount + 1 where no =
-		#{bno}
-	</update>
-
 	<select id="readAskOptionByAskCode" resultType="String">
-		select askOption from askClass where askCode = #{askCode}
+		select askOption
+		from askClass where askCode = #{askCode}
 	</select>
+	
+	<insert id="createReadCount">
+		insert into askRead(askBno, readIp) values (#{bno}, #{clientIp});
+	</insert>
 
 
+	<select id="checkRecentlyRead" resultType="String">		
+		select readTime from askRead where askBno=#{bno} and readIp=#{clientIp} order by readTime desc limit 1;
+	</select>
+	
+	<select id="getReadCountByBno" resultType="int">		
+		select count(*) cnt from askRead where askBno = #{askBno};
+	</select>
 </mapper>

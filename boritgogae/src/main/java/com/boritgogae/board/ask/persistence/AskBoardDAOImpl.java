@@ -1,5 +1,6 @@
 package com.boritgogae.board.ask.persistence;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,26 +99,43 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 	}
 
 	@Override
-	public AskBoardVo getBoard(int bno) {
+	public AskBoardVo getBoard(int bno)  throws Exception{
 		return ses.selectOne(ns + ".getAskBoardByNo", bno);
 	}
 
 	@Override
-	public List<UploadFileVo> getAttachFile(int bno) {
+	public List<UploadFileVo> getAttachFile(int bno)  throws Exception{
 		return ses.selectList(ns + ".getAttrachFiles", bno);
 	}
-
-	
-	// 일단 보류
-	@Override
-	public int updateReadCount(int bno) throws Exception {
-		return ses.update(ns + ".updateReadCount", bno);
-	}
-
 	// 문의코드에 맞는 문의카테고리(한글) 가져오기
 	@Override
 	public String readAskOptionByAskCode(String askCode) {
 		return ses.selectOne(ns + ".readAskOptionByAskCode",askCode);
 	}
+	
+	// 읽은시간 업데이트
+	@Override
+	public int createReadCount(int bno, String clientIp) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("bno", bno + "");
+		map.put("clientIp", clientIp + "");
+		return ses.insert(ns + ".createReadCount", map);
+	}	
+
+	// 글조회 가장 최근 읽은 시간값을 불러옴
+	@Override
+	public String checkRecentlyRead(int bno, String clientIp) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("bno", bno + "");
+		map.put("clientIp", clientIp + "");
+		return ses.selectOne(ns + ".checkRecentlyRead", map);
+	}
+
+	// 글번호에 맞는 조회수 가져옴
+	@Override
+	public int getReadCountByBno(int askBno) throws Exception {
+		return ses.selectOne(ns + ".getReadCountByBno",askBno);
+	}
+
 	
 }

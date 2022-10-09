@@ -1,5 +1,7 @@
 package com.boritgogae.board.ask.service;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,33 +114,66 @@ public class AskBoardServiceImpl implements AskBoardService {
 
 		}
 
-		if(row == 1 && row2 == 1) {
+		if (row == 1 && row2 == 1) {
 			result = true;
 		}
-		
+
 		return result;
 	}
 
 	@Override
-	public Map<String, Object> viewBoard(int bno) throws Exception {
+	public Map<String, Object> viewBoard(int bno, String clientIp) throws Exception {
 		// no번 글을 DB에서 셀렉트함
 		AskBoardVo board = dao.getBoard(bno);
 		// no번 글에 첨부되어 있는 파일 DB에서 select
 		List<UploadFileVo> fileList = dao.getAttachFile(bno);
 		// bno번 글 조회수 증가시키는 메서드
-		// 일단 보류한다
-		// dao.updateReadCount(bno);
-		
+
+		// 동일 아이피와 글번호를 가진 컬럼이 있는지 확인하기
+		String recentlyRead = dao.checkRecentlyRead(bno, clientIp);
+		// 읽은 시간이 없다면?
+		if (recentlyRead == null) {
+			// 컬럼에 새로 데이터를 만들어준다.
+			dao.createReadCount(bno, clientIp);
+		} else { // 읽은 시간이 있다면 가장 최근의 읽은시간을 가져온다.
+			Timestamp recentlyReadTs = Timestamp.valueOf(recentlyRead);
+			Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+			System.out.println("읽은시간 : " + recentlyReadTs);
+			System.out.println("현재시간 : " + currentTime);
+
+			// 읽었던 시간에 +1일 해준 후 현재시간과 비교함.
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(recentlyReadTs);
+			cal.add(Calendar.DATE, +1);
+			recentlyReadTs.setTime(cal.getTime().getTime());
+			System.out.println("읽었던시간 + 1일 : " + recentlyReadTs);
+
+			// 비교함. true일 때만 업데이트 해줌.
+			System.out.println("1일이 지났나? : " + currentTime.after(recentlyReadTs));
+			// 지났다면
+			if (currentTime.after(recentlyReadTs)) {
+				// 컬럼에 새로 데이터를 만들어준다.
+				dao.createReadCount(bno, clientIp);
+			}
+			// 지나지 않았다면 아무것도 하지 않는다.
+			// 1일이 지나거나 처음일때만 컬럼을 생성한다.
+		}
+
 		// Map을 통해 묶어서 반환해준다.
 		Map<String, Object> returnMap = new HashMap<>();
 		returnMap.put("board", board);
 		returnMap.put("fileList", fileList);
-				
+
 		return returnMap;
 	}
 
 	@Override
-	public String readAskOptionByAskCode(String askCode) {
+	public String readAskOptionByAskCode(String askCode) throws Exception {
 		return dao.readAskOptionByAskCode(askCode);
+	}
+
+	@Override
+	public int getReadCountByBno(int askBno) throws Exception {
+		return dao.getReadCountByBno(askBno);
 	}
 }
