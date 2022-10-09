@@ -104,7 +104,7 @@
 				console.log(data);
 
 				if (data == "success") {
-					location.href = "/board/ask"; // 게시판 전체 목록 페이지로 이동
+					location.href = "/board/ask/list"; // 게시판 전체 목록 페이지로 이동
 				}
 
 			}

@@ -98,6 +98,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 			int lastNo = dao.getLastNo();
 			// 2-2) ref update
 			row2 = dao.updateRef(lastNo);
+			
 			if (row2 == 1) {
 				// 3) 업로드된 파일이 있다면 업로드된 파일의 갯수만큼 반복하여 uploadfile 테이블에 insert
 				if (uploadFileLst.size() > 0) {

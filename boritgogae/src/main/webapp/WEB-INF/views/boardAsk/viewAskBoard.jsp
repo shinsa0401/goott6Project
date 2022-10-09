@@ -15,15 +15,15 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		// 일단 비워놓기
+		viewAskReply();
 	});
 	function addAskReply() {
 		let askBno = ${board.askBno}
-		let replyer = $("#replyer").val();
+		let memberId = $("#memberId").val();
 		let contents = $("#replyContent").val();
 		let url = "/reply/ask"
 		let sendData = JSON.stringify({
-			askBno : askBno, replyer : replyer, contents : contents
+			askBno : askBno, memberId : memberId, contents : contents
 		}); // json 문자 형식(json 문자열)으로 바꿔줌
 		
 		console.log(sendData);
@@ -41,7 +41,7 @@
             success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
                console.log(data);
             	if(data == "success") {
-            		// 일단 보류 viewAllReplies();
+            		viewAskReply();
             	} else if(data == "fail") {
             		alert("댓글 등록 실패");
             	}
@@ -52,7 +52,116 @@
 	}
 	
 	// 현재 글의 모든 댓글을 얻어오는 메서드
-
+	function viewAskReply(){
+		let bno = ${board.askBno };
+		let url = "/reply/ask/" + bno;
+		
+		$.ajax({
+            url : url, // 데이터 송수신될 주소 
+			type : "get", // 전송 방식
+			dataType : "json", // 수신할 데이터
+            success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+            	console.log(data);
+				outputReplies(data);
+            }, error : function(e) {
+				console.log(e);
+			}
+         });
+	}
+	
+	function outputReplies(data) {
+		let output = "<ul class='list-group list-group-flush'>";
+		$.each(data, function(i, item) {
+			output += "<li class='list-group-item'>";
+			output += "<div>";
+			
+			output += "<div class='row'>"; // 1
+			output += "<div class='col'>"; // 3
+			output += "<div class='replyer'>" + item.memberId + "</div>";			
+			output += "</div>"; // 3
+			output += "<div class='col'></div>";
+			output += "<div class='col'></div>";
+			output += "<div class='col'>"; // 2
+			output += "<div class='writtenDate'>" + calcDate(item.writtenTime) + "</div>";
+			output += "</div>"; // 2
+			output += "</div>"; // 1
+			
+			output += "<div class='row'>"; // 1
+			output += "<div class='col'>"; // 3
+			output += "<div class='replyContents'>" + item.contents + "</div>";		
+			output += "</div>"; // 3
+			output += "<div class='col'></div>";
+			output += "<div class='col'></div>";
+			output += "<div class='col'>"; // 2
+			output += "<span onclick='modifyReplyModalOpen("+ item.askRno +")'>수정&nbsp&nbsp</span>";
+			output += "<span>삭제&nbsp&nbsp</span>";
+			output += "<span>답글&nbsp&nbsp</span>";
+			output += "</div>"; // 2
+			output += "</div>"; // 1
+			
+			output += "</div></li>";
+		});
+		
+		output += "</ul>";
+		
+		$("#replies").html(output);
+	}	
+	
+	// 댓글을 작성한 날짜를 문자열로 반환
+	function calcDate(wd) {
+		// 방금전, ㅇㅇ분전, 날짜시간
+		let diff = new Date() - wd;
+		let diffSecond = diff / 1000; // 초단위 시간차
+		if(diffSecond <  60 * 5) return "5분 이내";
+		let diffMinutes = diffSecond / 60; // 분단위 시간차
+		if(diffMinutes < 60) return Math.floor(diffMinutes) + "분 전";
+		return new Date(wd).toLocaleString();
+	}
+	
+	function modifyReplyModalOpen(rno) {
+		$("#modifyRno").val(rno);
+		$("#modifyReplyModal").show();
+	}
+	
+	function modifyReplyModalClose(rno) {
+		$("#modifyReplyModal").hide();
+		$("#modifyReply").val("");
+	}
+	
+	function modifyReply() {
+		let rno = $("#modifyRno").val();
+		let contents = $("#modifyReply").val();
+		$("#modifyReplyModal").hide();
+		let url = "/reply/ask/modify"
+		let sendData = JSON.stringify({
+			askRno : rno, contents : contents
+		}); // json 문자 형식(json 문자열)으로 바꿔줌
+		
+		console.log(sendData);
+		$("#modifyReply").val("");
+		
+		$.ajax({
+            url : url, // 데이터 송수신될 주소 
+			data : sendData, // 송신할 데이터
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			headers : {
+				"content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+				"X-HTTP-Method-Override" : "POST" // 구 버전의 웹 브라우저에서 (PUT / DELETE) 방식이 호환이 안되는 버전에서 호환 되도록
+			},
+            success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+               console.log(data);
+            	if(data == "success") {
+            		viewAskReply();
+            	} else if(data == "fail") {
+            		alert("댓글 수정 실패");
+            	}
+            }, error : function(e) {
+				console.log(e);
+			}
+         });		
+		
+	}
 	
 </script>
 <style type="text/css">
@@ -76,8 +185,8 @@
 				<div style="margin: auto;">작성시간 : ${board.writtenDate }</div>
 			</div>
 			<div class="col-sm-4 ">
-				<div style="float: right;">조회수 : ${readCount }
-					&nbsp|&nbsp 추천수 : ${board.likeCount }</div>
+				<div style="float: right;">조회수 : ${readCount } &nbsp|&nbsp 추천수
+					: ${board.likeCount }</div>
 			</div>
 		</div>
 		<div class="row">
@@ -148,7 +257,10 @@
 
 	<!-- 여기서부터 리플관련 -->
 	<div class="container">
-		<label for="comment">Reply </label>
+		<div style="height: 100px"></div>
+		<label for="comment" style="font-size: 20pt;">Reply </label>
+
+		<div id="replies"></div>
 
 
 		<div>
@@ -163,15 +275,38 @@
 		<div style="font-size: 0;">
 			<!--  -->
 			<button type="button" class="btn"
-				style="vertical-align: top; height: 100px" id="replyer" value="test"
-				disabled>작성자명</button>
+				style="vertical-align: top; height: 100px" id="memberId"
+				value="test" disabled>작성자명</button>
 			<textarea class="form-control" rows="3" id="replyContent" name="text"
 				style="max-width: 800px; display: inline-block; vertical-align: top; height: 100px"></textarea>
-			<button type="button" class="btn btn-info" id="addAskReplyBtn" onclick="addAskReply();"
-				style="vertical-align: top; height: 100px">댓글등록</button>
+			<button type="button" class="btn btn-info" id="addAskReplyBtn"
+				onclick="addAskReply();" style="vertical-align: top; height: 100px">댓글등록</button>
 		</div>
 	</div>
-	<
+	<!-- The Modal -->
+	<div class="modal" id="modifyReplyModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">댓글 수정</h4>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<textarea rows="5" class="form-control" id="modifyReply"></textarea>
+					<input type="hidden" id="modifyRno">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning"
+						onclick="modifyReply();">수정하기</button>
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal" onclick="modifyReplyModalClose();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>

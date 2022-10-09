@@ -4,6 +4,28 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.boritgogae.boardAskMapper">
+
+	<!-- 여기서부터 리플 매퍼임 -->
+	<insert id="addAskReply">
+		insert into askReplyBoard(askBno, contents, memberId, ref)
+		values(#{askBno}, #{contents}, #{memberId}, #{ref})
+	</insert>
+
+	<select id="getLastReplyRef" resultType="String">
+		select max(ref) as
+		lastRef from askReplyBoard where askBno = #{askBno}
+	</select>
+
+	<select id="selectAllRepliesByBno" resultType="AskReplyVo">
+		select * from askReplyBoard where askBno = #{bno} order by askRno desc
+	</select>
+	
+	<update id="modifyReply">
+		update askReplyBoard set contents = #{contents} where askRno = #{askRno}
+	</update>
+
+	<!-- 여기서부터 보드 매퍼임 -->
+
 	<select id="listAll" resultType="AskBoardVo">
 		select * from askBoard where
 		isDelete = 'N' order by ref
@@ -94,17 +116,22 @@
 		select askOption
 		from askClass where askCode = #{askCode}
 	</select>
-	
+
 	<insert id="createReadCount">
-		insert into askRead(askBno, readIp) values (#{bno}, #{clientIp});
+		insert into askRead(askBno, readIp) values (#{bno},
+		#{clientIp});
 	</insert>
 
 
-	<select id="checkRecentlyRead" resultType="String">		
-		select readTime from askRead where askBno=#{bno} and readIp=#{clientIp} order by readTime desc limit 1;
+	<select id="checkRecentlyRead" resultType="String">
+		select readTime from
+		askRead where askBno=#{bno} and readIp=#{clientIp}
+		order by readTime
+		desc limit 1;
 	</select>
-	
-	<select id="getReadCountByBno" resultType="int">		
-		select count(*) cnt from askRead where askBno = #{askBno};
+
+	<select id="getReadCountByBno" resultType="int">
+		select count(*) cnt
+		from askRead where askBno = #{askBno};
 	</select>
 </mapper>

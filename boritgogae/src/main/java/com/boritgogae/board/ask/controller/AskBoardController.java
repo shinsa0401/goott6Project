@@ -186,8 +186,9 @@ public class AskBoardController {
 		}
 		
 		this.UploadFileLst.clear(); // 리스트의 모든 아이템 삭제 -> 이전 글 등록시 첨부했던 파일을 지우기 위해
-		
-		return "redirect:/board/ask"; // /board/ask 로 Redirect
+
+		System.out.println("테스트중");
+		return "redirect:/board/ask/list"; // /board/ask 로 Redirect
 	}
 	
 	
