@@ -11,7 +11,8 @@
    
 <title>Insert title here</title>
 </head>
- <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script> 
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 	
 	let bno =7;
@@ -43,13 +44,11 @@
 			
 			$.ajax({
                 type:'POST',       // 요청 메서드
-                url: '/reply/writer?bno='+bno,  // 요청 URI
+                url: '/reply/writerreply?bno'+bno,  // 요청 URI
                 headers : { "content-type": "application/json"}, // 요청 헤더
-               
                 data : JSON.stringify({bno:bno,replyContent:replyContent} ),  // 서버로 전송할 데이터. stringify()로 직렬화 필요.
                 success : function(result){
-                   
-                    alert(result);       // result는 서버가 전송한 데이터
+                  
                     showList(bno);
                 },
                 error   : function(){ alert("error") } // 에러가 발생했을 때, 호출될 함수
@@ -58,26 +57,31 @@
 			
 		});
 		
-		$("#replyList").on("click",".delBtn",function () {
-			
-			let rno = $(this).parent().attr("data-rno");
-			let bno = $(this).parent().attr("data-bno");
-			
-			  $.ajax({
-	              type:'DELET',       // 요청 메서드
-	              url: '/reply/remove/'+rno+'?bno='+bno,  // 요청 URI
-	           
-	              success : function(result){
-	            	  showList(bno);
-	                 
-	                 
-	              },
-	              error   : function(){ alert("error") } // 에러가 발생했을 때, 호출될 함수
-	          }); 
-			
-			
-		});
 		
+		
+		
+		
+		
+	$("#replyList").on("click",".delBtn",function () {
+				
+				let rno = $(this).parent().attr("data-rno");
+				let bno = $(this).parent().attr("data-bno");
+				
+				  $.ajax({
+		              type:'get',       // 요청 메서드
+		              url: '/reply/remove/'+rno+'?bno='+bno,  // 요청 URI
+		           
+		              success : function(result){
+		            	  $("#replyList").html(toHtml(result)); 
+		                 
+		                 
+		              },
+		              error   : function(){ alert("error") } // 에러가 발생했을 때, 호출될 함수
+		          }); 
+				
+				
+			});
+			
 	})
 	
 	
@@ -92,7 +96,7 @@
 			tmp += 'replyContent=<span class="replyContent">' +replyContent.replyer+'</span>'
 			tmp += 'replyContent=<span class="replyContent">'+ replyContent.replyContent+'</span>'
 			tmp += 'replyWittenDate='+replyContent.replyWittenDate
-			tmp += '<button class="delBtn">삭제</button>'
+			tmp += '<button class="delBtn" type="button">삭제</button>'
 			tmp += '</li>'
 		});
 		
@@ -134,12 +138,11 @@
 	</div>
 
 
-	comment:<input type="text" name="comment"><br/>
+	
 
 	
 
-<button id="sendBtn" type="button">send</button>
-<div id="replyList"></div>
+
 
 
 

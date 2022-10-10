@@ -31,6 +31,8 @@ public class BoardController {
 	
 	@Inject
 	private BoardService service;
+	
+	
 	// 실행할 메서드
 	
 	// /boardFree/list

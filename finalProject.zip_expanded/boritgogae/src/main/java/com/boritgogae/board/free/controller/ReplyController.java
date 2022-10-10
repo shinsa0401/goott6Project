@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +29,13 @@ public class ReplyController {
 	@Inject
 	ReplyService service;
 	
+	@RequestMapping(value = "/comment")
+	public String test ()throws Exception{
+		
+		
+		return"boardFree/comment";
+	}
+	
 	// 댓글 리스트 가져오기
 	@RequestMapping(value = "/list" )
 	@ResponseBody
@@ -40,7 +47,7 @@ public class ReplyController {
 	
 	//지정된 댓글 삭제
     
-	@DeleteMapping(value = "/remove/{rno}")
+	@RequestMapping(value = "/remove/{rno}")
 	public ResponseEntity<String> remove(@PathVariable Integer rno, int bno, String replyer) throws Exception{
 		
 		String replyers = "samsung";
@@ -57,19 +64,24 @@ public class ReplyController {
 		
 	}
 	
-	@RequestMapping(value = "/writer" ,method = RequestMethod.POST)
-	public ResponseEntity<String> writer(@RequestBody ReplyVo rv,int bno, String replyer) throws Exception{
+	@RequestMapping(value = "/writerreply",method = RequestMethod.POST )
+	public void writer(@RequestBody ReplyVo rv,Integer bno, String replyer,HttpSession session) throws Exception{
 		
 		String commenter ="samsung";
 		rv.setReplyer(commenter);
-		rv.setBno(bno);
-		service.write(rv);
+//		rv.setBno(bno);
+//		service.write(rv);
+		System.out.println("rv"+rv);
+//		
+//		
+//		  if(service.write(rv)!=1)
+//              throw new Exception("Write failed.");
+//
+//          return new ResponseEntity<>("WRT_OK", HttpStatus.OK);
 		
-		
-		  if(service.write(rv)!=1)
-              throw new Exception("Write failed.");
-
-          return new ResponseEntity<>("WRT_OK", HttpStatus.OK);
+		 service.write(rv);
+          
+          
 	
 		
 	}
