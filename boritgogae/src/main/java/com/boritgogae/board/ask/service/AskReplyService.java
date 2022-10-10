@@ -17,4 +17,10 @@ public interface AskReplyService {
 	// 댓글 수정하는 메서드
 	public boolean modifyReply(AskReplyVo reply) throws Exception;
 	
+	// 대댓글 메서드
+	public boolean nestedReply(AskReplyVo reply) throws Exception;
+
+	// 댓글 삭제 메서드
+	public boolean deleteReply(AskReplyVo reply) throws Exception;
+	
 }

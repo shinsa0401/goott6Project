@@ -74,10 +74,12 @@
 		$.each(data, function(i, item) {
 			output += "<li class='list-group-item'>";
 			output += "<div>";
-			
 			output += "<div class='row'>"; // 1
 			output += "<div class='col'>"; // 3
-			output += "<div class='replyer'>" + item.memberId + "</div>";			
+			output += "<div class='replyer'>"
+
+			output += item.memberId;
+			output +=  "</div>";			
 			output += "</div>"; // 3
 			output += "<div class='col'></div>";
 			output += "<div class='col'></div>";
@@ -88,14 +90,19 @@
 			
 			output += "<div class='row'>"; // 1
 			output += "<div class='col'>"; // 3
-			output += "<div class='replyContents'>" + item.contents + "</div>";		
+			output += "<div class='replyContents'>";
+			for(i=0; i<item.step; i++){
+				output += "<img src='../../../resources/img/ask_reply.png' style = 'max-width : 24px';/>";
+			}
+			output += item.contents;	
+			output += "</div>";		
 			output += "</div>"; // 3
 			output += "<div class='col'></div>";
 			output += "<div class='col'></div>";
 			output += "<div class='col'>"; // 2
-			output += "<span onclick='modifyReplyModalOpen("+ item.askRno +")'>수정&nbsp&nbsp</span>";
-			output += "<span>삭제&nbsp&nbsp</span>";
-			output += "<span>답글&nbsp&nbsp</span>";
+			output += "<span onclick='modifyReplyModalOpen("+ item.askRno +");'>수정&nbsp&nbsp</span>";
+			output += "<span onclick='deleteReplyModalOpen("+ item.askRno +");'>삭제&nbsp&nbsp</span>";
+			output += "<span onclick='nestedReplyModalOpen(" +item.ref  +","+item.refOrder  +","+item.step  +","+item.contents+");'>답글&nbsp&nbsp</span>";
 			output += "</div>"; // 2
 			output += "</div>"; // 1
 			
@@ -123,11 +130,32 @@
 		$("#modifyReplyModal").show();
 	}
 	
-	function modifyReplyModalClose(rno) {
+	function modifyReplyModalClose() {
 		$("#modifyReplyModal").hide();
 		$("#modifyReply").val("");
 	}
+	function nestedReplyModalOpen(ref, refOrder, step ,targetReply) {
+		$("#targetRef").val(ref);
+		$("#targetRefOrder").val(refOrder);
+		$("#targetStep").val(step);
+		$("#targetReply").val(targetReply);
+		$("#nestedReplyModal").show();
+	}
 	
+	function nestedReplyModalClose() {
+		$("#nestedReplyModal").hide();
+		$("#nestedReply").val("");
+	}
+
+	function deleteReplyModalOpen(rno) {
+		$("#deleteRno").val(rno);
+		$("#deleteReplyModal").show();
+	}
+	
+	function deleteReplyModalClose() {
+		$("#deleteReplyModal").hide();
+	}
+	// 댓글 수정
 	function modifyReply() {
 		let rno = $("#modifyRno").val();
 		let contents = $("#modifyReply").val();
@@ -139,7 +167,6 @@
 		
 		console.log(sendData);
 		$("#modifyReply").val("");
-		
 		$.ajax({
             url : url, // 데이터 송수신될 주소 
 			data : sendData, // 송신할 데이터
@@ -159,10 +186,85 @@
             }, error : function(e) {
 				console.log(e);
 			}
-         });		
-		
+         });	
 	}
 	
+	// 대댓글 기능
+	function nestedReply() {
+		let askBno = ${board.askBno}
+		let memberId = "admin";
+		let contents = $("#nestedReply").val();
+		let ref = $("#targetRef").val();
+		let refOrder = $("#targetRefOrder").val();
+		let step = $("#targetStep").val();
+
+		$("#nestedReplyModal").hide();
+		
+		
+		let url = "/reply/ask/nested"
+		let sendData = JSON.stringify({
+			askBno : askBno, memberId : memberId, contents : contents,
+			ref : ref, refOrder : refOrder, step : step
+		}); // json 문자 형식(json 문자열)으로 바꿔줌
+		
+		console.log(sendData);
+		
+		$.ajax({
+            url : url, // 데이터 송수신될 주소 
+			data : sendData, // 송신할 데이터
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			headers : {
+				"content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+				"X-HTTP-Method-Override" : "POST" // 구 버전의 웹 브라우저에서 (PUT / DELETE) 방식이 호환이 안되는 버전에서 호환 되도록
+			},
+            success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+               console.log(data);
+            	if(data == "success") {
+            		viewAskReply();
+            		$("#nestedReply").val("");
+            	} else if(data == "fail") {
+            		alert("답글 등록 실패");
+            	}
+            }, error : function(e) {
+				console.log(e);
+			}
+         });		
+	}
+	
+
+	// 댓글 삭제 기능
+	function deleteReply() {
+		let askRno = $("#deleteRno").val();
+		$("#deleteReplyModal").hide();
+		let url = "/reply/ask/delete"
+		let sendData = JSON.stringify({
+			askRno : askRno
+		}); // json 문자 형식(json 문자열)으로 바꿔줌
+		
+		console.log(sendData);
+		
+		$.ajax({
+            url : url, // 데이터 송수신될 주소 
+			data : sendData, // 송신할 데이터
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			headers : {
+				"content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+				"X-HTTP-Method-Override" : "POST" // 구 버전의 웹 브라우저에서 (PUT / DELETE) 방식이 호환이 안되는 버전에서 호환 되도록
+			},
+            success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+               console.log(data);
+            	if(data == "success") {
+            		viewAskReply();
+            	} else if(data == "fail") {
+            		alert("답글 삭제 실패");
+            	}
+            }, error : function(e) {
+				console.log(e);
+			}
+         });		
+	}
 </script>
 <style type="text/css">
 .inline {
@@ -237,15 +339,17 @@
 		<div class="row">
 			<div class="col"></div>
 			<div class="col"></div>
-			<div class="col"></div>
 			<div class="col">
 				<div class="btns">
 					<button type="button" class="btn btn-primary"
 						onclick="location.href='/board/ask/modify?no=${board.askBno}';">글
 						수정</button>
 					<button type="button" class="btn btn-warning"
-						onclick="location.href='/board/ask/remove?no=${board.askBno}';">글
-						삭제</button>
+						onclick="location.href='/board/ask/remove?no=${board.askBno}';">
+						글삭제</button>
+					<button type="button" class="btn btn-warning"
+						onclick="location.href='/board/ask/answer?no=${board.askBno}';">
+						답글달기</button>
 					<button type="button" class="btn btn-info"
 						onclick="location.href='/board/ask/list';">목록으로</button>
 				</div>
@@ -283,7 +387,7 @@
 				onclick="addAskReply();" style="vertical-align: top; height: 100px">댓글등록</button>
 		</div>
 	</div>
-	<!-- The Modal -->
+	<!-- 수정 모달 -->
 	<div class="modal" id="modifyReplyModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -303,6 +407,58 @@
 						onclick="modifyReply();">수정하기</button>
 					<button type="button" class="btn btn-danger"
 						data-bs-dismiss="modal" onclick="modifyReplyModalClose();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 넘어갈 값. askBno, memberId, contents, askRno  -->
+	<!-- 답글 모달 -->
+	<div class="modal" id="nestedReplyModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">답글</h4>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<textarea class="form-control" id="targetReply" readonly="readonly"></textarea>
+					<textarea rows="5" class="form-control" id="nestedReply"></textarea>
+					<input type="hidden" id="targetRef"> <input type="hidden"
+						id="targetRefOrder"> <input type="hidden" id="targetStep">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning"
+						onclick="nestedReply();">답글 달기</button>
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal" onclick="nestedReplyModalClose();">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- 넘어갈 값. askBno  -->
+	<!-- 댓글 삭제 모달 -->
+	<div class="modal" id="deleteReplyModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">삭제하시겠습니까?</h4>
+				</div>
+				<!-- Modal body -->
+				<div class="modal-body">
+					<h5 rows="2">삭제한 댓글은 복원할 수 없습니다</h5>
+					<input type="hidden" id="deleteRno">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-warning"
+						onclick="deleteReply();">댓글 삭제</button>
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal" onclick="deleteReplyModalClose();">Close</button>
 				</div>
 			</div>
 		</div>

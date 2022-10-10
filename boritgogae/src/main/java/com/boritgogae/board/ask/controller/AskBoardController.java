@@ -81,7 +81,17 @@ public class AskBoardController {
 		return "boardAsk/writeAskBoard";
 	}
 	
-
+	// 답글 페이지
+	@RequestMapping(value = "/answer")
+	public String answerBoard(Model model, @RequestParam("no") String no) throws Exception {
+		System.out.println("컨트롤러 : 문의 답변");
+		System.out.println("컨트롤러 : 문의코드 가져오기");
+		List<AskCodeVo> askCodeList = service.loadAskCode();
+		model.addAttribute("askCodeList", askCodeList); // 바인딩
+		model.addAttribute("askBno", no); // 바인딩
+		System.out.println(askCodeList);
+		return "boardAsk/writeAskBoardAnswer";
+	}
 	
 	
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
@@ -190,7 +200,37 @@ public class AskBoardController {
 		System.out.println("테스트중");
 		return "redirect:/board/ask/list"; // /board/ask 로 Redirect
 	}
+		
+	@RequestMapping(value = "/answerCreate", method = RequestMethod.POST)
+	public String answerCreateBoard(AskBoardVo board, RedirectAttributes rttr) throws Exception {
+
+		// 일단 ref값에 글번호 넣어놓은 상태
+		System.out.println(board.toString());		
+		
+		if(service.answerCreate(board, this.UploadFileLst)) {
+			rttr.addFlashAttribute("status", "success");
+		} else {
+			rttr.addFlashAttribute("status", "error");
+		}
+		
+		this.UploadFileLst.clear(); // 리스트의 모든 아이템 삭제 -> 이전 글 등록시 첨부했던 파일을 지우기 위해
+
+		return "redirect:/board/ask/list"; // /board/ask 로 Redirect
+	}	
 	
+	// 글 삭제하는 메서드.
+	@RequestMapping(value = "/remove")
+	public String removeBoard(Model model, @RequestParam("no") String no, RedirectAttributes rttr) throws Exception {
+		System.out.println("컨트롤러 : " + no + "번 글 삭제");
+		
+		if(service.removeBoard(Integer.parseInt(no))==1) {
+			rttr.addFlashAttribute("status", "success");
+		} else {
+			rttr.addFlashAttribute("status", "error");
+		}		
+		
+		return "redirect:/board/ask/list"; // /board/ask 로 Redirect
+	}
 	
 	@RequestMapping(value="/view")
 	public String viewAskBoard(@RequestParam("no") String no, Model model, HttpServletRequest request) {

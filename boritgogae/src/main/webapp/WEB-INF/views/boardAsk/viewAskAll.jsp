@@ -96,18 +96,25 @@
 
 						<c:forEach var="askCode" items="${askCodeList }">
 							<c:if test="${board.askCode eq askCode.askCode }">
-								<td>${askCode.askOption }
+								<td>${askCode.askOption }</td>
 							</c:if>
 						</c:forEach>
 
 						<c:choose>
 							<c:when test="${board.isSecret eq 'Y'}">
-								<td><img src="../../../resources/img/lock.png" class="icon">
+								<td><c:forEach var="step" begin="1" end="${board.step }">
+										<img src="../../../resources/img/ask_reply.png"
+											style="max-width: 24px" ;/>
+									</c:forEach><img src="../../../resources/img/lock.png" class="icon">
 									비밀글입니다</td>
-								<td>-</td>
+								<td></td>
 							</c:when>
 							<c:otherwise>
-								<td>${board.title }</td>
+
+								<td><c:forEach var="step" begin="1" end="${board.step }">
+										<img src="../../../resources/img/ask_reply.png"
+											style="max-width: 24px" ;/>
+									</c:forEach> ${board.title }</td>
 								<td>${board.writer }</td>
 							</c:otherwise>
 						</c:choose>

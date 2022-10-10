@@ -64,6 +64,43 @@ public class AskReplyController {
 		return result;
 	}
 	
+
+	@RequestMapping(value = "/nested", method = RequestMethod.POST)
+	public ResponseEntity<String> nestedReply(@RequestBody AskReplyVo reply) {
+		System.out.println("대댓글 시작 : " + reply.toString());
+
+		ResponseEntity<String> result = null;
+		
+		try {
+			if (service.nestedReply(reply)) {
+				result = new ResponseEntity<String>("success", HttpStatus.OK);
+			} else {
+				result = new ResponseEntity<String>("fail", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			result = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteReply(@RequestBody AskReplyVo reply) {
+		System.out.println("댓글 삭제 시작 : " + reply.toString());
+
+		ResponseEntity<String> result = null;
+		try {
+			if (service.deleteReply(reply)) {
+				result = new ResponseEntity<String>("success", HttpStatus.OK);
+			} else {
+				result = new ResponseEntity<String>("fail", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			result = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+		return result;
+	}
 	
 	// @PathVariable : REST Controller에서 URI 마지막에 붙어있는 변수의 값을 얻어오는 어노테이션
 	// @RequestParam : REST Controller가 아닐 때 쿼리스트링의 변수 값을 얻어오는 어노테이션
@@ -89,4 +126,5 @@ public class AskReplyController {
 		
 		return result;
 	}
+
 }

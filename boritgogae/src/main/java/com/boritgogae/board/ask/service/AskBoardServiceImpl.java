@@ -98,7 +98,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 			int lastNo = dao.getLastNo();
 			// 2-2) ref update
 			row2 = dao.updateRef(lastNo);
-			
+
 			if (row2 == 1) {
 				// 3) 업로드된 파일이 있다면 업로드된 파일의 갯수만큼 반복하여 uploadfile 테이블에 insert
 				if (uploadFileLst.size() > 0) {
@@ -116,6 +116,56 @@ public class AskBoardServiceImpl implements AskBoardService {
 		}
 
 		if (row == 1 && row2 == 1) {
+			result = true;
+		}
+
+		return result;
+	}
+
+	@Override
+	public boolean answerCreate(AskBoardVo board, List<UploadFile> uploadFileLst) throws Exception {
+		boolean result = false;
+		System.out.println("답글 등록중 서비스단" + board);
+		board.setContents(board.getContents().replace("\r\n", "<br />")); // 게시글 내용.. 줄바꿈 처리
+
+		System.out.println("서비스단 Board값 1" + board);
+		// 현재 ref에 들어가있는 값은 참고해야할 참조해야할 bno값이다.
+		// 이 값을 통해 board의 ref, refOrder, step 값을 찾아오자
+		AskBoardVo targetBoard = dao.getBoard(board.getRef());
+		System.out.println("서비스단 targetBoard값 " + targetBoard);
+
+		// 기존에 같은 ref를 가지고 있던 댓글들의 ref를 update함.
+		int result1 = dao.updateBoardsRef(targetBoard);
+
+		// 답글 등록하기
+		// 타겟보드의 ref, refOrder, step값을 넣어준다.
+		board.setRef(targetBoard.getRef());
+		board.setRefOrder(targetBoard.getRefOrder());
+		board.setStep(targetBoard.getStep());
+
+		// board를 insert
+		System.out.println("서비스단 Board값 2" + board);
+		int result2 = dao.answerCreate(board);
+		
+		// 타겟보드의 answerStatus를 Y로 바꾼다.
+		int result3 = dao.answerStatusOk(targetBoard.getAskBno());
+
+		if (result2 == 1) {
+			int lastNo = dao.getLastNo();
+			// 3) 업로드된 파일이 있다면 업로드된 파일의 갯수만큼 반복하여 uploadfile 테이블에 insert
+			if (uploadFileLst.size() > 0) {
+				for (UploadFile up : uploadFileLst) {
+					if (up.isImage()) {
+						dao.imageInsert(lastNo, up.getSavedOriginImageFileName(), up.getThumbnailFileName());
+					} else {
+						dao.fileInsert(lastNo, up.getSavedOriginImageFileName());
+					}
+				}
+			}
+
+		}
+
+		if (result2 == 1) {
 			result = true;
 		}
 
@@ -177,4 +227,11 @@ public class AskBoardServiceImpl implements AskBoardService {
 	public int getReadCountByBno(int askBno) throws Exception {
 		return dao.getReadCountByBno(askBno);
 	}
+
+	@Override
+	public int removeBoard(int no) throws Exception {
+		System.out.println("dao단 : no = " + no );
+		return dao.removeBoard(no);
+	}
+
 }

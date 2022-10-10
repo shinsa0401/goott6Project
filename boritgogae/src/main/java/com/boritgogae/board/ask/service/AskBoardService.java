@@ -20,6 +20,10 @@ public interface AskBoardService {
 
 	// 게시판 글 등록 + (업로드된 파일 등록) 하는 메서드
 	public boolean create(AskBoardVo board, List<UploadFile> uploadFileLst) throws Exception;
+	
+
+	// 게시판 답글 등록 + (업로드된 파일 등록) 하는 메서드
+	public boolean answerCreate(AskBoardVo board, List<UploadFile> uploadFileLst) throws Exception;
 
 	// 게시판 조회
 	public Map<String, Object> viewBoard(int bno, String clientIp) throws Exception;
@@ -29,6 +33,10 @@ public interface AskBoardService {
 
 	// 글번호에 따른 조회수를 가져오는 메서드
 	public int getReadCountByBno(int askBno) throws Exception;
+
+	// 특정 글을 삭제하는 메서
+	public int removeBoard(int no) throws Exception;
+
 	
 	
 }

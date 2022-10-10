@@ -60,4 +60,16 @@ public interface AskBoardDAO {
 
 	// 글번호에 따른 조회수를 가져오는 메서드
 	public int getReadCountByBno(int askBno) throws Exception;
+
+	// 같은 ref를 가진 보드들 업데이트
+	public int updateBoardsRef(AskBoardVo board) throws Exception;
+
+	// 게시판에 답글 등록하는 메서드
+	public int answerCreate(AskBoardVo board) throws Exception;
+
+	// 타겟 보드의 답변상태를 Y로 만드는 메서드
+	public int answerStatusOk(int askBno) throws Exception;
+
+	// 특정 글번호를 가진 글을 삭제(isDelete를 Y로 바꿔주는것뿐임)
+	public int removeBoard(int no) throws Exception;
 }

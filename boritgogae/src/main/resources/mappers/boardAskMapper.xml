@@ -7,7 +7,8 @@
 
 	<!-- 여기서부터 리플 매퍼임 -->
 	<insert id="addAskReply">
-		insert into askReplyBoard(askBno, contents, memberId, ref)
+		insert into askReplyBoard(askBno, contents, memberId,
+		ref)
 		values(#{askBno}, #{contents}, #{memberId}, #{ref})
 	</insert>
 
@@ -16,20 +17,53 @@
 		lastRef from askReplyBoard where askBno = #{askBno}
 	</select>
 
-	<select id="selectAllRepliesByBno" resultType="AskReplyVo">
-		select * from askReplyBoard where askBno = #{bno} order by askRno desc
+	<select id="getLastReplyNo" resultType="String">
+		select max(askRno) as
+		lastNo from askReplyBoard where askBno = #{askBno}
 	</select>
-	
+
+	<select id="selectAllRepliesByBno" resultType="AskReplyVo">
+		select * from
+		askReplyBoard where askBno = #{bno} order by ref asc, refOrder asc,
+		step desc
+	</select>
+
 	<update id="modifyReply">
-		update askReplyBoard set contents = #{contents} where askRno = #{askRno}
+		update askReplyBoard set contents = #{contents} where
+		askRno = #{askRno}
+	</update>
+
+	<insert id="addNestedReply">
+		insert into askReplyBoard(askBno, memberId, contents,
+		ref, refOrder, step)
+		values(#{askBno}, #{memberId}, #{contents},
+		#{ref}, #{refOrder}+1, #{step}+1)
+	</insert>
+
+	<update id="updateNestedReply">
+		update askReplyBoard set refOrder = refOrder+1
+		where
+		ref = #{ref} and refOrder > #{refOrder}
+	</update>
+
+	<sql id="safeUpdatesDisable">
+		set sql_safe_updates=0
+	</sql>
+
+	<update id="deleteReply">
+		update askReplyBoard set contents = #{contents}
+		where
+		askRno = #{askRno}
 	</update>
 
 	<!-- 여기서부터 보드 매퍼임 -->
 
+
 	<select id="listAll" resultType="AskBoardVo">
 		select * from askBoard where
 		isDelete = 'N' order by ref
-		desc, reforder asc limit #{startNum},
+		desc, reforder asc, step desc limit
+		#{startNum},
 		#{postPerPage}
 	</select>
 
@@ -44,7 +78,8 @@
 		<if test="searchType == 'contents'">
 			contents like concat('%', #{searchWord }, '%')
 		</if>
-		order by ref desc, refOrder asc limit #{startNum}, #{postPerPage}
+		order by ref desc, refOrder asc, step desc limit #{startNum},
+		#{postPerPage}
 	</select>
 
 
@@ -134,4 +169,35 @@
 		select count(*) cnt
 		from askRead where askBno = #{askBno};
 	</select>
+
+	<select id="searchRefByBno" resultType="int">
+		select ref from askBoard
+		where askBno = #{askBno};
+	</select>
+
+	<update id="updateBoardsRef">
+		update askBoard set refOrder = refOrder+1
+		where
+		ref =
+		#{ref} and refOrder > #{refOrder}
+	</update>
+
+	<insert id="answerCreate">
+		insert into askBoard(writer, title, contents,
+		askCode, ref, refOrder, step)
+		values ('admin', #{title}, #{contents} ,
+		#{askCode}, #{ref}, #{refOrder}+1, #{step}+1)
+	</insert>
+
+	<update id="answerStatusOk">
+		update askBoard set answerStatus = 'Y'
+		where askBno =
+		#{askBno}
+	</update>
+
+	<update id="removeBoard">
+		update askBoard set isDelete = 'Y'
+		where askBno =
+		#{no}
+	</update>
 </mapper>
