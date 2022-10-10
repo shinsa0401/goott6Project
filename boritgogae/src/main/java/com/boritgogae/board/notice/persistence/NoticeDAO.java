@@ -31,6 +31,8 @@ public interface NoticeDAO {
 	// 댓글 등록 메서드
 	public int registerReply(NoticeReplyVo replyBoard) throws Exception;
 	
+	public int registerReplyRepl(NoticeReplyVo replyBoard) throws Exception;
+	
 	// 해당 글의 댓글 가져오는 메서드
 	public List<NoticeReplyVo> getReplyList(int bno) throws Exception;
 	
@@ -40,7 +42,23 @@ public interface NoticeDAO {
 	// 댓글 수정하는 메서드
 	public int modifyReplyBoard(NoticeReplyVo board) throws Exception;
 	
+	// 최근 등록된 글의 글번호 가져오는 메서드
+	public int getLastNo() throws Exception;
+
+	// 최근 등록된 글의 ref 수정
+	public int updateRef(int lastNo) throws Exception;
+	
+	// 대댓글 ref
+	public int updateRefFromRno(int rno, int lastNo) throws Exception;
+	
+	// 최근 등록된 글의 refOrder 수정
+	public int updateRefOrder(NoticeReplyVo replyBoard) throws Exception;
+	
 	// 조회된 글의 조회수 증가
 	public int updateReadCount(int bno) throws Exception;
-		
+
+	public int getRefOrder(int lastNo) throws Exception;
+	
+	
+	
 }

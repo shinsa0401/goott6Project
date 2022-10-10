@@ -1,6 +1,8 @@
 package com.boritgogae.board.notice.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.xml.stream.events.Namespace;
@@ -51,6 +53,11 @@ public class NoticeDAOImpl implements NoticeDAO {
 	public int registerReply(NoticeReplyVo replyBoard) throws Exception {
 		return ses.insert(ns + ".registerReply", replyBoard);
 	}
+	
+	@Override
+	public int registerReplyRepl(NoticeReplyVo replyBoard) throws Exception {
+		return ses.insert(ns + ".registerReplyRepl", replyBoard);
+	}
 
 	@Override
 	public List<NoticeReplyVo> getReplyList(int bno) throws Exception {
@@ -81,6 +88,36 @@ public class NoticeDAOImpl implements NoticeDAO {
 	public int getNoticeBoardCnt() throws Exception {
 		return ses.selectOne(ns + ".getNoticeBoardCnt");
 	}
+
+	@Override
+	public int getLastNo() throws Exception {
+		return ses.selectOne(ns + ".getLastNo");
+	}
+
+	@Override
+	public int updateRef(int lastNo) throws Exception {
+		return ses.update(ns + ".updateRef", lastNo);
+	}
+
+	@Override
+	public int updateRefOrder(NoticeReplyVo replyBoard) throws Exception {
+		return ses.update(ns + ".updateRefOrder", replyBoard);
+	}
+
+	@Override
+	public int updateRefFromRno(int rno, int lastNo) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("lastNo", lastNo + "");
+		map.put("rno", rno + "");
+		return ses.update(ns + ".updateRefFromRno", map);
+	}
+
+	@Override
+	public int getRefOrder(int lastNo) throws Exception {
+		return ses.selectOne(ns + ".getRefOrder", lastNo);
+	}
+
+	
 	
 
 }

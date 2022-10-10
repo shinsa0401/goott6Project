@@ -76,10 +76,31 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	public boolean registerReply(NoticeReplyVo replyBoard) throws Exception {
+		System.out.println(replyBoard.getRno());
 		boolean result = false;
-		if(dao.registerReply(replyBoard) == 1) {
+		int rno = replyBoard.getRno();
+		
+		int row = 0;
+		int row2 = 0;
+		int lastNo = 0;
+		if(replyBoard.getRno() != 0) { // 대댓글일 경우
+			row = dao.registerReplyRepl(replyBoard);
+			lastNo = dao.getLastNo();
+			row2 = dao.updateRefFromRno(rno, lastNo);
+			
+			System.out.println(dao.getRefOrder(lastNo));
+			dao.updateRefOrder(replyBoard);
+		} else { // 댓글일 경우
+			row = dao.registerReply(replyBoard);
+			lastNo = dao.getLastNo();
+			row2 = dao.updateRef(lastNo);
+			
+			System.out.println(row2);
+		}
+		if(row == 1 && row2 == 1) {
 			result = true;
 		}
+		
 		return result;
 	}
 

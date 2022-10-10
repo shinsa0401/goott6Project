@@ -172,9 +172,11 @@ public class NoticeController {
 		return result;
 	}
 	
-	// 공지 글 삭제
+	// 공지 댓글 삭제
 	@RequestMapping(value = "/replyDelete", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteReplyBoard(String rno) throws Exception {
+		System.out.println(rno);
+		
 		int no = Integer.parseInt(rno);
 			
 		ResponseEntity<String> result = null;
@@ -188,7 +190,7 @@ public class NoticeController {
 		return result;
 	}
 		
-	// 공지 글 수정
+	// 공지 댓글 수정
 	@RequestMapping(value = "/replyModify", method = RequestMethod.POST)
 	public ResponseEntity<String> modify(@RequestBody NoticeReplyVo board) throws Exception{
 		
