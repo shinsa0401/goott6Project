@@ -102,6 +102,31 @@
 		<button type="button" class="btn btn-success"
 			onclick="location.href='/boardTip/writeBoard';">글등록</button>
 	</div>
+
+	<div id="paging">
+		<ul class="pagination">
+			<c:if test="${param.pageNo > 1 }">
+				<li class="page-item"><a class="page-link"
+					href="/boardTip?pageNo=${param.pageNo - 1 }">Previous</a></li>
+			</c:if>
+			
+			<c:forEach var="i" begin="${pagingInfo.startNumOfCurPagingBlock}"
+				end="${pagingInfo.endNumOfCurPagingBlock }" step="1">
+			<c:choose>
+				<c:when test="${param.pageNo == i} }">
+					<li class="page-item active"><a class="page-link" href="/boardTip?pageNo=${i}">${i}</a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="page-item"><a class="page-link" href="/boardTip?pageNo=${i}">${i}</a></li>
+				</c:otherwise>
+			</c:choose>
+				
+			</c:forEach>
+			<c:if test="${param.pageNo < pagingInfo.totalPage}">
+				<li class="page-item"><a class="page-link" href="/boardTip?pageNo=${param.pageNo + 1 }">Next</a></li>
+			</c:if>
+		</ul>
+	</div>
 	<jsp:include page="../footer.jsp"></jsp:include>
 
 </body>

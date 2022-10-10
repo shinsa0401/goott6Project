@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.boritgogae.board.tip.domain.BoardVo;
+import com.boritgogae.board.tip.domain.PagingInfo;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -20,9 +21,9 @@ public class BoardDAOImpl implements BoardDAO {
 	private static String ns = "com.boritgogae.tipBoardMapper";
 	
 	@Override
-	public List<BoardVo> selectAllBoard() throws Exception {
+	public List<BoardVo> selectAllBoard(PagingInfo pi) throws Exception {
 //		System.out.println("DAOImpl" + ses.toString());
-		return ses.selectList(ns+".listAll");
+		return ses.selectList(ns+".listAll",pi);
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Override
 	public int updateBoard(int bno, BoardVo vo) throws Exception {
-		Map<String,Object> map = new HashMap<>();
+		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("vo", vo);
 		map.put("no", bno+"");
 //		System.out.println(map.get("board"));
@@ -57,6 +58,12 @@ public class BoardDAOImpl implements BoardDAO {
 	public int plusReadCnt(int bno) throws Exception {
 		
 		return ses.update(ns+".updateReadCnt", bno);
+	}
+
+	@Override
+	public int getTotalPostCnt() throws Exception {
+		
+		return ses.selectOne(ns+".TotalCnt");
 	}
 
 

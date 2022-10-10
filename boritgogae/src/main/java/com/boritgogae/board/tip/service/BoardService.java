@@ -9,7 +9,7 @@ import com.boritgogae.board.tip.domain.BoardVo;
 
 
 public interface BoardService {
-	public List<BoardVo> getListBoard() throws Exception;
+	public Map<String, Object> getListBoard(int pageNo) throws Exception;
 
 	public BoardVo getDetail(int bno) throws Exception;
 

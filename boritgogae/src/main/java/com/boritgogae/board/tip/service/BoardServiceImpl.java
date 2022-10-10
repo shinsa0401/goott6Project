@@ -1,5 +1,6 @@
 package com.boritgogae.board.tip.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.boritgogae.board.tip.domain.BoardVo;
+import com.boritgogae.board.tip.domain.PagingInfo;
 import com.boritgogae.board.tip.persistence.BoardDAO;
 
 @Service
@@ -16,10 +18,35 @@ public class BoardServiceImpl implements BoardService {
 	private BoardDAO dao;
 	
 	@Override
-	public List<BoardVo> getListBoard() throws Exception {
-		List<BoardVo> lst = dao.selectAllBoard();
+	public Map<String, Object> getListBoard(int pageNo) throws Exception {
+		
+		PagingInfo pi = pagingProcess(pageNo);
+		List<BoardVo> lst = dao.selectAllBoard(pi);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("lst", lst);
+		map.put("pi", pi);
 //		System.out.println("ServiceImpl : "+lst.toString());
-		return lst;
+		return map;
+	}
+
+	private PagingInfo pagingProcess(int pageNo) throws Exception {
+		PagingInfo result = new PagingInfo();
+		
+		result.setTotalPostCnt(dao.getTotalPostCnt()); // 전체 글의 갯수 setting
+		
+		
+		result.setTotalPage(result.getTotalPostCnt()); // 전체 페이지수 setting
+		
+		result.setStartNum(pageNo); // 현재페이지에서 출력을 시작할 글 번호(index)
+		
+		// --페이징블럭을 위한부분
+		result.setTotalPagingBlock(result.getTotalPage()); // 전체 페이지 블럭수 setting
+		result.setCurrentPagingBlock(pageNo);// 현재페이지가 속한 페이징 블럭 setting
+		result.setStartNumOfCurPagingBlock(result.getCurrentPagingBlock()); // 현재 페이징 블럭의 출력 시작 번호 setting
+		result.setEndNumOfCurPagingBlock(result.getStartNumOfCurPagingBlock()); // 현재 페이징 블럭의 출력 끝 번호 setting
+		System.out.println(result.toString());
+		
+		return result;
 	}
 
 	@Override
