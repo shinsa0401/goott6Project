@@ -14,29 +14,33 @@
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 
-
-	<h2>글작성</h2>
-
-	<form action="/boardFree/create" method="post">
+	
+	<h2 style="text-align: center;">글작성</h2>
+	
+	<form action="/boardFree/create" method="post"style ="padding: 100px;">
 		<div class="mb-3 mt-3">
 			<label for="title" class="form-label">글 제목:</label> <input
-				type="title" class="form-control" id="title"
-				name="title">
+				type="title" class="form-control" id="title" name="title">
 		</div>
 		<div class="mb-3">
 			<label for="writer" class="form-label">글쓴이 :</label> <input
-				type="writer" class="form-control" id="writer"
-				 name="writer">
+				type="writer" class="form-control" id="writer" name="writer">
 		</div>
+
+
 		<div class="mb-3">
-			<label for="content" class="form-label" >내용 :</label>
-				<textarea rows="30" cols="200"id="content" name="content"></textarea>
+
+			<label for="content">내용 :</label>
+			<textarea class="form-control" rows="5" id="content" name="content"></textarea>
 		</div>
-			
+
 		<button type="button" class="btn btn-primary">취소</button>
-		<button type="submit" class="btn btn-success" >완료</button>
-			
+		<button type="submit" class="btn btn-success">완료</button>
+
 	</form>
+	
+	
+	
 
 
 	<jsp:include page="../footer.jsp"></jsp:include>

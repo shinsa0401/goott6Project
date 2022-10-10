@@ -18,6 +18,7 @@ public class BoardVo {
 	private int step; // 계층형 깊이
 	
 	
+	
 	public BoardVo() {
 		super();
 	}

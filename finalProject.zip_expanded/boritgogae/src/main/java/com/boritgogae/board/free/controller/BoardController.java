@@ -1,5 +1,7 @@
 package com.boritgogae.board.free.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+
 import java.lang.ProcessBuilder.Redirect;
 import java.util.HashMap;
 import java.util.List;
@@ -17,30 +19,56 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boritgogae.board.free.domain.BoardVo;
+import com.boritgogae.board.free.domain.PageHandler;
+import com.boritgogae.board.free.domain.SearchCriterria;
 import com.boritgogae.board.free.service.BoardService;
 import com.mysql.cj.Session;
 
 @Controller
 @RequestMapping("/boardFree/*")
+
 public class BoardController {
 	
 	@Inject
 	private BoardService service;
 	// 실행할 메서드
 	
+	// /boardFree/list
 	// 게시판 페이지select
 	@RequestMapping(value = "/list")
-	public ModelAndView boardview(Model model) throws Exception {
+	public ModelAndView boardview(Model model, Integer page,Integer pageSize) throws Exception {
+		
+		if(page ==null) {
+			page=1;
+		}
+		if(pageSize==null) {
+			pageSize=10;
+		}
+		
+		
+		int totalCnt = service.getCount();
+		PageHandler pageHandler = new PageHandler(totalCnt, page,pageSize);
+		
 		
 		ModelAndView mav = new ModelAndView();
-		Map<String, Object> map =service.boardlist();
+	
 		mav.setViewName("boardFree/list");
-		List<BoardVo> list = (List<BoardVo>)map.get("boardLst");
-		System.out.println("컨트"+list);
-		model.addAttribute("boardList", list);	
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		map.put("offset", (page-1)*pageSize);
+		map.put("pageSize", pageSize);
+		
+		List<BoardVo> list =service.listAll(map);
+		model.addAttribute("boardList", list);
+		model.addAttribute("page", pageHandler);
+		System.out.println(pageHandler);
+
+		
+		
 		return mav;
 			
 	}
+
 	
 	// 글작성 페이지이동	
 	@RequestMapping(value = "/writer")
@@ -80,6 +108,14 @@ public class BoardController {
 		
 	}
 	
+	@RequestMapping(value = "/delBoard")
+	public String delBoard(int bno)throws Exception{
+		
+		service.delBoard(bno);
+		return "redirect: /boardFree/list";
+	}
+	
+	
 	
 	
 	// 상세 페이지로 이동
@@ -97,8 +133,10 @@ public class BoardController {
 		BoardVo board = (BoardVo)map.get("board");
 		model.addAttribute("board", board);
 		System.err.println(map+"sdjfn");
-		
+		service.readCountUp( bno);
 		
 		return mav;
 	}
+	
+	
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.boritgogae.board.free.dao.BoardDao;
 import com.boritgogae.board.free.domain.BoardVo;
+import com.boritgogae.board.free.domain.PageHandler;
+import com.boritgogae.board.free.domain.SearchCriterria;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -20,16 +22,7 @@ public class BoardServiceImpl implements BoardService {
 	@Inject
 	BoardDao dao;
 	
-	public Map<String,Object> boardlist() throws Exception{
-		
-		
-		List<BoardVo> lst = dao.selectList();
-		Map<String,Object> map = new HashMap<String, Object>();
-		map.put("boardLst", lst);
-		System.out.println("서비스"+lst);
-		
-		return map;
-	}
+	
 
 	@Override
 	public boolean insertBoard(BoardVo vo) throws Exception {
@@ -59,6 +52,44 @@ public class BoardServiceImpl implements BoardService {
 		dao.boardUpdate(vo);
 		
 	}
+
+	@Override
+	public void delBoard(int bno) throws Exception {
+		dao.delBoard(bno);
+		
+	}
+
+	@Override
+	public void readCountUp( int bno) throws Exception {
+		dao.readCountUp(bno);
+	}
+
+	@Override
+	public List<BoardVo> listAll(Map map) throws Exception {
+		
+		
+		return dao.listAll(map);
+	}
+
+	@Override
+	public int getCount() throws Exception {
+		
+		return dao.count();
+	}
+
+	@Override
+	public List<BoardVo> listAllSearch(SearchCriterria sc) throws Exception {
+		
+		return dao.listAllSearch(sc);
+	}
+
+	@Override
+	public int listAllSearchCnt(SearchCriterria sc) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.listAllSearchCnt(sc);
+	}
+	
+	
 	
 	
 }

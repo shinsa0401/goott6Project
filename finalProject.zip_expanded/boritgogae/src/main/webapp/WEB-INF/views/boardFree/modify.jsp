@@ -35,9 +35,12 @@
 		</div>
 			
 		<button type="button" class="btn btn-primary">취소</button>
+
 		<button type="submit" class="btn btn-success" >완료</button>
 			
 	</form>
+	
+	
 
 
 <jsp:include page="../footer.jsp"></jsp:include>
