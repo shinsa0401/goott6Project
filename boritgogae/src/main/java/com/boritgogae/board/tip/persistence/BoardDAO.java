@@ -21,4 +21,17 @@ public interface BoardDAO {
 
 	public int getTotalPostCnt() throws Exception;
 
+	public int maxBno() throws Exception;
+
+	public int updateRef(int bno) throws Exception;
+
+	public int selectRef(int bno) throws Exception;
+
+	public int updateReplyRef(int maxBno, int ref) throws Exception;
+
+	public int selectRefOrder(int maxNo) throws Exception;
+
+	public int updateReplyRefOrder(int ref, int refOrder) throws Exception;
+
+
 }

@@ -203,8 +203,13 @@ function delReply(rno){
 }
 
 	function modify(rno){
-		location.href = "/boardTip/modifyBoard/"+bno;
+		location.href = "/boardTip/modifyBoard/"+rno;
 	}
+	
+	function reply(bno){
+		location.href = "/boardTip/replyBoard/"+bno;	
+	}
+	
 </script>
 </head>
 
@@ -243,6 +248,8 @@ function delReply(rno){
 
 						<button type="button" class="btn btn-secondary"
 							onclick="modify(${board.bno})">글 수정</button>
+						<button type="button" class="btn btn-secondary"
+							onclick="reply(${board.bno})">답글달기</button>
 						<form action="/boardTip/${board.bno }" method="post">
 							<button type="submit" class="btn btn-warning">글 삭제</button>
 						</form>

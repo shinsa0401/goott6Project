@@ -34,6 +34,7 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public int insertBoard(BoardVo board) throws Exception {
 		
+		
 		return ses.insert(ns+".addBoard", board);
 	}
 
@@ -63,8 +64,51 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public int getTotalPostCnt() throws Exception {
 		
-		return ses.selectOne(ns+".TotalCnt");
+		return ses.selectOne(ns+".totalCnt");
 	}
+
+	@Override
+	public int maxBno() throws Exception {
+
+		return ses.selectOne(ns+".maxBno");
+	}
+
+	@Override
+	public int updateRef(int bno) throws Exception {
+		
+		return ses.update(ns+".updateRef", bno);
+	}
+
+	@Override
+	public int selectRef(int bno) throws Exception {
+		
+		return ses.selectOne(ns+".selectRef", bno);
+	}
+
+	@Override
+	public int updateReplyRef(int maxBno, int ref) throws Exception {
+//		System.out.println(maxBno+","+ref+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		Map<String, String> map = new HashMap<>();
+		map.put("maxBno", maxBno+"");
+		map.put("ref", ref+"");
+		return ses.update(ns+".updateReplyRef", map);
+	}
+
+	@Override
+	public int selectRefOrder(int maxNo) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.selectOne(ns+".getRefOrder", maxNo);
+	}
+
+	@Override
+	public int updateReplyRefOrder(int ref, int refOrder) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("refOrder", refOrder+"");
+		map.put("ref", ref+"");
+		return ses.update(ns+".updateRefOrder", map);
+	}
+
+	
 
 
 }

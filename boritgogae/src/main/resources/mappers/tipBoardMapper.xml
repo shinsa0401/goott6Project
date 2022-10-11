@@ -5,7 +5,7 @@
   
   <mapper namespace="com.boritgogae.tipBoardMapper">
   	<select id="listAll" resultType="BoardVo">
-  		select * from tipBoard
+  		select * from tipBoard order by bno desc limit #{startNum},#{postPerPage}
   	</select>
   	<select id="detail" resultType="BoardVo">
   		select * from tipBoard where bno = #{bno}
@@ -21,5 +21,26 @@
   	</update>
   	<update id="updateReadCnt">
   		update tipBoard set readCount = (readCount + 1) where bno = #{bno} 
+  	</update>
+  	<select id="totalCnt" resultType="int">
+  		select count(*) from tipBoard
+  	</select>
+  	<select id="maxBno" resultType="int">
+  		select max(bno) from tipBoard
+  	</select>
+  	<update id="updateRef">
+  		update tipBoard set ref = #{bno} where bno = #{bno}
+  	</update>
+  	<select id="selectRef" resultType="int">
+  		select ref from tipBoard where bno = #{bno}
+  	</select>
+  	<update id="updateReplyRef">
+  		update tipBoard set ref = #{ref} where bno = #{maxBno}
+  	</update>
+  	<select id="getRefOrder" resultType="int">
+  		select refOrder from tipBoard where bno = #{maxNo}
+  	</select>
+  	<update id="updateRefOrder">
+  		update tipBoard set refOrder = refOrder + 1 where ref = #{ref} and refOrder > #{refOrder}
   	</update>
   </mapper>

@@ -25,23 +25,27 @@ public class TipBoardController {
 	private BoardService service;
 
 	// 팁게시판 전체조회
-	@RequestMapping(value = "")
-	public ModelAndView listAll(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo)
+	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
+	public ModelAndView listAll(@RequestParam(value = "pageNo",required = false, defaultValue = "1") int pageNo)
 			throws Exception {
+		
+		
 		ModelAndView mav = new ModelAndView();
 		Map<String, Object> map = service.getListBoard(pageNo);
 		List<BoardVo> lst = (List<BoardVo>) map.get("lst");
 		PagingInfo pi = (PagingInfo) map.get("pi");
 
-		if (pageNo < 1) {
+		if(pageNo < 1) {
 			pageNo = 1;
-		} else if (pageNo > pi.getTotalPage()) {
+		}
+		else if (pageNo > pi.getTotalPage()) {
 			pageNo = pi.getTotalPage();
 		}
 
-		mav.setViewName("boardTip/listAll?pageNo=" + pageNo);
+		mav.setViewName("boardTip/listAll");
 		mav.addObject("BoardLst", lst);
 		mav.addObject("pi", pi);
+		mav.addObject("pageNo", pageNo);
 //		System.out.println(service.toString());
 		return mav;
 	}
@@ -82,7 +86,7 @@ public class TipBoardController {
 				pageNo = pi.getTotalPage();
 			}
 
-			mav.setViewName("boardTip/listAll?pageNo=" + pageNo);
+			mav.setViewName("boardTip/listAll");
 			mav.addObject("BoardLst", lst);
 			mav.addObject("pi", pi);
 		}
@@ -144,13 +148,52 @@ public class TipBoardController {
 				pageNo = pi.getTotalPage();
 			}
 
-			mav.setViewName("boardTip/listAll?pageNo=" + pageNo);
+			mav.setViewName("boardTip/listAll");
 			mav.addObject("BoardLst", lst);
 			mav.addObject("pi", pi);
 		}
 
 		return mav;
 
+	}
+	
+	// 답글 페이지
+	@RequestMapping(value = "/replyBoard/{bno}", method = RequestMethod.GET)
+	public ModelAndView ReplyBoard(BoardVo vo,@PathVariable("bno") int bno) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		BoardVo detail = service.getDetail(bno);
+
+		mav.setViewName("boardTip/replyBoard");
+		mav.addObject("board", detail);
+		return mav;
+	}
+	
+	// 답글달기
+	@RequestMapping(value = "/replyBoard/{bno}", method = RequestMethod.POST)
+	public ModelAndView ReplyBoard(BoardVo vo,@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,@PathVariable("bno") int bno) throws Exception{
+		ModelAndView mav = new ModelAndView();
+		
+		boolean result = service.addReplyBoard(vo,bno);
+		System.out.println(result+"@@@@@@@@@@@@@@@@@@@@@@@");
+		if (result) {
+			Map<String, Object> map = service.getListBoard(pageNo);
+			List<BoardVo> lst = (List<BoardVo>) map.get("lst");
+			PagingInfo pi = (PagingInfo) map.get("pi");
+
+			if (pageNo < 1) {
+				pageNo = 1;
+			} else if (pageNo > pi.getTotalPage()) {
+				pageNo = pi.getTotalPage();
+			}
+
+			mav.setViewName("boardTip/listAll");
+			mav.addObject("BoardLst", lst);
+			mav.addObject("pi", pi);
+		}
+		
+		
+		return mav;
+		
 	}
 
 }

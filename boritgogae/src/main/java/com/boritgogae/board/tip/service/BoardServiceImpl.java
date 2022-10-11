@@ -19,7 +19,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public Map<String, Object> getListBoard(int pageNo) throws Exception {
-		
+		System.out.println("받아온 pageNo = " + pageNo);
 		PagingInfo pi = pagingProcess(pageNo);
 		List<BoardVo> lst = dao.selectAllBoard(pi);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -58,9 +58,14 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean addBoard(BoardVo board) throws Exception {
 		boolean result = false;
+		
 		int row = dao.insertBoard(board);
 		if (row == 1) {
-			result = true;
+			int bno = dao.maxBno();
+			int ref = dao.updateRef(bno);
+			if(ref == 1) {
+				result = true;
+			}
 		}
 		return result;
 	}
@@ -94,8 +99,31 @@ public class BoardServiceImpl implements BoardService {
 		int row = dao.plusReadCnt(bno);
 		if (row == 1) {
 			result = true;
-		}
+		}  
 		return result; 
+	}
+
+	@Override
+	public boolean addReplyBoard(BoardVo vo, int bno) throws Exception {
+		boolean result = false;
+		int row = dao.insertBoard(vo);
+		if (row == 1) {
+			int ref = dao.selectRef(bno);
+			int maxNo = dao.maxBno();
+			int row2 = dao.updateReplyRef(maxNo,ref);
+			System.out.println("ref이거는 제대로 왔냐?"+ref);
+			if(row2 == 1) {
+				int refOrder = dao.selectRefOrder(ref);
+				System.out.println(refOrder+"refOrder 이거는 제대로 왔냐?");
+				int row3 = dao.updateReplyRefOrder(ref,refOrder);
+				System.out.println(row3+"@@@@@@@@");
+				if(row3 == 1) {
+					result = true;
+				}
+				
+			}
+		}
+		return result;
 	}
 
 

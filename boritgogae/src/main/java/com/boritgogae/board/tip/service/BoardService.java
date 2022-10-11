@@ -20,4 +20,6 @@ public interface BoardService {
 	public BoardVo modiBoard(int bno, BoardVo vo) throws Exception;
 
 	public boolean addReadCnt(int bno) throws Exception;
+
+	public boolean addReplyBoard(BoardVo vo, int bno) throws Exception;
 }

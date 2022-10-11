@@ -104,7 +104,7 @@
 						<li><a href="./shop-details.html">자유게시판</a></li>
 						<li><a href="./shoping-cart.html">질문게시판</a></li>
 						<li><a href="./checkout.html">장터게시판</a></li>
-						<li><a href="/boardTip">고개팁</a></li>
+						<li><a href="/boardTip/listAll">고개팁</a></li>
 					</ul></li>
 				<li><a href="./contact.html">고객센터</a>
 					<ul class="header__menu__dropdown">
@@ -184,7 +184,7 @@
 									<li><a href="./shop-details.html">자유게시판</a></li>
 									<li><a href="./shoping-cart.html">질문게시판</a></li>
 									<li><a href="./checkout.html">장터게시판</a></li>
-									<li><a href="/boardTip">고개팁</a></li>
+									<li><a href="/boardTip/listAll">고개팁</a></li>
 								</ul></li>
 							<li><a href="./contact.html">고객센터</a>
 								<ul class="header__menu__dropdown">
