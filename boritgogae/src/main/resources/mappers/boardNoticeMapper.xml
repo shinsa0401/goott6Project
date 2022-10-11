@@ -42,7 +42,8 @@
 	</insert>
 
 	<select id="getReplyList" resultType="NoticeReplyVo">
-		select * from noticeReplyBoard where bno = #{bno} order by rno asc, ref desc, refOrder asc
+		select * from noticeReplyBoard where bno = #{bno} order by ref desc, refOrder asc
+		
 	</select>
 
 	<delete id="deleteReply">
@@ -73,12 +74,12 @@
 	</update>
 	
 	<update id="updateRefFromRno">
-		update noticeReplyBoard set ref = #{rno} where rno =
+		update noticeReplyBoard set ref = #{ref} where rno =
 		#{lastNo}
 	</update>
 	
 	<update id="updateRefOrder">
-		update noticeReplyBoard set refOrder = refOrder + 1 and step = step + 1
+		update noticeReplyBoard set refOrder = refOrder + 1 
     	where ref = #{ref} and refOrder > #{refOrder}
 	</update>
 	

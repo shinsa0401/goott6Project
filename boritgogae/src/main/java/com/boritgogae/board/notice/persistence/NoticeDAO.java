@@ -49,7 +49,7 @@ public interface NoticeDAO {
 	public int updateRef(int lastNo) throws Exception;
 	
 	// 대댓글 ref
-	public int updateRefFromRno(int rno, int lastNo) throws Exception;
+	public int updateRefFromRno(int ref, int lastNo) throws Exception;
 	
 	// 최근 등록된 글의 refOrder 수정
 	public int updateRefOrder(NoticeReplyVo replyBoard) throws Exception;

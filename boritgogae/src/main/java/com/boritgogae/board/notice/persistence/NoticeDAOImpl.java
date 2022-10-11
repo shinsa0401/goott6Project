@@ -105,10 +105,10 @@ public class NoticeDAOImpl implements NoticeDAO {
 	}
 
 	@Override
-	public int updateRefFromRno(int rno, int lastNo) throws Exception {
+	public int updateRefFromRno(int ref, int lastNo) throws Exception {
 		Map<String, String> map = new HashMap<>();
 		map.put("lastNo", lastNo + "");
-		map.put("rno", rno + "");
+		map.put("ref", ref + "");
 		return ses.update(ns + ".updateRefFromRno", map);
 	}
 

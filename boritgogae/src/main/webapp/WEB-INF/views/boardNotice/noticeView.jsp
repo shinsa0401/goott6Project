@@ -33,16 +33,10 @@
 			lang : "ko-KR", // 한글 설정
 			toolbar: [
 				['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
-				['color', ['forecolor','color']],
-		    	['insert',['picture']]
+				['color', ['forecolor','color']]
 			],
 			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
-			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
-			callbacks: {
-				onImageUpload : function(files){
-					imgUpload(files[0],this);
-				}
-			}
+			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72']
 		});	
 		
 		$("#summernote").on("summernote.enter", function(we, e) {
@@ -121,13 +115,13 @@
 		$.each(data, function(i, item) {
 			output += "<li class='list-group-item'>";
 			if(item.step > 0) {
-					output += "<div style='position:relative; left :" + 50 * item.step + "px;'>";
+					output += "<div style='position:relative; left :" + 30 * item.step + "px;'>";
 			} else {
 				output += "<div>";
 			}
 			output += "<div class='replyer'>" + item.nickName + "</div>";
 			if(item.step > 0) {
-				output += "<p class='replyIcon' style='position:relative; right :" + 50 * item.step + "px;'>";
+				output += "<p class='replyIcon' style='position:relative; right :" + 30 * item.step + "px;'>";
 			} else {
 				output += "<p class='replyIcon'>";
 			}
@@ -137,7 +131,7 @@
 			output += "<span id='modifyIcon' style='text-decoration: underline;'";
 			output += " onclick='modiReply(" + item.rno + ",\"" + item.content.trim() + "\",\"" + item.memberId + "\")';>";
 			output += "수정<img src='../../resources/notice/icon/modify_icon.png' class='icon' /></span>&nbsp;&nbsp;&nbsp;";
-			output += "<span id='replyRepl' style='text-decoration: underline;' onclick='replyRepl(" + item.rno + ")';>";
+			output += "<span id='replyRepl' style='text-decoration: underline;' onclick='replyRepl(" + item.rno + ", \"" + item.ref + "\", \"" + item.step + "\", \"" + item.refOrder + "\")';>";
 			output += "답글달기</span>";
 			output += "</p>";
 			output += "<div class='replyContents' style='margin:2px;'>" + item.content + "</div>";
@@ -157,18 +151,18 @@
 	}
 	
 	// 댓글의 답글
-	function replyRepl(replRno) {
+	function replyRepl(replRno, ref, step, refOrder) {
 		
 		let output = "";
 		
 		output += '<input type="text" id="replMemberId" name="memberId">';
 		output += "<textarea style='width:70%' rows='5' class='form-control replyReplContent' name='content'></textarea>";
-		output += '<div><button type="button" class="btn btn-success" onclick="addReplyrepl(' + replRno + ')";>등록</button></div>';
+		output += "<div><button type='button' class='btn btn-success' onclick='addReplyrepl(" + replRno + ", \"" + ref + "\", \"" + step + "\", \"" + refOrder + "\")';>등록</button></div>";
 
 		$("#modiRegister" + replRno).html(output);
 	}
 	
-	function addReplyrepl(replRno) {
+	function addReplyrepl(replRno, ref, step, refOrder) {
 		let bno = ${board.bno };
 		let rno = replRno;
 		let memberId = $("#replMemberId").val();
@@ -177,7 +171,7 @@
 		
 		let url = "/board/notice/replyRegister";
 		let sendData = JSON.stringify({
-			"bno" : bno, "rno" : rno, "memberId" : memberId, "content" : content
+			"bno" : bno, "rno" : rno, "memberId" : memberId, "content" : content, "ref" : ref, "step" : step, "refOrder" : refOrder
 		});
 		
 		console.log(sendData);
