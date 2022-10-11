@@ -10,20 +10,19 @@ public class IPCheck {
 	private static String ipAddr;
 	
 	public static String getIpAddr() {
-		// URL 주소 객체 생성
 		
+		// URL 주소 객체 생성
 		try {
 			URL ipcheckURL = new URL("https://checkip.amazonaws.com");
 			
+			// 파일이나 전문 // reader 문을연다 -- 미완
 			BufferedReader in = new BufferedReader(new InputStreamReader(ipcheckURL.openStream()));
 			ipAddr = in.readLine();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
-		
-		
 		
 		return ipAddr;
 	}

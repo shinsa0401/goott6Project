@@ -6,10 +6,13 @@ import java.util.Map;
 
 import com.boritgogae.board.question.domain.BoardVo;
 import com.boritgogae.board.question.domain.ReadCountVo;
+import com.boritgogae.board.question.domain.UploadFileVo;
+import com.boritgogae.board.question.etc.PagingInfo;
+import com.boritgogae.board.question.etc.SearchCriteria;
 
 public interface BoardDAO {
 	// 게시판 전체목록을 가져오는 메서드
-	public List<BoardVo> selectAllBoard() throws Exception;
+	public List<BoardVo> selectAllBoard(PagingInfo pi) throws Exception;
 	
 	// 게시판 글 작성하는 메서드
 	public int insertBoard(BoardVo board) throws Exception;
@@ -20,8 +23,17 @@ public interface BoardDAO {
 	// 최근 등록된 글의 ref 업데이트하는 메서드
 	public int updateRef(int lastNo) throws Exception;
 	
-	// 게시판 글 상세 조회 하는 메서드
+	// 업로드된 이미지 파일 저장
+	public void insertImg(int lastNo, String savedOriginImageFileName, String thumbnailFileName);
+
+	// 업로드된 이미지가 아닌 파일 저장
+	public void insertFile(int lastNo, String savedOriginImageFileName);
+	
+	// 글번호로 상세 조회 하는 메서드
 	public BoardVo getBoard(int no) throws Exception;
+	
+	// 글번호로 첨부파일 조회하는 메서드
+	public List<UploadFileVo> getAttachFiles(int no) throws Exception;
 	
 	// 게시글 조회 시간 검색하는 메서드
 	public ReadCountVo getLastReadDate(Map<String, Object> readCount) throws Exception;
@@ -48,5 +60,19 @@ public interface BoardDAO {
 	// 게시글 비밀번호 확인하는 메서드
 	public int boardPwdCheck(int no, String pwd) throws Exception;
 	
+	// 댓글 등록시 replyCount 증가하는 메서드
+	public int addReplyCount(int bno) throws Exception;
+
+	// 댓글 삭제시 replyCount 감소하는 메서드
+	public int subReplyCount(int bno) throws Exception;
+
+	// 전체 글의 개수 반환하는 메서드
+	public int getTotalPostCnt() throws Exception;
+
+	// 검색된 글의 개수 반환하는 메서드
+	public int getSearchResultCnt(SearchCriteria sc) throws Exception;
+		
+	// 검색어가 있을 때 페이징 하며 검색 결과를 가져 오는 메서드
+	public List<BoardVo> getSearchResult(PagingInfo pi, SearchCriteria sc) throws Exception;
 	
 }

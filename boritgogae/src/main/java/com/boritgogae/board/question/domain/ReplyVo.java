@@ -2,29 +2,34 @@ package com.boritgogae.board.question.domain;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ReplyVo {
 	private int rno;
 	private int bno;
 	private String replyWriter;
-	private String replyPwd;
 	private String replyContent;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 	private Timestamp replyWrittenDate;
-	private Timestamp replyUpdateDate;
+	private int ref;
+	private int step;
+	private int refOrder;
 	
 	public ReplyVo() {
 		super();
 	}
 	
-	public ReplyVo(int rno, int bno, String replyWriter, String replyPwd, String replyContent,
-			Timestamp replyWrittenDate, Timestamp replyUpdateDate) {
+	public ReplyVo(int rno, int bno, String replyWriter, String replyContent, Timestamp replyWrittenDate, int ref,
+			int step, int refOrder) {
 		super();
 		this.rno = rno;
 		this.bno = bno;
 		this.replyWriter = replyWriter;
-		this.replyPwd = replyPwd;
 		this.replyContent = replyContent;
 		this.replyWrittenDate = replyWrittenDate;
-		this.replyUpdateDate = replyUpdateDate;
+		this.ref = ref;
+		this.step = step;
+		this.refOrder = refOrder;
 	}
 	
 	public int getRno() {
@@ -45,12 +50,6 @@ public class ReplyVo {
 	public void setReplyWriter(String replyWriter) {
 		this.replyWriter = replyWriter;
 	}
-	public String getReplyPwd() {
-		return replyPwd;
-	}
-	public void setReplyPwd(String replyPwd) {
-		this.replyPwd = replyPwd;
-	}
 	public String getReplyContent() {
 		return replyContent;
 	}
@@ -63,18 +62,31 @@ public class ReplyVo {
 	public void setReplyWrittenDate(Timestamp replyWrittenDate) {
 		this.replyWrittenDate = replyWrittenDate;
 	}
-	public Timestamp getReplyUpdateDate() {
-		return replyUpdateDate;
+	public int getRef() {
+		return ref;
 	}
-	public void setReplyUpdateDate(Timestamp replyUpdateDate) {
-		this.replyUpdateDate = replyUpdateDate;
+	public void setRef(int ref) {
+		this.ref = ref;
+	}
+	public int getStep() {
+		return step;
+	}
+	public void setStep(int step) {
+		this.step = step;
+	}
+	public int getRefOrder() {
+		return refOrder;
+	}
+	public void setRefOrder(int refOrder) {
+		this.refOrder = refOrder;
 	}
 	
 	@Override
 	public String toString() {
-		return "ReplyVo [rno=" + rno + ", bno=" + bno + ", replyWriter=" + replyWriter + ", replyPwd=" + replyPwd
-				+ ", replyContent=" + replyContent + ", replyWrittenDate=" + replyWrittenDate + ", replyUpdateDate="
-				+ replyUpdateDate + "]";
+		return "ReplyVo [rno=" + rno + ", bno=" + bno + ", replyWriter=" + replyWriter + ", replyContent="
+				+ replyContent + ", replyWrittenDate=" + replyWrittenDate + ", ref=" + ref + ", step=" + step
+				+ ", refOrder=" + refOrder + "]";
 	}
+	
 	
 }

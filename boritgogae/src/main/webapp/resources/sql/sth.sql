@@ -194,6 +194,8 @@ ADD CONSTRAINT `questionReply_replyWriter_fk`
 
 -- 게시판에 글등록
 -- insert into board(writer, title, content, pwd) values(#{writer}, #{title}, #{content}, sha1(md5(#{pwd})))
+insert into questionBoard(writer, title, content, pwd) 
+values('shin', '페이징 테스트', '페이징 테스트를 위한 글 생성', sha1(md5('1234')));
 
 -- 게시글 등록시 업로드된 파일이 이미지인경우 (사진5장까지..?)
 -- insert into uploadfile(bno, originalFile, thumbnailFile) 
@@ -232,7 +234,7 @@ update questionBoard set ref = 6 where no = 6;
 -- 게시글 상세페이지 보기(no = n번글)
 -- select * from board where no = #{no}
 -- 게시글 첨부파일 조회
--- select * from uploadfile where bno = #{no}
+select * from questionUploadFile where bno = 26;
 
 
 -- 작성자가 쓴글 보기
@@ -285,8 +287,32 @@ select * from questionReadCount where bno = 1 and ipAddr = '211.21.31.43';
 
 
 -- 댓글 등록하기
--- insert into reply(bno, content, replyer) values(#{bno}, #{content}, #{replyer})
-
+-- insert into questionReply(bno, replyWriter, replyContent) values(#{bno}, #{replyWriter}, #{replyContent})
+insert into questionReply(rno, bno, replyWriter, replyContent) values(4, 1, 'shin', '크앙');
 
 -- 특정번호 글의 모든 댓글을 가져오기
--- select * from reply where bno = #{bno} order by rno desc
+-- select * from questionReply where bno = #{bno} order by rno desc
+
+-- 댓글 개수검색
+select replycount from questionBoard where (select count(*) from questionReply where bno = 1);
+select count(*) from questionReply where bno = 1;
+
+-- 댓글 수정
+-- update questionReply set replyWriter = #{replyWriter}, replyContent = #{replyContent}, replyWrittenDate = now() where bno = #{bno} and rno = #{rno};
+update questionReply
+set replyWriter = 'shin', replyContent = '댓글 수정테스트', replyWrittenDate = now() where rno = 1 and bno =1;
+
+-- 댓글 번호로 글번호 검색 (필요없음)
+select bno from questionReply where rno = 1;
+
+-- 해당 글의 최근 등록된 댓글 번호 얻어오기
+select max(rno) as lastRno from questionReply;
+-- reply ref 업데이트
+update questionReply set ref = 7 where rno = 7;
+-- rno로 부모댓글의 정보 얻어오기
+select * from questionReply where rno = 7;
+-- 댓글의 max(refOrder)값 구하기
+select max(refOrder) as maxRefOrder from questionReply where bno = 1;
+-- 댓글의 댓글
+insert into questionReply(bno, replyWriter, replyContent, ref, step, refOrder) 
+values(1, 'shin', '대댓글', 8, 1, 3);
