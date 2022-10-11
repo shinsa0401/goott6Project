@@ -1,10 +1,14 @@
 package com.boritgogae.board.notice.controller;
 
 import java.io.Console;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -24,6 +28,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
 import com.boritgogae.board.notice.etc.PagingInfo;
+import com.boritgogae.board.notice.etc.UploadFile;
+import com.boritgogae.board.notice.etc.UploadFileProcess;
 import com.boritgogae.board.notice.service.NoticeServiceImpl;
 
 @Controller
@@ -32,6 +38,8 @@ public class NoticeController {
 	
 	@Inject
 	private NoticeServiceImpl service;
+	
+	private List<UploadFile> UploadFileLst = new ArrayList<>();
 	
 	// 공지사항 가져오기
 	@RequestMapping(value="/list")
@@ -127,7 +135,39 @@ public class NoticeController {
 		return "redirect:/board/notice/list";
 	}
 	
-	//@RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	public ResponseEntity<UploadFile> uploadFile(@RequestParam("file") MultipartFile upfile, HttpServletRequest request) {
+		System.out.println("컨트롤러 : 파일 업로드요청");
+		System.out.println("업로드된 파일 이름 : " + upfile.getOriginalFilename());
+		System.out.println("파일 사이즈 : " + upfile.getSize());
+		System.out.println("업로드된 파일의 타입 : " + upfile.getContentType());
+
+		// 파일이 실제 저장될 경로
+		String upPath = request.getSession().getServletContext().getRealPath("resources/uploads");
+		System.out.println("파일이 실제 저장 될 경로 : " + upfile);
+
+		ResponseEntity<UploadFile> result = null;
+
+		if (upfile.getSize() > 0) {
+
+			UploadFile upFile;
+			try {
+				upFile = UploadFileProcess.uploadFileProcess(upPath, upfile.getOriginalFilename(), upfile.getBytes(),
+						upfile.getContentType());
+				this.UploadFileLst.add(upFile); // 업로드 될 파일이 여러개일 경우를 대비해 리스트에 넣어둠
+				result = new ResponseEntity<>(upFile, HttpStatus.OK); // 업로드된 파일의 정보와 통신상태 "성공"
+			} catch (IOException e) {
+				result = new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 통신상태 "실패"
+			}
+
+		} else {
+			result = new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 통신상태 "실패"
+		}
+
+		System.out.println("현재 업로드 파일 리스트 : " + Arrays.toString(this.UploadFileLst.toArray()));
+		
+		return result;
+	}
 	
 		
 	// 댓글 관련

@@ -47,7 +47,8 @@
 				}
 			}
 		});
-		$('#summernote').summernote('code', "${board.content}");
+		console.log('${board.content}');
+		$('#summernote').summernote('code', '${board.content}');
 	});
 	
 	function modiBoard(form) {
