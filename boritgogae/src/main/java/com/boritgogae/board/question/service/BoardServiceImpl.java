@@ -1,5 +1,6 @@
 package com.boritgogae.board.question.service;
 
+<<<<<<< HEAD
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -7,16 +8,24 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+=======
+import java.util.List;
+
+import javax.inject.Inject;
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 
 import org.springframework.stereotype.Service;
 
 import com.boritgogae.board.question.domain.BoardVo;
+<<<<<<< HEAD
 import com.boritgogae.board.question.domain.ReadCountVo;
 import com.boritgogae.board.question.domain.UploadFileVo;
 import com.boritgogae.board.question.etc.IPCheck;
 import com.boritgogae.board.question.etc.PagingInfo;
 import com.boritgogae.board.question.etc.SearchCriteria;
 import com.boritgogae.board.question.etc.UploadFile;
+=======
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 import com.boritgogae.board.question.persistence.BoardDAO;
 
 @Service // Service단임을 명시
@@ -26,6 +35,7 @@ public class BoardServiceImpl implements BoardService {
 	@Inject
 	private BoardDAO dao;
 	
+<<<<<<< HEAD
 	// 게시판 글 전체 목록
 	@Override
 	public Map<String, Object> viewAllBoard(int pageNo, SearchCriteria sc) throws Exception {
@@ -210,4 +220,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 
+=======
+	@Override
+	public List<BoardVo> viewAllBoard() throws Exception {
+		System.out.println("서비스 : 게시판 전체목록 요청");
+		List<BoardVo> lst = dao.viewAllBoard();
+		return lst;
+	}
+
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 }

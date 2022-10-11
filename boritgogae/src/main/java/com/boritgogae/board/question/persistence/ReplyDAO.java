@@ -1,5 +1,6 @@
 package com.boritgogae.board.question.persistence;
 
+<<<<<<< HEAD
 import java.util.List;
 import java.util.Map;
 
@@ -34,5 +35,8 @@ public interface ReplyDAO {
 	public int insertReReply(Map<String, Object> map) throws Exception;
 
 	
+=======
+public interface ReplyDAO {
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 
 }

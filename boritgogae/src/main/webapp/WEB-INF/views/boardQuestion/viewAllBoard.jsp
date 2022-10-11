@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<<<<<<< HEAD
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page session="false" %>
 <!DOCTYPE html>
@@ -71,10 +72,53 @@
 		width: 400px;
 	}
 
+=======
+<%@ page session="false" %>
+
+<html>
+<head>
+<meta charset="UTF-8">
+	<meta name="description" content="Ogani Template">
+	<meta name="keywords" content="Ogani, unica, creative, html">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+<!-- Css Styles -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css" type="text/css">
+
+<!-- Js Plugins -->
+    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/jquery.nice-select.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/jquery.slicknav.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/mixitup.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+    
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+<title>글전체보기</title>
+<script>
+</script>
+<style>
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 	#boardTitle {
 		margin-bottom: 20px;
 	}
 	
+<<<<<<< HEAD
 	#viewAllBoard #viewTable {
 		text-align: center;
 	}
@@ -87,12 +131,22 @@
 	#titleTr {
 		width: 500px;
 	}
+=======
+	#btns {
+		text-align: right;
+	}
+	
+	#viewAllBoard {
+		text-align: center;
+	}
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 </style>
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div class="container mt-3">
+<<<<<<< HEAD
 		<h2 id="boardTitle">질문 게시판</h2>
 		
 		<div id="viewAllBoard">
@@ -125,10 +179,33 @@
 						<fmt:formatDate value="${board.writtenDate }" 
 						pattern="yyyy-MM-dd HH:mm" />
 					</th>
+=======
+		<h3 id="boardTitle">질문 게시판</h3>
+		
+		<div id="viewAllBoard">
+			<table id="viewTable" class="table table-hover">
+				<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+					<th>조회수</th>
+					<th>좋아요</th>
+				</tr>
+				<c:forEach var="board" items="${boardLst}">
+				<tr>
+					<th>${board.no }</th>
+					<th>${board.title }</th>
+					<th>${board.writer }</th>
+					<th>${board.writtenDate }</th>
+					<th>${board.readCount }</th>
+					<th>${board.likeCount }</th>
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 				</tr>
 				</c:forEach>
 			</table>
 		</div>
+<<<<<<< HEAD
 		
 		
 		
@@ -222,6 +299,18 @@
 		</div>
 		
 		
+=======
+			
+		
+		
+		<div id="btns">
+			<button type="button" class="btn text-white" style="background-color: #7FAD39;"
+				onclick="location.href='/board/write';">새글작성</button>	
+			<button type="button" class="btn text-white" style="background-color: #7FAD39;"
+				onclick="location.reload();">전체목록</button>
+		</div>
+		
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 	</div>
 	
 	

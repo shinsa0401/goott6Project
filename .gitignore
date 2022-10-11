@@ -2,12 +2,28 @@ MANIFEST.MF
 
 /.metadata/*
 *.class
+<<<<<<< HEAD
 *Servers/*
 */Servers/*
 *.zip
 *tern*
 
 
+=======
+Servers/*
+*.css
+*.eot
+*.svg
+*.ttf
+*.woff
+*.otf
+*.woff2
+*.js
+*.scss
+*.zip
+*tern*
+
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

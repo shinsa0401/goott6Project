@@ -2,11 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-<<<<<<< HEAD
-<!DOCTYPE html>
-<html>
-<head>  
-=======
 
 <html>
 <head>
@@ -39,15 +34,14 @@
     <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
     
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
-<title>index</title>
+<title>글수정</title>
 <script>
 </script>
 <style>
 </style>
 </head>
 <body>
-	<jsp:include page="header.jsp"></jsp:include>
+	<jsp:include page="../header.jsp"></jsp:include>
 	
 		<div class="container">
 			<h1>index.jsp</h1>
@@ -55,6 +49,6 @@
 	
 	
 	
-	<jsp:include page="footer.jsp"></jsp:include>
+	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

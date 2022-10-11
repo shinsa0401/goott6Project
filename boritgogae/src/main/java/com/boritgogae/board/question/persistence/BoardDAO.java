@@ -1,5 +1,6 @@
 package com.boritgogae.board.question.persistence;
 
+<<<<<<< HEAD
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -74,5 +75,15 @@ public interface BoardDAO {
 		
 	// 검색어가 있을 때 페이징 하며 검색 결과를 가져 오는 메서드
 	public List<BoardVo> getSearchResult(PagingInfo pi, SearchCriteria sc) throws Exception;
+=======
+import java.util.List;
+
+import com.boritgogae.board.question.domain.BoardVo;
+
+public interface BoardDAO {
+	// 게시판 전체목록 보기
+	public List<BoardVo> viewAllBoard() throws Exception;
+	
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 	
 }

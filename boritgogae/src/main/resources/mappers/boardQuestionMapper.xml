@@ -5,6 +5,7 @@
   
   <mapper namespace="com.boritgogae.boardQuestionMapper">
   
+<<<<<<< HEAD
   	<!-- 게시판 -->
   	
   	<!-- 게시글 전체목록 검색 -->
@@ -184,5 +185,11 @@
   	<insert id="insertReReply">
   		insert into questionReply(bno, replyWriter, replyContent, ref, step, refOrder) values(#{bno}, #{replyWriter}, #{replyContent}, #{ref}, #{step}, #{refOrder})
   	</insert>
+=======
+  	<select id="viewAllBoard" resultType="BoardVo">
+  		select * from questionBoard
+  	</select>
+  	
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
   	
   </mapper>

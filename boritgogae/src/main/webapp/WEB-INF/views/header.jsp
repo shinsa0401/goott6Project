@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<<<<<<< HEAD
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+=======
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +15,11 @@
 
 <!-- Google Font -->
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 <!-- Css Styles -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
@@ -33,11 +40,15 @@
     <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 <title>header</title>
 
 </head>
 <body>
+<<<<<<< HEAD
 	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 	
 	<!-- Humberger Begin 모바일 -->
@@ -45,6 +56,14 @@
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
             
+=======
+	
+	<!-- Humberger Begin -->
+    <div class="humberger__menu__overlay"></div>
+    <div class="humberger__menu__wrapper">
+        <div class="humberger__menu__logo">
+            <a href="#"><img src="img/logo.png" alt=""></a>
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
         </div>
         <div class="humberger__menu__cart">
             <ul>
@@ -55,26 +74,44 @@
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
+<<<<<<< HEAD
                 
                 <div>Korean</div>
                 <span class="arrow_carrot-down"></span>
                 <ul>
                     <li><a href="#">Korean</a></li>
+=======
+                <img src="img/language.png" alt="">
+                <div>English</div>
+                <span class="arrow_carrot-down"></span>
+                <ul>
+                    <li><a href="#">Spanis</a></li>
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
                     <li><a href="#">English</a></li>
                 </ul>
             </div>
             
         </div>
+<<<<<<< HEAD
         <!-- 모바일 메뉴 -->
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="${contextPath}/">Home</a></li>
+=======
+        <nav class="humberger__menu__nav mobile-menu">
+            <ul>
+                <li class="active"><a href="./index.html">Home</a></li>
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
                 <li><a href="./shop-grid.html">Shop</a></li>
                 <li><a href="./blog.html">병원</a></li>
                 <li><a href="./contact.html">게시판</a>
                 	<ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">자유게시판</a></li>
+<<<<<<< HEAD
                         <li><a href="${contextPath}/board/question">질문게시판</a></li>
+=======
+                        <li><a href="./shoping-cart.html">질문게시판</a></li>
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
                         <li><a href="./checkout.html">장터게시판</a></li>
                         <li><a href="./blog-details.html">고개팁</a></li>
                     </ul>
@@ -104,26 +141,42 @@
     <!-- Humberger End -->
     
 	
+<<<<<<< HEAD
 	<!-- Header Section Begin PC버전 -->
+=======
+	<!-- Header Section Begin -->
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
     <header class="header">
         
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
+<<<<<<< HEAD
                         
+=======
+                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
+<<<<<<< HEAD
 			                <li class="active"><a href="${contextPath}/">Home</a></li>
+=======
+			                <li class="active"><a href="../">Home</a></li>
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 			                <li><a href="./shop-grid.html">Shop</a></li>
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
+<<<<<<< HEAD
 			                        <li><a href="${contextPath}/board/question">질문게시판</a></li>
+=======
+			                        <li><a href="./board/question">질문게시판</a></li>
+>>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 			                        <li><a href="./checkout.html">장터게시판</a></li>
 			                        <li><a href="./blog-details.html">고개팁</a></li>
 			                    </ul>
