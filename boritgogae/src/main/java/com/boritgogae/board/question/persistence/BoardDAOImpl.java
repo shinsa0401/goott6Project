@@ -1,13 +1,9 @@
 package com.boritgogae.board.question.persistence;
 
-<<<<<<< HEAD
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-=======
-import java.util.List;
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 
 import javax.inject.Inject;
 
@@ -15,13 +11,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.boritgogae.board.question.domain.BoardVo;
-<<<<<<< HEAD
 import com.boritgogae.board.question.domain.ReadCountVo;
 import com.boritgogae.board.question.domain.UploadFileVo;
 import com.boritgogae.board.question.etc.PagingInfo;
 import com.boritgogae.board.question.etc.SearchCriteria;
-=======
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 
 @Repository // DAO단임을 명시
 public class BoardDAOImpl implements BoardDAO {
@@ -36,7 +29,6 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	// 게시판 전체목록 보기 
 	@Override
-<<<<<<< HEAD
 	public List<BoardVo> selectAllBoard(PagingInfo pi) throws Exception {
 		
 		return ses.selectList(ns + ".selectAllBoard", pi);
@@ -200,11 +192,4 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 
-=======
-	public List<BoardVo> viewAllBoard() throws Exception {
-		System.out.println("다오 : 게시판 전체목록 요청");
-		return ses.selectList(ns + ".viewAllBoard");
-	}
-
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 }

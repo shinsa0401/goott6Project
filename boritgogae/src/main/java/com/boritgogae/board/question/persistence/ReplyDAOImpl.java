@@ -1,6 +1,5 @@
 package com.boritgogae.board.question.persistence;
 
-<<<<<<< HEAD
 import java.util.List;
 import java.util.Map;
 
@@ -83,8 +82,4 @@ public class ReplyDAOImpl implements ReplyDAO{
 	}
 
 	
-=======
-public class ReplyDAOImpl {
-
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 }

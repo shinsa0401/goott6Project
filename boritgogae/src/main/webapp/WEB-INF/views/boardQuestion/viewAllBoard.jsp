@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<<<<<<< HEAD
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page session="false" %>
 <!DOCTYPE html>
@@ -27,6 +26,9 @@
 			result = true;
 		} else {
 			alert("검색대상과 검색어를 바르게 입력하세요!");
+			// 모달창 띄워서 처리
+			location.href = "/board/question?pageNo=1";
+			
 		}
 	}
 	
@@ -51,103 +53,73 @@
 	}
 </script>
 <style>
-	#paging {
-		display: block;
+	
+	.container {
 		text-align: center;
-		margin-bottom: 50px;
+		position: relative;
+		
 	}
 	
-	
+	#paging {
+		display: inline-block;
+		font-weight: bold;
+	}
+
 	#searchBar {
-		display: block;
-		float:left;
+	 	position: relative;
+		width: 370px;
+		margin: 10px;
+		float: right;
 	}
 	
 	#btns {
-		display: block;
-		float:right;	
+		text-align: right;
+		margin-right: 10px;
+		margin-top: 50px;
 	}
 	
 	#searchType {
 		width: 400px;
 	}
 
-=======
-<%@ page session="false" %>
-
-<html>
-<head>
-<meta charset="UTF-8">
-	<meta name="description" content="Ogani Template">
-	<meta name="keywords" content="Ogani, unica, creative, html">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-<!-- Google Font -->
-	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
-<!-- Css Styles -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css" type="text/css">
-
-<!-- Js Plugins -->
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery.nice-select.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery.slicknav.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/mixitup.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
-    
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-<title>글전체보기</title>
-<script>
-</script>
-<style>
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 	#boardTitle {
-		margin-bottom: 20px;
+		text-align: left;
 	}
 	
-<<<<<<< HEAD
 	#viewAllBoard #viewTable {
 		text-align: center;
 	}
 	
 	#headTr {
 		background-color: #7FAD39;
-		font: 
 	}
 	
 	#titleTr {
 		width: 500px;
 	}
-=======
-	#btns {
-		text-align: right;
-	}
 	
-	#viewAllBoard {
-		text-align: center;
-	}
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 </style>
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div class="container mt-3">
-<<<<<<< HEAD
 		<h2 id="boardTitle">질문 게시판</h2>
+		
+		
+		<div id="searchBar">
+			<form action="/board/question" method="get">
+				<select name="searchType" id="searchType">
+					<option class="option" value=""> 검색대상 선택 </option>
+					<option class="option" value="writer">작성자</option>
+					<option class="option" value="title">제목</option>
+					<option class="option" value="content">본문</option>
+				</select> 
+				<input type="text" name="searchWord" id="searchWord" />
+				<button type="submit" onclick="return validate();">검색</button>
+			</form>
+		</div>
+		
 		
 		<div id="viewAllBoard">
 			<table id="viewTable" class="table table-hover">
@@ -179,47 +151,11 @@
 						<fmt:formatDate value="${board.writtenDate }" 
 						pattern="yyyy-MM-dd HH:mm" />
 					</th>
-=======
-		<h3 id="boardTitle">질문 게시판</h3>
-		
-		<div id="viewAllBoard">
-			<table id="viewTable" class="table table-hover">
-				<tr>
-					<th>번호</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>작성일</th>
-					<th>조회수</th>
-					<th>좋아요</th>
-				</tr>
-				<c:forEach var="board" items="${boardLst}">
-				<tr>
-					<th>${board.no }</th>
-					<th>${board.title }</th>
-					<th>${board.writer }</th>
-					<th>${board.writtenDate }</th>
-					<th>${board.readCount }</th>
-					<th>${board.likeCount }</th>
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 				</tr>
 				</c:forEach>
 			</table>
 		</div>
-<<<<<<< HEAD
 		
-		
-		
-		<div id="searchBar">
-			<form action="/board/question" method="get">
-				<select name="searchType" id="searchType">
-					<option class="option" value=""> 검색대상선택 </option>
-					<option class="option" value="writer">작성자</option>
-					<option class="option" value="title">제  목</option>
-					<option class="option" value="content">본  문</option>
-				</select> <input type="text" name="searchWord" id="searchWord" />
-				<button type="submit" onclick="return validate();">검색</button>
-			</form>
-		</div>
 		
 		<div id="btns">
 			<button type="button" class="btn text-white" style="background-color: #7FAD39;"
@@ -230,87 +166,134 @@
 		
 		<div id="paging">
 			<ul class="pagination">
-				<c:if test="${param.pageNo > 1}">
+				<c:if test="${param.pageNo == null || param.pageNo >= 1}">
 					<c:choose>
 						<c:when
-							test="${param.searchType == '' and param.searchWord == '' }">
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=1"><<</a></li>
-
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${param.pageNo - 1}">이전</a></li>
+							test="${param.searchType == '' or param.searchWord == '' }">
+							<li class="page-item" >
+								<c:if test="${param.pageNo > 1}">
+									<a class="page-link" style="color: #336600;" href="/board/question?pageNo=1">맨앞</a>
+								</c:if>
+								<c:if test="${param.pageNo <= 1}">
+									<a class="page-link" style="color: grey;">맨앞</a>
+								</c:if>
+								<c:if test="${param.pageNo == null}">
+									<a class="page-link" style="color: grey;">맨앞</a>
+								</c:if>
+							</li>
+							
+							<li class="page-item">
+								<c:if test="${param.pageNo > 1}">
+									<a class="page-link" style="color: #336600;" href="/board/question?pageNo=${param.pageNo - 1}">이전</a>
+								</c:if>
+								<c:if test="${param.pageNo <= 1}">
+									<a class="page-link" style="color: grey;">이전</a>
+								</c:if>	
+								<c:if test="${param.pageNo == null}">
+									<a class="page-link" style="color: grey;">이전</a>
+								</c:if>
+							</li>
 						</c:when>
 						<c:otherwise>
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=1&searchType=${param.searchType}&searchWord=${param.searchWord}"><<</a></li>
+							<li class="page-item" >
+								<c:if test="${param.pageNo > 1}">
+									<a class="page-link" style="color: #336600;" href="/board/question?pageNo=1&searchType=${param.searchType}&searchWord=${param.searchWord}">맨앞</a>
+								</c:if>
+								<c:if test="${param.pageNo <= 1}">
+									<a class="page-link" style="color: grey;">맨앞</a>
+								</c:if>
+								<c:if test="${param.pageNo == null}">
+									<a class="page-link" style="color: grey;">맨앞</a>
+								</c:if>
+							</li>
 
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${param.pageNo - 1}&searchType=${param.searchType}&searchWord=${param.searchWord}">이전</a></li>
+							<li class="page-item">
+								<c:if test="${param.pageNo > 1}">
+									<a class="page-link" style="color: #336600;"
+								href="/board/question?pageNo=${param.pageNo - 1}&searchType=${param.searchType}&searchWord=${param.searchWord}">이전</a>
+								</c:if>
+								<c:if test="${param.pageNo <= 1}">
+									<a class="page-link" style="color: grey;">이전</a>
+								</c:if>
+								<c:if test="${param.pageNo == null}">
+									<a class="page-link" style="color: grey;">이전</a>
+								</c:if>
+							</li>
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 
-
+				<!-- 번호 부분 -->
 				<c:forEach var="i" begin="${pagingInfo.startNumOfCurPagingBlock}"
-					end="${pagingInfo.endNumOfCurPagingBlock}" step="1">
-					
+					end="${pagingInfo.endNumOfCurPagingBlock}" step="1"> 
 					<c:choose>
 						<c:when
-							test="${param.searchType == '' and param.searchWord == '' }">
+							test="${param.searchType == '' and param.searchWord == ''}">
 							<c:if test="${i < pagingInfo.totalPage + 1}">
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${i }">${i }</a></li>
-								</c:if>
+								<li class="page-item"><a class="page-link number active"
+								 style="color: #336600;" href="/board/question?pageNo=${i }">${i }</a></li>
+							</c:if>
 						</c:when>
 						<c:otherwise>
 						
-							<li class="page-item"><a class="page-link"
+							
+							<li class="page-item">
+								<a class="page-link active" style="color: #336600;"
 								href="/board/question?pageNo=${i }&searchType=${param.searchType}&searchWord=${param.searchWord}">${i }</a></li>
-								
+							
+							
 						</c:otherwise>
 					</c:choose>
-					
 				</c:forEach>
 
 
-
-				<c:if test="${param.pageNo < pagingInfo.totalPage }">
+				
 					<c:choose>
-						<c:when
-							test="${param.searchType == '' and param.searchWord == '' }">
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${param.pageNo + 1}">다음</a></li>
+						<c:when test="${param.searchType == '' or param.searchWord == '' }">
+							<li class="page-item">
+								<c:if test="${param.pageNo < pagingInfo.totalPage }">
+									<a class="page-link" style="color: #336600;"
+								href="/board/question?pageNo=${param.pageNo + 1}">다음</a>
+								</c:if>
+								<c:if test="${param.pageNo >= pagingInfo.totalPage }">
+									<a class="page-link" style="color: grey;">다음</a>
+								</c:if>	
+								<c:if test="${param.pageNo == null }">
+									<a class="page-link" style="color: #336600;"
+								href="/board/question?pageNo=${param.pageNo + 1}">다음</a>
+								</c:if>	
+							</li>
 
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${pagingInfo.totalPage }">>></a></li>
+							<li class="page-item">
+								<c:if test="${param.pageNo < pagingInfo.totalPage }">
+									<a class="page-link" style="color: #336600;"
+								href="/board/question?pageNo=${pagingInfo.totalPage }">맨끝</a>
+								</c:if>
+								<c:if test="${param.pageNo >= pagingInfo.totalPage }">
+									<a class="page-link" style="color: grey;">맨끝</a>
+								</c:if>
+								<c:if test="${param.pageNo == null }">
+									<a class="page-link" style="color: #336600;"
+								href="/board/question?pageNo=${pagingInfo.totalPage }">맨끝</a>
+								</c:if>	
+							</li>
 						</c:when>
 
 						<c:otherwise>
-							<li class="page-item"><a class="page-link"
+							<li class="page-item">
+							
+							<a class="page-link" style="color: #336600;"
 								href="/board/question?pageNo=${param.pageNo + 1}&searchType=${param.searchType}&searchWord=${param.searchWord}">다음</a></li>
 
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${pagingInfo.totalPage }&searchType=${param.searchType}&searchWord=${param.searchWord}">>></a></li>
+							<li class="page-item"><a class="page-link" style="color: #336600;"
+								href="/board/question?pageNo=${pagingInfo.totalPage }&searchType=${param.searchType}&searchWord=${param.searchWord}">맨끝</a></li>
 						</c:otherwise>
 					</c:choose>
-				</c:if>
+				
 
 			</ul>
 		</div>
 		
-		
-=======
-			
-		
-		
-		<div id="btns">
-			<button type="button" class="btn text-white" style="background-color: #7FAD39;"
-				onclick="location.href='/board/write';">새글작성</button>	
-			<button type="button" class="btn text-white" style="background-color: #7FAD39;"
-				onclick="location.reload();">전체목록</button>
-		</div>
-		
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 	</div>
 	
 	

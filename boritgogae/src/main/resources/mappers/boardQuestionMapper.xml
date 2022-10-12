@@ -5,7 +5,6 @@
   
   <mapper namespace="com.boritgogae.boardQuestionMapper">
   
-<<<<<<< HEAD
   	<!-- 게시판 -->
   	
   	<!-- 게시글 전체목록 검색 -->
@@ -153,7 +152,7 @@
   	
   	<!-- 현재 글의 모든 댓글 검색 -->
   	<select id="selectAllReply" resultType="ReplyVo">
-  		select * from questionReply where bno = #{bno} order by rno asc
+  		select * from questionReply where bno = #{bno} order by ref asc, refOrder asc
   	</select>
   	
   	<!-- 댓글 수정 -->
@@ -185,11 +184,5 @@
   	<insert id="insertReReply">
   		insert into questionReply(bno, replyWriter, replyContent, ref, step, refOrder) values(#{bno}, #{replyWriter}, #{replyContent}, #{ref}, #{step}, #{refOrder})
   	</insert>
-=======
-  	<select id="viewAllBoard" resultType="BoardVo">
-  		select * from questionBoard
-  	</select>
-  	
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
   	
   </mapper>

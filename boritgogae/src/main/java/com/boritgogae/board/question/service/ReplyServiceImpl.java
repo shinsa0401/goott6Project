@@ -1,6 +1,5 @@
 package com.boritgogae.board.question.service;
 
-<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -124,8 +123,4 @@ public class ReplyServiceImpl implements ReplyService {
 	
 	
 
-=======
-public class ReplyServiceImpl implements ReplyService {
-
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 }

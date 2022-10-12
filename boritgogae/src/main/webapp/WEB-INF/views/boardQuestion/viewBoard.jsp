@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<<<<<<< HEAD
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page session="false" %>
 <!DOCTYPE html>
@@ -128,28 +127,54 @@
 	
 	// 댓글 출력하는 메서드
 	function outputReply(data) {
-		let output = "";
+		let step = 0;
 		
+		let output = "";
+		output += "<div class='list-group replyAllCon'>";
 		$.each(data, function(i, item) {
-			output += "<a class='list-group-item list-group-item-action'>";
-			output += "<div>";
-			output += "<div class='replyWriter'>" + item.replyWriter + "</div>";
 			
-			if (data[i].step > 0) {
-				output += "<div>";
-				output += "<img src='${pageContext.request.contextPath}/resources/img/sth_replyArrow.png' width='30px' />";
-				output += "</div>";	
+			step = data[i].step;
+			console.log(i + "번째 댓글 step : " +step);
+			
+			
+			//style='position: relective; left: 30px;'
+			if (step > 0) {
 				
+				output += "<div class='reReplyImgCon'>";
+				output += "<div class='imgCont'>";
+				
+				for (let j = 0; j < step; j++) {
+					if (j < step - 1 ) {
+						output += "<span><img class='emptyImg' src='${pageContext.request.contextPath}/resources/img/sth_empty.png' width='30px' /></span>";				
+					} else {
+						output += "<span><img class='reImg' src='${pageContext.request.contextPath}/resources/img/sth_replyArrow.png' width='30px' /></span>";				
+					}
+					
+				}
+				output += "</div>";
+				output += "<div class='reReply'>";
+				output += "<a class='list-group-item list-group-item-action replyA'>";
 				output += "<div>";
+				output += "<div class='replyWriter'>" + item.replyWriter + "</div>";
+				output += "<div class='iconsDiv'>";
 				output += "<span id='toggle"+item.rno+"' onclick='showModifyReply(" + item.rno + ")'><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_modify.png'; />수정</span>";
 				output += "<span onclick='showRemoveReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_trash.png' />삭제</span>";
 				output += "<span onclick='showReReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_reply.png' />댓글</span>";
 				output += "</div>";
 				output += "<div class='replyContent'>" + item.replyContent + "</div>";
 				output += "<div class='replyWrittenDate'>" + item.replyWrittenDate + "</div>";
-				output += "</div></a>";
+				output += "</div>";
+				output += "</a>";
+				output += "</div>";
+				output += "</div>";
+				
+				
 			} else {
+				output += "<div>"
+				output += "<a class='list-group-item list-group-item-action'>";
 				output += "<div>";
+				output += "<div class='replyWriter'>" + item.replyWriter + "</div>";
+				output += "<div class='iconsDiv'>";
 				output += "<span id='toggle"+item.rno+"' onclick='showModifyReply(" + item.rno + ")'><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_modify.png'; />수정</span>";
 				output += "<span onclick='showRemoveReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_trash.png' />삭제</span>";
 				output += "<span onclick='showReReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_reply.png' />댓글</span>";
@@ -157,10 +182,8 @@
 				output += "<div class='replyContent'>" + item.replyContent + "</div>";
 				output += "<div class='replyWrittenDate'>" + item.replyWrittenDate + "</div>";
 				output += "</div></a>";
-				
+				output += "</div>";
 			}
-			
-			
 			
 			// 댓글 수정
 			output += "<div class='replyForm' id='replyForm"+item.rno+"'>";
@@ -181,6 +204,7 @@
 			output += "<button type='button' class='btn btn-info' onclick='reReply("+item.rno+");'>작성</button>"
 			output += "</div>"
 			output += "</a></div>";
+			
 		});
 		
 		output += "</div>";
@@ -347,10 +371,35 @@
 	
 </script>
 <style>
+
+	.emptyImg {
+		float: left;
+		opacity: 0;
+	}
+	
+	.reImg {
+		float: left;
+	}
+	
+	.reReply {
+		overflow: auto;
+	}
+	
+	.replyAllcon {
+		position: relative;
+	}
+	
+	.reReplyImgcon {
+		position: absolute;
+	}
+	
 	.icons {
 		padding: 3px;
 		width: 30px;
-		
+	}
+	
+	.iconsDiv {
+		float: right;
 	}
 	
 	#pwdCheckText {
@@ -360,8 +409,10 @@
 	}
 	
 	#btns {
+		
 		text-align: right;
 		margin-right: 10px;
+		margin-bottom: 10px;
 	}
 	
 	.body {
@@ -384,11 +435,16 @@
 	
 	
 	#title {
-		width: 1000px;
+		display: inline-block;
+		position:relative;
+		overflow: auto;
+		width: auto;
 		font-size: 25px;
 	}
 	
 	#writtenDate {
+		position:relative;
+		float:right;
 		width: 170px;
 		font-size: 15px;
 	}
@@ -396,23 +452,24 @@
 	#writer {
 		float: left;
 		width: 600px;
-		font-size: 20px;
+		font-size: 15px;
 	}
 	
 	#count {
-		
-		width: 270px;
-		font-size: 20px;
+		width: 200px;
+		font-size: 15px;
+		float: right;
 	}
 	
-	#content {
-		
-		width: 100%;
-	}
+	.content {
+		margin-top: 50px;
+		display: block;
+		text-align: left;
 	
+	}
 	
 	#replyDiv {
-		
+		display: block;
 		
 	}
 	
@@ -427,51 +484,65 @@
 	.reReplyForm {
 		display: none;
 	}
-=======
-<%@ page session="false" %>
-
-<html>
-<head>
-<meta charset="UTF-8">
-	<meta name="description" content="Ogani Template">
-	<meta name="keywords" content="Ogani, unica, creative, html">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-<!-- Google Font -->
-	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
-<!-- Css Styles -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css" type="text/css">
-
-<!-- Js Plugins -->
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery.nice-select.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery.slicknav.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/mixitup.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
-    
-<title>글상세보기</title>
-<script>
-</script>
-<style>
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 </style>
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 	
-<<<<<<< HEAD
+	
+	<div class="container">
+	
+		<h4>게시글 상세 화면</h4>
+	    	<table class="board_detail">
+				<colgroup>
+					<col width="15%"/>
+					<col width="35%"/>
+					<col width="15%"/>
+					<col width="35%"/>
+				</colgroup>
+				<caption>게시글 상세내용</caption>
+				<tbody>
+					<tr>
+						<th>글 번호</th>
+						<td th:text="${board.no}"></td>
+						<th scope="row">조회수</th>
+						<td th:text="${board.readCount}"></td>
+					</tr>
+					<tr>
+						<th>작성자</th>
+						<td>${board.writer}</td>
+						<th>작성일</th>
+						<td><fmt:formatDate value="${board.writtenDate }" 
+						pattern="yyyy-MM-dd HH:mm" /></td>
+					</tr>
+					<tr>
+						<th scope="row">제목</th>
+						<td colspan="3">
+							<input type="text" id="title" name="title" 
+								th:value="${board.title }"/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4" class="view_text">
+							<textarea title="내용" id="contents" name="contents" 
+								th:text="${board.content }"></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<div class="container">
 		
 		<div class="board">
@@ -487,54 +558,52 @@
 				</div>
 			</div>
 			
-			<div class="mb-3 mt-3 line2">
+			<div class="mb-3 mt-3">
 				<div id="writer" class="body">작성자 : ${board.writer }</div>
 				<div id="count">
-					<span id="readCount" class="body">조회수 ${board.readCount }</span>
-					<span id="likeCount" class="body ">추천 ${board.likeCount }</span>
-					<span id="replyCount" class="body ">댓글 ${board.replyCount }</span>
+					<span id="readCount" class="body">조회수 : ${board.readCount }</span>
+					<span id="replyCount" class="body ">댓글 : ${board.replyCount }</span>
 				</div>
-				
 			</div>
 			
-			<div class="mb-3 mt-3 line3">
+			<div class="mb-3 mt-3 content">
 				<span id="content" class="body">${board.content }</span>
 			</div>
 			
 			
 			
-			<div class="mb-3 mt-3 line4">
-				<label for="attachFiles" class="form-label">첨부파일:</label>
+			<div class="mb-3 mt-3 attachFiles line4">
+				<label for="attachFiles" class="form-label">첨부파일 : </label>
 				<c:forEach var="file" items="${fileList }">
 					<c:if test="${file.thumbnailFileName == null }">
 						<div class="files"><a href="/resources/uploads/${file.originFileName }">${file.originFileName }</a></div>
 					</c:if>
 				</c:forEach>
+			</div>
 			
 			
-				<div class="attachImgFiles line4">
-					<c:forEach var="imgFiles" items="${fileList }">
-						<c:if test="${imgFiles.thumbnailFileName != null }">
-							<div class="imgFile"><img src="/resources/uploads/${imgFiles.originFileName }"></div>
-						</c:if>
-					</c:forEach>
-				</div>
+			<div class="mb-3 mt-3 attachImgFiles line4">
+				<c:forEach var="imgFiles" items="${fileList }">
+					<c:if test="${imgFiles.thumbnailFileName != null }">
+						<div class="imgFile"><img src="/resources/uploads/${imgFiles.originFileName }"></div>
+					</c:if>
+				</c:forEach>
 			</div>
 		</div>
+		
+		
+			<br />
 	
 	
 		<div id="btns">
+	         <button type="button" class="btn btn-primary" onclick="location.href='/board/question/modify?no=${board.no}';">수정</button>
+	         <button type="button" class="btn btn-danger" onclick="removeModal();">삭제</button>
 	         <button type="button" class="btn text-white" style="background-color: #7FAD39;"
-	            onclick="location.href='/board/question/modify?no=${board.no}';">수정</button>
-	         <button type="button" class="btn text-white" style="background-color: #7FAD39;"
-	            onclick="removeModal();">삭제</button>
-	         <button type="button" class="btn text-white" style="background-color: #7FAD39;"
-	            onclick="location.href='/board/question';">전체목록</button>
+	            onclick="location.href='/board/question?pageNo=1';">전체목록</button>
 	    </div>
+	    <br />
 		
-		<div id="replies">
-		
-		</div>
+		<div id="replies"></div>
 	
 		<!-- 댓글 -->
 		<div id="replyDiv">
@@ -602,13 +671,6 @@
 		</div>
 		
 		
-=======
-		<div class="container">
-			<h1></h1>
-		</div>
-	
-	
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 	
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>

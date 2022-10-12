@@ -2,19 +2,12 @@ package com.boritgogae.board.question.domain;
 
 import java.sql.Timestamp;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class BoardVo {
 	private int no;
 	private String writer;
 	private String pwd;	
-=======
-public class BoardVo {
-	private int no;
-	private String writer;
-	private String pwd;
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 	private Timestamp writtenDate;
 	private int readCount;
 	private int likeCount;
@@ -25,22 +18,14 @@ public class BoardVo {
 	private int step;
 	private int refOrder;
 	private String isDelete;
-<<<<<<< HEAD
 	private int replyCount;
-=======
-	private String category;
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 	
 	public BoardVo() {
 		super();
 	}
 	
 	public BoardVo(int no, String writer, String pwd, Timestamp writtenDate, int readCount, int likeCount, String title,
-<<<<<<< HEAD
 			String content, String uploadFile, int ref, int step, int refOrder, String isDelete, int replyCount) {
-=======
-			String content, String uploadFile, int ref, int step, int refOrder, String isDelete, String category) {
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 		super();
 		this.no = no;
 		this.writer = writer;
@@ -55,11 +40,7 @@ public class BoardVo {
 		this.step = step;
 		this.refOrder = refOrder;
 		this.isDelete = isDelete;
-<<<<<<< HEAD
 		this.replyCount = replyCount;
-=======
-		this.category = category;
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 	}
 	
 	public int getNo() {
@@ -140,19 +121,11 @@ public class BoardVo {
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
 	}
-<<<<<<< HEAD
 	public int getReplyCount() {
 		return replyCount;
 	}
 	public void setReplyCount(int replyCount) {
 		this.replyCount = replyCount;
-=======
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 	}
 	
 	@Override
@@ -160,7 +133,6 @@ public class BoardVo {
 		return "BoardVo [no=" + no + ", writer=" + writer + ", pwd=" + pwd + ", writtenDate=" + writtenDate
 				+ ", readCount=" + readCount + ", likeCount=" + likeCount + ", title=" + title + ", content=" + content
 				+ ", uploadFile=" + uploadFile + ", ref=" + ref + ", step=" + step + ", refOrder=" + refOrder
-<<<<<<< HEAD
 				+ ", isDelete=" + isDelete + ", replyCount=" + replyCount + "]";
 	}
 	
@@ -168,9 +140,4 @@ public class BoardVo {
 	
 	
 	
-=======
-				+ ", isDelete=" + isDelete + ", category=" + category + "]";
-	}
-	
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 }

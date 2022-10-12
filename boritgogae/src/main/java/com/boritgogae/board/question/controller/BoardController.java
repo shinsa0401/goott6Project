@@ -1,6 +1,5 @@
 package com.boritgogae.board.question.controller;
 
-<<<<<<< HEAD
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,18 +28,6 @@ import com.boritgogae.board.question.etc.PagingInfo;
 import com.boritgogae.board.question.etc.SearchCriteria;
 import com.boritgogae.board.question.etc.UploadFile;
 import com.boritgogae.board.question.etc.UploadFileProcess;
-=======
-import java.util.List;
-
-import javax.inject.Inject;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.boritgogae.board.question.domain.BoardVo;
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 import com.boritgogae.board.question.service.BoardService;
 
 @Controller // 컨트롤러 단임을 명시
@@ -50,7 +37,6 @@ public class BoardController {
 	@Inject
 	private BoardService service;
 	
-<<<<<<< HEAD
 	private List<UploadFile> uploadFileLst = new ArrayList<>();
 	
 	/**
@@ -78,22 +64,6 @@ public class BoardController {
 		model.addAttribute("pagingInfo", pi); // 바인딩
 		
 		rttr.addFlashAttribute("pageNo", pageNo);
-=======
-	
-	/**
-	 * @methodName : viewAllBoard
-	 * @author : 
-	 * @date : 2022. 10. 4.
-	 * @입력 param :
-	 * @returnType : String
-	 */
-	@RequestMapping(value = "/question")
-	public String viewAllBoard(Model model) throws Exception {
-		System.out.println("컨트롤러 : 게시판 전체 목록 요청");
-		List<BoardVo> lst = service.viewAllBoard();
-		
-		model.addAttribute("boardLst", lst);
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 		
 		return "boardQuestion/viewAllBoard";
 	}
@@ -101,7 +71,6 @@ public class BoardController {
 	
 	
 	/**
-<<<<<<< HEAD
 	 * @methodName : newWriteBoard
 	 * @author : 신태호
 	 * @date : 2022. 10. 4.
@@ -378,19 +347,4 @@ public class BoardController {
 	
 	
 	
-=======
-	 * @methodName : writeBoard
-	 * @author : 
-	 * @date : 2022. 10. 4.
-	 * @입력 param :
-	 * @returnType : String
-	 */
-	@RequestMapping(value = "/write")
-	public String writeBoard() throws Exception {
-		System.out.println("컨트롤러 : 게시판 글쓰기 페이지 요청");
-		
-		return "board/writeBoard";
-		
-	}
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 }

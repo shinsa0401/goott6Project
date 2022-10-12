@@ -26,7 +26,7 @@
 	
 	// 이 페이지에 선언된 제이쿼리로 접근 ($대신 newJquery)
 	newJquery(function() {
-	
+		
 		// 서머노트
 		newJquery('#summernote').summernote({
 			height: 300,                 // 에디터 높이
@@ -80,29 +80,21 @@
 		            console.log(data);
 		            
 		         	showFileList(data);
+		         	
+		         	
 		         }
 		    });
 			
 		});
 		
+		// $(function(){ }); 영역
+		
+		
+		
 	});
 	
 	
-	function showFileList(data) {
-		let output = "";
-		
-		if (data.image) { // 이미지 파일이면
-			output += "<img src='/resources/uploads" + data.thumbnailFileName + "' />";
-		} else {
-			output += "<a href='/resources/uploads" +data.notImageFileName + "'>" + data.notImageFileName + "</a>";
-		}
-		
-		output += "<img src='/resources/img/sth_trash.png' width='50px' id='" + data.savedOriginImageFileName + "' class='minusBtn' onclick='deleteFile(this);' />";
-		newJquery(".upFileList").append(output);
-	}
-	
-	
-
+	// 글 수정 취소버튼을 눌렀을 때
 	function writeCancel(no) {
 		let url = "/board/question/writeCancel";
 		
@@ -168,7 +160,9 @@
 	// 기존에 업로드되었던 파일 삭제 ------- 미완
 	function deleteBeforeFile(obj) {
 		let beforeFile = newJquery(obj).attr("id");
+		
 		console.log(beforeFile);
+		
 	}
 	
 	
@@ -186,7 +180,6 @@
 		width: 100%;
 		height: 300px;
 		border: 1px dotted blue;
-		display: block;
 	}
 	
 	.fileDrop .fileContent {
@@ -232,27 +225,23 @@
 				</div>
 			
 				<div class="mb-3 mt-3">
-					<label for="writer" class="form-label">작성자:</label> 
+					<label for="writer" class="form-label">작성자</label> 
 					<input type="text" class="form-control" id="writer" name="writer" value="${board.writer }" readonly>
 				</div>
 				
-				<div class="mb-3 mt-3">
-					<label for="writer" class="form-label">작성일:</label> 
-					<div>
-						<fmt:formatDate value="${board.writtenDate }" pattern="yyyy-MM-dd HH:mm" />
-					</div>
+				<div class="mb-3 mt-3 writtenDate">
+					<label for="writer" class="form-label">작성일 : </label> 
+					<fmt:formatDate value="${board.writtenDate }" pattern="yyyy-MM-dd HH:mm" />
 				</div>
 				
 				<div class="mb-3 mt-3">
-					<label for="readCount" class="form-label">조회수:</label>
+					<label for="readCount" class="form-label">조회수 : </label>
 					<span id="readCount">${board.readCount }</span>
-					<label for="likeCount" class="form-label">좋아요:</label>
-					<span id="likeCount">${board.likeCount }</span> 
 				</div>
 				
 				
 				<div class="mb-3 mt-3">
-					<label for="title" class="form-label">제목:</label>
+					<label for="title" class="form-label">제목</label>
 					<input type="text" class="form-control" id="title" name="title" value="${board.title }">
 				</div>
 	
@@ -286,7 +275,7 @@
 				</div>
 				
 				<div class="mb-3 mt-3">
-					<label for="pwd" class="form-label">비밀번호:</label> 
+					<label for="pwd" class="form-label">비밀번호</label> 
 					<input type="password" class="form-control" id="pwd" name="pwd">
 				</div>
 				

@@ -1,6 +1,5 @@
 package com.boritgogae.board.question.service;
 
-<<<<<<< HEAD
 import java.util.List;
 
 import com.boritgogae.board.question.domain.ReplyVo;
@@ -20,8 +19,4 @@ public interface ReplyService {
 
 	// 댓글의 댓글 등록
 	public boolean reReply(ReplyVo reply) throws Exception;
-=======
-public interface ReplyService {
-
->>>>>>> 8bda4a0bd2fad767ac598b6becc4a3474dd23044
 }
