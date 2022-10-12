@@ -86,5 +86,17 @@
 	<select id="getRefOrder" resultType="int">
 		select refOrder from noticeReplyBoard where rno = #{lastNo}
 	</select>
+	
+	<select id="getLastReadTime" resultType="java.sql.Timestamp">
+		select readTime from noticeBoardRead where bno = #{bno} and readMemberIp = #{readMemberIp}
+	</select>
+	
+	<insert id="insertNoticeBoardRead">
+		insert into noticeBoardRead(readMemberIp, bno) values(#{readMemberIp}, #{bno})
+	</insert>
+	
+	<update id="updateNoticeBoardRead">
+		update noticeBoardRead set readTime = #{readTime} where readMemberIp = #{readMemberIp} and bno = #{bno}
+	</update>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.boritgogae.board.notice.persistence;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +116,31 @@ public class NoticeDAOImpl implements NoticeDAO {
 	@Override
 	public int getRefOrder(int lastNo) throws Exception {
 		return ses.selectOne(ns + ".getRefOrder", lastNo);
+	}
+
+	@Override
+	public Timestamp getLastReadTime(String readMemberIp, int bno) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("readMemberIp", readMemberIp);
+		map.put("bno", bno + "");
+		return ses.selectOne(ns + ".getLastReadTime", map);
+	}
+
+	@Override
+	public int insertNoticeBoardRead(String readMemberIp, int bno) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("readMemberIp", readMemberIp);
+		map.put("bno", bno + "");
+		return ses.insert(ns + ".insertNoticeBoardRead", map);
+	}
+
+	@Override
+	public int updateNoticeBoardRead(String readMemberIp, int bno, Timestamp nowTime) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("readMemberIp", readMemberIp);
+		map.put("bno", bno + "");
+		map.put("readTime", nowTime + "");
+		return ses.update(ns + ".updateNoticeBoardRead", map);
 	}
 
 	

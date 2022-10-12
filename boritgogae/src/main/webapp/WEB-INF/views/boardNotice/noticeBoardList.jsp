@@ -35,6 +35,10 @@ tr {
 #paging {
 	margin-bottom: 20px;
 }
+
+.boardList:hover {
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -56,7 +60,7 @@ tr {
 					</tr>
 				</thead>
 				<c:forEach var="board" items="${list }">
-					<tr onclick="viewBoard(${board.bno});">
+					<tr class="boardList" onclick="viewBoard(${board.bno});">
 						<td>${board.bno }</td>
 						<td>${board.title }</td>
 						<td>${board.nickName }</td>

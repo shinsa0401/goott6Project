@@ -1,5 +1,6 @@
 package com.boritgogae.board.notice.persistence;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
@@ -57,8 +58,15 @@ public interface NoticeDAO {
 	// 조회된 글의 조회수 증가
 	public int updateReadCount(int bno) throws Exception;
 
+	// 대댓글의 부모글의 refOrder를 가져오는 메서드
 	public int getRefOrder(int lastNo) throws Exception;
 	
+	// 조회수 중복 방지를 위한 조회 체크
+	public Timestamp getLastReadTime(String readMemberIp, int bno) throws Exception;
 	
+	// 조회 테이블에 insert
+	public int insertNoticeBoardRead(String readMemberIp, int bno) throws Exception;
 	
+	// 조회 테이블 update
+	public int updateNoticeBoardRead(String readMemberIp, int bno,Timestamp nowTime) throws Exception;
 }

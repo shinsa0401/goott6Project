@@ -55,26 +55,13 @@ public class UploadFileProcess {
 			String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1); // 파일 확장자
 			
 			
-			BufferedImage originImgFile = ImageIO.read(originTarget); // 업로드된 이미지 파일의 원본을 읽음
-			int heightOfOriginImage = originImgFile.getHeight(); // 원본 이미지의 높이(픽셀)
-			System.out.println("원본 이미지 : " + originImgFile);
-			System.out.println("원본 이미지의 높이 : " + heightOfOriginImage);
-			
-			BufferedImage destFile = null;
-			if(heightOfOriginImage > 100) { // 이미지의 높이가 100픽셀보다 클때 높이를 100픽셀로 맞춰 자른다.
-				destFile = Scalr.resize(originImgFile, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 100);
-			}
-			
-			
 		} else {
 			// 이미지 파일이 아님
 			System.out.println("이미지 파일이 아님!");
 			upFile.setImage(false);
-			upFile.setNotImageFileName(savePath + File.separator + saveFileName); // 이미지가 아닌 경우의 파일 이름
+			upFile.setNotImageFileName(savePath + File.separator + File.separator + saveFileName); // 이미지가 아닌 경우의 파일 이름
 			
 		}
-		
-		
 		return upFile; 
 		
 	}
