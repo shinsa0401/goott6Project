@@ -77,7 +77,8 @@
 					if (data.image) { // 이미지 파일이면
 						output += "/resources/uploads" + data.savedOriginImageFileName;
 					} else {
-						output += "<a href ='/resources/uploads" + data.notImageFileName + "' >" + data.notImageFileName + "</a>";
+						$("#status").html("이미지 파일인지 확인해주세요!");
+						$("#statusModal").show(200);
 					}
 					
 	            	//항상 업로드된 파일의 url이 있어야 한다.
@@ -87,7 +88,6 @@
 		}
 		
 		
-		console.log('${board.content}');
 		$('#summernote').summernote('code', '${board.content}');
 	});
 	
@@ -101,6 +101,10 @@
 		form.content.value = content;
 		
 		form.submit();
+	}
+	
+	function closeModal() {
+		$("#statusModal").hide(200);
 	}
 
 </script>
@@ -159,6 +163,27 @@
 
 	<jsp:include page="../footer.jsp"></jsp:include>
 
+	<div class="modal" id="statusModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title" id="status"></h4>
+					<button type="button" class="btn-close close"
+						data-bs-dismiss="modal" onclick="closeModal();">X</button>
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success"
+						data-bs-dismiss="modal"
+						onclick="closeModal();">확인</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

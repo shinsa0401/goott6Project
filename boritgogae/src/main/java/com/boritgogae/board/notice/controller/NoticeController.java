@@ -76,7 +76,7 @@ public class NoticeController {
 	@RequestMapping(value = "/register")
 	public String registerBoard(NoticeVo board) throws Exception {
 		System.out.println(board + "글 등록");
-		
+		board.setContent(board.getContent().replace("\r\n", ""));
 		if(service.registerBoard(board)) {
 			System.out.println("등록 완료");
 			

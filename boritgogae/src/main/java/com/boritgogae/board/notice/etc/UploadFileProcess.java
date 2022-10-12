@@ -46,10 +46,11 @@ public class UploadFileProcess {
 		upFile.setSavedOriginImageFileName(savePath + File.separator + File.separator + saveFileName);
 		
 		File originTarget = new File(upPath + savePath, saveFileName);
-		FileCopyUtils.copy(file, originTarget); // 원본 파일 저장
+		
 		
 		if(ImageMediaConfirm.getMediaType(contentType.toLowerCase()) != null) { // 이미지 파일이라면
 			System.out.println("이미지 파일!");
+			FileCopyUtils.copy(file, originTarget); // 원본 파일 저장
 			upFile.setImage(true);
 			
 			String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1); // 파일 확장자
@@ -59,7 +60,6 @@ public class UploadFileProcess {
 			// 이미지 파일이 아님
 			System.out.println("이미지 파일이 아님!");
 			upFile.setImage(false);
-			upFile.setNotImageFileName(savePath + File.separator + File.separator + saveFileName); // 이미지가 아닌 경우의 파일 이름
 			
 		}
 		return upFile; 
