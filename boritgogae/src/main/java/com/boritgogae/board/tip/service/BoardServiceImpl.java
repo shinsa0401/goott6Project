@@ -16,7 +16,7 @@ import com.boritgogae.board.tip.persistence.BoardDAO;
 public class BoardServiceImpl implements BoardService {
 	@Inject
 	private BoardDAO dao;
-	
+
 	@Override
 	public Map<String, Object> getListBoard(int pageNo) throws Exception {
 		System.out.println("받아온 pageNo = " + pageNo);
@@ -31,21 +31,20 @@ public class BoardServiceImpl implements BoardService {
 
 	private PagingInfo pagingProcess(int pageNo) throws Exception {
 		PagingInfo result = new PagingInfo();
-		
+
 		result.setTotalPostCnt(dao.getTotalPostCnt()); // 전체 글의 갯수 setting
-		
-		
+
 		result.setTotalPage(result.getTotalPostCnt()); // 전체 페이지수 setting
-		
+
 		result.setStartNum(pageNo); // 현재페이지에서 출력을 시작할 글 번호(index)
-		
+
 		// --페이징블럭을 위한부분
 		result.setTotalPagingBlock(result.getTotalPage()); // 전체 페이지 블럭수 setting
 		result.setCurrentPagingBlock(pageNo);// 현재페이지가 속한 페이징 블럭 setting
 		result.setStartNumOfCurPagingBlock(result.getCurrentPagingBlock()); // 현재 페이징 블럭의 출력 시작 번호 setting
 		result.setEndNumOfCurPagingBlock(result.getStartNumOfCurPagingBlock()); // 현재 페이징 블럭의 출력 끝 번호 setting
 		System.out.println(result.toString());
-		
+
 		return result;
 	}
 
@@ -58,12 +57,12 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public boolean addBoard(BoardVo board) throws Exception {
 		boolean result = false;
-		
+
 		int row = dao.insertBoard(board);
 		if (row == 1) {
 			int bno = dao.maxBno();
 			int ref = dao.updateRef(bno);
-			if(ref == 1) {
+			if (ref == 1) {
 				result = true;
 			}
 		}
@@ -84,10 +83,10 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public BoardVo modiBoard(int bno, BoardVo vo) throws Exception {
-		int row = dao.updateBoard(bno,vo);
+		int row = dao.updateBoard(bno, vo);
 //		System.out.println("업데이트 성공했냐? : "+row);
 
-		if (row==1){
+		if (row == 1) {
 			return dao.selectDetail(bno);
 		}
 		return dao.selectDetail(bno);
@@ -99,32 +98,54 @@ public class BoardServiceImpl implements BoardService {
 		int row = dao.plusReadCnt(bno);
 		if (row == 1) {
 			result = true;
-		}  
-		return result; 
+		}
+		return result;
 	}
 
 	@Override
 	public boolean addReplyBoard(BoardVo vo, int bno) throws Exception {
 		boolean result = false;
 		int row = dao.insertBoard(vo);
-		if (row == 1) {
-			int ref = dao.selectRef(bno);
-			int maxNo = dao.maxBno();
-			int row2 = dao.updateReplyRef(maxNo,ref);
-			System.out.println("ref이거는 제대로 왔냐?"+ref);
-			if(row2 == 1) {
-				int refOrder = dao.selectRefOrder(ref);
-				System.out.println(refOrder+"refOrder 이거는 제대로 왔냐?");
-				int row3 = dao.updateReplyRefOrder(ref,refOrder);
-				System.out.println(row3+"@@@@@@@@");
-				if(row3 == 1) {
-					result = true;
+		int ref = dao.selectRef(bno);
+		int parent = dao.selectMin(ref);
+		int maxNo = dao.maxBno();
+		if (row == 1 && ref == bno) {
+
+			int row2 = dao.updateReplyRef(maxNo, ref);
+
+			if (row2 == 1) {
+				int cntRef = dao.countRef(ref);
+
+				if (cntRef >= 2) {
+					int row3 = dao.updateReplyRefOrder(cntRef, maxNo);
+
+					if (row3 == 1) {
+						result = true;
+					}
 				}
-				
+
 			}
+
+		} else if (row == 1 && ref != bno) {
+			int row2 = dao.updateReplyRef(maxNo, ref);
+
+			if (row2 == 1) {
+				int cntRef = dao.countRef(ref);
+
+				if (cntRef >= 2) {
+					int step = dao.stepNum(bno);
+					int row3 = dao.updateReplyRefOrder(cntRef, maxNo,step);
+
+					if (row3 == 1) {
+						result = true;
+					}
+				}
+
+			}
+
 		}
+
 		return result;
 	}
-
 
 }

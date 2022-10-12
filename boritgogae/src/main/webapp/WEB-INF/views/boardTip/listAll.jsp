@@ -88,10 +88,20 @@
 				</tr>
 			</thead>
 			<tbody>
+
 				<c:forEach var="board" items="${BoardLst}">
 					<tr onclick="goDetail(${board.bno});">
 						<td>${board.bno }</td>
-						<td>[${board.categories}]${board.title }</td>
+						<c:choose>
+							<c:when test="${board.step > 0} }">
+								<td>
+								${board.step }[${board.categories}]${board.title }
+								</td>
+							</c:when>
+							<c:otherwise>
+								<td>step값 =${board.step }[${board.categories}]${board.title }</td>
+							</c:otherwise>
+						</c:choose>
 						<td>${board.memberId }</td>
 						<td>${board.createDate }</td>
 						<td>${board.readCount }</td>
@@ -109,21 +119,24 @@
 				<li class="page-item"><a class="page-link"
 					href="/boardTip/listAll?pageNo=${param.pageNo - 1 }">Previous</a></li>
 			</c:if>
-			
+
 			<c:forEach var="i" begin="${pi.startNumOfCurPagingBlock}"
 				end="${pi.endNumOfCurPagingBlock }" step="1">
-			<c:choose>
-				<c:when test="${param.pageNo == i} }">
-					<li class="page-item active"><a class="page-link" href="/boardTip/listAll?pageNo=${i}">${i}</a></li>
-				</c:when>
-				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="/boardTip/listAll?pageNo=${i}">${i}</a></li>
-				</c:otherwise>
-			</c:choose>
-				
+				<c:choose>
+					<c:when test="${param.pageNo == i} }">
+						<li class="page-item active"><a class="page-link"
+							href="/boardTip/listAll?pageNo=${i}">${i}</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item"><a class="page-link"
+							href="/boardTip/listAll?pageNo=${i}">${i}</a></li>
+					</c:otherwise>
+				</c:choose>
+
 			</c:forEach>
-			<c:if test="${param.pageNo < pi.totalPage}">
-				<li class="page-item"><a class="page-link" href="/boardTip?/listAll?pageNo=${param.pageNo + 1 }">Next</a></li>
+			<c:if test="${param.pageNo < pi.totalPage or param.pageNo==null}">
+				<li class="page-item"><a class="page-link"
+					href="/boardTip/listAll?pageNo=${param.pageNo + 1 }">Next</a></li>
 			</c:if>
 		</ul>
 	</div>

@@ -101,11 +101,38 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public int updateReplyRefOrder(int ref, int refOrder) throws Exception {
+	public int updateReplyRefOrder(int cntRef,  int maxNo) throws Exception {
 		Map<String, String> map = new HashMap<>();
-		map.put("refOrder", refOrder+"");
-		map.put("ref", ref+"");
+		map.put("refOrder", cntRef+"");
+		map.put("bno", maxNo+"");
 		return ses.update(ns+".updateRefOrder", map);
+	}
+
+	@Override
+	public int countRef(int ref) throws Exception {
+
+		return ses.selectOne(ns+".countRef", ref);
+	}
+
+	@Override
+	public int selectMin(int ref) throws Exception {
+		
+		return ses.selectOne(ns+".minRef", ref);
+	}
+
+	@Override
+	public int stepNum(int bno) throws Exception {
+
+		return ses.selectOne(ns+".minNum", bno);
+	}
+
+	@Override
+	public int updateReplyRefOrder(int cntRef, int maxNo, int step) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("refOrder", cntRef+"");
+		map.put("bno", maxNo+"");
+		map.put("step", step+"");
+		return ses.update(ns+".updateStep", map);
 	}
 
 	

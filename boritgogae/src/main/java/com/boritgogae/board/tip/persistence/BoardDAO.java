@@ -31,7 +31,15 @@ public interface BoardDAO {
 
 	public int selectRefOrder(int maxNo) throws Exception;
 
-	public int updateReplyRefOrder(int ref, int refOrder) throws Exception;
+	public int updateReplyRefOrder(int cntRef,  int maxNo) throws Exception;
+
+	public int countRef(int ref) throws Exception;
+
+	public int selectMin(int ref) throws Exception;
+
+	public int stepNum(int bno) throws Exception;
+
+	public int updateReplyRefOrder(int cntRef, int maxNo, int step) throws Exception;
 
 
 }
