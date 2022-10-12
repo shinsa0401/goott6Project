@@ -67,7 +67,7 @@
 		</div>
 		<nav class="humberger__menu__nav mobile-menu">
 			<ul>
-				<li class="active"><a href="./index.html">Home</a></li>
+				<li class="active"><a href="/">Home</a></li>
 				<li><a href="./shop-grid.html">Shop</a></li>
 				<li><a href="./blog.html">병원</a></li>
 				<li><a href="./contact.html">게시판</a>
@@ -81,6 +81,7 @@
 					<ul class="header__menu__dropdown">
 						<li><a href="/board/notice/list">공지사항</a></li>
 						<li><a href="./shoping-cart.html">문의게시판</a></li>
+						<li><a href="/admin/main">관리자 페이지(임시)</a></li>
 					</ul></li>
 			</ul>
 		</nav>
@@ -113,7 +114,7 @@
 				<div class="col-lg-6">
 					<nav class="header__menu">
 						<ul>
-							<li class="active"><a href="./index.html">Home</a></li>
+							<li class="active"><a href="/">Home</a></li>
 							<li><a href="./shop-grid.html">Shop</a></li>
 							<li><a href="./blog.html">병원</a></li>
 							<li><a href="./contact.html">게시판</a>
@@ -127,6 +128,7 @@
 								<ul class="header__menu__dropdown">
 									<li><a href="/board/notice/list">공지사항</a></li>
 									<li><a href="./shoping-cart.html">문의게시판</a></li>
+									<li><a href="/admin/main">관리자 페이지(임시)</a></li>
 								</ul></li>
 						</ul>
 					</nav>

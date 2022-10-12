@@ -141,8 +141,6 @@
 			
 		});
 		
-		
-		output += '<li class="list-group-item"></li>';
 		output += '</ul>';
 		
 		
@@ -390,6 +388,10 @@
 	position: absolute;
 	left: 50%;
 
+}
+
+.container {
+	margin-bottom: 30px;
 }
 </style>
 
