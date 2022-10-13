@@ -36,12 +36,13 @@
 
 </head>
 <body>
+	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 	
-	<!-- Humberger Begin -->
+	<!-- Humberger Begin 모바일 -->
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="#"><img src="img/logo.png" alt=""></a>
+            
         </div>
         <div class="humberger__menu__cart">
             <ul>
@@ -52,26 +53,27 @@
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
-                <img src="img/language.png" alt="">
-                <div>English</div>
+                
+                <div>Korean</div>
                 <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li><a href="#">Spanis</a></li>
+                    <li><a href="#">Korean</a></li>
                     <li><a href="#">English</a></li>
                 </ul>
             </div>
             
         </div>
+        <!-- 모바일 메뉴 -->
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="./index.html">Home</a></li>
+                <li class="active"><a href="${contextPath}/">Home</a></li>
                 <li><a href="./shop-grid.html">Shop</a></li>
                 <li><a href="./blog.html">병원</a></li>
                 <li><a href="./contact.html">게시판</a>
                 	<ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">자유게시판</a></li>
-                        <li><a href="./shoping-cart.html">질문게시판</a></li>
-                        <li><a href="./checkout.html">장터게시판</a></li>
+                        <li><a href="${contextPath}/board/question">질문게시판</a></li>
+                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
                         <li><a href="./blog-details.html">고개팁</a></li>
                     </ul>
                 </li>
@@ -100,27 +102,27 @@
     <!-- Humberger End -->
     
 	
-	<!-- Header Section Begin -->
+	<!-- Header Section Begin PC버전 -->
     <header class="header">
         
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-			                <li class="active"><a href="./index.html">Home</a></li>
+			                <li class="active"><a href="${contextPath}/">Home</a></li>
 			                <li><a href="./shop-grid.html">Shop</a></li>
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
-			                        <li><a href="./shoping-cart.html">질문게시판</a></li>
-			                        <li><a href="/boardMarket/listAll">장터게시판</a></li>
+			                        <li><a href="${contextPath}/board/question">질문게시판</a></li>
+			                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
 			                        <li><a href="./blog-details.html">고개팁</a></li>
 			                    </ul>
 			                </li>
@@ -154,7 +156,7 @@
     
     
     <!-- Hero Section Begin -->
-    <section class="hero">
+    <section class="hero hero-normal">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -196,7 +198,6 @@
                             </div>
                         </div>
                     </div>
-                   
                 </div>
             </div>
         </div>
