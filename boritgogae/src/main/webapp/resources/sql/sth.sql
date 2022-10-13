@@ -259,6 +259,7 @@ select * from questionReadCount where bno = 1 and ipAddr = '211.21.31.43';
 -- select count(*) as cnt from board
 
 -- 검색된 글의 개수 얻어오기
+select count(*) as cnt from questionBoard where content like '%세종%';
 -- select count(*) as cnt from board where
 --   <if test="searchType == 'writer'">
 -- 	writer like concat('%', #{searchWord}, '%')

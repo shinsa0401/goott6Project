@@ -18,7 +18,7 @@ public interface BoardService {
 	public Map<String, Object> viewBoard(int no) throws Exception;
 
 	// 게시글 수정
-	public boolean modifyBoard(BoardVo board) throws Exception;
+	public boolean modifyBoard(BoardVo board, List<UploadFile> uploadFileLst) throws Exception;
 	
 	// 게시글 삭제(삭제여부 업데이트)
 	public boolean removeBoard(int no, String pwd) throws Exception;

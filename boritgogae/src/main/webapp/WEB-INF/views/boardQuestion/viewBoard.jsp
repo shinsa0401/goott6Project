@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page session="false" %>
 <!DOCTYPE html>
 <html>
@@ -36,9 +37,11 @@
 	// 삭제 모달에서 비밀번호 입력후 삭제
 	function removeBoard() {
 		
-		let no = ${board.no};
+		let no = ${board.no };
 		let pwd = $("#pwd").val();
+		
 		let url = "/board/question/remove";
+		
 		
 		$.ajax({
 	        url: url, // 데이터 송수신될 주소
@@ -119,23 +122,30 @@
 	            outputReply(data); // 댓글 출력
 	        },
 	        error: function (e) {
-				console.log(e);
+				
 			}
 		});
 		
+	}
+	
+	// 댓글목록 열고 닫기
+	function replyTop() {
+		if ($(".replyAllCon").css("display") == "none") {
+			$(".replyAllCon").show();
+		} else {
+			$(".replyAllCon").hide();
+		}
 	}
 	
 	// 댓글 출력하는 메서드
 	function outputReply(data) {
 		let step = 0;
 		
-		let output = "";
+		let output = "<div id='replyTop' onclick='replyTop();'><a class='list-group-item list-group-item-action'><div>댓글 ${board.replyCount} 개</div></a></div>";
 		output += "<div class='list-group replyAllCon'>";
 		$.each(data, function(i, item) {
 			
 			step = data[i].step;
-			console.log(i + "번째 댓글 step : " +step);
-			
 			
 			//style='position: relective; left: 30px;'
 			if (step > 0) {
@@ -156,16 +166,14 @@
 				output += "<a class='list-group-item list-group-item-action replyA'>";
 				output += "<div>";
 				output += "<div class='replyWriter'>" + item.replyWriter + "</div>";
+				output += "<div class='replyWrittenDate'>" + item.replyWrittenDate + "</div>";
 				output += "<div class='iconsDiv'>";
 				output += "<span id='toggle"+item.rno+"' onclick='showModifyReply(" + item.rno + ")'><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_modify.png'; />수정</span>";
 				output += "<span onclick='showRemoveReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_trash.png' />삭제</span>";
 				output += "<span onclick='showReReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_reply.png' />댓글</span>";
 				output += "</div>";
 				output += "<div class='replyContent'>" + item.replyContent + "</div>";
-				output += "<div class='replyWrittenDate'>" + item.replyWrittenDate + "</div>";
-				output += "</div>";
-				output += "</a>";
-				output += "</div>";
+				output += "</div></a></div>";
 				output += "</div>";
 				
 				
@@ -174,15 +182,14 @@
 				output += "<a class='list-group-item list-group-item-action'>";
 				output += "<div>";
 				output += "<div class='replyWriter'>" + item.replyWriter + "</div>";
+				output += "<div class='replyWrittenDate'>" + item.replyWrittenDate + "</div>";
 				output += "<div class='iconsDiv'>";
 				output += "<span id='toggle"+item.rno+"' onclick='showModifyReply(" + item.rno + ")'><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_modify.png'; />수정</span>";
 				output += "<span onclick='showRemoveReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_trash.png' />삭제</span>";
 				output += "<span onclick='showReReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_reply.png' />댓글</span>";
 				output += "</div>";
 				output += "<div class='replyContent'>" + item.replyContent + "</div>";
-				output += "<div class='replyWrittenDate'>" + item.replyWrittenDate + "</div>";
-				output += "</div></a>";
-				output += "</div>";
+				output += "</div></a></div>";
 			}
 			
 			// 댓글 수정
@@ -192,8 +199,7 @@
 			output += "<input type='text' class='form-control' id='replyWriter"+item.rno+"' value='${sessionScope.loginMember.userId }' />"
 			output += "<textarea rows='5' class='form-control' id='replyContent"+item.rno+"'>"+item.replyContent+"</textarea>"
 			output += "<button type='button' class='btn btn-info' onclick='modifyReply("+item.rno+");'>작성</button>"
-			output += "</div>"
-			output += "</a></div>";
+			output += "</div></a></div>"
 			
 			// 댓글의 댓글
 			output += "<div class='reReplyForm' id='reReplyForm"+item.rno+"'>";
@@ -202,9 +208,7 @@
 			output += "<input type='text' class='form-control' id='reReplyWriter"+item.rno+"' value='${sessionScope.loginMember.userId }' />"
 			output += "<textarea rows='5' class='form-control' id='reReplyContent"+item.rno+"'></textarea>"
 			output += "<button type='button' class='btn btn-info' onclick='reReply("+item.rno+");'>작성</button>"
-			output += "</div>"
-			output += "</a></div>";
-			
+			output += "</div></a></div>"
 		});
 		
 		output += "</div>";
@@ -371,6 +375,12 @@
 	
 </script>
 <style>
+	
+	#pwdCheckText {
+		font-size: 20px;
+		color: red;
+		margin-left: 20px;
+	}
 
 	.emptyImg {
 		float: left;
@@ -387,6 +397,7 @@
 	
 	.replyAllcon {
 		position: relative;
+		
 	}
 	
 	.reReplyImgcon {
@@ -400,80 +411,32 @@
 	
 	.iconsDiv {
 		float: right;
-	}
-	
-	#pwdCheckText {
-		font-size: 20px;
-		color: red;
-		margin-left: 20px;
+		font-size: 13px;
 	}
 	
 	#btns {
-		
 		text-align: right;
 		margin-right: 10px;
 		margin-bottom: 10px;
 	}
 	
-	.body {
-		display: table-cell;
-		padding: 11px;
-		vertical-align: middle;
+	.replyContent {
+		font-size: 20px;
+		margin-top: 10px;
+		border-top: 1px solid lightgrey;
+		padding-top: 25px;
+		padding-bottom: 25px;
 	}
 	
-	div .no {
-		display: none;
-	}
-	
-	.line1 {
-		height: 60px;
-		border-top: 1px solid;
-		border-bottom: 1px solid;
-		background-color: #FCFCFC;
+	.replyWrittenDate {
+		display:inline-block;
+		color: grey;
+		padding-left: 20px;
 		
 	}
 	
-	
-	#title {
-		display: inline-block;
-		position:relative;
-		overflow: auto;
-		width: auto;
-		font-size: 25px;
-	}
-	
-	#writtenDate {
-		position:relative;
-		float:right;
-		width: 170px;
-		font-size: 15px;
-	}
-	
-	#writer {
-		float: left;
-		width: 600px;
-		font-size: 15px;
-	}
-	
-	#count {
-		width: 200px;
-		font-size: 15px;
-		float: right;
-	}
-	
-	.content {
-		margin-top: 50px;
-		display: block;
-		text-align: left;
-	
-	}
-	
-	#replyDiv {
-		display: block;
-		
-	}
-	
-	#replyContent {
+	.replyWriter {
+		display:inline-block;
 		
 	}
 	
@@ -484,6 +447,65 @@
 	.reReplyForm {
 		display: none;
 	}
+	
+	.board1 {
+		height: 60px;
+		border-top: 2px solid;
+		border-bottom: 2px solid;
+		background-color: #FCFCFC;
+		margin-top: 15px;
+		display : flex;
+		justify-content : center;
+		align-items : center;
+	}
+	
+	.board2 {
+		height: 50px;
+		border-bottom: 1px solid lightgrey;
+		display : flex;
+		justify-content : center;
+		align-items : center;
+	}
+	
+	.board3 {
+		height: auto;
+		border-bottom: 1px solid lightgrey;
+	}
+	
+	.board4 {
+		height: auto;
+		border-bottom: 1px solid;
+	}
+	
+	#title {
+		font-size: 25px;
+		padding-left: 30px;
+	}
+	
+	#writtenDate {
+		text-align: center;
+	}
+	
+	#writer {
+		padding-left: 30px;
+	}
+	
+	#readCount {
+		text-align: right;
+		padding-left: 30px;
+	}
+	
+	#replyCount {
+		text-align: center;
+		padding-left: 30px;
+	}
+	
+	#content {
+		margin-top: 20px;
+		margin-bottom: 20px;
+		padding: 20px;
+	}
+	
 </style>
 </head>
 <body>
@@ -492,112 +514,49 @@
 	
 	<div class="container">
 	
-		<h4>게시글 상세 화면</h4>
-	    	<table class="board_detail">
-				<colgroup>
-					<col width="15%"/>
-					<col width="35%"/>
-					<col width="15%"/>
-					<col width="35%"/>
-				</colgroup>
-				<caption>게시글 상세내용</caption>
-				<tbody>
-					<tr>
-						<th>글 번호</th>
-						<td th:text="${board.no}"></td>
-						<th scope="row">조회수</th>
-						<td th:text="${board.readCount}"></td>
-					</tr>
-					<tr>
-						<th>작성자</th>
-						<td>${board.writer}</td>
-						<th>작성일</th>
-						<td><fmt:formatDate value="${board.writtenDate }" 
-						pattern="yyyy-MM-dd HH:mm" /></td>
-					</tr>
-					<tr>
-						<th scope="row">제목</th>
-						<td colspan="3">
-							<input type="text" id="title" name="title" 
-								th:value="${board.title }"/>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="4" class="view_text">
-							<textarea title="내용" id="contents" name="contents" 
-								th:text="${board.content }"></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="container">
-		
-		<div class="board">
-			<div class="mb-3 mt-3 no">
-				${board.no }
+			<div class="row board1">
+				<div class="col-6 col-sm-9" id="title">${board.title }</div>
+				<div class="col-6 col-sm-3" id="writtenDate"><fmt:formatDate value="${board.writtenDate }" 
+						pattern="yyyy-MM-dd HH:mm" /></div>
 			</div>
 			
-			<div class="mb-3 mt-3 line1">
-				<div id="title" class="body">${board.title }</div>
-				<div id="writtenDate" class="body">
-					<fmt:formatDate value="${board.writtenDate }" 
-						pattern="yyyy-MM-dd HH:mm" />
+			<div class="row board2">
+				<div class="col-6 col-sm-6" id="writer">작성자 : ${board.writer }</div>
+				<div class="col-6 col-sm-3 line2" id="readCount">조회수 : ${board.readCount }</div>
+				<div class="col-6 col-sm-3 line2" id="replyCount">댓글 : ${board.replyCount }</div>
+			</div>
+			
+			<div class="row board3">
+				<div id="content">${board.content }</div>
+			</div>
+			
+			<div class="row board4">
+				<div class="attachFiles ">
+					<c:forEach var="file" items="${fileList }">
+						<c:if test="${file.thumbnailFileName == null }">
+							<div class="files"><a href="/resources/uploads/${file.originFileName }">${fn:split(file.originFileName,"_")[1]}</a></div>
+						</c:if>
+					</c:forEach>
 				</div>
-			</div>
 			
-			<div class="mb-3 mt-3">
-				<div id="writer" class="body">작성자 : ${board.writer }</div>
-				<div id="count">
-					<span id="readCount" class="body">조회수 : ${board.readCount }</span>
-					<span id="replyCount" class="body ">댓글 : ${board.replyCount }</span>
+				<div class="attachImgFiles">
+					<c:forEach var="imgFiles" items="${fileList }">
+						<c:if test="${imgFiles.thumbnailFileName != null }">
+							<div class="imgFile"><img src="/resources/uploads/${imgFiles.originFileName }">${fn:split(imgFiles.originFileName,"_")[1]}</div>
+						</c:if>
+					</c:forEach>
 				</div>
+				
 			</div>
-			
-			<div class="mb-3 mt-3 content">
-				<span id="content" class="body">${board.content }</span>
-			</div>
-			
-			
-			
-			<div class="mb-3 mt-3 attachFiles line4">
-				<label for="attachFiles" class="form-label">첨부파일 : </label>
-				<c:forEach var="file" items="${fileList }">
-					<c:if test="${file.thumbnailFileName == null }">
-						<div class="files"><a href="/resources/uploads/${file.originFileName }">${file.originFileName }</a></div>
-					</c:if>
-				</c:forEach>
-			</div>
-			
-			
-			<div class="mb-3 mt-3 attachImgFiles line4">
-				<c:forEach var="imgFiles" items="${fileList }">
-					<c:if test="${imgFiles.thumbnailFileName != null }">
-						<div class="imgFile"><img src="/resources/uploads/${imgFiles.originFileName }"></div>
-					</c:if>
-				</c:forEach>
-			</div>
-		</div>
-		
-		
+	
+	
 			<br />
 	
 	
 		<div id="btns">
 	         <button type="button" class="btn btn-primary" onclick="location.href='/board/question/modify?no=${board.no}';">수정</button>
 	         <button type="button" class="btn btn-danger" onclick="removeModal();">삭제</button>
+	         <button type="button" class="btn btn-secondary" onclick="javascript:history.back();">뒤로가기</button>
 	         <button type="button" class="btn text-white" style="background-color: #7FAD39;"
 	            onclick="location.href='/board/question?pageNo=1';">전체목록</button>
 	    </div>
@@ -612,7 +571,7 @@
 			<input type="text" class="form-control" id="replyWriter" value="${sessionScope.loginMember.userId }" />
 			<textarea rows="5" class="form-control" id="replyContent"></textarea>
 			<button type="button" class="btn btn-primary"
-	            onclick="addReply();">댓글 등록</button>
+	            onclick="addReply();">댓글등록</button>
 		</div>
 	</div>
 	

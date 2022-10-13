@@ -8,7 +8,7 @@
 <head> 
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
@@ -24,7 +24,7 @@
 	//이 페이지에서 선언한 제이쿼리를 사용하겠다
 	let newJquery = $.noConflict(true);
 	
-	// 이 페이지에 선언된 제이쿼리로 접근 ($대신 newJquery)
+	// 이 페이지에 선언된 제이쿼리로 접근 ($대신 $)
 	newJquery(function() {
 		
 		// 서머노트
@@ -54,11 +54,11 @@
 		});
 		
 		// on() : 동적으로 생성된 태그에 대하여 이벤트 등록, 여러개의 이벤트를 한꺼번에 태그에 등록할 때 사용
-		newJquery(".fileDrop").on("dropenter dragover", function(event) {
+		$(".fileDrop").on("dropenter dragover", function(event) {
 			event.preventDefault(); // 이벤트 무효화
 		});
 		
-		newJquery(".fileDrop").on("drop", function(evt) {
+		$(".fileDrop").on("drop", function(evt) {
 			evt.preventDefault(); // 이벤트가 전파되어 드롭된 파일이 웹브라우저에서 열리는 것을 방지
 			
 			let files = evt.originalEvent.dataTransfer.files;
@@ -69,7 +69,7 @@
 			
 			let url = "/board/question/uploadFile";
 			
-			newJquery.ajax({
+			$.ajax({
 		         url : url, // 데이터 송수신될 주소 
 		         type : "post", // 통신 방식(get, post)
 				 data : formData, // 전송할 데이터
@@ -98,7 +98,7 @@
 	function writeCancel(no) {
 		let url = "/board/question/writeCancel";
 		
-		newJquery.ajax({
+		$.ajax({
 	         url : url, // 데이터 송수신될 주소 
 	         type : "post", // 통신 방식(get, post)
 			 dataType : "text", // 수신받을 데이터 타입
@@ -118,12 +118,12 @@
 	
 	// 업로드공간에 올라간 파일 지움
 	function deleteFile(obj) {
-		let deleteFileName = newJquery(obj).attr("id");
+		let deleteFileName = $(obj).attr("id");
 		let url = "/board/question/deleteFile";
 		
 		console.log(deleteFileName);
 		
-		newJquery.ajax({
+		$.ajax({
 	         url : url, // 데이터 송수신될 주소 
 	         type : "post", // 통신 방식(get, post)
 			 data : {"deleteFileName": deleteFileName }, // 전송할 데이터
@@ -133,8 +133,8 @@
 	            
 	         	if (data == "success") {
 	         		alert("삭제");
-	         		newJquery(obj).prev().remove(); // 파일 화면에서 지움
-	         		newJquery(obj).remove(); // 삭제이미지 삭제		
+	         		$(obj).prev().remove(); // 파일 화면에서 지움
+	         		$(obj).remove(); // 삭제이미지 삭제		
 	         	}
 	         	
 	         }
@@ -153,25 +153,33 @@
 		
 		output += "<img src='/resources/img/sth_trash.png' width='50px' id='" + data.savedOriginImageFileName + "' class='minusBtn' onclick='deleteFile(this);' />";
 		console.log(data.savedOriginImageFileName);
-		newJquery(".upFileList").append(output);
+		$(".upFileList").append(output);
 	}
 	
-	
+	let beforeFileList = new Array();
 	// 기존에 업로드되었던 파일 삭제 ------- 미완
 	function deleteBeforeFile(obj) {
-		let beforeFile = newJquery(obj).attr("id");
 		
-		console.log(beforeFile);
+		let beforeFile = $(obj).attr("id");
+		
+		beforeFileList.push(beforeFile);
+		
+		console.log(beforeFileList);
+		
+		$(obj).prev().remove(); // 파일 화면에서 지움
+ 		$(obj).remove(); // 삭제이미지 삭제	
+		
+		// console.log(beforeFile);
 		
 	}
 	
 	
 	// 첨부파일 공간 열림
 	function openArea() {
-		if (newJquery("#fileDrop").css("display") == "block") {
-			newJquery("#fileDrop").hide();
+		if ($("#fileDrop").css("display") == "block") {
+			$("#fileDrop").hide();
 		} else {
-			newJquery("#fileDrop").show();
+			$("#fileDrop").show();
 		}
 	}
 </script>
@@ -273,22 +281,19 @@
 						</div>
 					</div>
 				</div>
+				</div>
 				
 				<div class="mb-3 mt-3">
 					<label for="pwd" class="form-label">비밀번호</label> 
-					<input type="password" class="form-control" id="pwd" name="pwd">
+					<input type="password" class="form-control" id="pwd" name="pwd" />
 				</div>
 				
+				<div class="btns" style="text-align: center;">
+						<button type="submit" class="btn text-white" style="background-color: #7FAD39;">수정</button>
+						<button type="reset" class="btn btn-secondary"
+							onclick="writeCancel(${board.no});">취소</button>
+				</div>
 			</div>
-		
-		
-		
-			<div class="btns" style="text-align: center;">
-					<button type="submit" class="btn text-white" style="background-color: #7FAD39;">수정</button>
-					<button type="reset" class="btn btn-secondary"
-						onclick="writeCancel(${board.no});">취소</button>
-			</div>
-	
 		</form>
 	</div>
 	
