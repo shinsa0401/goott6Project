@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page session="false"%>
 
 <!DOCTYPE html>
@@ -11,6 +12,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>보릿고개 | 관리자페이지</title>
+
+<script>
+	let nowDate = new Date().getTime();
+	
+</script>
 
 </head>
 	<jsp:include page="header.jsp"></jsp:include>
@@ -24,15 +30,15 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">Dashboard</h1>
+              <h1 class="m-0">대시보드</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard v1</li>
-              </ol>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
+            	<ol class="breadcrumb float-sm-right">
+              		<li class="breadcrumb-item"><a href="/admin/main">Home</a></li>
+              		<li class="breadcrumb-item active">대시보드</li>
+            	</ol>
+          	</div>
+        </div><!-- /.row -->
         </div><!-- /.container-fluid -->
       </div>
       <!-- /.content-header -->
@@ -48,7 +54,7 @@
                 <div class="inner">
                   <h3>150</h3>
 
-                  <p>New Orders</p>
+                  <p>새로운 주문</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
@@ -56,29 +62,19 @@
                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
+            
             <!-- ./col -->
             <div class="col-lg-3 col-6">
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
-                  <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-                  <p>Bounce Rate</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-stats-bars"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-              <!-- small box -->
-              <div class="small-box bg-warning">
-                <div class="inner">
-                  <h3>44</h3>
-
-                  <p>User Registrations</p>
+                <c:forEach items="${members }" var="member">
+                	<fmt:parseDate var="memberDate"  value="${member.joinDate}" pattern="yyyy-MM-dd" />
+				
+                </c:forEach>
+               	
+                  <h3>${nowDate }</h3>
+                  <p>최근 30일간 가입한 회원</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
@@ -86,14 +82,29 @@
                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
+            
             <!-- ./col -->
             <div class="col-lg-3 col-6">
               <!-- small box -->
-              <div class="small-box bg-danger">
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h3>${fn:length(members)}</h3>
+                  <p>총 회원 수</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-person"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+            
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-warning">
                 <div class="inner">
                   <h3>65</h3>
-
-                  <p>Unique Visitors</p>
+                  <p>재고가 부족한 상품</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-pie-graph"></i>
@@ -126,6 +137,7 @@
                     </ul>
                   </div>
                 </div><!-- /.card-header -->
+                
                 <div class="card-body">
                   <div class="tab-content p-0">
                     <!-- Morris chart - Sales -->

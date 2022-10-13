@@ -26,6 +26,16 @@
 	function viewBoard(bno) {
 		location.href="/board/notice/view?no=" + bno;
 	}
+	
+	$(function() {
+		for(let i = ${pagingInfo.startNumOfCurPagingBlock }; i <= ${pagingInfo.endNumOfCurPagingBlock }; i++) {
+			console.log(document.getElementById(i).innerHTML);
+			if(pageNo == document.getElementById(i).innerHTML) {
+				$("#" + i).parent('li').addClass("active");
+			}
+		}
+		
+	});
 </script>
 <style>
 tr {
@@ -94,7 +104,7 @@ tr {
 					test="${pagingInfo.endNumOfCurPagingBlock > pagingInfo.totalPage }">
 					<c:forEach var="i" begin="${pagingInfo.startNumOfCurPagingBlock }"
 						end="${pagingInfo.totalPage }" step="1">
-						<li class="page-item"><a class="page-link"
+						<li class="page-item"><a class="page-link" id="${i }"
 							href="/board/notice/list?pageNo=${i }">${i }</a></li>
 					</c:forEach>
 				</c:when>
@@ -102,7 +112,7 @@ tr {
 				<c:otherwise>
 					<c:forEach var="i" begin="${pagingInfo.startNumOfCurPagingBlock }"
 						end="${pagingInfo.endNumOfCurPagingBlock }" step="1">
-						<li class="page-item"><a class="page-link"
+						<li class="page-item"><a class="page-link" id="${i }"
 							href="/board/notice/list?pageNo=${i }">${i }</a></li>
 					</c:forEach>
 				</c:otherwise>

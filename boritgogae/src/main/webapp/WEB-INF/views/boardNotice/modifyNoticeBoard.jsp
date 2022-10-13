@@ -132,7 +132,7 @@
 
 		<div class="checkout__form">
 			<h4>No. ${board.bno }</h4>
-			<form action="/board/notice/modify" method="post">
+			<form action="/board/notice/modifyBoard" method="post">
 				<div class="row">
 					<div class="col-lg-8 col-md-6">
 						<div class="checkout__input">

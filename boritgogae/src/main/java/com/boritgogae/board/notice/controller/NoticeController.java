@@ -115,7 +115,7 @@ public class NoticeController {
 	}
 	
 	// 수정할 공지 글 번호 가져오기
-	@RequestMapping(value="/bnoToModify")
+	@RequestMapping(value="/modify")
 	public String bnoToModify(@RequestParam("bno") String bno, Model model) throws Exception {
 		int no = Integer.parseInt(bno);
 		NoticeVo board = service.viewBoard(no);
@@ -126,7 +126,7 @@ public class NoticeController {
 	}
 	
 	// 공지 글 수정
-	@RequestMapping(value="/modify")
+	@RequestMapping(value="/modifyBoard")
 	public String modifyBoard(NoticeVo board) throws Exception {
 		if(service.modifyBoard(board)) {
 			System.out.println("수정 완료");

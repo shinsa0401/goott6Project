@@ -311,7 +311,7 @@
 	});
 	
 	function modify() {
-		location.href="/board/notice/bnoToModify?bno=" + ${board.bno};
+		location.href="/board/notice/modify?bno=" + ${board.bno};
 	}
 	
 </script>
