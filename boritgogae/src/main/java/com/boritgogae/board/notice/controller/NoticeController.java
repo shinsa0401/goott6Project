@@ -44,7 +44,6 @@ public class NoticeController {
 	// 공지사항 가져오기
 	@RequestMapping(value="/list")
 	public String getNoticeBoard(Model model, @RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo, RedirectAttributes rttr) throws Exception {
-		System.out.println("noticeController");
 		
 		if(pageNo < 1) {
 			pageNo = 1;
@@ -54,7 +53,6 @@ public class NoticeController {
 		List<NoticeVo> list = (List<NoticeVo>)map.get("boardList");
 		PagingInfo pi = (PagingInfo)map.get("pagingInfo");
 		
-		System.out.println(list);
 		
 		model.addAttribute("pagingInfo", pi);
 		model.addAttribute("list", list);
@@ -104,7 +102,7 @@ public class NoticeController {
 		int no = Integer.parseInt(bno);
 		
 		ResponseEntity<String> result = null;
-		System.out.println(no);
+
 		if(service.deleteBoard(no)) {
 			result = new ResponseEntity<String>("success", HttpStatus.OK);
 		} else {
