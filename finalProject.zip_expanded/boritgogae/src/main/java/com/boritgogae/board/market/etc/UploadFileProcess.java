@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 import org.imgscalr.Scalr;
 import org.springframework.util.FileCopyUtils;
 
-
 public class UploadFileProcess {
 	
 	/**
@@ -42,7 +41,7 @@ public class UploadFileProcess {
 		FileCopyUtils.copy(file, originTarget); //원본 파일 저장
 		
 		if(ImgMediaConfirm.getMediaType(contentType.toLowerCase()) !=null){//이미지 파일이면....
-			System.out.println("이미지 파일");
+			System.out.println("여기 이미지 파일");
 			upFile.setImage(true);
 			
 			String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);  //파일 확장자
@@ -73,7 +72,7 @@ public class UploadFileProcess {
 			upFile.setNotImageFileName(savePath +File.separator+saveFileName);  //이미지가 아닌 경우의 파일 이름
 			
 		}
-		
+		System.out.println("뭐일까~~~~~"+upFile.toString());
 		return upFile;
 		
 	}
@@ -88,9 +87,9 @@ public class UploadFileProcess {
 	public static String calcSavePath(String upPath) {
 		Calendar cal = Calendar.getInstance();
 		
-		String yearPath = File.separator + cal.get(Calendar.YEAR) + ""; //  \2022
-		String monthPath = yearPath+ File.separator + new DecimalFormat("00").format(cal.get(Calendar.MONTH)+1); // \2022\09
-		String datePath = monthPath+ File.separator + new DecimalFormat("00").format(cal.get(Calendar.DATE)); // \2022\09\13
+		String yearPath = File.separator + cal.get(Calendar.YEAR) + ""; 
+		String monthPath = yearPath+ File.separator + new DecimalFormat("00").format(cal.get(Calendar.MONTH)+1); 
+		String datePath = monthPath+ File.separator + new DecimalFormat("00").format(cal.get(Calendar.DATE)); 
 		
 		System.out.println(upPath+datePath);
 		
@@ -109,7 +108,7 @@ public class UploadFileProcess {
 	private static void makeDir(String upPath, String...paths) {  
 		// String... : string타입의 매개변수로 가변인자 배열로 받을 것임을 컴파일러에게 알려줌. 
 		// yearPath,monthPath,datePath 값을 paths라는 이름의 배열로 넘겨준다
-		if(new File(upPath +paths[paths.length-1]).exists()){ //upPath밑에 \2022\09\13폴더가 있는지 확인
+		if(new File(upPath +paths[paths.length-1]).exists()){ 
 			// 해당 경로가 존재한다... 폴더를 생성할 필요가 없다
 			return;
 		}
@@ -117,7 +116,7 @@ public class UploadFileProcess {
 		for(String path : paths) {
 			File dirPath = new File(upPath +path);
 			
-			if(!dirPath.exists()) { //paths[0] : yearPath가 없다면, 배열
+			if(!dirPath.exists()) {
 				dirPath.mkdir(); //실제 디렉토리(폴더) 생성
 			}
 			

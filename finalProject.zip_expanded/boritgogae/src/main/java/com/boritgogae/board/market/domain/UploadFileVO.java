@@ -4,51 +4,60 @@ package com.boritgogae.board.market.domain;
 public class UploadFileVo {
 	private int no;
 	private int bno;
-	private String originalFileName;
+	private String originFileName;
 	private String thumbnailFileName;
+	
 	
 	public UploadFileVo() {
 		super();
 	}
-	
-	public UploadFileVo(int no, int bno, String originalFileName, String thumbnailFileName) {
+
+	public UploadFileVo(int no, int bno, String originFileName, String thumbnailFileName) {
 		super();
 		this.no = no;
 		this.bno = bno;
-		this.originalFileName = originalFileName;
+		this.originFileName = originFileName;
 		this.thumbnailFileName = thumbnailFileName;
 	}
-	
+
 	public int getNo() {
 		return no;
 	}
+
 	public void setNo(int no) {
 		this.no = no;
 	}
+
 	public int getBno() {
 		return bno;
 	}
+
 	public void setBno(int bno) {
 		this.bno = bno;
 	}
-	public String getOriginalFileName() {
-		return originalFileName;
+
+	public String getOriginFileName() {
+		return originFileName;
 	}
-	public void setOriginalFileName(String originalFileName) {
-		this.originalFileName = originalFileName;
+
+	public void setOriginFileName(String originFileName) {
+		this.originFileName = originFileName;
 	}
+
 	public String getThumbnailFileName() {
 		return thumbnailFileName;
 	}
+
 	public void setThumbnailFileName(String thumbnailFileName) {
 		this.thumbnailFileName = thumbnailFileName;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "UploadFileVo [no=" + no + ", bno=" + bno + ", originalFileName=" + originalFileName
-				+ ", thumbnailFileName=" + thumbnailFileName + "]";
+		return "UploadFileVo [no=" + no + ", bno=" + bno + ", originFileName=" + originFileName + ", thumbnailFileName="
+				+ thumbnailFileName + "]";
 	}
+	
 	
 	
 }

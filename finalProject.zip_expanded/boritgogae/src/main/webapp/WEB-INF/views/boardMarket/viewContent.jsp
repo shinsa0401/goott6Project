@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +35,7 @@
 	//댓글 등록
 	function replyWrite() {
 		let bno = ${board.no };
-		let replyer = $("#writer").val();  //아직
+		let replyer = $("#writer").val();  //로그인 한 회원인지 검사 해야함
 		let replyContent = $("#replyContent").val();
 		let url = "/reply";
 		let sendData = JSON.stringify({bno : bno, replyer : replyer, replyContent : replyContent}); 
@@ -44,6 +44,12 @@
 		console.log("bno찾기"+bno);
 		console.log(sendData);
 		
+		
+		//댓글이 공백일 경우 저장되지 않는다
+		if(replyContent==""){
+			alert("댓글을 입력하세요");
+		
+		}else{
 		
 		 $("#replyContent").val("");
 		 $("#replyDiv").hide();
@@ -72,6 +78,7 @@
 			}
 			
 		 });
+	}
 	}
 	
 	// 현재 글의 모든 댓글을 얻어오는 메서드
@@ -136,7 +143,7 @@
 			$("#modiRno").val(rno);
 			$("#modifyReply").show(); 
 			
-			alert(rno + "번 수정");
+			
 		}
 		
 		//댓글 수정 모달
@@ -145,7 +152,7 @@
 			
 			let replyContent = $("textarea[name=replyContent]" ).val();
 			let url = "/reply/modiReply/"+rno;
-			let sendData = JSON.stringify({ "rno":rno,  replyContent : replyContent});
+			let sendData = JSON.stringify({ "rno":rno,  "replyContent" : replyContent});
 
 			$(".modal-content").hide(); //모달창의 수정 버튼 누르면..
 			
@@ -248,7 +255,7 @@
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
-	
+	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 		<h3 style="font: bold; text-align: center; text-decoration: underline;" >장터 게시판</h3>
 		
 		<div class="viewcontent" style="padding: 100px;">	
@@ -262,31 +269,35 @@
 					<input type="text"  class="form-control" id="title" value="${board.title }"readonly> 
 			</div>
 			
-			<div class="mb-3 mt-3">
-				<label for="content"></label>
-					<textarea class="form-control" id="content" name="content"readonly>${board.content }</textarea>
-			</div>
-			
-			<div class="mb-3 mt-3">
+				<div class="mb-3 mt-3">
 				<label for="attachFiles" class="form-label">첨부파일:</label>
 				<c:forEach var="file" items="${fileList }">
 					<c:if test="${file.thumbnailFileName == null }">
 						<div class="files">
-							<a href="/resources/uploads/${file.originalFileName }">${file.originalFileName }</a>
+							<a href="${contextPath }/resources/uploads/${file.originFileName }">${file.originFileName }</a>
 						</div>
 					</c:if>
 				</c:forEach>
 			</div>
 			
-			<div class="attachImgFiles">
+			<div class="mb-3 mt-3">
+				<label for="content"></label>
+					<label for="content" class="form-control" id="content" name="content" readonly>${board.content }</label>
+					
+					<div class="attachImgFiles">
 					<c:forEach var="imgFiles" items="${fileList }">
 						<c:if test="${imgFiles.thumbnailFileName != null }">
 							<div class="imgFile">
-								<img src="/resources/uploads/${imgFiles.originalFileName }" />
+								<img src="${contextPath }/resources/uploads${imgFiles.originFileName }" />
 							</div>
 						</c:if>
 					</c:forEach>
 				</div>
+			</div>
+			
+		
+			
+			
 			
 			<a href="/boardMarket/modifyContent?no=${board.no }" role="button" class="site-btn">수정</a>
 			<!-- <button type="button" class="btn btn-success"><a href="/boardMarket/modifyContent?no=${board.no }">수정</a></button>
@@ -301,10 +312,11 @@
 		<!-- 댓글 -->
 		<div id="replyDiv" style="display: none">
 			<label for="replyContent" class="form-label">댓글 작성</label> <input
-				type="text" class="form-control" >
-			<textarea rows="5" class="form-control" id="replyContent">
-			</textarea>
-			<button type="button" class="btn btn-primary" onclick="replyWrite();">댓글
+				type="text" class="form-control" placeholder="여기는 작성자 아이디 들어옵니다">
+			<input
+				type="text" rows="5" class="form-control" id="replyContent" >
+			
+			<button type="button" class="site-btn" style="padding: 8px 8px 8px;" onclick="replyWrite();">
 				등록</button>
 		</div>
 

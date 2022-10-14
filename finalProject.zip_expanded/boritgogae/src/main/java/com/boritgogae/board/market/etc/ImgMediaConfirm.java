@@ -13,10 +13,10 @@ public class ImgMediaConfirm {
 		mediaMap = new HashMap<>();
 		
 		//이미지 파일 형식
-		mediaMap.put("imge/jpg", MediaType.IMAGE_JPEG);
-		mediaMap.put("imge/gif", MediaType.IMAGE_GIF);
-		mediaMap.put("imge/png", MediaType.IMAGE_PNG);
-		mediaMap.put("imge/jpeg", MediaType.IMAGE_JPEG);
+		mediaMap.put("image/jpg", MediaType.IMAGE_JPEG);
+		mediaMap.put("image/gif", MediaType.IMAGE_GIF);
+		mediaMap.put("image/png", MediaType.IMAGE_PNG);
+		mediaMap.put("image/jpeg", MediaType.IMAGE_JPEG);
 		
 	}
 	

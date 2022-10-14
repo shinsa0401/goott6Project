@@ -88,10 +88,10 @@
 			
 			
 			<div id="paging" >
-				 <ul class="pagination" >
+				 <ul class="pagination justify-content-center" style="margin:20px 0;  ">
 				 
 				 	<c:if test="${param.pageNo > 1 }">
-				    	<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=1">--</a></li>
+				    	<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=1"><<</a></li>
 				    	
 				    	<c:choose>
 				    		

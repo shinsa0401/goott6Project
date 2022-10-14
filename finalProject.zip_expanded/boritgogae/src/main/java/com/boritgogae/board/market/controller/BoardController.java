@@ -50,8 +50,9 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String wirteBoard(BoardVO board) throws Exception {
-		System.out.println("이거 안되니");
+		System.out.println("컨트롤러 글 썼엉");
 		service.write(board, this.uploadFileLst);
+		this.uploadFileLst.clear();
 		return "redirect:/boardMarket/listAll";
 	}
 	
@@ -96,7 +97,7 @@ public class BoardController {
 		mav.addObject("fileList", fileList);
 		//조회수
 		service.readCnt(bno);
-		
+		System.out.println("~~~~~~~~"+fileList);
 		return mav;
 	}
 	
@@ -148,7 +149,20 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "/writeCancle")
 	public @ResponseBody String writeCancle(HttpServletRequest request) {
-		//파일 지우기도 필요함
+		String upPath = request.getSession().getServletContext().getRealPath("resources/uploads");
+		
+		for(UploadFile uf : this.uploadFileLst) {
+		      new File(upPath + uf.getSavedOriginImageFileName()).delete();  //원본파일 지움
+		      
+			boolean  thumb = false;
+			if (uf.isImage()) { // 이미지인지 확인(이미지면 썸네일도 지워야 함)
+				thumb = new File(upPath + uf.getThumbnailFileName()).delete(); // 썸네일 파일 지움
+				
+			}
+		}
+		
+		this.uploadFileLst.clear();
+		
 		return "success";
 	}
 	
@@ -224,7 +238,7 @@ public class BoardController {
 
 		// 실제 파일 저장 될 경로
 		String upPath = request.getSession().getServletContext().getRealPath("resources/uploads");
-		
+		System.out.println("!!!!!!!!!"+upPath);
 
 		ResponseEntity<UploadFile> result = null;
 
@@ -252,11 +266,18 @@ public class BoardController {
 
 	}
 	
+	/**
+	 * @methodName : delFile
+	 * @author : hsy
+	 * @Date : 2022. 10. 13. :
+	 * @입력 : param :
+	 * @returnType : String
+	 */
 	@RequestMapping(value = "/delFile", method = RequestMethod.POST)
 	public @ResponseBody String delFile(@RequestParam("deleteFileName") String deleteFileName,
 			HttpServletRequest request) {
 		
-
+		
 		// 실제 파일 저장 될 경로
 		String upPath = request.getSession().getServletContext().getRealPath("resources/uploads");
 

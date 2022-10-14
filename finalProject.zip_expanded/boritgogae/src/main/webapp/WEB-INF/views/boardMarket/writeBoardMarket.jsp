@@ -113,8 +113,21 @@
 	}
 </script>
 <style>
+
+	button .site-btns{
+		text-align: center;
+		
+	}
 	.writeForm{
 		padding: 100px;
+	}
+	
+	.fileDrop {
+		width: 100%;
+		height: 300px;
+		display: none;
+		border: 3px dashed olive;
+	
 	}
 </style>
 </head>
@@ -142,7 +155,7 @@
 		</div>
 		
 		<div class="mb-3 mt-3">
-				<button type="button" class="btn btn-info" onclick="openArea();">파일
+				<button type="button" class="site-btn" onclick="openArea();">파일
 					업로드</button>
 				<div class="fileDrop">
 					<div class="fileContent"style="height: 100px;">이 영역에 업로드 할 파일을 드래그 드롭 해 주세요</div>
@@ -152,9 +165,9 @@
 			
 		</div>
 		
-		<div claa="button" style="text-align: center;">
-			<button type="submit" class="btn btn-success">등록</button>
-			<button type="button" class="btn btn-success" onclick="writeCancle();">취소</button>
+		<div class="button" style="text-align: center;">
+			<button type="submit" class="site-btn">등록</button>
+			<button type="button" class="site-btn" onclick="writeCancle();">취소</button>
 		</div>
 	</form>
 
