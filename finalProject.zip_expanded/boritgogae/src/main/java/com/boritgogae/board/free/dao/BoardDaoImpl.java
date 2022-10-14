@@ -13,7 +13,10 @@ import org.springframework.stereotype.Repository;
 import com.boritgogae.board.free.domain.BoardVo;
 import com.boritgogae.board.free.domain.PageHandler;
 import com.boritgogae.board.free.domain.ReplyVo;
+import com.boritgogae.board.free.domain.SearchCondition;
 import com.boritgogae.board.free.domain.SearchCriterria;
+import com.boritgogae.board.free.domain.UploadFileVo;
+
 
 
 @Repository
@@ -73,10 +76,15 @@ public class BoardDaoImpl implements BoardDao {
 		return ses.selectOne(ns+".count");
 	}
 	
+   
 	@Override
 	public List<BoardVo> listAllSearch(SearchCriterria sc) throws Exception {
-		
-		return ses.selectList(ns+".listAllSearch", sc);
+		Map<String, Object>map = new HashMap<String, Object>();
+		map.put("SearchType", sc.getSearchType());
+		map.put("searchWord", sc.getSearchWord());
+//		map.put("page", ph.getPage());
+//		map.put("naviSize", ph.getNaviSize());
+		return ses.selectList(ns+".listAllSearch", map);
 	}
 
 	@Override
@@ -94,9 +102,74 @@ public class BoardDaoImpl implements BoardDao {
 		
 		return ses.update(ns+".updateReplyCnt", map);
 	}
+	
+	@Override
+	   public void imageInsert(int lastNo, String savedOriginImageFileName) throws Exception {
+	      Map<String, String> map = new HashMap<>();
+	      map.put("lastNo", lastNo + "");
+	      map.put("savedOriginImageFileName", savedOriginImageFileName);
+	    
+	      System.out.println("dwdwdwdww"+map.toString());
+	      ses.insert(ns + ".insertImageFile", map);
+	      
+	   }
+
+	   @Override
+	   public void fileInsert(int lastNo, String savedOriginImageFileName) throws Exception {
+	      Map<String, String> map = new HashMap<>();
+	      map.put("lastNo", lastNo + "");
+	      map.put("savedOriginImageFileName", savedOriginImageFileName);
+	      
+	      ses.insert(ns + ".insertFile", map);
+	      
+	   }
+	@Override
+	public int getLastNo()throws Exception{
+		return ses.selectOne(ns+".getLastNo");
+	}
+	
+	@Override
+	public int updateRef(int lastNo)throws Exception{
+		return ses.update(ns+".updateRef", lastNo);
+	}
+
+	@Override
+	public List<UploadFileVo> Fileview(int bno) throws Exception {
+		
+		return ses.selectList(ns+".Fileview", bno);
+	}
+
+	@Override
+	public int deleteImg(int bno) throws Exception {
+		
+		return ses.delete(ns+".deleteImg", bno);
+	}
 
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public int searchResultCnt(SearchCondition sc) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.selectOne(ns+".searchResultCnt", sc);
+	}
+
+	@Override
+	public List<BoardVo> searchSelectPage(SearchCondition sc) throws Exception {
+		 return ses.selectList(ns+".searchSelectPage", sc);
+		
+	}
+	
+	
+	
+
 	
 
 }

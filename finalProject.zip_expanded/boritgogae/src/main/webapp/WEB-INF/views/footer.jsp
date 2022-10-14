@@ -7,6 +7,13 @@
 </head>
 <body>
 
+<!-- Css Styles -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css" type="text/css">
+
+<!-- Js Plugins -->
+    <script src="${pageContext.request.contextPath}/resources/js/jquery.slicknav.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 	<!-- Footer Section Begin -->
     <footer class="footer spad">
         <div class="container">

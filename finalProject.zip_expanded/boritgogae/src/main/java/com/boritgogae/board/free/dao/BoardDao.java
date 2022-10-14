@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.boritgogae.board.free.domain.BoardVo;
+import com.boritgogae.board.free.domain.PageHandler;
 import com.boritgogae.board.free.domain.ReplyVo;
+import com.boritgogae.board.free.domain.SearchCondition;
 import com.boritgogae.board.free.domain.SearchCriterria;
+import com.boritgogae.board.free.domain.UploadFileVo;
 
 public interface BoardDao {
 	
@@ -29,6 +32,27 @@ public interface BoardDao {
 	public int count() throws Exception;
 	
 	public int updateReplyCnt(int bno, int cnt)throws Exception;
+	
+	
+	public void imageInsert(int lastNo, String savedOriginImageFileName) throws Exception;
+	
+	public void fileInsert(int lastNo, String savedOriginImageFileName) throws Exception;
+	
+	public int getLastNo() throws Exception;
+	
+	public int updateRef(int lastNo) throws Exception;
+	
+	public List<UploadFileVo> Fileview(int bno)throws Exception;
+	
+	public int deleteImg(int bno)throws Exception;
+	
+	
+	
+	
+	
+	
+	 int searchResultCnt(SearchCondition sc) throws Exception;
+	    List<BoardVo> searchSelectPage(SearchCondition sc) throws Exception;
 	
 	
 	

@@ -31,12 +31,12 @@ public class ReplyServiceImpl implements ReplyService {
 	//@Transactional(rollbackFor = Exception.class)
 	public int remove(int rno, int bno, String replyer) throws Exception {
 		  
-//	        int rowCnt = bdao.updateReplyCnt(bno, -1);
-//	        
-//	        rowCnt =dao.deleteReply(rno, replyer);
+	       // int rowCnt = bdao.updateReplyCnt(bno, -1);
 	        
+	        //rowCnt =dao.deleteReply(rno, replyer);
+        
 	        return dao.deleteReply(rno, replyer);
-	}
+	        }
 
 	@Override
 	public int write(ReplyVo rv) throws Exception {

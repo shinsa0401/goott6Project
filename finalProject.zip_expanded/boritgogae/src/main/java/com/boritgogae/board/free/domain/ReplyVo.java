@@ -1,6 +1,7 @@
 package com.boritgogae.board.free.domain;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class ReplyVo {
 	
@@ -13,6 +14,13 @@ public class ReplyVo {
 	private Timestamp replyUpdateDate;
 	
 	
+	 @Override
+	    public boolean equals(Object o) {
+	        if (this == o) return true;
+	        if (o == null || getClass() != o.getClass()) return false;
+	        ReplyVo that = (ReplyVo) o;
+	        return Objects.equals(rno, that.rno) && Objects.equals(bno, that.bno) && Objects.equals(prno, that.prno) && Objects.equals(replyContent, that.replyContent) && Objects.equals(replyer, that.replyer);
+	    }
 	
 	
 	
