@@ -549,6 +549,15 @@
 				
 			</div>
 	
+		<!-- 댓글 -->
+		<div id="replyDiv">
+			<label for="replyWrite" class="form-label">댓글쓰기</label>
+			<input type="text" class="form-control" id="replyWriter" value="${sessionScope.loginMember.userId }" />
+			<textarea rows="5" class="form-control" id="replyContent"></textarea>
+			<button type="button" class="btn btn-primary"
+	            onclick="addReply();">댓글 등록</button>
+		</div>
+	</div>
 	
 			<br />
 	
