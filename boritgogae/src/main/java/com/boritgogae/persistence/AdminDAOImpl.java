@@ -15,7 +15,7 @@ public class AdminDAOImpl implements AdminDAO {
 	@Inject
 	private SqlSession ses;
 	
-	private static String ns = "com.boritgogae.adminMapper";
+	private static String ns = "com.boritgogae.AdminMapper";
 	
 	@Override
 	public List<MemberVo> getMembers() throws Exception {

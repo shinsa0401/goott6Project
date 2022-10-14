@@ -52,5 +52,6 @@ public class AdminController {
 		model.addAttribute("members", members);
 		
 		return "/admin/member";
+		
 	}
 }
