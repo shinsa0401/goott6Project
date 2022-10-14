@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page session="false" %>
 <!DOCTYPE html>
 <html>
@@ -267,7 +268,7 @@
 						<div class="upFileList">
 							<c:forEach var="file" items="${fileList }">
 								<c:if test="${file.thumbnailFileName == null }">
-									<div class="files"><a href="/resources/uploads/${file.originFileName }">${file.originFileName }<img src='/resources/img/sth_trash.png' width='50px' id='${file.originFileName}' class='minusBtn' onclick='deleteBeforeFile(this);' /></a></div>
+									<div class="files"><a href="/resources/uploads/${file.originFileName }">${file.originFileName }</a><img src='/resources/img/sth_trash.png' width='50px' id='${file.originFileName}' class='minusBtn' onclick='deleteBeforeFile(this);' /></div>
 								</c:if>
 							</c:forEach>
 			
