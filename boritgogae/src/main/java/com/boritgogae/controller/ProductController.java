@@ -39,7 +39,7 @@ public class ProductController {
 	@Inject
 	private ReviewService reviewService;
 	
-	
+	//상세페이지
 	@RequestMapping(value = "/category/detail")
 	public String prodDetail(@RequestParam("prodNo") String prodNo,@RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, Model model) throws Exception {
 //		Map<String, Object> map =prodService.viewProdDetail(prodNo);

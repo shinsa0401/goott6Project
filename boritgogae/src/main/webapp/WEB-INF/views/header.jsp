@@ -1,17 +1,18 @@
-<%@  page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-	<meta name="description" content="Ogani Template">
-	<meta name="keywords" content="Ogani, unica, creative, html">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 <!-- Google Font -->
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
+	
 <!-- Css Styles -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
@@ -36,12 +37,13 @@
 
 </head>
 <body>
+	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 	
-	<!-- Humberger Begin -->
+	<!-- Humberger Begin 모바일 -->
     <div class="humberger__menu__overlay"></div>
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="#"><img src="img/logo.png" alt=""></a>
+            
         </div>
         <div class="humberger__menu__cart">
             <ul>
@@ -52,35 +54,37 @@
         </div>
         <div class="humberger__menu__widget">
             <div class="header__top__right__language">
-                <img src="img/language.png" alt="">
-                <div>English</div>
+                
+                <div>Korean</div>
                 <span class="arrow_carrot-down"></span>
                 <ul>
-                    <li><a href="#">Spanis</a></li>
+                    <li><a href="#">Korean</a></li>
                     <li><a href="#">English</a></li>
                 </ul>
             </div>
             
         </div>
+        <!-- 모바일 메뉴 -->
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="/">Home</a></li>
+                <li class="active"><a href="${contextPath}/">Home</a></li>
                 <li><a href="/product/category/detail?prodNo=a">Shop</a></li>
                 <li><a href="./blog.html">병원</a></li>
                 <li><a href="./contact.html">게시판</a>
                 	<ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">자유게시판</a></li>
-                        <li><a href="./shoping-cart.html">질문게시판</a></li>
+                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
                         <li><a href="./checkout.html">장터게시판</a></li>
                         <li><a href="./blog-details.html">고개팁</a></li>
                     </ul>
                 </li>
-                <li><a href="./contact.html">고객센터</a>
-                	<ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">공지사항</a></li>
-                        <li><a href="./shoping-cart.html">문의게시판</a></li>
-                    </ul>
-                </li>
+                <li><a href="/board/notice/list">고객센터</a>
+					<ul class="header__menu__dropdown">
+						<li><a href="/board/notice/list">공지사항</a></li>
+						<li><a href="./shoping-cart.html">문의게시판</a></li>
+						<li><a href="/admin/main">관리자 페이지(임시)</a></li>
+					</ul>
+				</li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -100,36 +104,37 @@
     <!-- Humberger End -->
     
 	
-	<!-- Header Section Begin -->
+	<!-- Header Section Begin PC버전 -->
     <header class="header">
         
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-			                <li class="active"><a href="./">Home</a></li>
+			                <li class="active"><a href="${contextPath}/">Home</a></li>
 			                <li><a href="/product/category/detail?prodNo=a">Shop</a></li>
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
-			                        <li><a href="./shoping-cart.html">질문게시판</a></li>
+			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
 			                        <li><a href="./checkout.html">장터게시판</a></li>
 			                        <li><a href="./blog-details.html">고개팁</a></li>
 			                    </ul>
 			                </li>
-			                <li><a href="./contact.html">고객센터</a>
-			                	<ul class="header__menu__dropdown">
-			                        <li><a href="./shop-details.html">공지사항</a></li>
-			                        <li><a href="./shoping-cart.html">문의게시판</a></li>
-			                    </ul>
-			                </li>
+			                <li><a href="/board/notice/list">고객센터</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="/board/notice/list">공지사항</a></li>
+									<li><a href="./shoping-cart.html">문의게시판</a></li>
+									<li><a href="/admin/main">관리자 페이지(임시)</a></li>
+								</ul>
+							</li>
 			            </ul>
                     </nav>
                 </div>
@@ -154,7 +159,7 @@
     
     
     <!-- Hero Section Begin -->
-    <section class="hero">
+    <section class="hero hero-normal">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -163,7 +168,7 @@
                             <i class="fa fa-bars"></i>
                             <span>All departments</span>
                         </div>
-                        <ul style="display:none;">
+                        <ul>
                             <li><a href="#">wgty</a></li>
                             <li><a href="#">Vegetables</a></li>
                             <li><a href="#">Fruit & Nut Gifts</a></li>
@@ -196,16 +201,12 @@
                             </div>
                         </div>
                     </div>
-              
                 </div>
             </div>
         </div>
     </section>
     <!-- Hero Section End -->
     
-    
-    
-    
-	
+
 </body>
 </html>
