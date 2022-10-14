@@ -5,7 +5,5 @@
 <configuration>
 	<typeAliases>
 		<package name="com.boritgogae.domain"/>
-		<package name="com.boritgogae.board.notice.domain"/>
-		<package name="com.boritgogae.board.question.domain"/>
 	</typeAliases>
 </configuration>
