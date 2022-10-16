@@ -152,7 +152,7 @@
   	
   	<!-- 현재 글의 모든 댓글 검색 -->
   	<select id="selectAllReply" resultType="ReplyVo">
-  		select * from questionReply where bno = #{bno} order by ref asc, refOrder asc, step asc, refOrder desc
+  		select * from questionReply where bno = #{bno} order by ref asc, refOrder asc
   	</select>
   	
   	<!-- 댓글 수정 -->

@@ -575,6 +575,31 @@
 		</div>
 	</div>
 	
+			<br />
+	
+	
+		<div id="btns">
+	         <button type="button" class="btn btn-primary" onclick="location.href='/board/question/modify?no=${board.no}';">수정</button>
+	         <button type="button" class="btn btn-danger" onclick="removeModal();">삭제</button>
+	         <button type="button" class="btn btn-secondary" onclick="javascript:history.back();">뒤로가기</button>
+	         <button type="button" class="btn text-white" style="background-color: #7FAD39;"
+	            onclick="location.href='/board/question?pageNo=1';">전체목록</button>
+	    </div>
+	    <br />
+		
+		<div id="replies"></div>
+	
+		<!-- 댓글 -->
+		<div id="replyDiv">
+			<br />
+			<label for="replyWrite" class="form-label">댓글쓰기</label>
+			<input type="text" class="form-control" id="replyWriter" value="${sessionScope.loginMember.userId }" />
+			<textarea rows="5" class="form-control" id="replyContent"></textarea>
+			<button type="button" class="btn btn-primary"
+	            onclick="addReply();">댓글등록</button>
+		</div>
+	</div>
+	
 		<!-- The Modal -->
 		<div class="modal" id="removeModal">
 		  <div class="modal-dialog">

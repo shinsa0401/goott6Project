@@ -5,10 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-	<meta name="description" content="Ogani Template">
-	<meta name="keywords" content="Ogani, unica, creative, html">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 <!-- Google Font -->
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
@@ -69,7 +69,7 @@
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="${contextPath}/">Home</a></li>
-                <li><a href="./shop-grid.html">Shop</a></li>
+                <li><a href="/product/category/detail?prodNo=a">Shop</a></li>
                 <li><a href="./blog.html">병원</a></li>
                 <li><a href="./contact.html">게시판</a>
                 	<ul class="header__menu__dropdown">
@@ -79,12 +79,13 @@
                         <li><a href="./blog-details.html">고개팁</a></li>
                     </ul>
                 </li>
-                <li><a href="./contact.html">고객센터</a>
-                	<ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">공지사항</a></li>
-                        <li><a href="./shoping-cart.html">문의게시판</a></li>
-                    </ul>
-                </li>
+                <li><a href="/board/notice/list">고객센터</a>
+					<ul class="header__menu__dropdown">
+						<li><a href="/board/notice/list">공지사항</a></li>
+						<li><a href="./shoping-cart.html">문의게시판</a></li>
+						<li><a href="/admin/main">관리자 페이지(임시)</a></li>
+					</ul>
+				</li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -118,7 +119,7 @@
                     <nav class="header__menu">
                         <ul>
 			                <li class="active"><a href="${contextPath}/">Home</a></li>
-			                <li><a href="./shop-grid.html">Shop</a></li>
+			                <li><a href="/product/category/detail?prodNo=a">Shop</a></li>
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
@@ -128,12 +129,13 @@
 			                        <li><a href="./blog-details.html">고개팁</a></li>
 			                    </ul>
 			                </li>
-			                <li><a href="./contact.html">고객센터</a>
-			                	<ul class="header__menu__dropdown">
-			                        <li><a href="./shop-details.html">공지사항</a></li>
-			                        <li><a href="./shoping-cart.html">문의게시판</a></li>
-			                    </ul>
-			                </li>
+			                <li><a href="/board/notice/list">고객센터</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="/board/notice/list">공지사항</a></li>
+									<li><a href="./shoping-cart.html">문의게시판</a></li>
+									<li><a href="/admin/main">관리자 페이지(임시)</a></li>
+								</ul>
+							</li>
 			            </ul>
                     </nav>
                 </div>
@@ -206,9 +208,6 @@
     </section>
     <!-- Hero Section End -->
     
-    
-    
-    
-	
+
 </body>
 </html>

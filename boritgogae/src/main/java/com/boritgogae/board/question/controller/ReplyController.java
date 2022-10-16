@@ -146,11 +146,6 @@ public class ReplyController {
 		ResponseEntity<String> result = null;
 		
 		System.out.println(reply.toString());
-//		
-//		if (service.reReply(reply)) {
-//			System.out.println("11");
-//			result = new ResponseEntity<String>("success", HttpStatus.OK);
-//		}
 		try {
 			if (service.reReply(reply)) {
 				
