@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,6 +32,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/mixitup.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+    
     
 <title>header</title>
 
@@ -72,7 +74,7 @@
                 <li><a href="./contact.html">게시판</a>
                 	<ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">자유게시판</a></li>
-                        <li><a href="${contextPath}/board/question">질문게시판</a></li>
+                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
                         <li><a href="./checkout.html">장터게시판</a></li>
                         <li><a href="./blog-details.html">고개팁</a></li>
                     </ul>
@@ -121,7 +123,7 @@
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
-			                        <li><a href="${contextPath}/board/question">질문게시판</a></li>
+			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
 			                        <li><a href="./checkout.html">장터게시판</a></li>
 			                        <li><a href="./blog-details.html">고개팁</a></li>
 			                    </ul>

@@ -28,13 +28,13 @@ public class ReplyController {
 	 * @author : 신태호
 	 * @date : 2022. 10. 9.
 	 * @입력 param : ReplyVo reply
-	 * 댓글 등록
+	 * 새로운 댓글 등록
 	 * @returnType : ResponseEntity<String>
 	 */
-	@RequestMapping(value = "", method = RequestMethod.POST)
+	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public ResponseEntity<String> addReply(@RequestBody ReplyVo reply) {
 		ResponseEntity<String> result = null;
-		
+		System.out.println(reply.toString());
 		try {
 			if (service.addReply(reply)) {
 				result = new ResponseEntity<String>("success", HttpStatus.OK);
@@ -129,6 +129,42 @@ public class ReplyController {
 		}
 		
 		return result;
+	}
+	
+	
+	/**
+	 * @methodName : reReply
+	 * @author : 신태호
+	 * @throws Exception 
+	 * @date : 2022. 10. 11.
+	 * @입력 param :ReplyVo reply
+	 * @returnType : ResponseEntity<String>
+	 * 댓글의 댓글 등록
+	 */
+	@RequestMapping(value = "/reReply", method = RequestMethod.POST)
+	public ResponseEntity<String> reReply(@RequestBody ReplyVo reply) throws Exception {
+		ResponseEntity<String> result = null;
+		
+		System.out.println(reply.toString());
+//		
+//		if (service.reReply(reply)) {
+//			System.out.println("11");
+//			result = new ResponseEntity<String>("success", HttpStatus.OK);
+//		}
+		try {
+			if (service.reReply(reply)) {
+				
+				result = new ResponseEntity<String>("success", HttpStatus.OK);
+			} else {
+				
+				result = new ResponseEntity<String>("fail", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			
+			result = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		return result;
+		
 	}
 	
 	

@@ -1,8 +1,8 @@
 package com.boritgogae.board.question.etc;
 
 public class PagingInfo {
-	private int postPerPage = 5; // 1페이지 당 보여줄 글의 갯수
-	   private int pageCntPerBlock = 5; // 1개의 블럭에 보여줄 페이지 수
+	private int postPerPage = 7; // 1페이지 당 보여줄 글의 갯수
+	   private int pageCntPerBlock = 7; // 1개의 블럭에 보여줄 페이지 수
 	   
 	   private int totalPage; // 전체 페이지 수
 	   private int totalPostCnt;  // 전체 글의 갯수

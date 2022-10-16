@@ -137,6 +137,7 @@ public class BoardController {
 			
 			board = (BoardVo) map.get("board");
 			fileList = (List<UploadFileVo>) map.get("fileList");
+			System.out.println(fileList.toString());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -196,10 +197,16 @@ public class BoardController {
 	 */
 	@RequestMapping(value = "/question/modifySave", method = RequestMethod.POST)
 	public String modifySave(BoardVo board) throws Exception {
+		String result = "";
+		if (service.modifyBoard(board, this.uploadFileLst)) {
+			result = "redirect:/board/question/view/?no="+ board.getNo();
+		}
 		
-		service.modifyBoard(board);
+		// 리스트의 모든 아이템 삭제 
+		this.uploadFileLst.clear();
+		
 		System.out.println(board.toString());
-		return "/boardQuestion/viewBoard";
+		return result;
 	}
 	
 	
@@ -252,7 +259,6 @@ public class BoardController {
 		ResponseEntity<UploadFile> result = null;
 		
 		if (upFiles.getSize() > 0) {
-			// upFiles.getBytes() : 파일의 이진 배열
 			UploadFile upFile;
 			try {
 				upFile = UploadFileProcess.uploadFileProcess(upPath, upFiles.getOriginalFilename(), upFiles.getBytes(), upFiles.getContentType());

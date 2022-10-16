@@ -16,4 +16,7 @@ public interface ReplyService {
 
 	// 댓글을 삭제 하는 메서드
 	public boolean removeReply(ReplyVo reply) throws Exception;
+
+	// 댓글의 댓글 등록
+	public boolean reReply(ReplyVo reply) throws Exception;
 }
