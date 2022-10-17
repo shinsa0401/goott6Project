@@ -159,5 +159,5 @@
   	<select id="selectBnoByRno" resultType="int">
   		select bno from questionReply where rno = #{rno}
   	</select>
-  	
+	
   </mapper>

@@ -10,7 +10,6 @@
 <!-- Js Plugins -->
     <script src="${pageContext.request.contextPath}/resources/js/jquery.slicknav.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
-
 <title>footer</title>
 </head>
 <body>
