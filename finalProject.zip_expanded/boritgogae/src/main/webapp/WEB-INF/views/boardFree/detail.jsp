@@ -267,7 +267,7 @@ textarea {
 		});
 		
 		$("#wrtRepBtn").click(function () {
-			let replyContent = $("textarea[name=replyComment]").val();
+			let replyContent = $("textarea[name=comment]").val();
 			let prno = $("#replyForm").parent().attr("data-prno");
 			
 			
@@ -286,7 +286,7 @@ textarea {
             
             
             $("#replyForm").css("display","none")
-            $("textarea[name=replyComment]").val('')
+            $("textarea[name=comment]").val('')
             $("#replyForm").appendTo("body");
             
 		});
@@ -298,13 +298,12 @@ textarea {
 		
 		
 		
-		
-		
+
 		
 		
 		$("#modBtn").click(function () {
 			let rno = $(this).attr("data-rno");
-			let replyContent = $("textarea[name=comment]").val();
+			let replyContent = $("textarea[name=modContent]").val();
 			
 			
 			
@@ -319,6 +318,11 @@ textarea {
                 },
                 error   : function(){ alert("error") } // 에러가 발생했을 때, 호출될 함수
             }); //
+            
+            
+      
+            
+            
          
 			
 		});
@@ -355,12 +359,15 @@ textarea {
 		$("#replyList").on("click",".modBtn",function () {
 			let rno = $(this).parent().attr("data-rno")
 			console.log(rno);
+			$("#modalWin").modal("show");
+			let replyContent =  $(".replyContent").text();   /* $("span.replyContent",$(this).parent()).text(); */
 			
-			let replyContent = $("span.replyContent",$(this).parent()).text();
-			
-			$("textarea[name=comment]").val(replyContent);
+			console.log(replyContent);
+			$("textarea[name=modContent]").val(replyContent);
 			
 			$("#modBtn").attr("data-rno",rno);
+			
+			
 		});
 		
 		
@@ -413,7 +420,7 @@ textarea {
 			tmp += ' <div data-rno= '+replyContent.rno 
 			
 			tmp += ' data-prno= ' +replyContent.prno
-			tmp += ' data-bno= '+ replyContent.bno + '>'
+			tmp += ' data-bno= '+ replyContent.bno +  '>'
 		
 			tmp += '<button class="delBtn" type="button">삭제</button>'
 			tmp += '<button class="modBtn" type="button">수정</button>'
@@ -482,7 +489,7 @@ textarea {
 	
 	
 	 <div id="comment-writebox">
-            <div class="commenter commenter-writebox">${id}</div>
+            <div class="commenter commenter-writebox"></div>
             <div class="comment-writebox-content">
                 <textarea name="comment" id="comment" cols="30" rows="3" placeholder="댓글을 남겨보세요"></textarea>
             </div>
@@ -493,18 +500,45 @@ textarea {
             </div>
         </div>
         
-        
+        <div id="replyForm" style="display: none;">
+	<input type="text"  name="replyComment">
+	<button id="wrtRepBtn" type="button">등록</button>
+	</div>
         
 
 
 <div id="replyList"></div>
+
+
+
+
+
+
+ <div id="modalWin" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" id="closeModify" >&times;</span>
+            <p>
+            <h2> | 댓글 수정</h2>
+            <div id="modify-writebox">
+                <div class="commenter commenter-writebox"></div>
+                <div class="modify-writebox-content">
+                    <textarea name="modContent" id="" cols="30" rows="5" placeholder="댓글을 남겨보세요"></textarea>
+                </div>
+                <div id="modify-writebox-bottom">
+                    <div class="register-box">
+                        <a href="/boardFree/detail?bno=${board.bno }" class="btn" id="modBtn">등록</a>
+                    </div>
+                </div>
+            </div>
+            </p>
+        </div>
+    </div>
+
 	<!-- <button id="sendBtn" type="button">send</button> -->
 	<!-- <button id="modBtn" type="button">수정</button>
 	
-	<div id="replyForm" style="display: none;">
-	<input type="text"  name="replyComment">
-	<button id="wrtRepBtn" type="button">등록</button>
-	</div>
+	
  -->
 	
 

@@ -21,6 +21,7 @@
 	function detail(bno) {
 		location.href ="/boardFree/detail?bno="+bno;
 		
+		
 	}
 </script>
 
@@ -35,7 +36,25 @@
 
 
 	<div class="container">
-		<h2>게시판 전체 페이지</h2>
+		<h2 style="text-align: center;">게시판 전체 페이지</h2>
+		
+		<div >
+  <div class="board-container">
+    <div class="search-container">
+      <form action="<c:url value="/boardFree/list"/>" class="search-form" method="get">
+        <select class="search-option" name="option">
+          <option value="A" ${option=='A' ? "selected" : ""}>제목+내용</option>
+          <option value="T" ${option=='T' ? "selected" : ""}>제목만</option>
+          <option value="W" ${option=='W' ? "selected" : ""}>작성자</option>
+        </select>
+
+        <input type="text" name="keyword" class="search-input" type="text" value="${param.keyword}" placeholder="검색어를 입력해주세요">
+        <input type="submit" class="search-button" value="검색">
+      </form>
+     
+    </div> 
+    </div>
+    </div>
 
 
 
@@ -80,23 +99,7 @@
 	</div>  -->
 
 
-<div style="text-align:center">
-  <div class="board-container">
-    <div class="search-container">
-      <form action="<c:url value="/boardFree/list"/>" class="search-form" method="get">
-        <select class="search-option" name="option">
-          <option value="A" ${option=='A' ? "selected" : ""}>제목+내용</option>
-          <option value="T" ${option=='T' ? "selected" : ""}>제목만</option>
-          <option value="W" ${option=='W' ? "selected" : ""}>작성자</option>
-        </select>
 
-        <input type="text" name="keyword" class="search-input" type="text" value="${param.keyword}" placeholder="검색어를 입력해주세요">
-        <input type="submit" class="search-button" value="검색">
-      </form>
-     
-    </div> 
-    </div>
-    </div>
 
 
 
