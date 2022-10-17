@@ -25,10 +25,11 @@
 	<context:component-scan base-package="com.boritgogae.controller" />
 	<context:component-scan base-package="com.boritgogae.board.*.controller" />
 	
-		<!-- 파일 업로드시 사용될 최대 업로드 용량 설정 -->
+	<!-- 파일 업로드 데이터 관리(인식) -->
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="10485760"></beans:property>
+		<beans:property name="maxUploadSize" value="10485760" />   <!-- Max upload size : 10MB -->
+		<beans:property name="maxInMemorySize" value="10485760" /> <!-- Max size of file in memory : 10MB -->
 	</beans:bean>
 	
 </beans:beans>
