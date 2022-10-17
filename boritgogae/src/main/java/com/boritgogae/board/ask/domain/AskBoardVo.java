@@ -11,7 +11,6 @@ public class AskBoardVo {
 	private int likeCount;
 	private String title;
 	private String contents;
-	private String attachFile;
 	private int ref;
 	private int step;
 	private int refOrder;
@@ -19,31 +18,10 @@ public class AskBoardVo {
 	private String isSecret;
 	private String answerStatus;
 	private String isFAQ;
+	private Timestamp modifyDate;
 	
 	public AskBoardVo() {
 		super();
-	}
-	
-	public AskBoardVo(int askBno, String writer, String askCode, Timestamp writtenDate, int readCount, int likeCount,
-			String title, String contents, String attachFile, int ref, int step, int refOrder, String isDelete,
-			String isSecret, String answerStatus, String isFAQ) {
-		super();
-		this.askBno = askBno;
-		this.writer = writer;
-		this.askCode = askCode;
-		this.writtenDate = writtenDate;
-		this.readCount = readCount;
-		this.likeCount = likeCount;
-		this.title = title;
-		this.contents = contents;
-		this.attachFile = attachFile;
-		this.ref = ref;
-		this.step = step;
-		this.refOrder = refOrder;
-		this.isDelete = isDelete;
-		this.isSecret = isSecret;
-		this.answerStatus = answerStatus;
-		this.isFAQ = isFAQ;
 	}
 
 	public int getAskBno() {
@@ -110,14 +88,6 @@ public class AskBoardVo {
 		this.contents = contents;
 	}
 
-	public String getAttachFile() {
-		return attachFile;
-	}
-
-	public void setAttachFile(String attachFile) {
-		this.attachFile = attachFile;
-	}
-
 	public int getRef() {
 		return ref;
 	}
@@ -174,14 +144,45 @@ public class AskBoardVo {
 		this.isFAQ = isFAQ;
 	}
 
+	public Timestamp getModifyDate() {
+		return modifyDate;
+	}
+
+	public void setModifyDate(Timestamp modifyDate) {
+		this.modifyDate = modifyDate;
+	}
+
 	@Override
 	public String toString() {
 		return "AskBoardVo [askBno=" + askBno + ", writer=" + writer + ", askCode=" + askCode + ", writtenDate="
 				+ writtenDate + ", readCount=" + readCount + ", likeCount=" + likeCount + ", title=" + title
-				+ ", contents=" + contents + ", attachFile=" + attachFile + ", ref=" + ref + ", step=" + step
-				+ ", refOrder=" + refOrder + ", isDelete=" + isDelete + ", isSecret=" + isSecret + ", answerStatus="
-				+ answerStatus + ", isFAQ=" + isFAQ + "]";
+				+ ", contents=" + contents + ", ref=" + ref + ", step=" + step + ", refOrder=" + refOrder
+				+ ", isDelete=" + isDelete + ", isSecret=" + isSecret + ", answerStatus=" + answerStatus + ", isFAQ="
+				+ isFAQ + ", modifyDate=" + modifyDate + "]";
 	}
+
+	public AskBoardVo(int askBno, String writer, String askCode, Timestamp writtenDate, int readCount, int likeCount,
+			String title, String contents, int ref, int step, int refOrder, String isDelete, String isSecret,
+			String answerStatus, String isFAQ, Timestamp modifyDate) {
+		super();
+		this.askBno = askBno;
+		this.writer = writer;
+		this.askCode = askCode;
+		this.writtenDate = writtenDate;
+		this.readCount = readCount;
+		this.likeCount = likeCount;
+		this.title = title;
+		this.contents = contents;
+		this.ref = ref;
+		this.step = step;
+		this.refOrder = refOrder;
+		this.isDelete = isDelete;
+		this.isSecret = isSecret;
+		this.answerStatus = answerStatus;
+		this.isFAQ = isFAQ;
+		this.modifyDate = modifyDate;
+	}
+	
 	
 	
 	

@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 import org.imgscalr.Scalr;
 import org.springframework.util.FileCopyUtils;
 
+import com.boritgogae.board.ask.domain.UploadFile;
+
 public class UploadFileProcess {
 
 	public static UploadFile uploadFileProcess(String upPath, String originalFileName, byte[] file, String contentType) throws IOException {

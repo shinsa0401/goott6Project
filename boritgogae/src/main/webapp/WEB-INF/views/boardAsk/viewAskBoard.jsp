@@ -7,7 +7,7 @@
 <head>
 <script src="../../../resources/js/jquery-3.6.1.min.js"></script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>문의게시판</title>
 
 <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet">
 <script type="text/javascript"
@@ -100,9 +100,9 @@
 			output += "<div class='col'></div>";
 			output += "<div class='col'></div>";
 			output += "<div class='col'>"; // 2
-			output += "<span onclick='modifyReplyModalOpen("+ item.askRno +");'>수정&nbsp&nbsp</span>";
-			output += "<span onclick='deleteReplyModalOpen("+ item.askRno +");'>삭제&nbsp&nbsp</span>";
-			output += "<span onclick='nestedReplyModalOpen(" +item.ref  +","+item.refOrder  +","+item.step  +","+item.contents+");'>답글&nbsp&nbsp</span>";
+			output += "<span onclick='modifyReplyModalOpen("+ item.askRno + "," + item.isDelete +");'>수정&nbsp&nbsp</span>";
+			output += "<span onclick='deleteReplyModalOpen("+ item.askRno + "," + item.isDelete +");'>삭제&nbsp&nbsp</span>";
+			output += "<span onclick='nestedReplyModalOpen(" +item.ref  +","+item.refOrder  +","+item.step  +","+item.contents + ",\'" + item.isDelete + "\');'>답글&nbsp&nbsp</span>";
 			output += "</div>"; // 2
 			output += "</div>"; // 1
 			
@@ -125,21 +125,29 @@
 		return new Date(wd).toLocaleString();
 	}
 	
-	function modifyReplyModalOpen(rno) {
-		$("#modifyRno").val(rno);
-		$("#modifyReplyModal").show();
+	function modifyReplyModalOpen(rno, isDelete) {
+		if(idDelete == "Y"){
+			
+		} else{
+			$("#modifyRno").val(rno);
+			$("#modifyReplyModal").show();			
+		}
 	}
 	
 	function modifyReplyModalClose() {
 		$("#modifyReplyModal").hide();
 		$("#modifyReply").val("");
 	}
-	function nestedReplyModalOpen(ref, refOrder, step ,targetReply) {
-		$("#targetRef").val(ref);
-		$("#targetRefOrder").val(refOrder);
-		$("#targetStep").val(step);
-		$("#targetReply").val(targetReply);
-		$("#nestedReplyModal").show();
+	function nestedReplyModalOpen(ref, refOrder, step ,targetReply, isDelete) {
+		if(idDelete == "Y"){
+			
+		} else{
+			$("#targetRef").val(ref);
+			$("#targetRefOrder").val(refOrder);
+			$("#targetStep").val(step);
+			$("#targetReply").val(targetReply);
+			$("#nestedReplyModal").show();			
+		}
 	}
 	
 	function nestedReplyModalClose() {
@@ -147,9 +155,13 @@
 		$("#nestedReply").val("");
 	}
 
-	function deleteReplyModalOpen(rno) {
-		$("#deleteRno").val(rno);
-		$("#deleteReplyModal").show();
+	function deleteReplyModalOpen(rno, isDelete) {
+		if(idDelete == "Y"){
+			
+		} else{
+			$("#deleteRno").val(rno);
+			$("#deleteReplyModal").show();	
+		}
 	}
 	
 	function deleteReplyModalClose() {
@@ -265,6 +277,54 @@
 			}
          });		
 	}
+	
+	
+
+
+	// 좋아요 상태 바꾸기
+	function likeStatusChange() {
+		//let likeStatus = $("#likeStatus").val();	
+		let bno = ${board.askBno};
+		let url = "/board/ask/likeStatusChange"
+		let sendData = JSON.stringify({
+			askBno : bno
+		}); // json 문자 형식(json 문자열)으로 바꿔줌
+		console.log(sendData);
+		
+		$.ajax({
+            url : url, // 데이터 송수신될 주소 
+			data : sendData, // 송신할 데이터
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			headers : {
+				"content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+				"X-HTTP-Method-Override" : "POST" // 구 버전의 웹 브라우저에서 (PUT / DELETE) 방식이 호환이 안되는 버전에서 호환 되도록
+			},
+            success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+               console.log(data);
+            	if(data == "cancelSuccess") {
+            		changeLikeStatus("cancel");
+            	} else if(data == "registerSuccess") {
+            		changeLikeStatus("register");
+            	}
+            	else {
+            		alert("좋아요 상태전환 실패");
+            	}
+            }, error : function(e) {
+				console.log(e);
+			}
+         });		
+	}
+	function changeLikeStatus(data){
+		console.log(data);
+		if(data=="register"){
+			console.log("등록");
+			$("#likeBox").html("<img src='../../../resources/img/ask_like_2.png' />	");
+		}else{
+			console.log("해제");
+			$("#likeBox").html("<img src='../../../resources/img/ask_like_1.png' />	");
+		}
+	}
 </script>
 <style type="text/css">
 .inline {
@@ -276,7 +336,8 @@
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 	<div class="container">
-		<div class="container p-5 my-5 bg-success text-white test2">
+		<div class="container p-5 my-5 text-white"
+			style="background-color: #7FAD39;">
 			<a href="/board/ask/list"><h3>문의게시판</h3></a>
 		</div>
 		<div class="row">
@@ -295,7 +356,14 @@
 			<div class="col-sm-4 ">
 				<div style="float: left;">문의분류 : ${askOption }</div>
 			</div>
-			<div class="col-sm-4 "></div>
+			<div class="col-sm-4 ">
+				<c:choose>
+					<c:when test="${not empty board.modifyDate }">
+						<div style="margin: auto;">수정시간 : ${board.modifyDate }</div>
+					</c:when>
+				</c:choose>
+
+			</div>
 			<div class="col-sm-4 ">
 				<div style="float: right;">댓글보기</div>
 			</div>
@@ -304,7 +372,8 @@
 			<h3>&nbsp</h3>
 		</div>
 		<div>
-			<h3>${board.title }</h3>
+			<h3
+				style="diplay: block; width: 800px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${board.title }</h3>
 		</div>
 		<div>
 			<h3>&nbsp</h3>
@@ -312,8 +381,10 @@
 
 		<c:set value="../../../resources/askBoard/uploads" var="path"></c:set>
 		<div class="mb-3 mt-3">
-			<label for="attachFiles" class="form-label">첨부파일 (클릭 시 원본
-				다운로드)</label>
+			<c:if test="${not empty fileList }">
+				<label for="attachFiles" class="form-label">첨부파일 (클릭 시 원본
+					다운로드)</label>
+			</c:if>
 			<c:forEach var="file" items="${fileList }">
 				<div class="files">
 					<a href="${path }${file.originalFile }" download style="">${file.originalFile }</a>
@@ -336,6 +407,26 @@
 				</c:forEach>
 			</div>
 		</div>
+		<div>
+			<h3>&nbsp</h3>
+		</div>
+
+		<!-- 좋아요를 구현해보자 -->
+		<!-- 특정 아이피가 이 글을 추천했는지 확인해야 함 -->
+		<div style="width: 100%; height: 100%; text-align: center"
+			onclick="likeStatusChange();" id="likeBox">
+			<c:choose>
+				<c:when test="${likeCheck == 1}">
+					<img src="../../../resources/img/ask_like_2.png" />
+				</c:when>
+				<c:otherwise>
+					<img src="../../../resources/img/ask_like_1.png" />
+				</c:otherwise>
+			</c:choose>
+		</div>
+
+
+
 		<div class="row">
 			<div class="col"></div>
 			<div class="col"></div>
@@ -362,7 +453,7 @@
 	<!-- 여기서부터 리플관련 -->
 	<div class="container">
 		<div style="height: 100px"></div>
-		<label for="comment" style="font-size: 20pt;">Reply </label>
+		<label for="comment" style="font-size: 20pt;">Reply</label>
 
 		<div id="replies"></div>
 
@@ -376,15 +467,15 @@
 		</div>
 
 
-		<div style="font-size: 0;">
-			<!--  -->
+		<div style="font-size: 0; display: flex;">
 			<button type="button" class="btn"
-				style="vertical-align: top; height: 100px" id="memberId"
-				value="test" disabled>작성자명</button>
+				style="vertical-align: top; height: 100px; width: 100px"
+				id="memberId" value="test" disabled>작성자</button>
 			<textarea class="form-control" rows="3" id="replyContent" name="text"
-				style="max-width: 800px; display: inline-block; vertical-align: top; height: 100px"></textarea>
-			<button type="button" class="btn btn-info" id="addAskReplyBtn"
-				onclick="addAskReply();" style="vertical-align: top; height: 100px">댓글등록</button>
+				style="flex-grow: 1; display: inline-block; vertical-align: top; height: 100px"></textarea>
+			<button type="button" class="btn btn-info float-right"
+				id="addAskReplyBtn" onclick="addAskReply();"
+				style="vertical-align: top; height: 100px; width: 100px">등록</button>
 		</div>
 	</div>
 	<!-- 수정 모달 -->

@@ -1,4 +1,4 @@
-package com.boritgogae.board.ask.etc;
+package com.boritgogae.board.ask.domain;
 
 public class UploadFile {
 	private String savedOriginImageFileName; // 저장된 원본 파일의 이름

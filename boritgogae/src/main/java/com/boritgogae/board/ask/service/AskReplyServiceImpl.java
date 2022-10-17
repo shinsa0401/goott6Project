@@ -95,8 +95,10 @@ public class AskReplyServiceImpl implements AskReplyService{
 		System.out.println("서비스단 댓글 삭제 1: " + reply.toString());
 		boolean result = false;
 		
+		
 		// 내용을 삭제된 댓글입니다. 로 변경
 		reply.setContents("삭제된 댓글입니다.");
+		reply.setIsDelete("Y");
 
 		// 댓글 삭제하기
 		int result1 = dao.deleteReply(reply);

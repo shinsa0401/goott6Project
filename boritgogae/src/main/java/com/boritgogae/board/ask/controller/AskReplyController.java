@@ -48,7 +48,6 @@ public class AskReplyController {
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public ResponseEntity<String> modifyReply(@RequestBody AskReplyVo reply) {
 		System.out.println("댓글 수정 시작 : " + reply.toString());
-
 		ResponseEntity<String> result = null;
 
 		try {

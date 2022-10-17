@@ -60,15 +60,15 @@
 
 
 	<select id="listAll" resultType="AskBoardVo">
-		select * from askBoard where
-		isDelete = 'N' order by ref
+		select * from askBoard order by
+		ref
 		desc, reforder asc, step desc limit
 		#{startNum},
 		#{postPerPage}
 	</select>
 
 	<select id="listAllWithSearch" resultType="AskBoardVo">
-		select * from askBoard where isDelete = 'N' and
+		select * from askBoard where
 		<if test="searchType == 'writer'">
 			writer like concat('%', #{searchWord }, '%')
 		</if>
@@ -84,7 +84,7 @@
 
 
 	<select id="getSearchResultCnt" resultType="int">
-		select count(*) as cnt from askBoard where isDelete = 'N' and
+		select count(*) as cnt from askBoard where
 		<choose>
 			<when test="searchType == 'writer'">
 				writer like concat('%', #{searchWord }, '%')
@@ -100,7 +100,7 @@
 
 	<select id="getTotalPostCnt" resultType="int">
 		select count(*) as cnt
-		from askBoard where isDelete = 'N'
+		from askBoard
 	</select>
 
 	<select id="loadAskCode" resultType="AskCodeVo">
@@ -109,9 +109,20 @@
 
 	<insert id="create">
 		insert into askBoard(writer, title, contents,
-		askCode)
-		values (#{writer}, #{title}, #{contents} , #{askCode})
+		askCode, isSecret, isFAQ)
+		values (#{writer}, #{title}, #{contents} ,
+		#{askCode}, #{isSecret}, #{isFAQ})
 	</insert>
+
+	<update id="updateAskBoard">
+		update askBoard set writer = #{writer}, title =
+		#{title}, contents=
+		#{contents}, askCode = #{askCode}, isSecret =
+		#{isSecret}, isFAQ =
+		#{isFAQ}, modifyDate = now()
+		where askBno =
+		#{askBno}
+	</update>
 
 	<select id="getLastNo" resultType="int">
 		select max(askBno) as lastpk
@@ -184,9 +195,11 @@
 
 	<insert id="answerCreate">
 		insert into askBoard(writer, title, contents,
-		askCode, ref, refOrder, step)
-		values ('admin', #{title}, #{contents} ,
-		#{askCode}, #{ref}, #{refOrder}+1, #{step}+1)
+		askCode, ref, refOrder, step, answerStatus)
+		values ('admin', #{title},
+		#{contents} ,
+		#{askCode}, #{ref}, #{refOrder}+1, #{step}+1,
+		#{answerStatus})
 	</insert>
 
 	<update id="answerStatusOk">
@@ -199,5 +212,61 @@
 		update askBoard set isDelete = 'Y'
 		where askBno =
 		#{no}
+	</update>
+
+	<select id="getboardVo" resultType="AskBoardVo">
+		select * from askBoard where
+		askBno = #{bno}
+	</select>
+
+
+	<select id="showFileList" resultType="UploadFile">
+		select originalFile as
+		savedOriginImageFileName, thumbNailFile as thumbnailFileName from
+		askFile where askBno = #{bno};
+	</select>
+
+	<delete id="deleteFileDB">
+		delete from askFile where originalFile =
+		#{savedOriginImageFileName}
+	</delete>
+
+	<select id="getLikeCount" resultType="int">
+		select count(*) from
+		askLike
+		where askBno = #{askBno};
+	</select>
+
+	<select id="getReadCount" resultType="int">
+		select count(*) from
+		askRead
+		where askBno = #{askBno};
+	</select>
+
+	<select id="likeCheck" resultType="int">
+		select count(*) from askLike
+		where askBno = #{bno} and likeIp = #{clientIp};
+	</select>
+
+	<delete id="deleteLike">
+		delete from askLike
+		where askBno = #{bno} and likeIp = #{clientIp};
+	</delete>
+
+	<insert id="insertLike">
+		insert into askLike(askBno, likeIp)
+		values(#{bno},
+		#{clientIp})
+	</insert>
+
+	<select id="readFAQBoard" resultType="AskBoardVo">
+		select * from askBoard
+		where
+		isFAQ = 'Y' limit 3
+	</select>
+
+	<update id="readCountUp">
+		update askBoard set readCount = askBoard.readCount + 1 
+		where askBno = #{bno}
 	</update>
 </mapper>
