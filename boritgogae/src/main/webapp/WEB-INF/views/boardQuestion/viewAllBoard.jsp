@@ -11,7 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <title>글전체보기</title>
-<script>
+<script>	
 
 	// 글 상세페이지
 	function viewBoard(no) {
@@ -180,19 +180,6 @@
 		</div>
 		
 		
-		
-		<div id="searchBar">
-			<form action="/board/question" method="get">
-				<select name="searchType" id="searchType">
-					<option class="option" value=""> 검색대상선택 </option>
-					<option class="option" value="writer">작성자</option>
-					<option class="option" value="title">제  목</option>
-					<option class="option" value="content">본  문</option>
-				</select> <input type="text" name="searchWord" id="searchWord" />
-				<button type="submit" onclick="return validate();">검색</button>
-			</form>
-		</div>
-		
 		<div id="btns">
 			<button type="button" class="btn text-white" style="background-color: #7FAD39;"
 				onclick="location.href='/board/question/write';">새글작성</button>
@@ -348,77 +335,6 @@
 				
 			</ul>
 		</div>
-		
-		<div id="paging">
-			<ul class="pagination">
-				<c:if test="${param.pageNo > 1}">
-					<c:choose>
-						<c:when
-							test="${param.searchType == '' and param.searchWord == '' }">
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=1"><<</a></li>
-
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${param.pageNo - 1}">이전</a></li>
-						</c:when>
-						<c:otherwise>
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=1&searchType=${param.searchType}&searchWord=${param.searchWord}"><<</a></li>
-
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${param.pageNo - 1}&searchType=${param.searchType}&searchWord=${param.searchWord}">이전</a></li>
-						</c:otherwise>
-					</c:choose>
-				</c:if>
-
-
-				<c:forEach var="i" begin="${pagingInfo.startNumOfCurPagingBlock}"
-					end="${pagingInfo.endNumOfCurPagingBlock}" step="1">
-					
-					<c:choose>
-						<c:when
-							test="${param.searchType == '' and param.searchWord == '' }">
-							<c:if test="${i < pagingInfo.totalPage + 1}">
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${i }">${i }</a></li>
-								</c:if>
-						</c:when>
-						<c:otherwise>
-						
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${i }&searchType=${param.searchType}&searchWord=${param.searchWord}">${i }</a></li>
-								
-						</c:otherwise>
-					</c:choose>
-					
-				</c:forEach>
-
-
-
-				<c:if test="${param.pageNo < pagingInfo.totalPage }">
-					<c:choose>
-						<c:when
-							test="${param.searchType == '' and param.searchWord == '' }">
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${param.pageNo + 1}">다음</a></li>
-
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${pagingInfo.totalPage }">>></a></li>
-						</c:when>
-
-						<c:otherwise>
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${param.pageNo + 1}&searchType=${param.searchType}&searchWord=${param.searchWord}">다음</a></li>
-
-							<li class="page-item"><a class="page-link"
-								href="/board/question?pageNo=${pagingInfo.totalPage }&searchType=${param.searchType}&searchWord=${param.searchWord}">>></a></li>
-						</c:otherwise>
-					</c:choose>
-				</c:if>
-
-			</ul>
-		</div>
-		
 		
 	</div>
 	

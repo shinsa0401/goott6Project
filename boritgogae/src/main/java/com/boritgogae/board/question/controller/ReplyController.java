@@ -146,7 +146,6 @@ public class ReplyController {
 		ResponseEntity<String> result = null;
 		
 		System.out.println(reply.toString());
-
 		try {
 			if (service.reReply(reply)) {
 				

@@ -308,12 +308,28 @@ select bno from questionReply where rno = 1;
 
 -- 해당 글의 최근 등록된 댓글 번호 얻어오기
 select max(rno) as lastRno from questionReply;
+
 -- reply ref 업데이트
 update questionReply set ref = 7 where rno = 7;
+
+-- refOrder 업데이트
+update questionReply set refOrder = refOrder + 1 where ref = 68 and refOrder > 3;
+
 -- rno로 부모댓글의 정보 얻어오기
 select * from questionReply where rno = 7;
+
 -- 댓글의 max(refOrder)값 구하기
 select max(refOrder) as maxRefOrder from questionReply where bno = 1;
+
 -- 댓글의 댓글
 insert into questionReply(bno, replyWriter, replyContent, ref, step, refOrder) 
 values(1, 'shin', '대댓글', 8, 1, 3);
+
+-- 부모댓글그룹의 자식댓글수의 합 검색
+select count(*) as cntSum from questionReply where ref = 42 and step != 0;
+
+-- 부모댓글의 최대 step값 검색
+select max(step) as maxStep from questionReply where ref = 42;
+
+-- 부모댓글의 자식댓글 개수
+select count(*) as cnt from questionReply where ref = 42 and step = 1; -- step = step + 1

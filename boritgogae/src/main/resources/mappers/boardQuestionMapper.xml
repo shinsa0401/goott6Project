@@ -180,9 +180,29 @@
   		select max(refOrder) as maxRefOrder from questionReply where bno = #{bno}
   	</select>
   	
+  	<!-- 댓글의 댓글 작성전 refOrder 업데이트 -->
+  	<update id="updateRefOrder">
+  		update questionReply set refOrder = refOrder + 1 where ref = #{ref} and refOrder > #{refOrder}
+  	</update>
+  	
   	<!-- 댓글의 댓글 등록 -->
   	<insert id="insertReReply">
-  		insert into questionReply(bno, replyWriter, replyContent, ref, step, refOrder) values(#{bno}, #{replyWriter}, #{replyContent}, #{ref}, #{step}, #{refOrder})
+  		insert into questionReply(bno, replyWriter, replyContent, ref, step, refOrder) values(#{bno}, #{replyWriter}, #{replyContent}, #{ref}, #{step} + 1, #{refOrder} + 1)
   	</insert>
+  	
+  	<!-- 부모댓글의 자식댓글수 검색 -->
+  	<select id="getReReplyNumCnt" resultType="int">
+  		select count(*) as cnt from questionReply where ref = #{ref} and step = #{step}
+  	</select>
+  	
+  	<!-- 부모댓글의 최대 step값 검색 -->
+  	<select id="getReplyMaxStep" resultType="int">
+  		select max(step) as maxStep from questionReply where ref = #{ref}
+  	</select>
+  	
+  	<!-- 부모댓글 그룹의 자식댓글수의 합 검색 -->
+  	<select id="getReReplyNumCntSum" resultType="int">
+  		select count(*) as cntSum from questionReply where ref = #{ref} and step != 0
+  	</select>
   	
   </mapper>

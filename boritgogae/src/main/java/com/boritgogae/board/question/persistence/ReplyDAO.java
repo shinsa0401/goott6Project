@@ -29,9 +29,21 @@ public interface ReplyDAO {
 
 	// 댓글의 maxRefOrder 얻어오기
 	public int getMaxRefOrder(int bno) throws Exception;
+	
+	// 댓글의 댓글 작성전 refOrder 업데이트
+	public int updateRefOrder(ReplyVo parentReply) throws Exception;
 
-	// 댓글의 댓글 등록
+	// 댓글의 댓글 등록하는 메서드
 	public int insertReReply(Map<String, Object> map) throws Exception;
+
+	// 부모 댓글의 자식 댓글 개수를 얻어오는 메서드
+	public int getReReplyNumCnt(int ref, int step) throws Exception;
+
+	//부모 댓글의 최댓값 step을 얻어오는 메서드
+	public int getReplyMaxStep(int ref);
+	
+	// 부모 댓글그룹의 자식 댓글수의 합을 얻어오는 메서드
+	public int getReReplyNumCntSum(int ref) throws Exception;
 
 	
 
