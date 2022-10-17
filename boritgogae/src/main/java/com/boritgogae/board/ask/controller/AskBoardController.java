@@ -30,7 +30,7 @@ import com.boritgogae.board.ask.domain.AskReplyVo;
 import com.boritgogae.board.ask.domain.PagingInfo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
 import com.boritgogae.board.ask.domain.UploadFile;
-import com.boritgogae.board.ask.domain.UploadFileVo;
+import com.boritgogae.board.ask.domain.UploadAskFileVo;
 import com.boritgogae.board.ask.etc.UploadFileProcess;
 import com.boritgogae.board.ask.service.AskBoardService;
 
@@ -414,7 +414,7 @@ public class AskBoardController {
 		
 		Map<String, Object> map;
 		AskBoardVo board = null;
-		List<UploadFileVo> fileList = null;
+		List<UploadAskFileVo> fileList = null;
 		String askOption = "";
 		String clientIp = getClientIP(request);
 		int readCount = 0;
@@ -422,7 +422,7 @@ public class AskBoardController {
 		try {
 			map = service.viewBoard(bno, clientIp);
 			board = (AskBoardVo)map.get("board");
-			fileList = (List<UploadFileVo>)map.get("fileList");
+			fileList = (List<UploadAskFileVo>)map.get("fileList");
 			// ask코드를 통해 옵션 알아오기
 			askOption = service.readAskOptionByAskCode(board.getAskCode());
 			// 글번호에 따른 조회수 가져오기

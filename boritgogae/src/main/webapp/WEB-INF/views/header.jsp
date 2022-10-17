@@ -82,7 +82,7 @@
                 <li><a href="/board/notice/list">고객센터</a>
 					<ul class="header__menu__dropdown">
 						<li><a href="/board/notice/list">공지사항</a></li>
-						<li><a href="./shoping-cart.html">문의게시판</a></li>
+						<li><a href="/board/ask/list">문의게시판</a></li>
 						<li><a href="/admin/main">관리자 페이지(임시)</a></li>
 					</ul>
 				</li>
@@ -132,7 +132,7 @@
 			                <li><a href="/board/notice/list">고객센터</a>
 								<ul class="header__menu__dropdown">
 									<li><a href="/board/notice/list">공지사항</a></li>
-									<li><a href="./shoping-cart.html">문의게시판</a></li>
+									<li><a href="/board/ask/list">문의게시판</a></li>
 									<li><a href="/admin/main">관리자 페이지(임시)</a></li>
 								</ul>
 							</li>

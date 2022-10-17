@@ -15,7 +15,7 @@ import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.PagingInfo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
 import com.boritgogae.board.ask.domain.UploadFile;
-import com.boritgogae.board.ask.domain.UploadFileVo;
+import com.boritgogae.board.ask.domain.UploadAskFileVo;
 import com.boritgogae.board.ask.persistence.AskBoardDAO;
 
 @Service
@@ -180,7 +180,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 		// no번 글을 DB에서 셀렉트함
 		AskBoardVo board = dao.getBoard(bno);
 		// no번 글에 첨부되어 있는 파일 DB에서 select
-		List<UploadFileVo> fileList = dao.getAttachFile(bno);
+		List<UploadAskFileVo> fileList = dao.getAttachFile(bno);
 		// bno번 글 조회수 증가시키는 메서드
 		// 동일 아이피와 글번호를 가진 컬럼이 있는지 확인하기
 		String recentlyRead = dao.checkRecentlyRead(bno, clientIp);

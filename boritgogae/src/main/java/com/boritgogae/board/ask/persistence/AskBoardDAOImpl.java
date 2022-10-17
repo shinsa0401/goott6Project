@@ -15,7 +15,7 @@ import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.PagingInfo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
 import com.boritgogae.board.ask.domain.UploadFile;
-import com.boritgogae.board.ask.domain.UploadFileVo;
+import com.boritgogae.board.ask.domain.UploadAskFileVo;
 
 @Repository // 현재 클래스가 DAO임
 public class AskBoardDAOImpl implements AskBoardDAO {
@@ -113,7 +113,7 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 	}
 
 	@Override
-	public List<UploadFileVo> getAttachFile(int bno) throws Exception {
+	public List<UploadAskFileVo> getAttachFile(int bno) throws Exception {
 		return ses.selectList(ns + ".getAttrachFiles", bno);
 	}
 

@@ -11,7 +11,7 @@ import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.PagingInfo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
 import com.boritgogae.board.ask.domain.UploadFile;
-import com.boritgogae.board.ask.domain.UploadFileVo;
+import com.boritgogae.board.ask.domain.UploadAskFileVo;
 
 @Repository
 public interface AskBoardDAO {
@@ -52,7 +52,7 @@ public interface AskBoardDAO {
 	public AskBoardVo getBoard(int bno)throws Exception;
 
 	// 게시글 번호에 맞는 첨부파일 조회하기
-	public List<UploadFileVo> getAttachFile(int bno)throws Exception;
+	public List<UploadAskFileVo> getAttachFile(int bno)throws Exception;
 
 	// 문의코드를 보내고 그에 맞는 문의옵션을 가져오는 메서드 
 	public String readAskOptionByAskCode(String askCode)throws Exception;
