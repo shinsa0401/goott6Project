@@ -29,11 +29,18 @@ public class ReviewServiceImpl implements ReviewService {
 	//리뷰쓰는 메서드
 	@Override
 	public boolean addReview(ReviewDTO dto) throws Exception{
+		
 		dto.setReviewContent(dto.getReviewContent().replace("\r\n", "<br />"));
 		
 		int row =dao.insertReview(dto);
 		boolean result = false;
 		if (row == 1) {
+			//포인트 부여
+			//등급으로 구매적립포인트 가져오기
+			//주문테이블에서 구매액수 가져오기
+			//계산하기
+			//insert하기
+			//회원의 총 포인트 업데이트 해주기
 			result = true;
 		}
 		return result;
@@ -171,14 +178,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public boolean deleteReviewImg(int reviewNo) throws Exception {
+	public void deleteReviewImg(int reviewNo) throws Exception {
 		int row = dao.deleteReviewImg(reviewNo);
-		boolean result = false;
-		if(row>0) {
-			result=true;
-		}
-		
-		return result;
 	}
 
 	@Override

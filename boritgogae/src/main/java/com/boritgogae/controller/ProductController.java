@@ -1,6 +1,7 @@
 package com.boritgogae.controller;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,6 +26,8 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.service.ReviewService;
+import com.boritgogae.domain.ProdImgVO;
+import com.boritgogae.domain.ProductVO;
 import com.boritgogae.service.ProductService;
 
 
@@ -39,10 +42,22 @@ public class ProductController {
 	@Inject
 	private ReviewService reviewService;
 	
+	@Inject
+	private ProductService prodService;
+	
 	//상세페이지
+	/**
+	 * @methodName : prodDetail
+	 * @author : kjy
+	 * @date : 2022. 10. 17.
+	 * @입력 param : 쿼리스트링의 prodNo, pageNo
+	 * @returnType : String
+	 **/
 	@RequestMapping(value = "/category/detail")
-	public String prodDetail(@RequestParam("prodNo") String prodNo,@RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, Model model) throws Exception {
-//		Map<String, Object> map =prodService.viewProdDetail(prodNo);
+	public String prodDetail(@RequestParam(value="prodNo", required=true) String prodNo,@RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, Model model) throws Exception {
+		
+		ProductVO prod = prodService.getProd(prodNo);
+		List<ProdImgVO> prodImgLst = prodService.getProdImg(prodNo);
 		
 		Map<String, Object> reviewMap = reviewService.getReviews(prodNo, pageNo);
 		List<UploadImg> imgLst = new ArrayList<>();
@@ -63,6 +78,8 @@ public class ProductController {
 		model.addAttribute("reviewImg", imgLst);
 		model.addAttribute("page", page);
 		model.addAttribute("replies", replies);
+		model.addAttribute("product", prod);
+		model.addAttribute("prodImg", prodImgLst);
 		
 		return "/product/prodDetail";
 	}

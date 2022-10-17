@@ -41,7 +41,7 @@ public interface ReviewService {
 	public Map<String, Object> getReviewByRno(int reviewNo) throws Exception;
 	
 	//리뷰 이미지 서버에서 삭제하는 메서드<= rest컨트롤러에서 빼내오기?
-	public boolean deleteReviewImg(int reviewNo) throws Exception;
+	public void deleteReviewImg(int reviewNo) throws Exception;
 	
 	//리뷰 수정하는 메서드
 	public boolean modifyReview(ReviewVO vo) throws Exception;

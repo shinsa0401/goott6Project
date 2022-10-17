@@ -82,8 +82,15 @@ function delReview(reviewNo) {
       });
 }
 
+
+
 function openReply(reviewNo) {
-	$("#replyTap"+reviewNo).css("display", "block");
+	if ($("#replyTap"+reviewNo).css("display")==("none")){
+		$("#replyTap"+reviewNo).css("display", "block");
+	}else{
+		$("#replyTap"+reviewNo).css("display", "none");
+	}
+	
 }
 
 function writeReply(reviewNo) {
@@ -478,10 +485,17 @@ function getParameter(param) {
 																				style="height: 20px; margin: auto;" /> <img alt=""
 																				src="/resources/img/edit.png"
 																				onclick="location.href='/prodReply2/editeReview/${review.reviewNo}/${param.prodNo }';"
-																				style="height: 20px; margin: auto;" /> 
-																				<img src="/resources/img/reply.png" onclick="openReply(${review.reviewNo})" style="height: 20px; margin: auto;" /> 
-																				<img src="/resources/img/pencil.png" onclick="writeReply(${review.reviewNo });" style="height: 20px; margin: auto;" />
-																			<div><fmt:formatDate value="${review.writtenDate }" pattern="yyyy-MM-dd a hh:mm"  /> </div>
+																				style="height: 20px; margin: auto;" /> <img
+																				src="/resources/img/reply.png"
+																				onclick="openReply(${review.reviewNo})"
+																				style="height: 20px; margin: auto;" /> <img
+																				src="/resources/img/pencil.png"
+																				onclick="writeReply(${review.reviewNo });"
+																				style="height: 20px; margin: auto;" />
+																			<div>
+																				<fmt:formatDate value="${review.writtenDate }"
+																					pattern="yyyy-MM-dd a hh:mm" />
+																			</div>
 																		</div>
 																	</div>
 																</div>
@@ -491,42 +505,52 @@ function getParameter(param) {
 															<div class="drawLine" style="display: none;"
 																id="replyTap${review.reviewNo }">
 																<c:forEach var="reply" items="${replies }">
-
+																	<c:set var="replycnt" value="0" />
 																	<c:if test="${review.reviewNo == reply.reviewNo}">
-																		
-																		<div class= "row" id="reply${reply.rno }">
-																			<div class="col-lg-4">
-																				<div class="blog__details__author">
-																					<div class="blog__details__author__text">
-																						
-																						<h6><c:if test="${reply.step > 0 }">
-																							<c:forEach var="i" begin="1" end="${reply.step}">
-																								<img alt="" src="/resources/img/rereply.png"
-																									style="height: 20px; margin: auto;"/>
-																							</c:forEach>
-																						</c:if>
-																						${reply.replyWriter }</h6>
+																		<c:set var="replycnt" value="${cnt+1}" />
+
+																		<c:forEach var="i" begin="1" end="${replycnt }">
+																			<div class="row" id="reply${reply.rno }">
+																				<div class="col-lg-4">
+																					<div class="blog__details__author">
+																						<div class="blog__details__author__text">
+
+																							<h6>
+																								<c:if test="${reply.step > 0 }">
+																									<c:forEach var="i" begin="1"
+																										end="${reply.step}">
+																										<img alt="" src="/resources/img/rereply.png"
+																											style="height: 20px; margin: auto;" />
+																									</c:forEach>
+																								</c:if>
+																								${reply.replyWriter }
+																							</h6>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-lg-8">
+																					<div class="blog__details__widget">
+																						${reply.replyContent }</div>
+																					<div>
+																					<fmt:formatDate value="${reply.replyWrittenDate }"
+																					pattern="yyyy-MM-dd a hh:mm" /></div>
+																					<div class="blog__details__social text-right">
+																						<img alt="" src="/resources/img/deleteReview.png"
+																							onclick="delReply(${reply.rno});"
+																							style="height: 20px; margin: auto;" /> <img
+																							src="/resources/img/pencil.png"
+																							onclick="writeReReply(${reply.rno}, ${review.reviewNo });"
+																							style="height: 20px; margin: auto;" />
 																					</div>
 																				</div>
 																			</div>
-																			<div class="col-lg-8">
-																				<div class="blog__details__widget">
-																					${reply.replyContent }</div>
-																				<div>${reply.replyWrittenDate }</div>
-																				<div class="blog__details__social text-right">
-																					<img alt="" src="/resources/img/deleteReview.png"
-																						onclick="delReply(${reply.rno});"
-																						style="height: 20px; margin: auto;" /> 
-																						<img src="/resources/img/pencil.png" onclick="writeReReply(${reply.rno}, ${review.reviewNo });" style="height: 20px; margin: auto;" />
-																				</div>
-																			</div>
-																		</div>
+																			<div id="rereplyWrite${reply.rno}"></div>
+																		</c:forEach>
 																	</c:if>
-																	<div id="rereplyWrite${reply.rno}"></div>
 																</c:forEach>
 
 															</div>
-															
+
 														</div>
 														<hr>
 													</c:forEach>

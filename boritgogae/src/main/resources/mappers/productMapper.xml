@@ -4,5 +4,10 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.boritgogae.productMapper">
-  
+  	<select id="getProd" resultType="com.boritgogae.domain.ProductVO">
+  		select * from product where prodNo = #{prodNo}
+  	</select>
+  	<select id="getProdImg" resultType="com.boritgogae.domain.ProdImgVO">
+  		select * from prodImg where prodNo = #{prodNo}
+  	</select>
   </mapper>
