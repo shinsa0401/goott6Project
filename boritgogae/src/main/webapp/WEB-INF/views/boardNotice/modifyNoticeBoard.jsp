@@ -34,20 +34,61 @@
 				['fontsize', ['fontsize']],
 				['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
 				['color', ['forecolor','color']],
-			    ['para', ['ul', 'ol', 'paragraph']],
-			    ['height', ['height']],
-			    ['insert',['picture','link']],
-			    ['view', ['fullscreen', 'help']]
+			    ['insert',['picture','link']]
 			  ],
-			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
+			fontNames: ['맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
 			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
 			callbacks: {
 				onImageUpload : function(files){
-					imgUpload(files[0],this);
+					uploadFile(files[0],this);
+				},
+				onPaste: function (e) {
+					let clipboardData = e.originalEvent.clipboardData;
+					if (clipboardData && clipboardData.items && clipboardData.items.length) {
+						let item = clipboardData.items[0];
+						if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+							e.preventDefault();
+						}
+					}
 				}
 			}
+		
+		});	
+		
+		$("#summernote").on("summernote.enter", function(we, e) {
+		     $(this).summernote("pasteHTML", "<br><br>");
+		     e.preventDefault();
 		});
-		$('#summernote').summernote('code', "${board.content}");
+		
+		function uploadFile(file, editor) {
+			data = new FormData();
+			data.append("file", file);
+			$.ajax({
+				url : "/board/notice/uploadFile",
+				data : data,
+				type : "POST",
+				contentType : false,
+				processData : false,
+				async: false,
+				success : function(data) {
+					console.log(data);
+					
+					let output = "";
+					if (data.image) { // 이미지 파일이면
+						output += "/resources/uploads" + data.savedOriginImageFileName;
+					} else {
+						$("#status").html("이미지 파일인지 확인해주세요!");
+						$("#statusModal").show(200);
+					}
+					
+	            	//항상 업로드된 파일의 url이 있어야 한다.
+					$(editor).summernote('insertImage', output);
+				}
+			});
+		}
+		
+		
+		$('#summernote').summernote('code', '${board.content}');
 	});
 	
 	function modiBoard(form) {
@@ -60,6 +101,10 @@
 		form.content.value = content;
 		
 		form.submit();
+	}
+	
+	function closeModal() {
+		$("#statusModal").hide(200);
 	}
 
 </script>
@@ -87,7 +132,7 @@
 
 		<div class="checkout__form">
 			<h4>No. ${board.bno }</h4>
-			<form action="/board/notice/modify" method="post">
+			<form action="/board/notice/modifyBoard" method="post">
 				<div class="row">
 					<div class="col-lg-8 col-md-6">
 						<div class="checkout__input">
@@ -118,6 +163,27 @@
 
 	<jsp:include page="../footer.jsp"></jsp:include>
 
+	<div class="modal" id="statusModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title" id="status"></h4>
+					<button type="button" class="btn-close close"
+						data-bs-dismiss="modal" onclick="closeModal();">X</button>
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success"
+						data-bs-dismiss="modal"
+						onclick="closeModal();">확인</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

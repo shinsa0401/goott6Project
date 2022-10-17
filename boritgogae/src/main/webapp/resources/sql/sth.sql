@@ -194,6 +194,8 @@ ADD CONSTRAINT `questionReply_replyWriter_fk`
 
 -- 게시판에 글등록
 -- insert into board(writer, title, content, pwd) values(#{writer}, #{title}, #{content}, sha1(md5(#{pwd})))
+insert into questionBoard(writer, title, content, pwd) 
+values('shin', '페이징 테스트', '페이징 테스트를 위한 글 생성', sha1(md5('1234')));
 
 -- 게시글 등록시 업로드된 파일이 이미지인경우 (사진5장까지..?)
 -- insert into uploadfile(bno, originalFile, thumbnailFile) 
@@ -257,6 +259,7 @@ select * from questionReadCount where bno = 1 and ipAddr = '211.21.31.43';
 -- select count(*) as cnt from board
 
 -- 검색된 글의 개수 얻어오기
+select count(*) as cnt from questionBoard where content like '%세종%';
 -- select count(*) as cnt from board where
 --   <if test="searchType == 'writer'">
 -- 	writer like concat('%', #{searchWord}, '%')
@@ -302,3 +305,31 @@ set replyWriter = 'shin', replyContent = '댓글 수정테스트', replyWrittenD
 
 -- 댓글 번호로 글번호 검색 (필요없음)
 select bno from questionReply where rno = 1;
+
+-- 해당 글의 최근 등록된 댓글 번호 얻어오기
+select max(rno) as lastRno from questionReply;
+
+-- reply ref 업데이트
+update questionReply set ref = 7 where rno = 7;
+
+-- refOrder 업데이트
+update questionReply set refOrder = refOrder + 1 where ref = 68 and refOrder > 3;
+
+-- rno로 부모댓글의 정보 얻어오기
+select * from questionReply where rno = 7;
+
+-- 댓글의 max(refOrder)값 구하기
+select max(refOrder) as maxRefOrder from questionReply where bno = 1;
+
+-- 댓글의 댓글
+insert into questionReply(bno, replyWriter, replyContent, ref, step, refOrder) 
+values(1, 'shin', '대댓글', 8, 1, 3);
+
+-- 부모댓글그룹의 자식댓글수의 합 검색
+select count(*) as cntSum from questionReply where ref = 42 and step != 0;
+
+-- 부모댓글의 최대 step값 검색
+select max(step) as maxStep from questionReply where ref = 42;
+
+-- 부모댓글의 자식댓글 개수
+select count(*) as cnt from questionReply where ref = 42 and step = 1; -- step = step + 1

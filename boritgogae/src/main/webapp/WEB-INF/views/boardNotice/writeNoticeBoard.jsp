@@ -34,27 +34,58 @@
 				['fontsize', ['fontsize']],
 				['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
 				['color', ['forecolor','color']],
-			    ['para', ['ul', 'ol', 'paragraph']],
-			    ['height', ['height']],
-			    ['insert',['picture','link']],
-			    ['view', ['fullscreen', 'help']]
+			    ['insert',['picture','link']]
 			  ],
-			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
+			fontNames: ['맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
 			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
 			callbacks: {
 				onImageUpload : function(files){
-					imgUpload(files[0],this);
+					uploadFile(files[0],this);
+				},
+				onPaste: function (e) {
+					let clipboardData = e.originalEvent.clipboardData;
+					if (clipboardData && clipboardData.items && clipboardData.items.length) {
+						let item = clipboardData.items[0];
+						if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+							e.preventDefault();
+						}
+					}
 				}
-		
 			}
-
-
+		
 		});	
 		
 		$("#summernote").on("summernote.enter", function(we, e) {
 		     $(this).summernote("pasteHTML", "<br><br>");
 		     e.preventDefault();
 		});
+		
+		function uploadFile(file, editor) {
+			data = new FormData();
+			data.append("file", file);
+			$.ajax({
+				url : "/board/notice/uploadFile",
+				data : data,
+				type : "POST",
+				contentType : false,
+				processData : false,
+				async: false,
+				success : function(data) {
+					console.log(data);
+					
+					let output = "";
+					if (data.image) { // 이미지 파일이면
+						output += "/resources/uploads" + data.savedOriginImageFileName;
+					} else {
+						$("#status").html("이미지 파일인지 확인해주세요!");
+						$("#statusModal").show(200);
+					}
+					
+	            	//항상 업로드된 파일의 url이 있어야 한다.
+					$(editor).summernote('insertImage', output);
+				}
+			});
+		}
 
 	});
 	
@@ -62,12 +93,16 @@
 		let content = form.content.value;
 		let memberId = form.memberId.value;
 		let title = form.title.value;
-		console.log(content, memberId, title);
 		
 		content = content.replace(/<(\/?)p>/gi,"");
 		form.content.value = content;
-		
+
+		console.log(content, memberId, title);
 		return true;
+	}
+	
+	function closeModal() {
+		$("#statusModal").hide(200);
 	}
 
 </script>
@@ -112,7 +147,7 @@
 
 				</div>
 
-				<button type="button" class="btn btn-success" onclick="return addBoard(this.form);">등록</button>
+				<button type="submit" class="btn btn-success" onclick="return addBoard(this.form);">등록</button>
 			</form>
 
 
@@ -123,6 +158,26 @@
 
 	<jsp:include page="../footer.jsp"></jsp:include>
 
+	<div class="modal" id="statusModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
 
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title" id="status"></h4>
+					<button type="button" class="btn-close close"
+						data-bs-dismiss="modal" onclick="closeModal();">X</button>
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success"
+						data-bs-dismiss="modal"
+						onclick="closeModal();">확인</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
 </body>
 </html>

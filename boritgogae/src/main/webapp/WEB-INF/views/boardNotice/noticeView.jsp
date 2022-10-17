@@ -22,7 +22,7 @@
 		src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 <script type="text/javascript">
-	let rno = 0;
+	let sendByRno = 0;
 
 	$(document).ready(function() {
 		$('#summernote').summernote({
@@ -33,16 +33,10 @@
 			lang : "ko-KR", // 한글 설정
 			toolbar: [
 				['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
-				['color', ['forecolor','color']],
-		    	['insert',['picture']]
+				['color', ['forecolor','color']]
 			],
 			fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
-			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
-			callbacks: {
-				onImageUpload : function(files){
-					imgUpload(files[0],this);
-				}
-			}
+			fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72']
 		});	
 		
 		$("#summernote").on("summernote.enter", function(we, e) {
@@ -86,20 +80,19 @@
 	}
 	
 	function delReply(deleteFromRno) {
-		rno = deleteFromRno;
+		sendByRno = deleteFromRno;
+		console.log(sendByRno);
 		$("#deleteReplyModal").show(200);
 	}
 	
 	function deleteReplyBoard() {
 		$("#deleteReplyModal").hide(200);
+		let sendRno = sendByRno;
+		console.log(sendRno);
 		$.ajax({
             url : "/board/notice/replyDelete", // 데이터 송수신될 주소 
-			data : {"rno" : rno}, // 송신할 데이터
-			type : "delete", // 전송 방식
-			headers : {
-				"content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
-				"X-HTTP-Method-Override" : "POST" // 구 버전의 웹 브라우저에서 (PUT / DELETE) 방식이 호환이 안되는 버전에서 호환 되도록
-			},
+			data : {"rno" : sendRno}, // 송신할 데이터
+			type : "post", // 전송 방식
 			dataType : "text", // 수신할 데이터
             success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
             	console.log(data);
@@ -120,29 +113,88 @@
 		let output = "";
 		output += '<ul class="list-group list-group-flush reply-list-group">';
 		$.each(data, function(i, item) {
-			console.log(item.content);
-			output += "<li class='list-group-item'>"; 	
-			output += "<div>";
+			output += "<li class='list-group-item'>";
+			if(item.step > 0) {
+					output += "<div style='position:relative; left :" + 30 * item.step + "px;'>";
+			} else {
+				output += "<div>";
+			}
 			output += "<div class='replyer'>" + item.nickName + "</div>";
-			output += "<p class='replyIcon'>";
+			if(item.step > 0) {
+				output += "<p class='replyIcon' style='position:relative; right :" + 30 * item.step + "px;'>";
+			} else {
+				output += "<p class='replyIcon'>";
+			}
+			
 			output += "<span id='deleteIcon' style='text-decoration: underline;' onclick='delReply(" + item.rno + ")';>";
-			output += "삭제<img src='../../resources/img/delete_icon.png' class='icon' /></span>&nbsp;&nbsp;&nbsp;";
+			output += "삭제<img src='../../resources/notice/icon/delete_icon.png' class='icon' /></span>&nbsp;&nbsp;&nbsp;";
 			output += "<span id='modifyIcon' style='text-decoration: underline;'";
 			output += " onclick='modiReply(" + item.rno + ",\"" + item.content.trim() + "\",\"" + item.memberId + "\")';>";
-			output += "수정<img src='../../resources/img/modify_icon.png' class='icon' /></span>";
+			output += "수정<img src='../../resources/notice/icon/modify_icon.png' class='icon' /></span>&nbsp;&nbsp;&nbsp;";
+			output += "<span id='replyRepl' style='text-decoration: underline;' onclick='replyRepl(" + item.rno + ", \"" + item.ref + "\", \"" + item.step + "\", \"" + item.refOrder + "\")';>";
+			output += "답글달기</span>";
 			output += "</p>";
 			output += "<div class='replyContents' style='margin:2px;'>" + item.content + "</div>";
 			output += "<div class='writtenDate' style='font-size:14px; position:relative; top:8px;'>" + calcDate(item.writtenDate) + "</div>";
 			output += "</div></li><div id='modiRegister" + item.rno + "'></div>";
+			
+			
 		});
 		
-		
-		output += '<li class="list-group-item"></li>';
 		output += '</ul>';
 		
 		
 		
 		$("#replyList").html(output);
+	}
+	
+	// 댓글의 답글
+	function replyRepl(replRno, ref, step, refOrder) {
+		
+		let output = "";
+		
+		output += '<input type="text" id="replMemberId" name="memberId">';
+		output += "<textarea style='width:70%' rows='5' class='form-control replyReplContent' name='content'></textarea>";
+		output += "<div><button type='button' class='btn btn-success' onclick='addReplyrepl(" + replRno + ", \"" + ref + "\", \"" + step + "\", \"" + refOrder + "\")';>등록</button></div>";
+
+		$("#modiRegister" + replRno).html(output);
+	}
+	
+	function addReplyrepl(replRno, ref, step, refOrder) {
+		let bno = ${board.bno };
+		let rno = replRno;
+		let memberId = $("#replMemberId").val();
+		let content = $(".replyReplContent").val();
+		content = content.replace(/<(\/?)p>/gi,"");
+		
+		let url = "/board/notice/replyRegister";
+		let sendData = JSON.stringify({
+			"bno" : bno, "rno" : rno, "memberId" : memberId, "content" : content, "ref" : ref, "step" : step, "refOrder" : refOrder
+		});
+		
+		console.log(sendData);
+		
+		$.ajax({
+            url : url, // 데이터 송수신될 주소 
+			data : sendData, // 송신할 데이터
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			headers : {
+				"content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+				"X-HTTP-Method-Override" : "POST" // 구 버전의 웹 브라우저에서 (PUT / DELETE) 방식이 호환이 안되는 버전에서 호환 되도록
+			},
+            success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+               console.log(data);
+            	if(data == "success") {
+            		location.reload();
+            	} else if(data == "fail") {
+            		
+            	}
+            
+            }, error : function(e) {
+				console.log(e);
+			}
+         });
 	}
 	
 	// 댓글 등록
@@ -259,7 +311,7 @@
 	});
 	
 	function modify() {
-		location.href="/board/notice/bnoToModify?bno=" + ${board.bno};
+		location.href="/board/notice/modify?bno=" + ${board.bno};
 	}
 	
 </script>
@@ -295,6 +347,7 @@
 }
 
 #replys {
+	margin-top : 80px;
 	overflow: auto;
 }
 
@@ -307,9 +360,13 @@
 #deleteIcon {
 	cursor: pointer;
 }
+
 #modifyIcon {
 	cursor: pointer;
-	
+}
+
+#replyRepl {
+	cursor: pointer;
 }
 
 .replyContents {
@@ -323,6 +380,18 @@
 
 .reply-list-group {
 	max-width:80%;
+}
+
+.likeBtn {
+	width : 50px;
+	margin-bottom: 10px;
+	position: absolute;
+	left: 50%;
+
+}
+
+.container {
+	margin-bottom: 30px;
 }
 </style>
 
@@ -348,9 +417,9 @@
 						<fmt:formatDate value="${board.writtenDate }"
 							pattern="yyyy-MM-dd HH:mm" />
 					</div> &nbsp; <span id="icons"><img
-						src="${pageContext.request.contextPath}/resources/img/view_icon.png"
+						src="${pageContext.request.contextPath}/resources/notice/icon/view_icon.png"
 						class="icon"> ${board.readCount } &nbsp; <img
-						src="${pageContext.request.contextPath}/resources/img/like_icon.png"
+						src="${pageContext.request.contextPath}/resources/notice/icon/like_icon.png"
 						class="icon"> ${board.likeCount } </span>
 			</span>
 				<h3 id="title">
@@ -372,8 +441,25 @@
 					style="background-color: #7fad39; color: white; border-color: #7fad39;"
 					onclick="modify();">글 수정</button>
 			</div>
+			
 		</div>
-
+		<div class="likeBtnDiv">
+			<c:choose>
+				<c:when test="">
+					<button type="button" class="btn btn-success likeBtn"
+					style="background-color: #7fad39; color: white; border-color: #7fad39;"
+					onclick=""><img src="${pageContext.request.contextPath}/resources/notice/icon/full_like_icon.png"></button>
+				</c:when>
+				<c:otherwise>
+					<button type="button" class="btn btn-success likeBtn"
+						style="background-color: #7fad39; color: white; border-color: #7fad39;"
+						onclick=""><img src="${pageContext.request.contextPath}/resources/notice/icon/empty_like_icon.png"></button>
+				</c:otherwise>
+			
+			</c:choose>
+		</div>
+		
+		
 		<!-- 댓글 -->
 		<div id="replys">
 			<div>

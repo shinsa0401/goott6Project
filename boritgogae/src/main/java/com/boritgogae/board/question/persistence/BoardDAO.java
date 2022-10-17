@@ -46,10 +46,6 @@ public interface BoardDAO {
 	
 	// 조회된 글의 조회수 증가하는 메서드
 	public int updateReadCountBoard(int no) throws Exception;
-	
-	// 좋아요수 증가하는 메서드
-	
-	
 
 	// 게시판 글 수정하는 메서드
 	public int updateBoard(BoardVo board) throws Exception;

@@ -150,14 +150,30 @@ public class BoardServiceImpl implements BoardService {
 
 	// 게시글 수정
 	@Override
-	public boolean modifyBoard(BoardVo board) throws Exception {
+	public boolean modifyBoard(BoardVo board, List<UploadFile> uploadFileLst) throws Exception {
 		boolean result = false;
 		System.out.println("서비스단 글 수정");
+		
+		int no = board.getNo();
+		
 		int row = dao.updateBoard(board);
 		if (row == 1) {
-			result = true;
 			System.out.println("글수정완료");
+			
+			// 업로드된 파일이 있다면 업로드된 파일의 개수 만큼 반복하여 uploadFile 테이블에 insert
+			if (uploadFileLst.size() > 0) {
+				for (UploadFile up : uploadFileLst) {
+					if (up.isImage()) {
+						dao.insertImg(no, up.getSavedOriginImageFileName(), up.getThumbnailFileName());
+					} else {
+						dao.insertFile(no, up.getSavedOriginImageFileName());
+					}
+				}
+			}
+			
+			result = true;
 		}
+		
 		System.out.println(board.toString());
 		return result;
 	}
@@ -188,7 +204,7 @@ public class BoardServiceImpl implements BoardService {
 		if (sc.getSearchWord() != null && !sc.getSearchType().equals("")) {
 			// 검색어가 있다
 			System.out.println("검색어가 있다 : " + sc.toString());
-			dao.getSearchResultCnt(sc); // 검색된 글의 개수를 가져와 setting
+			result.setTotalPostCnt(dao.getSearchResultCnt(sc)); // 검색된 글의 개수를 가져와 setting
 		} else {
 			System.out.println("검색어가 없다");
 			result.setTotalPostCnt(dao.getTotalPostCnt()); // 전체 글의 개수 setting
