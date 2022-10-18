@@ -50,13 +50,13 @@
 		      let url = "/boardMarket/uploadFile";
 		      
 		      $.ajax({
-		         url : url, // 데이터 송수신될 주소 
-		         type : "post", // 통신 방식(get, post)
-		         dataType : "json", // 수신받을 데이터 타입
+		         url : url, 
+		         type : "post", 
+		         dataType : "json", 
 		         processData : false,  // 전송하는 데이터를 텍스트 변환하지 않는다
 		         contentType : false,   // 기본값 (application/x-www-form-urlencoded)을 사용하지 않는다.
-		         data : formData,   // 전송할 데이터
-		         success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+		         data : formData,   
+		         success : function(data) { 
 		            console.log(data);
 		            
 		            showFileList(data);
@@ -91,11 +91,11 @@
 		
 		let url = "/boardMarket/delFile";
 		$.ajax({
-            url : url, // 데이터 송수신될 주소 
-            type : "post", // 통신 방식(get, post)
-            dataType : "text", // 수신받을 데이터 타입
-            data : {"deleteFileName" : deleteFileName}, // 전송할 데이터
-            success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+            url : url, 
+            type : "post",
+            dataType : "text", 
+            data : {"deleteFileName" : deleteFileName},
+            success : function(data) { 
                console.log(data);
             
             if(data == "success"){

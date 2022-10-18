@@ -8,11 +8,11 @@
   		insert into marketBoard(writer, title, content)values(#{writer}, #{title}, #{content})
   	</insert>
   	
-  	<select id="getAllBoard" resultType="com.boritgogae.board.market.domain.BoardVO">
+  	<select id="getAllBoard" resultType="com.boritgogae.board.market.domain.MarketBoardVO">
   		select * from marketBoard order by writtenDate desc limit #{startNum}, #{postPerPage}
   	</select>
   	
-  	<select id="getContent" resultType="com.boritgogae.board.market.domain.BoardVO">
+  	<select id="getContent" resultType="com.boritgogae.board.market.domain.MarketBoardVO">
   		select * from marketBoard where no =#{no}
   	</select>
   	
@@ -47,7 +47,7 @@
   		</choose>
   	</select>
   	
-  	<select id="search"  resultType="com.boritgogae.board.market.domain.BoardVO">
+  	<select id="search"  resultType="com.boritgogae.board.market.domain.MarketBoardVO">
   		select *from  marketBoard where 
   		
   		<if test="searchType=='title'">
@@ -59,7 +59,7 @@
   		<if test="searchType=='content'">
   			content like concat('%',#{searchWord},'%')
   		</if>
-  		order by no  
+  		
   	</select>
   	
   	<!-- 댓글 쿼리문 -->
@@ -68,7 +68,7 @@
   		insert into marketReply (bno, replyer, replyContent) values(#{bno}, #{replyer}, #{replyContent})
   	</insert>
   	
-  	<select id="getAllReply" resultType="com.boritgogae.board.market.domain.ReplyVO">
+  	<select id="getAllReply" resultType="com.boritgogae.board.market.domain.MarketReplyVO">
   		select * from marketReply where bno =#{bno}
   	</select>
   	
@@ -90,7 +90,7 @@
   	</insert>
   	
   	<!-- 이미지 파일 있는지? -->
-  	<select id="getAttachFiles" resultType="com.boritgogae.board.market.domain.UploadFileVo">
+  	<select id="getAttachFiles" resultType="com.boritgogae.board.market.domain.MarketUploadFileVo">
   		select * from marketBoardImg where bno = #{lastNo}
   	</select>
   	
