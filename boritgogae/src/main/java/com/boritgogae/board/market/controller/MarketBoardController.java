@@ -69,7 +69,7 @@ public class MarketBoardController {
 	@RequestMapping(value = "/write", method = RequestMethod.GET) 
 	public String goWriteBoard() {
 		System.out.println("컨트롤러단 글 쓰러가기");
-		return "boardMarket/writeBoardMarket";
+		return "boardMarket/writeBoard";
 	}
 	
 	
