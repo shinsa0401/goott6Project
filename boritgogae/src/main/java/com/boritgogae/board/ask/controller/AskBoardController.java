@@ -29,7 +29,7 @@ import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.AskReplyVo;
 import com.boritgogae.board.ask.domain.PagingInfo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
-import com.boritgogae.board.ask.domain.UploadFile;
+import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
 import com.boritgogae.board.ask.etc.UploadFileProcess;
 import com.boritgogae.board.ask.service.AskBoardService;
@@ -41,9 +41,9 @@ public class AskBoardController {
 	@Inject
 	private AskBoardService service; // 서비스 객체
 
-	private List<UploadFile> UploadFileLst = new ArrayList();
-	private List<UploadFile> addTempFileLst = new ArrayList();
-	private List<UploadFile> subTempFileLst = new ArrayList();
+	private List<UploadAskFile> UploadFileLst = new ArrayList();
+	private List<UploadAskFile> addTempFileLst = new ArrayList();
+	private List<UploadAskFile> subTempFileLst = new ArrayList();
 	
 	@RequestMapping(value = "/list")
 	public String listAll(Model model, @RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo,
@@ -125,7 +125,7 @@ public class AskBoardController {
 
 	// 파일 업로드 메서드
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public ResponseEntity<UploadFile> uploadFile(MultipartFile upfile, HttpServletRequest request) {
+	public ResponseEntity<UploadAskFile> uploadFile(MultipartFile upfile, HttpServletRequest request) {
 		System.out.println("컨트롤러 : 파일 업로드요청");
 		System.out.println("업로드된 파일 이름 : " + upfile.getOriginalFilename());
 		System.out.println("파일 사이즈 : " + upfile.getSize());
@@ -135,10 +135,10 @@ public class AskBoardController {
 		String upPath = request.getSession().getServletContext().getRealPath("resources/askBoard/uploads");
 		System.out.println("파일이 실제 저장 될 경로 : " + upfile);
 
-		ResponseEntity<UploadFile> result = null;
+		ResponseEntity<UploadAskFile> result = null;
 
 		if (upfile.getSize() > 0) {
-			UploadFile upFile;
+			UploadAskFile upFile;
 			try {
 				// 실제로 파일이 넘어가는 구문임
 				upFile = UploadFileProcess.uploadFileProcess(upPath, upfile.getOriginalFilename(), upfile.getBytes(),
@@ -162,7 +162,7 @@ public class AskBoardController {
 
 	// 글 수정시 파일 업로드 메서드 
 	@RequestMapping(value = "/uploadFileModify", method = RequestMethod.POST)
-	public ResponseEntity<UploadFile> uploadFileModify(MultipartFile upfile, HttpServletRequest request) {
+	public ResponseEntity<UploadAskFile> uploadFileModify(MultipartFile upfile, HttpServletRequest request) {
 		System.out.println("컨트롤러 : 파일 업로드요청");
 		System.out.println("업로드된 파일 이름 : " + upfile.getOriginalFilename());
 		System.out.println("파일 사이즈 : " + upfile.getSize());
@@ -172,10 +172,10 @@ public class AskBoardController {
 		String upPath = request.getSession().getServletContext().getRealPath("resources/askBoard/uploads");
 		System.out.println("파일이 실제 저장 될 경로 : " + upfile);
 
-		ResponseEntity<UploadFile> result = null;
+		ResponseEntity<UploadAskFile> result = null;
 
 		if (upfile.getSize() > 0) {
-			UploadFile upFile;
+			UploadAskFile upFile;
 			try {
 				upFile = UploadFileProcess.uploadFileProcess(upPath, upfile.getOriginalFilename(), upfile.getBytes(),
 						upfile.getContentType());
@@ -205,7 +205,7 @@ public class AskBoardController {
 		File deleteFile = new File(upPath + deleteFileName);
 		
 		boolean origin = false, thumb = false;
-		for (UploadFile uf : this.UploadFileLst) {
+		for (UploadAskFile uf : this.UploadFileLst) {
 			if (uf.getSavedOriginImageFileName().equals(deleteFileName)) { // 지워져야 할 파일이 있다
 				origin = new File(upPath + uf.getSavedOriginImageFileName()).delete(); // 원본파일 삭제
 
@@ -245,7 +245,7 @@ public class AskBoardController {
 		File deleteFile = new File(upPath + deleteFileName);
 		
 		boolean origin = false, thumb = false;
-		for (UploadFile uf : this.UploadFileLst) {
+		for (UploadAskFile uf : this.UploadFileLst) {
 			if (uf.getSavedOriginImageFileName().equals(deleteFileName)) { // 지워져야 할 파일이 있다
 				// origin = new File(upPath + uf.getSavedOriginImageFileName()).delete(); // 원본파일 삭제
 				
@@ -284,7 +284,7 @@ public class AskBoardController {
 		// 파일이 실제 저장될 경로
 		String upPath = request.getSession().getServletContext().getRealPath("resources/askBoard/uploads");
 
-		for (UploadFile uf : this.addTempFileLst) {
+		for (UploadAskFile uf : this.addTempFileLst) {
 			new File(upPath + uf.getSavedOriginImageFileName()).delete(); // 원본파일 삭제
 
 			if (uf.isImage()) {
@@ -306,7 +306,7 @@ public class AskBoardController {
 		// 파일이 실제 저장될 경로
 		String upPath = request.getSession().getServletContext().getRealPath("resources/askBoard/uploads");
 
-		for (UploadFile uf : this.UploadFileLst) {
+		for (UploadAskFile uf : this.UploadFileLst) {
 			new File(upPath + uf.getSavedOriginImageFileName()).delete(); // 원본파일 삭제
 
 			if (uf.isImage()) {
@@ -344,7 +344,7 @@ public class AskBoardController {
 		String upPath = request.getSession().getServletContext().getRealPath("resources/askBoard/uploads");
 		
 		// strTempFileLst 목록에 있는 파일들을 실제로 삭제시킨다.
-		for (UploadFile uf : this.subTempFileLst) {
+		for (UploadAskFile uf : this.subTempFileLst) {
 			new File(upPath + uf.getSavedOriginImageFileName()).delete(); // 원본파일 삭제
 
 			if (uf.isImage()) {
@@ -353,7 +353,7 @@ public class AskBoardController {
 		}
 		
 		// strTempFileLst 목록에 있는 파일들을 DB에서 삭제시킨다.
-		for (UploadFile uf : this.subTempFileLst) {
+		for (UploadAskFile uf : this.subTempFileLst) {
 			service.deleteFileDB(uf.getSavedOriginImageFileName());
 		}
 
@@ -452,18 +452,18 @@ public class AskBoardController {
 	
 
 	@RequestMapping(value = "/loadFileNames", method = RequestMethod.GET)
-	public ResponseEntity<List<UploadFile>> loadFileNames(@RequestParam("bno") int bno) {
+	public ResponseEntity<List<UploadAskFile>> loadFileNames(@RequestParam("bno") int bno) {
 		System.out.println(bno + "번 글의 파일목록을 얻어오자");
 		
-		ResponseEntity<List<UploadFile>> result = null;
+		ResponseEntity<List<UploadAskFile>> result = null;
 		
 		try {
-			List<UploadFile> lst = service.showFileList(bno+"");
+			List<UploadAskFile> lst = service.showFileList(bno+"");
 			System.out.println(lst);
 			if(lst.size() < 1) {
 				result = null;
 			} else {
-				result = new ResponseEntity<List<UploadFile>>(lst, HttpStatus.OK);
+				result = new ResponseEntity<List<UploadAskFile>>(lst, HttpStatus.OK);
 			}
 			
 		} catch (Exception e) {

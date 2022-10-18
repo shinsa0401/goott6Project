@@ -13,16 +13,16 @@ import javax.imageio.ImageIO;
 import org.imgscalr.Scalr;
 import org.springframework.util.FileCopyUtils;
 
-import com.boritgogae.board.ask.domain.UploadFile;
+import com.boritgogae.board.ask.domain.UploadAskFile;
 
 public class UploadFileProcess {
 
-	public static UploadFile uploadFileProcess(String upPath, String originalFileName, byte[] file, String contentType) throws IOException {
+	public static UploadAskFile uploadFileProcess(String upPath, String originalFileName, byte[] file, String contentType) throws IOException {
 		UUID uuid = UUID.randomUUID();
 		String saveFileName = uuid.toString() + "_" + originalFileName; // 중복되지 않는 파일 이름
 		String savePath = calcSavePath(upPath); // 파일이 저장될 경로 계산하여 얻어옴 (최종 저장될 경로 = upPath + savePath)
 		
-		UploadFile upFile = new UploadFile(null, null, null, false);
+		UploadAskFile upFile = new UploadAskFile(null, null, null, false);
 		
 		upFile.setSavedOriginImageFileName(savePath + File.separator + saveFileName);
 

@@ -10,7 +10,7 @@ import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.PagingInfo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
-import com.boritgogae.board.ask.domain.UploadFile;
+import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
 
 @Repository
@@ -82,7 +82,7 @@ public interface AskBoardDAO {
 	public AskBoardVo getboardVo(String bno) throws Exception;
 	
 	// 글에 첨부되어있는 파일리스트를 가져오는 메서드
-	public List<UploadFile> showFileList(String bno) throws Exception;
+	public List<UploadAskFile> showFileList(String bno) throws Exception;
 	
 	// DB에서 파일명을 가지고 있는 컬럼 삭제
 	public int deleteFileDB(String savedOriginImageFileName) throws Exception;

@@ -14,7 +14,7 @@ import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.PagingInfo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
-import com.boritgogae.board.ask.domain.UploadFile;
+import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
 
 @Repository // 현재 클래스가 DAO임
@@ -181,7 +181,7 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 
 	// 글에 첨부되어있는 파일리스트를 가져오는 메서드
 	@Override
-	public List<UploadFile> showFileList(String bno) throws Exception {
+	public List<UploadAskFile> showFileList(String bno) throws Exception {
 		System.out.println("DAO : showFileList : no = " + bno + "번");
 		return ses.selectList(ns + ".showFileList", bno);
 	}

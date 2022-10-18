@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
-import com.boritgogae.board.ask.domain.UploadFile;
+import com.boritgogae.board.ask.domain.UploadAskFile;
 
 @Service
 public interface AskBoardService {
@@ -19,13 +19,13 @@ public interface AskBoardService {
 	public List<AskCodeVo> loadAskCode() throws Exception;
 
 	// 게시판 글 등록 + (업로드된 파일 등록) 하는 메서드
-	public boolean create(AskBoardVo board, List<UploadFile> uploadFileLst) throws Exception;
+	public boolean create(AskBoardVo board, List<UploadAskFile> uploadFileLst) throws Exception;
 	
 	// 게시판 수정에서 수정완료하는 메서드
-	public boolean update(AskBoardVo board, List<UploadFile> addTempFileLst) throws Exception;
+	public boolean update(AskBoardVo board, List<UploadAskFile> addTempFileLst) throws Exception;
 	
 	// 게시판 답글 등록 + (업로드된 파일 등록) 하는 메서드
-	public boolean answerCreate(AskBoardVo board, List<UploadFile> uploadFileLst) throws Exception;
+	public boolean answerCreate(AskBoardVo board, List<UploadAskFile> uploadFileLst) throws Exception;
 
 	// 게시판 조회
 	public Map<String, Object> viewBoard(int bno, String clientIp) throws Exception;
@@ -43,7 +43,7 @@ public interface AskBoardService {
 	public AskBoardVo getBoardVo(String no) throws Exception;
 
 	// 글에 첨부되어있는 파일리스트를 가져오는 메서드
-	public List<UploadFile> showFileList(String no) throws Exception;
+	public List<UploadAskFile> showFileList(String no) throws Exception;
 
 	// DB에서 파일명을 가지고 있는 컬럼 삭제
 	public int deleteFileDB(String savedOriginImageFileName) throws Exception;
