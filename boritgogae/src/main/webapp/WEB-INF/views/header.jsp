@@ -32,6 +32,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
     
+    
 <title>header</title>
 
 </head>
@@ -71,18 +72,19 @@
                 <li><a href="./blog.html">병원</a></li>
                 <li><a href="./contact.html">게시판</a>
                 	<ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">자유게시판</a></li>
-                        <li><a href="${contextPath}/board/question">질문게시판</a></li>
+                        <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
+                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
                         <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
                         <li><a href="./blog-details.html">고개팁</a></li>
                     </ul>
                 </li>
-                <li><a href="./contact.html">고객센터</a>
-                	<ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">공지사항</a></li>
-                        <li><a href="./shoping-cart.html">문의게시판</a></li>
-                    </ul>
-                </li>
+                <li><a href="/board/notice/list">고객센터</a>
+					<ul class="header__menu__dropdown">
+						<li><a href="/board/notice/list">공지사항</a></li>
+						<li><a href="/board/ask/list">문의게시판</a></li>
+						<li><a href="/admin/main">관리자 페이지(임시)</a></li>
+					</ul>
+				</li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -120,18 +122,19 @@
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
-			                        <li><a href="./shop-details.html">자유게시판</a></li>
-			                        <li><a href="${contextPath}/board/question">질문게시판</a></li>
+			                        <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
+			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
 			                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
 			                        <li><a href="./blog-details.html">고개팁</a></li>
 			                    </ul>
 			                </li>
-			                <li><a href="./contact.html">고객센터</a>
-			                	<ul class="header__menu__dropdown">
-			                        <li><a href="./shop-details.html">공지사항</a></li>
-			                        <li><a href="./shoping-cart.html">문의게시판</a></li>
-			                    </ul>
-			                </li>
+			                <li><a href="/board/notice/list">고객센터</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="/board/notice/list">공지사항</a></li>
+									<li><a href="/board/ask/list">문의게시판</a></li>
+									<li><a href="/admin/main">관리자 페이지(임시)</a></li>
+								</ul>
+							</li>
 			            </ul>
                     </nav>
                 </div>
@@ -203,10 +206,5 @@
         </div>
     </section>
     <!-- Hero Section End -->
-    
-    
-    
-    
-	
 </body>
 </html>

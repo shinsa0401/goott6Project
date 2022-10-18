@@ -5,4 +5,204 @@
   
   <mapper namespace="com.boritgogae.boardQuestionMapper">
   
+     <!-- 게시판 -->
+     
+     <!-- 게시글 전체목록 검색 -->
+     <select id="selectAllBoard" resultType="BoardQuestionVo">
+        select * from questionBoard where isDelete = 'N' order by no desc limit #{startNum}, #{postPerPage}
+     </select>
+     
+     <!-- 새 글 작성 -->
+     <insert id="insertBoard">
+        insert into questionBoard(writer, title, content, pwd) 
+        values(#{writer}, #{title}, #{content}, sha1(md5(#{pwd})))
+     </insert>
+     
+     <!-- 최근등록된 글의 번호 검색 -->
+     <select id="getLastNo" resultType="int">
+        select max(no) as lastNo from questionBoard
+     </select>
+     
+     <!-- 최근등록된 글의 ref 업데이트 -->
+     <update id="updateRef">
+        update questionBoard set ref = #{lastNo} where no = #{lastNo}
+     </update>
+     
+     <!-- 이미지 파일 저장 -->
+     <insert id="insertImg">
+        insert into questionUploadFile(bno, originFileName, thumbnailFileName) 
+        values(#{lastNo}, #{savedOriginImageFileName}, #{thumbnailFileName})
+     </insert>
+     
+     <!-- 이미지가 아닌 파일 저장 -->
+     <insert id="insertFile">
+        insert into questionUploadFile(bno, originFileName) 
+        values(#{lastNo}, #{savedOriginImageFileName})
+     </insert>
+     
+     <!-- 글번호로 게시글 검색 -->
+     <select id="getBoardByNo" resultType="BoardQuestionVo">
+        select * from questionBoard where no = #{no}
+     </select>
+     
+     <!-- 글번호로 첨부파일 검색 -->
+     <select id="getAttachFiles" resultType="UploadFileQuestionVo">
+        select * from questionUploadFile where bno = #{no}
+     </select>
+     
+     <!-- 글 수정 -->
+     <update id="updateBoard">
+      update questionBoard set title = #{title}, content = #{content} where no = #{no} and pwd = sha1(md5(#{pwd}))
+     </update>
+     
+     <!-- 수정/삭제시 비밀번호 확인 -->
+     <select id="boardPwdCheck" resultType="int">
+        select count(*) as cnt from questionBoard where no = #{no} and pwd = sha1(md5(#{pwd}))
+     </select>
+     
+     <!-- 글 삭제 (삭제여부 업데이트) -->
+     <update id="deleteBoard">
+        update questionBoard set isDelete = 'Y' where no = #{no} and pwd = sha1(md5(#{pwd}))
+     </update>
+     
+     <!-- 조회된글인지 검색 -->
+     <select id="selectReadCountCheck" resultType="ReadCountQuestionVo">
+        select * from questionReadCount where bno = #{bno} and ipAddr = #{ipAddr}
+     </select>
+     
+     <!-- 처음 읽은 글이라면 글번호, ip주소 추가 -->
+     <insert id="insertReadCount">
+        insert into questionReadCount(bno, ipAddr) values(#{bno}, #{ipAddr})
+     </insert>
+     
+     <!-- 게시글 조회수 업데이트 -->
+     <update id="updateReadCountBoard">
+        update questionBoard set readCount = readCount + 1 where no = #{bno}
+     </update>
+     
+     <!-- 전에 조회했던 글이라면 글번호, ip주소, 조회시간 업데이트 -->
+     <update id="updateReadCount">
+        update questionReadCount set readDate = now() where bno = #{bno} and ipAddr = #{ipAddr}
+     </update>
+     
+     <!-- 댓글 등록시 replyCount 증가 -->
+     <update id="addReplyCount">
+        update questionBoard set replyCount = replyCount + 1 where no = #{bno}
+     </update>
+     
+     <!-- 댓글 등록시 replyCount 감소 -->
+     <update id="subReplyCount">
+        update questionBoard set replyCount = replyCount - 1 where no = #{bno}
+     </update>
+     
+     <!-- 전체 글의 개수 -->
+     <select id="getTotalPostCnt" resultType="int">
+        select count(*) as cnt from questionBoard
+     </select>
+     
+     <!-- 검색된 글의 개수 -->
+     <select id="getSearchResultCnt" resultType="int">
+        select count(*) as cnt from questionBoard where
+        <if test="searchType == 'writer'">
+          writer like concat('%', #{searchWord}, '%')
+        </if>
+        <if test="searchType == 'title'">
+          title like concat('%', #{searchWord}, '%')
+      </if>
+      <if test="searchType == 'content'">
+         content like concat('%', #{searchWord}, '%')
+      </if>
+     </select>
+     
+     <!-- 검색어가 있을 때 페이징 하며 검색 결과 -->
+     <select id="listAllWithSearch" resultType="BoardQuestionVo">
+        select * from questionBoard where
+        <if test="searchType == 'writer'">
+           writer like concat('%', #{searchWord}, '%')
+        </if>
+        <if test="searchType == 'title'">
+           title like concat('%', #{searchWord}, '%')
+        </if>
+        <if test="searchType == 'content'">
+           content like concat('%', #{searchWord}, '%')
+        </if>
+        
+        order by ref desc, reforder asc limit #{startNum}, #{postPerPage}
+     </select>
+     
+     
+     
+     
+     <!-- 댓글 -->
+     
+     <!-- 댓글 등록 -->
+     <insert id="insertReply">
+        insert into questionReply(bno, replyWriter, replyContent) values(#{bno}, #{replyWriter}, #{replyContent})
+     </insert>
+     
+     <!-- 최근 등록된 댓글 번호 검색 -->
+     <select id="getLastRno" resultType="int">
+        select max(rno) as lastRno from questionReply
+     </select>
+     
+     <!-- 최근 등록된 댓글의 ref 업데이트 -->
+     <update id="updateReplyRef">
+        update questionReply set ref = #{lastRno} where rno = #{lastRno};
+     </update>
+     
+     <!-- 현재 글의 모든 댓글 검색 -->
+     <select id="selectAllReply" resultType="ReplyQuestionVo">
+        select * from questionReply where bno = #{bno} order by ref asc, refOrder asc
+     </select>
+     
+     <!-- 댓글 수정 -->
+     <update id="updateReply">
+        update questionReply set replyWriter = #{replyWriter}, replyContent = #{replyContent}, replyWrittenDate = now() where rno = #{rno}
+     </update>
+     
+     <!-- 댓글 삭제 -->
+     <delete id="deleteReply">
+        delete from questionReply where rno = #{rno}
+     </delete>
+     
+     <!-- 댓글번호로 글번호 검색 -->
+     <select id="selectBnoByRno" resultType="int">
+        select bno from questionReply where rno = #{rno}
+     </select>
+     
+     <!-- rno로 부모댓글의 정보 얻어오기 -->
+     <select id="getParentReply" resultType="ReplyQuestionVo">
+        select * from questionReply where rno = #{rno}
+     </select>
+     
+     <!-- 댓글의 maxRefOrder 얻어오기 -->
+     <select id="getMaxRefOrder" resultType="int">
+        select max(refOrder) as maxRefOrder from questionReply where bno = #{bno}
+     </select>
+     
+     <!-- 댓글의 댓글 작성전 refOrder 업데이트 -->
+     <update id="updateRefOrder">
+        update questionReply set refOrder = refOrder + 1 where ref = #{ref} and refOrder > #{refOrder}
+     </update>
+     
+     <!-- 댓글의 댓글 등록 -->
+     <insert id="insertReReply">
+        insert into questionReply(bno, replyWriter, replyContent, ref, step, refOrder) values(#{bno}, #{replyWriter}, #{replyContent}, #{ref}, #{step} + 1, #{refOrder} + 1)
+     </insert>
+     
+     <!-- 부모댓글의 자식댓글수 검색 -->
+     <select id="getReReplyNumCnt" resultType="int">
+        select count(*) as cnt from questionReply where ref = #{ref} and step = #{step}
+     </select>
+     
+     <!-- 부모댓글의 최대 step값 검색 -->
+     <select id="getReplyMaxStep" resultType="int">
+        select max(step) as maxStep from questionReply where ref = #{ref}
+     </select>
+     
+     <!-- 부모댓글 그룹의 자식댓글수의 합 검색 -->
+     <select id="getReReplyNumCntSum" resultType="int">
+        select count(*) as cntSum from questionReply where ref = #{ref} and step != 0
+     </select>
+     
   </mapper>
