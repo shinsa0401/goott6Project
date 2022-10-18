@@ -14,8 +14,7 @@
   <title>보릿고개 | 관리자페이지</title>
 
 <script>
-	let nowDate = new Date().getTime();
-	
+
 </script>
 
 </head>
@@ -52,8 +51,7 @@
               <!-- small box -->
               <div class="small-box bg-info">
                 <div class="inner">
-                  <h3>150</h3>
-
+                  <h3></h3>
                   <p>새로운 주문</p>
                 </div>
                 <div class="icon">
@@ -68,18 +66,13 @@
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
-                <c:forEach items="${members }" var="member">
-                	<fmt:parseDate var="memberDate"  value="${member.joinDate}" pattern="yyyy-MM-dd" />
-				
-                </c:forEach>
-               	
-                  <h3></h3>
+                  <h3>${fn:length(newMembers)}</h3>
                   <p>최근 30일간 가입한 회원</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
                 </div>
-                <a href="/admin/member" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="/admin/member/new" class="small-box-footer">상세 보기 <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             
@@ -88,13 +81,19 @@
               <!-- small box -->
               <div class="small-box bg-info">
                 <div class="inner">
-                  <h3>${fn:length(members)}</h3>
+                  <c:set value="0" var="memberLenth" />
+                  <c:forEach items="${members }" var="member">
+          			<c:if test="${member.isAdmin == 'N' }">
+          			   <c:set var="memberLenth" value="${memberLenth + 1}"/>
+          			</c:if>
+          		  </c:forEach>
+                  	<h3>${memberLenth}</h3>
                   <p>총 회원 수</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-person"></i>
                 </div>
-                <a href="/admin/member"" class="small-box-footer">상세 보기 <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="/admin/member" class="small-box-footer">상세 보기 <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <!-- ./col -->
@@ -103,7 +102,7 @@
               <!-- small box -->
               <div class="small-box bg-warning">
                 <div class="inner">
-                  <h3></h3>
+                  <h3>${fn:length(lowestProduct)}</h3>
                   <p>재고가 부족한 상품</p>
                 </div>
                 <div class="icon">
