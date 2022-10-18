@@ -73,9 +73,9 @@
                 <li><a href="./blog.html">병원</a></li>
                 <li><a href="./contact.html">게시판</a>
                 	<ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">자유게시판</a></li>
+                        <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
                         <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
-                        <li><a href="./checkout.html">장터게시판</a></li>
+                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
                         <li><a href="./blog-details.html">고개팁</a></li>
                     </ul>
                 </li>
@@ -123,9 +123,9 @@
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
-			                        <li><a href="./shop-details.html">자유게시판</a></li>
+			                        <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
 			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
-			                        <li><a href="./checkout.html">장터게시판</a></li>
+			                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
 			                        <li><a href="./blog-details.html">고개팁</a></li>
 			                    </ul>
 			                </li>
