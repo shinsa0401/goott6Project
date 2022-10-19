@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boritgogae.boardNoticeMapper">
+	<select id="getNoticeList" resultType="NoticeVo">
+		select * from noticeBoard order by bno desc limit #{startNum},
+		#{postPerPage}
+	</select>
+
+	<insert id="register">
+		insert into noticeBoard(memberId, title, content, nickName) values
+		(#{memberId}, #{title}, #{content}, "관리자")
+	</insert>
+
+	<select id="getBoardByNo" resultType="NoticeVo">
+		select * from noticeBoard where bno = #{bno}
+	</select>
+
+	<delete id="deleteBoard">
+		delete from noticeBoard where bno = #{bno}
+	</delete>
+
+	<update id="modifyBoard">
+		update noticeBoard set title = #{title}, content = #{content} where bno =
+		#{bno}
+	</update>
+
+	<select id="getNoticeBoardCnt" resultType="int">
+		select count(*) as cnt from noticeBoard
+	</select>
+
+	<insert id="registerReply">
+		insert into noticeReplyBoard(memberId, content, bno, nickName, refOrder, step) values
+		(#{memberId}, #{content}, #{bno}, #{nickName}, #{refOrder}, #{step})
+	</insert>
+	
+	<insert id="registerReplyRepl">
+		insert into noticeReplyBoard(memberId, content, bno, nickName, refOrder, step) values
+		(#{memberId}, #{content}, #{bno}, #{nickName}, #{refOrder} + 1, #{step} + 1)
+	</insert>
+
+	<select id="getReplyList" resultType="NoticeReplyVo">
+		select * from noticeReplyBoard where bno = #{bno} order by ref desc, refOrder asc
+		
+	</select>
+
+	<delete id="deleteReply">
+		delete from noticeReplyBoard where rno = #{rno}
+	</delete>
+
+	<select id="getNickName" resultType="String">
+		select nickName from members where memberId = #{memberId}
+	</select>
+
+	<update id="modifyReply">
+		update noticeReplyBoard set content = #{content} where rno = #{rno}
+	</update>
+
+	<update id="updateReadCount">
+		update noticeBoard set readCount = readCount + 1
+		where bno = #{bno}
+	</update>
+
+	<select id="getLastNo" resultType="int">
+		select max(rno) as lastpk from
+		noticeReplyBoard
+	</select>
+
+	<update id="updateRef">
+		update noticeReplyBoard set ref = #{lastNo} where rno =
+		#{lastNo}
+	</update>
+	
+	<update id="updateRefFromRno">
+		update noticeReplyBoard set ref = #{ref} where rno =
+		#{lastNo}
+	</update>
+	
+	<update id="updateRefOrder">
+		update noticeReplyBoard set refOrder = refOrder + 1 
+    	where ref = #{ref} and refOrder > #{refOrder}
+	</update>
+	
+	<select id="getRefOrder" resultType="int">
+		select refOrder from noticeReplyBoard where rno = #{lastNo}
+	</select>
+	
+	<select id="getLastReadTime" resultType="java.sql.Timestamp">
+		select readTime from noticeBoardRead where bno = #{bno} and readMemberIp = #{readMemberIp}
+	</select>
+	
+	<insert id="insertNoticeBoardRead">
+		insert into noticeBoardRead(readMemberIp, bno) values(#{readMemberIp}, #{bno})
+	</insert>
+	
+	<update id="updateNoticeBoardRead">
+		update noticeBoardRead set readTime = #{readTime} where readMemberIp = #{readMemberIp} and bno = #{bno}
+	</update>
+
+</mapper>
