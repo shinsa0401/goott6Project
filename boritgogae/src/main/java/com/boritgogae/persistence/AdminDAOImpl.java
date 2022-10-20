@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.boritgogae.domain.CouponVo;
+import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVO;
 
@@ -27,10 +29,27 @@ public class AdminDAOImpl implements AdminDAO {
     public List<MemberVo> getNewMembers() throws Exception {
         return ses.selectList(ns + ".getNewMembers");
     }
+    
+    @Override
+    public List<DeleteAccountVo> getDelMembers() throws Exception {
+        return ses.selectList(ns + ".getDelMembers");
+    }
 
     @Override
     public List<ProductVO> getLowestProduct() throws Exception {
         return ses.selectList(ns + ".getLowestProductQTY");
     }
+
+    @Override
+    public int createCoupon(CouponVo coupon) throws Exception {
+        return ses.insert(ns + ".createCoupon", coupon);
+    }
+
+    @Override
+    public List<CouponVo> getCoupon() throws Exception {
+        return ses.selectList(ns + ".getCoupon");
+    }
+
+    
 
 }

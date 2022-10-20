@@ -69,14 +69,18 @@
 						test="${pageContext.request.servletPath == '/WEB-INF/views/admin/member.jsp'}">
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/member" class="nav-link">회원 목록</a></li>
-						<li class="nav-item d-none d-sm-inline-block"><a
-							href="/admin/member/new" class="nav-link">신규 가입 회원</a></li>	
 					</c:when>
 					<c:when test="${pageContext.request.servletPath == '/WEB-INF/views/admin/newMember.jsp'}">
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/member" class="nav-link">회원 목록</a></li>
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/member/new" class="nav-link">신규 가입 회원</a></li>
+					</c:when>
+					<c:when test="${pageContext.request.servletPath == '/WEB-INF/views/admin/delMember.jsp' }">
+						<li class="nav-item d-none d-sm-inline-block"><a
+							href="/admin/member" class="nav-link">회원 목록</a></li>
+						<li class="nav-item d-none d-sm-inline-block"><a
+							href="/admin/member/delMember" class="nav-link">탈퇴한 회원</a></li>
 					</c:when>
 				</c:choose>
 			</ul>
@@ -269,11 +273,15 @@
 									class="nav-link"> <i class="far fa-circle nav-icon"></i>
 										<p>회원 목록</p>
 								</a></li>
-								<li class="nav-item"><a href="pages/UI/icons.html"
+								<li class="nav-item"><a href="/admin/member/new"
+									class="nav-link"> <i class="far fa-circle nav-icon"></i>
+										<p>신규 가입 회원</p>
+								</a></li>
+								<li class="nav-item"><a href="/admin/member/delMembers"
 									class="nav-link"> <i class="far fa-circle nav-icon"></i>
 										<p>탈퇴 회원 목록</p>
 								</a></li>
-								<li class="nav-item"><a href="pages/UI/buttons.html"
+								<li class="nav-item"><a href="/admin/coupon"
 									class="nav-link"> <i class="far fa-circle nav-icon"></i>
 										<p>쿠폰 관리</p>
 								</a></li>

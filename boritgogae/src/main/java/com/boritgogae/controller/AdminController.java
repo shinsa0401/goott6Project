@@ -8,10 +8,16 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.boritgogae.domain.CouponVo;
+import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVO;
 import com.boritgogae.service.AdminService;
@@ -67,4 +73,40 @@ public class AdminController {
         
         return getUrl;
     }
+    
+    @RequestMapping(value = "/member/delMembers")
+    public String getDelMember(Model model) throws Exception {
+        List<DeleteAccountVo> deleteMember = service.getDelMembers();
+        System.out.println(deleteMember);
+        model.addAttribute("deleteMember", deleteMember);
+        return "/admin/delMember";
+    }
+    
+    @RequestMapping(value = "/coupon")
+    public String getCoupon(Model model) throws Exception {
+        List<CouponVo> couponList = service.getCoupon();
+        
+        model.addAttribute("couponList", couponList);
+        System.out.println(couponList);
+        
+        return "/admin/coupon";
+    }
+    
+    @RequestMapping(value = "/coupon/create", method = RequestMethod.POST)
+    public ResponseEntity<String> createCoupon(Model model, @RequestBody CouponVo coupon) {
+        coupon.setCouponDiscount(coupon.getCouponDiscount() * 0.01);
+        
+        ResponseEntity<String> result = null;
+        
+        try {
+            if(service.createCoupon(coupon)) {
+                result = new ResponseEntity<String>("success", HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            result = new ResponseEntity<String>("fail", HttpStatus.OK);
+        }
+        
+        return result;
+    }
+    
 }
