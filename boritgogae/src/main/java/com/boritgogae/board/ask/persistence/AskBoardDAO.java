@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
-import com.boritgogae.board.ask.domain.PagingInfo;
+import com.boritgogae.board.ask.domain.AskPagingInfo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
 import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
@@ -16,10 +16,10 @@ import com.boritgogae.board.ask.domain.UploadAskFileVo;
 @Repository
 public interface AskBoardDAO {
 	// 게시판 전체 목록 가져오기
-	public List<AskBoardVo> selectAllBoard(PagingInfo pi) throws Exception;
+	public List<AskBoardVo> selectAllBoard(AskPagingInfo pi) throws Exception;
 	
 	// 검색어가 있을 때 페이징을 하며 검색 결과를 가져오는 메서드
-	public List<AskBoardVo> getSearchResult(SearchCriteria sc, PagingInfo pi) throws Exception;
+	public List<AskBoardVo> getSearchResult(SearchCriteria sc, AskPagingInfo pi) throws Exception;
 
 	// 검색된 글의 갯수를 반환하는 메서드
 	public int getSearchResultCnt(SearchCriteria sc) throws Exception;

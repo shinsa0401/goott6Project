@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
-import com.boritgogae.board.ask.domain.PagingInfo;
+import com.boritgogae.board.ask.domain.AskPagingInfo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
 import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
@@ -29,7 +29,7 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 
 	// 게시글 전체 보기
 	@Override
-	public List<AskBoardVo> selectAllBoard(PagingInfo pi) throws Exception {
+	public List<AskBoardVo> selectAllBoard(AskPagingInfo pi) throws Exception {
 		System.out.println("DAO : 게시판 전체 목록 요청");
 		List<AskBoardVo> lst = ses.selectList(ns + ".listAll", pi);
 		System.out.println("DAO : 게시판 전체 목록 요청" + lst);
@@ -37,7 +37,7 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 	}
 
 	@Override
-	public List<AskBoardVo> getSearchResult(SearchCriteria sc, PagingInfo pi) throws Exception {
+	public List<AskBoardVo> getSearchResult(SearchCriteria sc, AskPagingInfo pi) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("searchType", sc.getSearchType());
 		map.put("searchWord", sc.getSearchWord());

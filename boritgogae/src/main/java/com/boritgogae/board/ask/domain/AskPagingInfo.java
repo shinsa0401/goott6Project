@@ -1,6 +1,6 @@
 package com.boritgogae.board.ask.domain;
 
-public class PagingInfo {
+public class AskPagingInfo {
    private int postPerPage = 5; // 1페이지 당 보여줄 글의 갯수
    private int pageCntPerBlock = 3; // 1개의 블럭에 보여줄 페이지 수
    

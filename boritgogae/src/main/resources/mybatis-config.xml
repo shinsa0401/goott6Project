@@ -9,5 +9,6 @@
 		<package name="com.boritgogae.board.notice.domain"/>
 		<package name="com.boritgogae.board.ask.domain"/>
 		<package name="com.boritgogae.board.market.domain"/>
+		<package name="com.boritgogae.board.tip.domain"/>
 	</typeAliases>
 </configuration>

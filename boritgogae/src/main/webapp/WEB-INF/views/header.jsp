@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="description" content="Ogani Template">
-<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="keywords" content="Ogani, unia577d2e5cb3081154c520bafe633fbf69efadb95ca, creative, html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
@@ -39,10 +39,9 @@
 </head>
 <body>
 	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-<<<<<<< HEAD
-	<c:set var="pageNo" value="1"></c:set>
-=======
->>>>>>> a577d2e5cb3081154c520bafe633fbf69efadb95
+
+	
+
 	
 	<!-- Humberger Begin 모바일 -->
     <div class="humberger__menu__overlay"></div>
@@ -80,7 +79,7 @@
                         <li><a href="./shop-details.html">자유게시판</a></li>
                         <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
                         <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
-                        <li><a href="./blog-details.html">고개팁</a></li>
+                        <li><a href="/boardTip/listAll">고개팁</a></li>
                     </ul>
                 </li>
                 <li><a href="/board/notice/list">고객센터</a>
@@ -130,7 +129,7 @@
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
 			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
 			                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
-			                        <li><a href="./blog-details.html">고개팁</a></li>
+			                        <li><a href="/boardTip/listAll">고개팁</a></li>
 			                    </ul>
 			                </li>
 			                <li><a href="/board/notice/list">고객센터</a>

@@ -18,11 +18,6 @@ public class ProductServiceImpl implements ProductService {
 	@Inject
 	private ProductDAO dao;
 	
-	@Override
-	public Map<String, Object> getProductAll(int pageNo) throws Exception {
-		List<ProductVo> prodLst = dao.getProdInfo(pageNo);
-//		List<prodImgVo> prodImgLst = dao.getProdImg(pageNo);
-		return null;
-	}
+	
 
 }

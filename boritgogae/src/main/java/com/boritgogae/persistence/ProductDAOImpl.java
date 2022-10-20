@@ -10,10 +10,6 @@ import com.boritgogae.domain.ProductVo;
 @Repository
 public class ProductDAOImpl implements ProductDAO {
 
-	@Override
-	public List<ProductVo> getProdInfo(int pageNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }

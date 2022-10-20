@@ -27,7 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.AskReplyVo;
-import com.boritgogae.board.ask.domain.PagingInfo;
+import com.boritgogae.board.ask.domain.AskPagingInfo;
 import com.boritgogae.board.ask.domain.SearchCriteria;
 import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
@@ -54,7 +54,7 @@ public class AskBoardController {
 		}		
 		Map<String,Object> map = this.service.readAllBoard(pageNo, sc);
 		List<AskBoardVo> lst = (List<AskBoardVo>)map.get("askBoardList");
-		PagingInfo pi = (PagingInfo)map.get("pagingInfo");
+		AskPagingInfo pi = (AskPagingInfo)map.get("pagingInfo");
 		List<AskCodeVo> askCodeList = service.loadAskCode();
 		
 		// 화면에 보여줄 좋아요와 조회수 2가지를 BoardVo에 넣어줌.(전달할 객체에만 넣어주는 것, DB값이 변하진 않는다)
