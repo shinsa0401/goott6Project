@@ -75,7 +75,7 @@ function addReply() {
 	let bno = ${board.bno};
 	let content = $("#replyContent").val();
 	let memberId = "${board.memberId}";// 로그인기능이 아직 구현되지않아 모든 댓글의 작성자를 글쓴이로 하였음 추후수정
-	let url = "/reply/"+bno;
+	let url = "/replys/"+bno;
 	let sendData = JSON.stringify({bno : bno, content : content, memberId : memberId});
 	// console.log(sendData);
 	$("#replyContent").val("");
@@ -104,7 +104,7 @@ function addReply() {
 // 댓글 조회
 function viewAllReplies() { 
 	let bno = ${board.bno };
-	let url = "/reply/" + bno;
+	let url = "/replys/" + bno;
 	$.ajax({
 		url : url, 
 		dataType : "json", 
@@ -156,7 +156,7 @@ function sendModi(rno) {
 	let bno = ${board.bno};
 	let content = $("#modiContent").val();
 	let memberId = "${board.memberId}";// 로그인기능이 아직 구현되지않아 모든 댓글의 작성자를 글쓴이로 하였음 추후수정
-	let url = "/reply/"+bno+"/"+rno;
+	let url = "/replys/"+bno+"/"+rno;
 	let sendData = JSON.stringify({bno : bno, content : content, memberId : memberId, rno : rno});
 	
 	$.ajax({
@@ -191,7 +191,7 @@ function modiReply(rno,memberId){
 function delReply(rno){
 	let bno = ${board.bno };
 	console.log(bno);
-	let url = "/reply/" + bno+"/" + rno;
+	let url = "/replys/" + bno+"/" + rno;
 	$.ajax({
 		url : url, 
 		dataType : "json", 

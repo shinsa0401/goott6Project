@@ -16,7 +16,7 @@ import com.boritgogae.board.tip.domain.TipReplyVo;
 import com.boritgogae.board.tip.service.BoardReplyService;
 
 @RestController
-@RequestMapping(value="/reply")
+@RequestMapping(value="/replys")
 public class TipReplyBoardController {
 	
 	@Inject

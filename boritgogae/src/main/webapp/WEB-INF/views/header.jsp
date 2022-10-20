@@ -39,7 +39,7 @@
 </head>
 <body>
 	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-	<c:set var="pageNo" value=1></c:set>
+	<c:set var="pageNo" value="1"></c:set>
 	
 	<!-- Humberger Begin 모바일 -->
     <div class="humberger__menu__overlay"></div>

@@ -1,4 +1,4 @@
-package com.boritgogae.board.market.domain;
+package com.boritgogae.board.question.domain;
 
 public class QuestionUploadFileVo {
 	private int no;

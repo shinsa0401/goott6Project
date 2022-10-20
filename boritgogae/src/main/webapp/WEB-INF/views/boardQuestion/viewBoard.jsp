@@ -72,7 +72,7 @@
 		let bno = ${board.no };
 		let replyWriter = $("#replyWriter").val();
 		let replyContent = $("#replyContent").val();
-		let url = "/reply/write";
+		let url = "/questionreply/write";
 		let sendData = JSON.stringify({
 			bno : bno, replyWriter : replyWriter, replyContent : replyContent
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
@@ -110,7 +110,7 @@
 	// 현재 글의 모든 댓글 출력
 	function viewAllReply() {
 		let bno = ${board.no}
-		let url = "/reply/" + bno;
+		let url = "/questionreply/" + bno;
 		
 		$.ajax({
 	        url: url, // 데이터 송수신될 주소
@@ -236,7 +236,7 @@
 		let rno = no;
 		let replyWriter = $("#replyWriter" + rno).val();
 		let replyContent = $("#replyContent" + rno).val();
-		let url = "/reply/modify";
+		let url = "/questionreply/modify";
 		let sendData = JSON.stringify({
 			rno : rno, replyWriter : replyWriter, replyContent : replyContent
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
@@ -287,7 +287,7 @@
 		let sendData = JSON.stringify({
 			rno : rno, bno : bno
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
-		let url = "/reply/remove";
+		let url = "/questionreply/remove";
 		
 		// REST
 		$.ajax({
@@ -335,7 +335,7 @@
 		let replyWriter = $("#reReplyWriter"+rno).val();
 		let replyContent = $("#reReplyContent"+rno).val();
 		
-		let url = "/reply/reReply";
+		let url = "/questionreply/reReply";
 		let sendData = JSON.stringify({
 			rno : rno, bno : bno, replyWriter : replyWriter, replyContent : replyContent
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
