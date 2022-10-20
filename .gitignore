@@ -6,7 +6,7 @@ MANIFEST.MF
 */Servers/*
 *.zip
 *tern*
-
+bin/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -53,3 +53,4 @@ pom.xml.versionsBackup
 pom.xml.next
 release.properties
 dependency-reduced-pom.xml
+/.metadata/

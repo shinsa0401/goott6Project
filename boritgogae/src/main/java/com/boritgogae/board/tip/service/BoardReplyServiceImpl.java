@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.board.tip.domain.ReplyVo;
+import com.boritgogae.board.tip.domain.TipReplyVo;
 import com.boritgogae.board.tip.persistence.BoardReplyDAO;
 
 @Service
@@ -16,14 +16,14 @@ public class BoardReplyServiceImpl implements BoardReplyService {
 	private BoardReplyDAO dao;
 	
 	@Override
-	public List<ReplyVo> allReply(int bno) throws Exception {
+	public List<TipReplyVo> allReply(int bno) throws Exception {
 		
-		List<ReplyVo> lst = dao.getAllReply(bno);
+		List<TipReplyVo> lst = dao.getAllReply(bno);
 		return lst;
 	}
 
 	@Override
-	public boolean plusReply(int bno, ReplyVo vo) throws Exception {
+	public boolean plusReply(int bno, TipReplyVo vo) throws Exception {
 		boolean result = false;
 		int row = dao.insertReply(bno,vo);
 		System.out.println(vo+"서비스vo");
@@ -46,7 +46,7 @@ public class BoardReplyServiceImpl implements BoardReplyService {
 	}
 
 	@Override
-	public Boolean updateReply(int rno, ReplyVo vo) throws Exception {
+	public Boolean updateReply(int rno, TipReplyVo vo) throws Exception {
 		boolean result = false;
 		int row = dao.modiReply(rno,vo);
 		if(row == 1) {

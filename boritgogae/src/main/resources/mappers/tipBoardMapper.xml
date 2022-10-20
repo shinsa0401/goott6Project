@@ -4,10 +4,10 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.boritgogae.tipBoardMapper">
-  	<select id="listAll" resultType="BoardVo">
+  	<select id="listAll" resultType="TipBoardVo">
   		select * from tipBoard order by ref desc ,refOrder asc limit #{startNum},#{postPerPage}
   	</select>
-  	<select id="detail" resultType="BoardVo">
+  	<select id="detail" resultType="TipBoardVo">
   		select * from tipBoard where bno = #{bno}
   	</select>
   	<insert id="addBoard">

@@ -1,17 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-	<meta name="description" content="Ogani Template">
-	<meta name="keywords" content="Ogani, unica, creative, html">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 <!-- Google Font -->
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
+	
 <!-- Css Styles -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
@@ -32,12 +33,12 @@
     <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
     
+    
 <title>header</title>
 
 </head>
 <body>
 	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-	<c:set var="pageNo" value=1></c:set>
 	
 	<!-- Humberger Begin 모바일 -->
     <div class="humberger__menu__overlay"></div>
@@ -68,22 +69,23 @@
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="${contextPath}/">Home</a></li>
-                <li><a href="./shop-grid.html">Shop</a></li>
+                <li><a href="/product/category/detail?prodNo=a">Shop</a></li>
                 <li><a href="./blog.html">병원</a></li>
                 <li><a href="./contact.html">게시판</a>
                 	<ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">자유게시판</a></li>
-                        <li><a href="${contextPath}/board/question">질문게시판</a></li>
+                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
                         <li><a href="./checkout.html">장터게시판</a></li>
                         <li><a href="/boardTip/listAll">고개팁</a></li>
                     </ul>
                 </li>
-                <li><a href="./contact.html">고객센터</a>
-                	<ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">공지사항</a></li>
-                        <li><a href="./shoping-cart.html">문의게시판</a></li>
-                    </ul>
-                </li>
+                <li><a href="/board/notice/list">고객센터</a>
+					<ul class="header__menu__dropdown">
+						<li><a href="/board/notice/list">공지사항</a></li>
+						<li><a href="/board/ask/list">문의게시판</a></li>
+						<li><a href="/admin/main">관리자 페이지(임시)</a></li>
+					</ul>
+				</li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -115,25 +117,25 @@
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
-                   
                         <ul>
 			                <li class="active"><a href="${contextPath}/">Home</a></li>
-			                <li><a href="./shop-grid.html">Shop</a></li>
+			                <li><a href="/product/category">Shop</a></li>
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
-			                        <li><a href="${contextPath}/board/question">질문게시판</a></li>
+			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
 			                        <li><a href="./checkout.html">장터게시판</a></li>
 			                        <li><a href="/boardTip/listAll">고개팁</a></li>
 			                    </ul>
 			                </li>
-			                <li><a href="./contact.html">고객센터</a>
-			                	<ul class="header__menu__dropdown">
-			                        <li><a href="./shop-details.html">공지사항</a></li>
-			                        <li><a href="./shoping-cart.html">문의게시판</a></li>
-			                    </ul>
-			                </li>
+			                <li><a href="/board/notice/list">고객센터</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="/board/notice/list">공지사항</a></li>
+									<li><a href="/board/ask/list">문의게시판</a></li>
+									<li><a href="/admin/main">관리자 페이지(임시)</a></li>
+								</ul>
+							</li>
 			            </ul>
                     </nav>
                 </div>
@@ -205,10 +207,5 @@
         </div>
     </section>
     <!-- Hero Section End -->
-    
-    
-    
-    
-	
 </body>
 </html>
