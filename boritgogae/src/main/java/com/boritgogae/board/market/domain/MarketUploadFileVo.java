@@ -54,7 +54,7 @@ public class MarketUploadFileVo {
 
 	@Override
 	public String toString() {
-		return "UploadAskFileVo [no=" + no + ", bno=" + bno + ", originFileName=" + originFileName + ", thumbnailFileName="
+		return "UploadFileVo [no=" + no + ", bno=" + bno + ", originFileName=" + originFileName + ", thumbnailFileName="
 				+ thumbnailFileName + "]";
 	}
 	

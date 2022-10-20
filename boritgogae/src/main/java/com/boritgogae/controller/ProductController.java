@@ -38,19 +38,6 @@ public class ProductController {
 	
 	@Inject
 	private ReviewService reviewService;
-	@Inject
-	private ProductService prodService;
-	
-	@RequestMapping(value = "/category")
-	public String prodList(@RequestParam(value = "pageNo", required = false, defaultValue="1")int pageNo, Model model) throws Exception{
-		
-		Map<String, Object> productList = prodService.getProductAll(pageNo);
-		List<UploadImg> imgLst = new ArrayList<>();
-		
-		
-		return "/product/prodList";
-		
-	}
 	
 	//상세페이지
 	@RequestMapping(value = "/category/detail")

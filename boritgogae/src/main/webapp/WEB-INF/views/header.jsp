@@ -12,7 +12,7 @@
 
 <!-- Google Font -->
 	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
+	
 <!-- Css Styles -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
@@ -39,7 +39,10 @@
 </head>
 <body>
 	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
+<<<<<<< HEAD
 	<c:set var="pageNo" value="1"></c:set>
+=======
+>>>>>>> a577d2e5cb3081154c520bafe633fbf69efadb95
 	
 	<!-- Humberger Begin 모바일 -->
     <div class="humberger__menu__overlay"></div>
@@ -77,7 +80,7 @@
                         <li><a href="./shop-details.html">자유게시판</a></li>
                         <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
                         <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
-                        <li><a href="/boardTip/listAll">고개팁</a></li>
+                        <li><a href="./blog-details.html">고개팁</a></li>
                     </ul>
                 </li>
                 <li><a href="/board/notice/list">고객센터</a>
@@ -118,17 +121,16 @@
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
-                   
                         <ul>
 			                <li class="active"><a href="${contextPath}/">Home</a></li>
-			                <li><a href="/product/category">Shop</a></li>
+			                <li><a href="/product/category/detail?prodNo=a">Shop</a></li>
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
 			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
 			                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
-			                        <li><a href="/boardTip/listAll">고개팁</a></li>
+			                        <li><a href="./blog-details.html">고개팁</a></li>
 			                    </ul>
 			                </li>
 			                <li><a href="/board/notice/list">고객센터</a>
@@ -148,7 +150,7 @@
                             <li><a href="${contextPath}/order/cartList"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
                         <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                <a href="${contextPath }/member/logIn"><i class="fa fa-user"></i> Login</a>
             </div>
                     </div>
                 </div>

@@ -8,7 +8,6 @@
 		<package name="com.boritgogae.board.question.domain"/>
 		<package name="com.boritgogae.board.notice.domain"/>
 		<package name="com.boritgogae.board.ask.domain"/>
-		<package name="com.boritgogae.board.tip.domain"/>
 		<package name="com.boritgogae.board.market.domain"/>
 	</typeAliases>
 </configuration>

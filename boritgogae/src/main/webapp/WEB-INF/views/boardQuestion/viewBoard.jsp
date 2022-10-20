@@ -198,7 +198,7 @@
 			output += "<div>"
 			output += "<input type='text' class='form-control' id='replyWriter"+item.rno+"' value='${sessionScope.loginMember.userId }' />"
 			output += "<textarea rows='5' class='form-control' id='replyContent"+item.rno+"'>"+item.replyContent+"</textarea>"
-			output += "<button type='button' class='btn btn-info' onclick='modifyReply("+item.rno+");'>작성</button>"
+			output += "<button type='button' class='btn btn-info' onclick='modifyReply("+item.rno+");'>수정</button>"
 			output += "</div></a></div>"
 			
 			// 댓글의 댓글
@@ -207,7 +207,7 @@
 			output += "<div>"
 			output += "<input type='text' class='form-control' id='reReplyWriter"+item.rno+"' value='${sessionScope.loginMember.userId }' />"
 			output += "<textarea rows='5' class='form-control' id='reReplyContent"+item.rno+"'></textarea>"
-			output += "<button type='button' class='btn btn-info' onclick='reReply("+item.rno+");'>작성</button>"
+			output += "<button type='button' class='btn btn-info' onclick='reReply("+item.rno+");'>추가</button>"
 			output += "</div></a></div>"
 		});
 		
