@@ -49,7 +49,7 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="${contextPath}/order/cartList"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
             </ul>
             <div class="header__cart__price">item: <span>$150.00</span></div>
         </div>
@@ -75,7 +75,7 @@
                 	<ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">자유게시판</a></li>
                         <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
-                        <li><a href="./checkout.html">장터게시판</a></li>
+                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
                         <li><a href="./blog-details.html">고개팁</a></li>
                     </ul>
                 </li>
@@ -125,7 +125,7 @@
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
 			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
-			                        <li><a href="./checkout.html">장터게시판</a></li>
+			                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
 			                        <li><a href="./blog-details.html">고개팁</a></li>
 			                    </ul>
 			                </li>
@@ -143,7 +143,7 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="${contextPath}/order/cartList"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
                         <div class="header__top__right__auth">
                 <a href="#"><i class="fa fa-user"></i> Login</a>
