@@ -51,6 +51,7 @@ public class ProductController {
 		return "/product/prodList";
 		
 	}
+	
 	//상세페이지
 	@RequestMapping(value = "/category/detail")
 	public String prodDetail(@RequestParam("prodNo") String prodNo,@RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, Model model) throws Exception {

@@ -49,7 +49,6 @@ tr {
 .boardList:hover {
 	cursor: pointer;
 }
->>>>>>> ljh
 </style>
 </head>
 <body>

@@ -85,6 +85,7 @@
 	<!-- 게시판 패키지 -->
 	<context:component-scan base-package="com.boritgogae.board.*.service"></context:component-scan>
 	<context:component-scan base-package="com.boritgogae.board.*.persistence"></context:component-scan>
+	<context:component-scan base-package="com.boritgogae.board.*.dao"></context:component-scan>
 	
 	
 	
