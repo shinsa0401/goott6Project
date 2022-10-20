@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	
+	<!-- MariaDB -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="org.mariadb.jdbc.Driver"/>
+        
+        <!-- 로컬에서 돌릴 때 -->
+        <property name="url" value="jdbc:mariadb://elrek1991.cafe24.com:3306/elrek1991?serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8"></property>
+        
+        <!-- 호스팅서버에서 돌릴 때
+        <property name="url" value="jdbc:mariadb://localhost:3306/elrek1991?serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8"></property>
+        -->
+        
+        <property name="username" value="elrek1991"/>
+        <property name="password" value="goott0531"/>
+    </bean>
+    
+    
+    <!-- log 추적 MariaDB
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy">
+		</property>
+		<property name="url" value="jdbc:mariadb://localhost:3306/elrek1991?serverTimezone=Asia/Seoul&amp;characterEncoding=UTF-8"></property>
+		<property name="username" value="elrek1991"></property>
+		<property name="password" value="goott0531"></property>
+	</bean>
+	 -->
+	
+	 
+	
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- mybatis 환경설정파일의 위치를 알려줌 -->
+		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+		<!-- mapper 파일의 위치 -->
+		<property name="mapperLocations" value="classpath*:/mappers/**/*Mapper.xml">
+		</property>
+	</bean>
+	
+	<!-- DB연결, PreparedStatement, 쿼리문실행, 결과가져오기, DB종료 -->
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	<!-- 트랜잭션 처리를 위한 bean생성 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 트랜잭션(tx) 처리를 @Transactional 어노테이션으로 처리하겠다 -->
+	<tx:annotation-driven/>
+	
+	<!-- xml방식으로 AOP를 설정할 수 있도록 -->
+	<aop:config></aop:config>
+	
+	<!-- Proxy 객체를 자동으로 생성 -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<!-- 아래의 패키지를 스캔하여 스프링 컨테이너가 관리할 객체 수집 -->
+	<context:component-scan base-package="com.boritgogae.aop"></context:component-scan>
+	<context:component-scan base-package="com.boritgogae.interceptor"></context:component-scan>
+	<context:component-scan base-package="com.boritgogae.service"></context:component-scan>
+	<context:component-scan base-package="com.boritgogae.persistence"></context:component-scan>
+	
+	<!-- 게시판 패키지 -->
+	<context:component-scan base-package="com.boritgogae.board.*.service"></context:component-scan>
+	<context:component-scan base-package="com.boritgogae.board.*.persistence"></context:component-scan>
+	<context:component-scan base-package="com.boritgogae.board.*.dao"></context:component-scan>
+	
+	
+	
+	
+</beans>
