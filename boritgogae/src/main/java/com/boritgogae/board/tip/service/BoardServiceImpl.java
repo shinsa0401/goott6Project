@@ -8,8 +8,8 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.board.tip.domain.BoardVo;
-import com.boritgogae.board.tip.domain.PagingInfo;
+import com.boritgogae.board.tip.domain.TipBoardVo;
+import com.boritgogae.board.tip.domain.TipPagingInfo;
 import com.boritgogae.board.tip.persistence.BoardDAO;
 
 @Service
@@ -20,8 +20,8 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Map<String, Object> getListBoard(int pageNo) throws Exception {
 		System.out.println("받아온 pageNo = " + pageNo);
-		PagingInfo pi = pagingProcess(pageNo);
-		List<BoardVo> lst = dao.selectAllBoard(pi);
+		TipPagingInfo pi = pagingProcess(pageNo);
+		List<TipBoardVo> lst = dao.selectAllBoard(pi);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("lst", lst);
 		map.put("pi", pi);
@@ -29,8 +29,8 @@ public class BoardServiceImpl implements BoardService {
 		return map;
 	}
 
-	private PagingInfo pagingProcess(int pageNo) throws Exception {
-		PagingInfo result = new PagingInfo();
+	private TipPagingInfo pagingProcess(int pageNo) throws Exception {
+		TipPagingInfo result = new TipPagingInfo();
 
 		result.setTotalPostCnt(dao.getTotalPostCnt()); // 전체 글의 갯수 setting
 
@@ -49,13 +49,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public BoardVo getDetail(int bno) throws Exception {
-		BoardVo detail = dao.selectDetail(bno);
+	public TipBoardVo getDetail(int bno) throws Exception {
+		TipBoardVo detail = dao.selectDetail(bno);
 		return detail;
 	}
 
 	@Override
-	public boolean addBoard(BoardVo board) throws Exception {
+	public boolean addBoard(TipBoardVo board) throws Exception {
 		boolean result = false;
 
 		int row = dao.insertBoard(board);
@@ -82,7 +82,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public BoardVo modiBoard(int bno, BoardVo vo) throws Exception {
+	public TipBoardVo modiBoard(int bno, TipBoardVo vo) throws Exception {
 		int row = dao.updateBoard(bno, vo);
 //		System.out.println("업데이트 성공했냐? : "+row);
 
@@ -103,7 +103,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public boolean addReplyBoard(BoardVo vo, int bno) throws Exception {
+	public boolean addReplyBoard(TipBoardVo vo, int bno) throws Exception {
 		boolean result = false;
 		int row = dao.insertBoard(vo);
 		int ref = dao.selectRef(bno);

@@ -216,17 +216,6 @@ function delReply(rno){
 	}
 	
 </script>
-<style>
-	#delPos{
-		position : relative;
-		bottom: 35px;
-		left : 180px;
-	}
-	#replyPos{
-		
-			
-	}
-</style>
 </head>
 
 <body>
@@ -268,11 +257,11 @@ function delReply(rno){
 						<button type="button" class="btn btn-secondary"
 							onclick="reply(${board.bno})">답글달기</button>
 						<form action="/boardTip/${board.bno }" method="post">
-							<button type="submit" class="btn btn-warning" id="delPos">글 삭제</button>
+							<button type="submit" class="btn btn-warning">글 삭제</button>
 						</form>
 					</div>
 					<!-- Comments section-->
-					<section class="mb-5" id="replyPos">
+					<section class="mb-5">
 						<div class="card bg-light">
 							<div class="card-body">
 								<!-- Comment form-->

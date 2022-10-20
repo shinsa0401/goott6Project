@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.boritgogae.board.tip.domain.ReplyVo;
+import com.boritgogae.board.tip.domain.TipReplyVo;
 
 @Repository
 public class BoardReplyDAOImpl implements BoardReplyDAO {
@@ -20,13 +20,13 @@ public class BoardReplyDAOImpl implements BoardReplyDAO {
 	private static String ns = "com.boritgogae.boardTipMapper";
 	
 	@Override
-	public List<ReplyVo> getAllReply(int bno) throws Exception {
+	public List<TipReplyVo> getAllReply(int bno) throws Exception {
 		
 		return ses.selectList(ns+".selectReply", bno);
 	}
 
 	@Override
-	public int insertReply(int bno, ReplyVo vo) throws Exception {
+	public int insertReply(int bno, TipReplyVo vo) throws Exception {
 		System.out.println(vo+"dao vo");
 		Map<String, Object> map = new HashMap<>();
 		map.put("bno", bno);
@@ -42,7 +42,7 @@ public class BoardReplyDAOImpl implements BoardReplyDAO {
 	}
 
 	@Override
-	public int modiReply(int rno, ReplyVo vo) throws Exception {
+	public int modiReply(int rno, TipReplyVo vo) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("rno", rno);
 		map.put("vo", vo);

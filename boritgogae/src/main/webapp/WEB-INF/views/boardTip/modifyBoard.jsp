@@ -29,7 +29,6 @@
 											height : 300, // 에디터 높이
 											minHeight : null, // 최소 높이
 											maxHeight : null, // 최대 높이
-											width : 600,
 											focus : false, // 에디터 로딩후 포커스를 맞출지 여부
 											lang : "ko-KR", // 한글 설정
 											toolbar : [
@@ -137,28 +136,13 @@
 		data.imgFile.value = imgFile;
 		data.submit();
 	}
-
+	
 	function delImg() {
 		$("#oriImgFile").hide();
 	}
 </script>
 </head>
-<style>
-#position {
-	position: relative;
-	left: 650px;
-	bottom : 600px;
-}
-#originFile{
-	position: relative;
-	bottom : 580px;
-	left: 800px;
-}
-#summerPosition{
-	position : relative;
-	bottom: 200px;
-}
-</style>
+
 <body>
 	<jsp:include page="../head.jsp"></jsp:include>
 
@@ -222,22 +206,20 @@
 							</div>
 
 							<!-- 이미지파일 넣어야함 -->
-							<div class="mb-3 mt-3" id = "originFile">
+							<div class="mb-3 mt-3">
 								<label for="oriImgFile" class="form-label">올린이미지와 파일:</label>
-								<div id="oriImgFile" onclick="delImg()">${board.imgFile}</div>
+								<div id="oriImgFile"  onclick="delImg()">${board.imgFile}</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-4 col-md-6" id="summerPosition">
+								<div class="col-lg-4 col-md-6">
 									<textarea id="summernote" name="imgFile"></textarea>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div id="position">
-						<button type="button" class="btn btn-primary"
-							onclick="modify(this.form);">수정</button>
-						<button type="reset" class="btn btn-danger">취소</button>
-					</div>
+					<button type="button" class="btn btn-primary"
+						onclick="modify(this.form);">수정</button>
+					<button type="reset" class="btn btn-danger">취소</button>
 				</form>
 			</div>
 	</section>

@@ -69,14 +69,6 @@
 	}
 </script>
 <title>boritgogae</title>
-
-<style>
-#paging {
-	position: relative;
-	
-	left: 750px;
-}
-</style>
 </head>
 <body>
 	<jsp:include page="../head.jsp"></jsp:include>
@@ -103,7 +95,9 @@
 						<td>${board.bno }</td>
 						<c:choose>
 							<c:when test="${board.step > 0} }">
-								<td>${board.step }[${board.categories}]${board.title }</td>
+								<td>
+								${board.step }[${board.categories}]${board.title }
+								</td>
 							</c:when>
 							<c:otherwise>
 								<td>step값 =${board.step }[${board.categories}]${board.title }</td>

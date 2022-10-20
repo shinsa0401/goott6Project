@@ -9,8 +9,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.boritgogae.board.tip.domain.BoardVo;
-import com.boritgogae.board.tip.domain.PagingInfo;
+import com.boritgogae.board.tip.domain.TipBoardVo;
+import com.boritgogae.board.tip.domain.TipPagingInfo;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -21,18 +21,18 @@ public class BoardDAOImpl implements BoardDAO {
 	private static String ns = "com.boritgogae.tipBoardMapper";
 	
 	@Override
-	public List<BoardVo> selectAllBoard(PagingInfo pi) throws Exception {
+	public List<TipBoardVo> selectAllBoard(TipPagingInfo pi) throws Exception {
 //		System.out.println("DAOImpl" + ses.toString());
 		return ses.selectList(ns+".listAll",pi);
 	}
 
 	@Override
-	public BoardVo selectDetail(int bno) throws Exception {
+	public TipBoardVo selectDetail(int bno) throws Exception {
 		return ses.selectOne(ns+".detail",bno);
 	}
 
 	@Override
-	public int insertBoard(BoardVo board) throws Exception {
+	public int insertBoard(TipBoardVo board) throws Exception {
 		
 		System.out.println(board.toString());
 		return ses.insert(ns+".addBoard", board);
@@ -45,7 +45,7 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public int updateBoard(int bno, BoardVo vo) throws Exception {
+	public int updateBoard(int bno, TipBoardVo vo) throws Exception {
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("vo", vo);
 		map.put("no", bno+"");
