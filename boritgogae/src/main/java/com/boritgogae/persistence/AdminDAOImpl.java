@@ -12,14 +12,14 @@ import com.boritgogae.domain.MemberVo;
 @Repository
 public class AdminDAOImpl implements AdminDAO {
 
-	@Inject
-	private SqlSession ses;
-	
-	private static String ns = "com.boritgogae.AdminMapper";
-	
-	@Override
-	public List<MemberVo> getMembers() throws Exception {
-		return ses.selectList(ns + ".getMembers");
-	}
+   @Inject
+   private SqlSession ses;
+   
+   private static String ns = "com.boritgogae.AdminMapper";
+   
+   @Override
+   public List<MemberVo> getMembers() throws Exception {
+      return ses.selectList(ns + ".getMembers");
+   }
 
 }

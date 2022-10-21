@@ -68,7 +68,7 @@ public interface QuestionBoardDAO {
 	// 검색된 글의 개수 반환하는 메서드
 	public int getSearchResultCnt(QuestionSearchCriteria sc) throws Exception;
 		
-	// 검색어가 있을 때 페이징 하며 검색 결과를 가져 오는 메서드=======
+	// 검색어가 있을 때 페이징 하며 검색 결과를 가져 오는 메서드
 	public List<QuestionBoardVo> getSearchResult(QuestionPagingInfo pi, QuestionSearchCriteria sc) throws Exception;
 	
 }

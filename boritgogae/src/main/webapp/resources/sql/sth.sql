@@ -189,107 +189,104 @@ ADD CONSTRAINT `questionReply_replyWriter_fk`
 
 -----------------------------------------------------------------------------------------
 -- 페이징 처리하며 게시판 전체목록보기
--- select * from board order by ref desc, reforder asc limit #{startNum}, #{postPerPage}
+select * from board order by ref desc, reforder asc limit #{startNum}, #{postPerPage}
 
 
 -- 게시판에 글등록
--- insert into board(writer, title, content, pwd) values(#{writer}, #{title}, #{content}, sha1(md5(#{pwd})))
-insert into questionBoard(writer, title, content, pwd) 
-values('shin', '페이징 테스트', '페이징 테스트를 위한 글 생성', sha1(md5('1234')));
-
--- 게시글 등록시 업로드된 파일이 이미지인경우 (사진5장까지..?)
--- insert into uploadfile(bno, originalFile, thumbnailFile) 
--- values(#{lastNo}, #{savedOriginalImgFile}, #{thumbnailFile})
-
--- 게시글 등록시 업로드된 파일이 이미지가 아닌경우 (5개까지..?)
--- insert into uploadfile(bno, originalFile) 
--- values(#{lastNo}, #{savedOriginalImgFile})
-
-
--- 수정/삭제하기위해 얻어온 n번 게시글의 번호
--- select * from board where no = #{no}
-
-select count(*) as cnt from questionBoard where no = 6 and pwd = sha1(md5('1234'));
-
--- 게시판 n번 게시글 수정하기
--- update board set title = #{title}, content = #{content} where no = #{no} and pwd = sha1(md5(#{pwd}))
--- update questionBoard set title = '수정테스트', content = '수정되나' where no = 6 and pwd = sha1(md5('1234'));
-
--- 게시판 n번 게시글 첨부파일 수정하기(기존첨부파일 삭제하고)
--- delete 
--- update uploadFile set originalFile = #{}, thumbnailFile = #{} where no = #{bno}
-
-
--- 게시판 n번 게시글 삭제하기(삭제여부만업데이트)
--- update board set isDelete = 'Y' where no = #{no} and pwd = sha1(md5(#{pwd}))
+insert into board(writer, title, content, pwd) values(#{writer}, #{title}, #{content}, sha1(md5(#{pwd})))
 
 
 -- 최근등록된글의 번호 얻어오기
-select max(no) as lastNo from questionBoard;
+select max(no) as lastNo from board
+
+
+-- 게시글 등록시 업로드된 파일이 이미지인경우 (사진5장까지..?)
+insert into uploadfile(bno, originalFile, thumbnailFile) 
+values(#{lastNo}, #{savedOriginalImgFile}, #{thumbnailFile})
+
+-- 게시글 등록시 업로드된 파일이 이미지가 아닌경우 (5개까지..?)
+insert into uploadfile(bno, originalFile) 
+values(#{lastNo}, #{savedOriginalImgFile})
+
+
+-- 수정/삭제하기위해 얻어온 n번 게시글의 번호
+select * from board where no = #{no}
+
+-- 게시판 n번 게시글 수정하기
+update board set title = #{title}, content = #{content} where no = #{no} and pwd = sha1(md5(#{pwd}))
+
+-- 게시판 n번 게시글 첨부파일 수정하기(기존첨부파일 삭제하고)
+delete 
+update uploadFile set originalFile = #{}, thumbnailFile = #{} where no = #{bno}
+
+
+-- 게시판 n번 게시글 삭제하기(삭제여부만업데이트)
+update board set isDelete = 'Y' where no = #{no} and pwd = sha1(md5(#{pwd}))
+
+
+-- 최근등록된글의 번호 얻어오기
+select max(no) as lastNo from board
 
 -- 게시글이 insert 된 후 ref를 update 하는 메서드
-update questionBoard set ref = 6 where no = 6;
+update board set ref = #{lastNo} where no = #{lastNo}
 
 
 -- 게시글 상세페이지 보기(no = n번글)
--- select * from board where no = #{no}
+select * from board where no = #{no}
 -- 게시글 첨부파일 조회
-select * from questionUploadFile where bno = 26;
+select * from uploadfile where bno = #{no}
 
 
 -- 작성자가 쓴글 보기
--- select * from board where writer = #{writer} order by no desc;
+select * from board where writer = #{writer} order by no desc;
 
 
 -- 게시글 n번글 조회수증가(읽은 뒤 24시간후 증가)
 -- 조회수 처리를 위한 ip주소, 글번호 얻어오는 메서드
-select * from questionReadCount where bno = 1 and ipAddr = '211.21.31.43';
--- select * from readCount where bno = #{bno} and ipAddr = #{ipAddr}
+select * from readCount where bno = #{bno} and ipAddr = #{ipAddr}
 -- 조회수 처리를 위한 ip주소, 글번호, 현재시간을 insert하는 메서드
--- insert into readCount(ipAddr, bno) values(#{ipAddr}, #{bno})
+insert into readCount(ipAddr, bno) values(#{ipAddr}, #{bno})
 -- 조회수 처리를 위한 ip주소, 글번호로 현재시간을 update 메서드
--- update readCount set readDate = now() where bno = #{bno} and ipAddr = #{ipAddr}
--- 조회수 증가
--- update board set readCount = readCount + 1 where no = #{no}
-
+update board set readCount = readCount + 1 where no = #{no}
+-- 조회수 업데이트후 조회시간을 현재시간으로 갱신
+update readcount set readTime = now() where bno = #{bno} and ipAddr = #{ipAddr}
 
 
 
 -- 전체 글의 개수 얻어오기
--- select count(*) as cnt from board
+select count(*) as cnt from board
 
 -- 검색된 글의 개수 얻어오기
-select count(*) as cnt from questionBoard where content like '%세종%';
--- select count(*) as cnt from board where
---   <if test="searchType == 'writer'">
--- 	writer like concat('%', #{searchWord}, '%')
---   </if>
---   <if test="searchType == 'title'">
--- 	title like concat('%', #{searchWord}, '%')
---   </if>
---   <if test="searchType == 'content'">
--- 	content like concat('%', #{searchWord}, '%')
---   </if>
+select count(*) as cnt from board where
+  <if test="searchType == 'writer'">
+	writer like concat('%', #{searchWord}, '%')
+  </if>
+  <if test="searchType == 'title'">
+	title like concat('%', #{searchWord}, '%')
+  </if>
+  <if test="searchType == 'content'">
+	content like concat('%', #{searchWord}, '%')
+  </if>
 
 
 -- 검색어가 있을 때 페이징하며 검색결과를 가져오기
--- select * from board where
---   <if test="searchType == 'writer'">
---   	writer like concat('%', #{searchWord}, '%')
---   </if>
---   <if test="searchType == 'title'">
---   	title like concat('%', #{searchWord}, '%')
---   </if>
---   <if test="searchType == 'content'">
---   	content like concat('%', #{searchWord}, '%')
---   </if>
--- order by ref desc, reforder asc limit #{startNum}, #{postPerPage}
+select * from board where
+  <if test="searchType == 'writer'">
+  	writer like concat('%', #{searchWord}, '%')
+  </if>
+  <if test="searchType == 'title'">
+  	title like concat('%', #{searchWord}, '%')
+  </if>
+  <if test="searchType == 'content'">
+  	content like concat('%', #{searchWord}, '%')
+  </if>
+order by ref desc, reforder asc limit #{startNum}, #{postPerPage}
 
 
 
 -- 댓글 등록하기
--- insert into questionReply(bno, replyWriter, replyContent) values(#{bno}, #{replyWriter}, #{replyContent})
-insert into questionReply(rno, bno, replyWriter, replyContent) values(4, 1, 'shin', '크앙');
+insert into reply(bno, content, replyer) values(#{bno}, #{content}, #{replyer})
+
 
 -- 특정번호 글의 모든 댓글을 가져오기
 -- select * from questionReply where bno = #{bno} order by rno desc
