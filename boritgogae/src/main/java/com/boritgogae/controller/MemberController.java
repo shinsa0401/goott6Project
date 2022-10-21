@@ -21,7 +21,6 @@ import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.PointHistoryVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
-import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.service.MemberService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -178,22 +177,6 @@ public class MemberController {
 		return "member/logIn";
 	}
 	
-	 
-	/**
-	 * @methodName : logInPost
-	 * @author : 신태호
-	 * @date : 2022. 10. 20.
-	 * @입력 param : LoginDTO
-	 * @returnType : String
-	 * 로그인 정보를 입력한 뒤
-	 */
-	@RequestMapping(value = "/logInPost", method = RequestMethod.POST)
-	public String logInPost(LogInDTO dto) {
-		
-		System.out.println(dto.toString());
-		System.out.println("로그인 성공");
-		
-		return "/";
-	}
+
 
 }
