@@ -5,38 +5,51 @@
 
 <mapper namespace="com.boritgogae.AdminMapper">
 	<select id="getMembers" resultType="MemberVo">
-    select * from members where delStatus = 'N' order by joinDate desc
-  </select>
-  
-  <select id="getNewMembers" resultType="MemberVo">
-    select * from members
-    where joinDate between date_sub(now(), interval 30 day) and now() and delStatus = 'N'
-  </select>
-  
-  <select id="getLowestProductQTY" resultType="ProductVO">
+		select * from members where delStatus = 'N' order by joinDate desc
+	</select>
+
+	<select id="getNewMembers" resultType="MemberVo">
+		select * from members
+		where joinDate between date_sub(now(), interval 30 day) and now() and
+		delStatus = 'N'
+	</select>
+
+	<select id="getLowestProductQTY" resultType="ProductVO">
   	<![CDATA[
   		select * from product where prodQuantity < 100 
   	]]>
-  </select>
-  
-  <select id="getDelMembers" resultType="DeleteAccountVo">
-  	select * from deleteAccount order by deleteDate desc
-  </select>
-  
-  <select id="getCoupon" resultType="CouponVo">
-  	select * from coupon
-  </select>
-  
-  <insert id="createCoupon">
-  	insert into coupon values (#{couponName}, #{couponDiscount}, #{couponUseDate})
-  </insert>
-  
-  <delete id="delCoupon">
-  	delete from coupon where couponName = #{couponName}
-  </delete>
-  
-  <update id="modifyCoupon">
-  	update coupon set couponName = #{coupon.couponName}, couponDiscount = #{coupon.couponDiscount}, couponUseDate = #{coupon.couponUseDate} where couponName = #{modiCouponName}
-  </update>
-  
+	</select>
+
+	<select id="getDelMembers" resultType="DeleteAccountVo">
+		select * from deleteAccount order by deleteDate desc
+	</select>
+
+	<select id="getCoupon" resultType="CouponVo">
+		select * from coupon
+	</select>
+
+	<insert id="createCoupon">
+		insert into coupon values (#{couponName}, #{couponDiscount},
+		#{couponUseDate})
+	</insert>
+
+	<delete id="delCoupon">
+		delete from coupon where couponName = #{couponName}
+	</delete>
+
+	<update id="modifyCoupon">
+		update coupon set couponName = #{coupon.couponName}, couponDiscount =
+		#{coupon.couponDiscount}, couponUseDate = #{coupon.couponUseDate}
+		where couponName = #{modiCouponName}
+	</update>
+
+	<insert id="sendCoupon">
+		insert into couponUsed (memberId, couponName, issueDate, couponWhy
+		)
+		values (#{memberId}, #{couponName}, (SELECT DATE_ADD(NOW(), INTERVAL
+		(select couponUseDate from coupon where couponName = #{couponName})
+		day) as date), #{couponWhy})
+	</insert>
+	
+
 </mapper>

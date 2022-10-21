@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.MemberVo;
@@ -70,6 +71,17 @@ public class AdminServiceImpl implements AdminService {
 		boolean result = false;
 		
 		if(dao.modifyCoupon(coupon, modiCouponName) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean sendCoupon(CouponUsedVo sendCoupon) throws Exception {
+		boolean result = false;
+		
+		if(dao.sendCoupon(sendCoupon) == 1) {
 			result = true;
 		}
 		

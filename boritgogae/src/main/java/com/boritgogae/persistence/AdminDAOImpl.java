@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.MemberVo;
@@ -65,6 +66,12 @@ public class AdminDAOImpl implements AdminDAO {
 		
 		return ses.update(ns + ".modifyCoupon", map);
 	}
+
+	@Override
+	public int sendCoupon(CouponUsedVo sendCoupon) throws Exception {
+		return ses.insert(ns + ".sendCoupon", sendCoupon);
+	}
+
 
     
 

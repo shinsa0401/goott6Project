@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.MemberVo;
@@ -87,9 +88,10 @@ public class AdminController {
 	@RequestMapping(value = "/coupon")
 	public String getCoupon(Model model) throws Exception {
 		List<CouponVo> couponList = service.getCoupon();
+		List<MemberVo> members = service.getMembers();
 
+		model.addAttribute("members", members);
 		model.addAttribute("couponList", couponList);
-		System.out.println(couponList);
 
 		return "/admin/coupon";
 	}
@@ -142,6 +144,35 @@ public class AdminController {
 			result = "success";
 		} else {
 			result = "fail";
+		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "coupon/sendCoupon", method = RequestMethod.POST)
+	public @ResponseBody String deleteCoupon(@RequestBody CouponUsedVo sendCoupon) throws Exception {
+
+		String result = null;
+		
+		if(sendCoupon.getMemberId().equals("all")) {
+			List<MemberVo> members = service.getMembers();
+			for(MemberVo member : members) {
+				sendCoupon.setMemberId(member.getMemberId());
+				if(!member.getMemberId().equals("admin")) {
+					if (service.sendCoupon(sendCoupon)) {
+						result = "success";
+					} else {
+						result = "fail";
+					}
+				}
+			}
+
+		} else {
+			if (service.sendCoupon(sendCoupon)) {
+				result = "success";
+			} else {
+				result = "fail";
+			}
 		}
 
 		return result;

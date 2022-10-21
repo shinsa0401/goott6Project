@@ -126,6 +126,49 @@
 		$("#modiCouponDiscount").val(beforeDiscount);
 		$("#modiCouponUseDate").val(beforeUseDate);
 	}
+	
+	function sendCoupon() {
+		let sendMemberId = $("#who").val();
+		let sendCouponName = $("#what").val();
+		let sendCouponWhy = $("#couponWhy").val();
+		
+		if(sendMemberId == "회원 전체") {
+			sendMemberId = "all";
+		}
+		
+		let sendData = JSON.stringify({
+			"couponName" : sendCouponName,
+			"memberId" : sendMemberId,
+			"couponWhy" : sendCouponWhy
+		});
+		
+		let url = "/admin/coupon/sendCoupon";
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			data : sendData,
+			headers : {
+				"content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+				"X-HTTP-Method-Override" : "POST" // 구 버전의 웹 브라우저에서 (PUT / DELETE) 방식이 호환이 안되는 버전에서 호환 되도록
+			},
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				if (data == "success") {
+					$("#status").html("쿠폰 전송이 완료되었습니다.");
+					$("#statusModal").show(200);
+				} else if (data == "fail") {
+					$("#status").html("쿠폰 전송에 실패하였습니다.");
+					$("#statusModal").show(200);
+				}
+
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+		
+	}
 </script>
 <style type="text/css">
 .coupon {
@@ -169,6 +212,7 @@
 			</section>
 			<section class="content">
 				<div class="container-fluid">
+					<!--  쿠폰 등록 시작 -->
 					<div class="card card-primary">
 						<div class="card-header">
 							<h3 class="card-title">쿠폰 등록</h3>
@@ -210,6 +254,46 @@
 								onclick="createCoupon();">등록</button>
 						</div>
 					</div>
+					<!--  쿠폰 등록 끝 -->
+
+					<!--  쿠폰 전송 시작 -->
+					<div class="card card-primary">
+						<div class="card-header">
+							<h3 class="card-title">쿠폰 전송</h3>
+						</div>
+						<!-- /.card-header -->
+						<div class="card-body">
+							<span>전송할 회원</span> 
+							<div class="mb-3 row">
+							<select id="who" class="form-select form-select-sm col-sm-4">
+								<option id="all">회원 전체</option>
+								<c:forEach items="${members }" var="member">
+									<option id="${member.memberId }">${member.memberId }</option>
+								</c:forEach>
+							</select>
+							</div>
+							
+							<span>전송할 쿠폰</span> 
+							<div class="mb-3 row">
+							<select id="what" class="form-select form-select-sm col-sm-4">
+								<c:forEach items="${couponList }" var="coupon">
+									<option id="${coupon.couponName }">${coupon.couponName }</option>
+								</c:forEach>
+							</select>
+							</div>
+							
+							<span>전송 사유</span> 
+							<div class="mb-3 row">
+								<input type="text" class="form-control col-sm-4" name="couponWhy" id="couponWhy">
+							</div>
+						</div>
+						<!-- /.card-body -->
+						<div class="card-footer">
+							<button type="button" class="btn btn-success"
+								onclick="sendCoupon();">전송</button>
+						</div>
+					</div>
+					<!--  쿠폰 전송 끝 -->
 
 					<div class="card card-primary">
 						<div class="card-header">

@@ -2,6 +2,7 @@ package com.boritgogae.service;
 
 import java.util.List;
 
+import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.MemberVo;
@@ -34,10 +35,16 @@ public interface AdminService {
 	// 등록된 쿠폰을 수정하는 메서드
 	public boolean modifyCoupon(CouponVo coupon, String modiCouponName) throws Exception;
 
+	// 쿠폰을 회원 or 회원 전체 에게 전송하는 메서드
+	public boolean sendCoupon(CouponUsedVo sendCoupon) throws Exception;
+	
+	
     // ----------------- 상품 관련 메서드 -----------------
 
     // 재고가 적은 순
     public List<ProductVO> getLowestProduct() throws Exception;
+
+
 
 
 }
