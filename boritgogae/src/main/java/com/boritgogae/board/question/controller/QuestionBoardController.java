@@ -43,7 +43,7 @@ public class QuestionBoardController {
 	 * @methodName : viewAllBoard
 	 * @author : 신태호
 	 * @date : 2022. 10. 4.
-	 * @입력 param : int pageNo, SearchCriteria sc
+	 * @입력 param : int pageNo, AskSearchCriteria sc
 	 * @returnType : String
 	 * 게시판의 전체 게시글을 얻어온다
 	 */
@@ -89,7 +89,7 @@ public class QuestionBoardController {
 	 * @methodName : writeBoard
 	 * @author : 신태호
 	 * @date : 2022. 10. 5.
-	 * @입력 param : BoardVo board
+	 * @입력 param : QuestionBoardVo board
 	 * @returnType : String
 	 * 게시글을 저장, 저장한 후 저장된글을 보여줌
 	 */
@@ -191,7 +191,7 @@ public class QuestionBoardController {
 	 * @methodName : modifySave
 	 * @author : 신태호
 	 * @date : 2022. 10. 5.
-	 * @입력 param : BoardVo board
+	 * @입력 param : QuestionBoardVo board
 	 * @returnType : String
 	 * 게시글 수정하고 수정된 글을 보여줌
 	 */

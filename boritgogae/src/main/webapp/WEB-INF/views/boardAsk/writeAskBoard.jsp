@@ -6,16 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>문의 작성</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<link href="../resources/css/bootstrap.min.css" rel="stylesheet">
-<script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
-<link
-	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
 	var uploadFileQty = 0;
 
@@ -79,6 +72,7 @@
 		$(".upfileList").append(output);
 	}
 
+	// 파일 삭제버튼 누를 시
 	function delFile(obj) {
 		let deleteFileName = $(obj).attr("id");
 		let url = "/board/ask/delFile";
@@ -108,6 +102,7 @@
 		});
 	}
 
+	// 작성 중 취소 시
 	function writeCancel() {
 		let url = "/board/ask/writeCancel";
 		$.ajax({

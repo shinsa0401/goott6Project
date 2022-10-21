@@ -2,7 +2,7 @@ package com.boritgogae.board.prodReply.domain;
 
 import java.sql.Timestamp;
 
-public class ReplyVo {
+public class ProdReplyVo {
 	private int rno;
 	private int reviewNo;
 	private String replyWriter;
@@ -17,7 +17,7 @@ public class ReplyVo {
 
 
 
-	public ReplyVo(int rno, int reviewNo, String replyWriter, String replyContent, Timestamp replyWrittenDate,
+	public ProdReplyVo(int rno, int reviewNo, String replyWriter, String replyContent, Timestamp replyWrittenDate,
 			Timestamp replyUpdateDate, int ref, int step, int refOrder) {
 		super();
 		this.rno = rno;
@@ -32,7 +32,7 @@ public class ReplyVo {
 	}
 
 
-	public ReplyVo() {
+	public ProdReplyVo() {
 		super();
 	}
 
@@ -129,7 +129,7 @@ public class ReplyVo {
 
 	@Override
 	public String toString() {
-		return "ReplyVo [rno=" + rno + ", reviewNo=" + reviewNo + ", replyWriter=" + replyWriter + ", replyContent="
+		return "QuestionReplyVo [rno=" + rno + ", reviewNo=" + reviewNo + ", replyWriter=" + replyWriter + ", replyContent="
 				+ replyContent + ", replyWrittenDate=" + replyWrittenDate + ", replyUpdateDate=" + replyUpdateDate
 				+ ", ref=" + ref + ", step=" + step + ", refOrder=" + refOrder + "]";
 	}

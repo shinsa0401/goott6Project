@@ -47,7 +47,7 @@ public class QuestionReadCountVo {
 	
 	@Override
 	public String toString() {
-		return "ReadCountVo [no=" + no + ", ipAddr=" + ipAddr + ", bno=" + bno + ", readDate=" + readDate + "]";
+		return "QuestionReadCountVo [no=" + no + ", ipAddr=" + ipAddr + ", bno=" + bno + ", readDate=" + readDate + "]";
 	}
 	
 	

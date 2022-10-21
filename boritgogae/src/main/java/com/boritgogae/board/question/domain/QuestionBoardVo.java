@@ -130,7 +130,7 @@ public class QuestionBoardVo {
 	
 	@Override
 	public String toString() {
-		return "BoardVo [no=" + no + ", writer=" + writer + ", pwd=" + pwd + ", writtenDate=" + writtenDate
+		return "QuestionBoardVo [no=" + no + ", writer=" + writer + ", pwd=" + pwd + ", writtenDate=" + writtenDate
 				+ ", readCount=" + readCount + ", likeCount=" + likeCount + ", title=" + title + ", content=" + content
 				+ ", uploadFile=" + uploadFile + ", ref=" + ref + ", step=" + step + ", refOrder=" + refOrder
 				+ ", isDelete=" + isDelete + ", replyCount=" + replyCount + "]";

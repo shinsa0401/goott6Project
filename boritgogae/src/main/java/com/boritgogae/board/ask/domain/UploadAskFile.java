@@ -54,7 +54,7 @@ public class UploadAskFile {
 
 	@Override
 	public String toString() {
-		return "UploadFile [savedOriginImageFileName=" + savedOriginImageFileName + ", thumbnailFileName="
+		return "UploadAskFile [savedOriginImageFileName=" + savedOriginImageFileName + ", thumbnailFileName="
 				+ thumbnailFileName + ", notImageFileName=" + notImageFileName + ", isImage=" + isImage + "]";
 	}
 

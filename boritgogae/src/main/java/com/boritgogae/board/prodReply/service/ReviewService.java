@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.boritgogae.board.prodReply.domain.OrderDetailVO;
 import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
-import com.boritgogae.board.prodReply.domain.ReplyVo;
+import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.UploadImg;
@@ -50,7 +50,7 @@ public interface ReviewService {
 	public boolean writeReply(ReplyDTO dto) throws Exception;
 	
 	//상품 번호에 따른 댓글 불러오는 메서드
-	public List<ReplyVo> getReplies(String prodNo) throws Exception;
+	public List<ProdReplyVo> getReplies(String prodNo) throws Exception;
 	
 	//댓글번호로 댓글 삭제하는 메서드
 	public boolean deleteReply(int rno) throws Exception;

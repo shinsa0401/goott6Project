@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.boritgogae.memberMapper">
-  
-  	<!-- 로그인하기위해 id와 pwd로 회원정보를 검색 -->
+
+<mapper namespace="com.boritgogae.memberMapper">
+
+	<!-- 로그인하기위해 id와 pwd로 회원정보를 검색 -->
   	<select id="logIn" resultType="MemberVo">
   		select * from members where memberId = #{memberId} and memberPwd = #{memberPwd}
   	</select>
@@ -14,5 +14,108 @@
   	<!-- <update id="updateMemberSession">
   		update members set sessionId = #{sessionId}, sessionLimit = #{sessionLimit} where memberId = #{memberId}
   	</update>  -->
-  	
-  </mapper>
+
+	<!-- 등급혜택을 가져오는 메서드 -->
+	<select id="showGradeBenefit" resultType="GradesVo">
+		select * from grades
+		order by gradeValue asc
+	</select>
+
+	<!-- 쿠폰혜택을 가져오는 메서드 -->
+	<select id="showCouponBenefit" resultType="CouponVo">
+		select * from coupon
+		order by couponName asc
+	</select>
+
+	<!-- 유저가 보유한 포인트를 가져오는 메서드 -->
+	<select id="pointNow" resultType="int">
+		select memberPoint from members
+		where memberId= #{memberId}
+	</select>
+
+	<!-- 유저의 포인트 내역을 가져오는 메서드 -->
+	<select id="showPointHistory" resultType="PointHistoryVo">
+		select * from
+		pointHistory where memberId= #{memberId}
+	</select>
+
+	<!-- 유저의 쿠폰 보유 내역을 가져오는 메서드 -->
+	<select id="showCouponHaveList" resultType="CouponUsedVo">
+		select * from
+		couponUsed where memberId = #{memberId} and useDate is null
+	</select>
+
+	<!-- 유저의 쿠폰 사용 내역을 가져오는 메서드 -->
+	<select id="showCouponUsedList" resultType="CouponUsedVo">
+		select * from
+		couponUsed where memberId = #{memberId} and useDate is not null
+	</select>
+
+	<!-- 유저의 작성글을 가져오는 메서드 -->
+	<select id="showUserBoardList" resultType="UserBoardVo">
+		select writer,
+		writtenDate, title, readCount, '문의' as board from askBoard
+		where writer
+		= #{memberId}
+		union all select memberId, writtenDate, title, readCount,
+		'공지' as board
+		from noticeBoard where memberId = #{memberId}
+		union all
+		select memberId, createDate, title, readCount, '팁' as board from
+		tipBoard where memberId = #{memberId}
+		union all select writer,
+		writtenDate, title, readCount, '질문' as board from
+		questionBoard where
+		writer = #{memberId}
+		union all select writer, writtenDate, title,
+		readCount, '장터' as board from
+		marketBoard where writer = #{memberId}
+		union all select writer, createDate, title, readCount, '자유' as board
+		from
+		freeboard where writer = #{memberId} order by writtenDate desc
+	</select>
+
+	<!-- 유저의 작성 댓글을 가져오는 메서드 -->
+	<select id="showUserReplyList" resultType="UserReplyVo">
+		select memberId,
+		writtenTime, contents, '질문' as board from askReplyBoard
+		where memberId
+		= #{memberId}
+		union all select memberId, writtenDate, content, '공지' as
+		board from
+		noticeReplyBoard where memberId = #{memberId}
+		union all
+		select memberId, createDate, content, '팁' as board from tipReply
+		where
+		memberId = #{memberId}
+		union all select replyWriter, replyWrittenDate,
+		replyContent, '질문' as board
+		from questionReply where replyWriter =
+		#{memberId}
+		union all select replyer, replyWrittenDate, replyContent,
+		'장터' as board
+		from marketReply where replyer = #{memberId}
+		union all
+		select replyer, replyWittenDate, replyContent, '자유' as board from
+		freeReply where replyer = #{memberId} order by writtenTime desc
+	</select>
+
+	<!-- 유저가 쓴 리뷰 리스트를 가져오는 메서드 -->
+	<select id="showUserReviewList" resultType="ReviewVO">
+		select * from review
+		where writer = #{memberId}
+	</select>
+
+
+	<!-- 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드 -->
+	<select id="userAbleReviewList" resultType="OrderDetailVO">
+		select * from
+		detailOrder where memberId = #{memberId} and reviewStatus = 'N' and
+		purchaseConfirm = 'Y'
+	</select>
+
+	<!-- 상품코드에 맞는 상품명을 반환하는 메서드 -->
+	<select id="convertProdNoToProdName" resultType="String">
+		select prodName from product where prodNo = #{prodCode}
+	</select>
+</mapper>

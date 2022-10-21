@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.AskPagingInfo;
-import com.boritgogae.board.ask.domain.SearchCriteria;
+
+import com.boritgogae.board.ask.domain.AskSearchCriteria;
 import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
 import com.boritgogae.board.ask.persistence.AskBoardDAO;
@@ -25,7 +26,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 	public AskBoardDAO dao;
 
 	@Override
-	public Map<String, Object> readAllBoard(int pageNo, SearchCriteria sc) throws Exception {
+	public Map<String, Object> readAllBoard(int pageNo, AskSearchCriteria sc) throws Exception {
 		System.out.println("서비스단 : 게시판 전체 목록 요청");
 		System.out.println("서비스단 : sc " + sc.toString());
 		AskPagingInfo pi = pagingProcess(pageNo, sc);
@@ -52,7 +53,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 		return lst;
 	}
 
-	private AskPagingInfo pagingProcess(int pageNo, SearchCriteria sc) throws Exception {
+	private AskPagingInfo pagingProcess(int pageNo, AskSearchCriteria sc) throws Exception {
 		AskPagingInfo result = new AskPagingInfo();
 		System.out.println("pagingProcess : sc " + sc.toString());
 		if (sc.getSearchWord() != null && !sc.getSearchType().equals("")) {

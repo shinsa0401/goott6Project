@@ -214,7 +214,7 @@
                         </div>
                         <div class="hero__search__phone">
                             <div class="hero__search__phone__text">
-                                <h5>My Page</h5>
+                                <h5><a href="/member/myPage" style="color: black;">My Page</a></h5>
                             </div>
                         </div>
                     </div>

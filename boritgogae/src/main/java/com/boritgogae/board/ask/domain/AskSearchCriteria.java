@@ -1,15 +1,15 @@
 package com.boritgogae.board.ask.domain;
 
 
-public class SearchCriteria {
+public class AskSearchCriteria {
 	private String searchType;
 	private String searchWord;
 	
-	public SearchCriteria() {
+	public AskSearchCriteria() {
 		super();
 	}
 
-	public SearchCriteria(String searchType, String searchWord) {
+	public AskSearchCriteria(String searchType, String searchWord) {
 		super();
 		this.searchType = searchType;
 		this.searchWord = searchWord;
@@ -33,7 +33,7 @@ public class SearchCriteria {
 
 	@Override
 	public String toString() {
-		return "SearchCriteria [searchType=" + searchType + ", searchWord=" + searchWord + "]";
+		return "AskSearchCriteria [searchType=" + searchType + ", searchWord=" + searchWord + "]";
 	}
 	
 	

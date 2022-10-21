@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.boritgogae.board.question.domain.QuestionBoardVo;
 import com.boritgogae.board.question.domain.QuestionReadCountVo;
 import com.boritgogae.board.question.domain.QuestionUploadFileVo;
+
 import com.boritgogae.board.question.etc.QuestionPagingInfo;
 import com.boritgogae.board.question.etc.QuestionSearchCriteria;
 
@@ -30,7 +31,6 @@ public class QuestionBoardDAOImpl implements QuestionBoardDAO {
 	// 게시판 전체목록 보기 
 	@Override
 	public List<QuestionBoardVo> selectAllBoard(QuestionPagingInfo pi) throws Exception {
-		
 		return ses.selectList(ns + ".selectAllBoard", pi);
 	}
 

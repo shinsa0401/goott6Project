@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.boritgogae.board.prodReply.domain.OrderDetailVO;
 import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
-import com.boritgogae.board.prodReply.domain.ReplyVo;
+import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
@@ -53,7 +53,7 @@ public interface ReviewDAO {
 	public int writeReply(ReplyDTO dto) throws Exception;
 	
 	//상품번호의 댓글 불러오는 메서드
-	public List<ReplyVo> getReplies(String prodNo) throws Exception;
+	public List<ProdReplyVo> getReplies(String prodNo) throws Exception;
 	
 	//댓글번호로 댓글 삭제하는 메서드
 	public int deleteReply(int rno) throws Exception;
@@ -68,10 +68,10 @@ public interface ReviewDAO {
 	public int updateRef(int rno) throws Exception;
 	
 	//댓글번호로 댓글 가져오는 메서드
-	public ReplyVo getReply(int rno) throws Exception;
+	public ProdReplyVo getReply(int rno) throws Exception;
 	
 	//댓글의 step과 refOrder업데이트하는 메서드
-	public int updateStepRO(ReplyVo parentVo, int rno) throws Exception;
+	public int updateStepRO(ProdReplyVo parentVo, int rno) throws Exception;
 	
 	//대댓글의 ref업데이트하는 메서드
 	public int updateReRef(int rno, int parentRef) throws Exception;

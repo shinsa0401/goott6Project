@@ -27,7 +27,7 @@ public class QuestionReplyController {
 	 * @methodName : addReply
 	 * @author : 신태호
 	 * @date : 2022. 10. 9.
-	 * @입력 param : ReplyVo reply
+	 * @입력 param : QuestionReplyVo reply
 	 * 새로운 댓글 등록
 	 * @returnType : ResponseEntity<String>
 	 */
@@ -54,7 +54,7 @@ public class QuestionReplyController {
 	 * @date : 2022. 10. 9.
 	 * @입력 param : int bno
 	 * 현재글의 모든 댓글을 얻어온다
-	 * @returnType : ResponseEntity<List<ReplyVo>>
+	 * @returnType : ResponseEntity<List<QuestionReplyVo>>
 	 */
 	@RequestMapping(value = "/{bno}")
 	public ResponseEntity<List<QuestionReplyVo>> getAllReply(@PathVariable("bno") int bno) {
@@ -84,7 +84,7 @@ public class QuestionReplyController {
 	 * @methodName : modifyReply
 	 * @author : 신태호
 	 * @date : 2022. 10. 10.
-	 * @입력 param : ReplyVo reply
+	 * @입력 param : QuestionReplyVo reply
 	 * @returnType : ResponseEntity<String>
 	 * 댓글 수정
 	 */
@@ -137,7 +137,7 @@ public class QuestionReplyController {
 	 * @author : 신태호
 	 * @throws Exception 
 	 * @date : 2022. 10. 11.
-	 * @입력 param :ReplyVo reply
+	 * @입력 param :QuestionReplyVo reply
 	 * @returnType : ResponseEntity<String>
 	 * 댓글의 댓글 등록
 	 */

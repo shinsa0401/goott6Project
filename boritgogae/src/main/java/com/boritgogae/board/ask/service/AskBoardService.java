@@ -7,13 +7,14 @@ import org.springframework.stereotype.Service;
 
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
-import com.boritgogae.board.ask.domain.SearchCriteria;
+
+import com.boritgogae.board.ask.domain.AskSearchCriteria;
 import com.boritgogae.board.ask.domain.UploadAskFile;
 
 @Service
 public interface AskBoardService {
 	// 게시판 전체 목록을 가져오는 메서드
-	public Map<String, Object> readAllBoard(int pageNo, SearchCriteria sc) throws Exception;
+	public Map<String, Object> readAllBoard(int pageNo, AskSearchCriteria sc) throws Exception;
 
 	// 질문코드와 질문코드에 따른 분류를 가져오는 메서드
 	public List<AskCodeVo> loadAskCode() throws Exception;

@@ -55,7 +55,7 @@
  		insert into reviewReply (reviewNo, replyWriter, replyContent) values(#{reviewNo}, #{replyWriter}, #{replyContent})
  	</insert>
  	
- 	<select id="gerReplies" resultType="com.boritgogae.board.prodReply.domain.ReplyVo">
+ 	<select id="gerReplies" resultType="com.boritgogae.board.prodReply.domain.ProdReplyVo">
  		select p.* from reviewReply p inner join review v on p.reviewNo = v.reviewNo where v.prodNo = #{prodNo} order by ref desc, step, refOrder
  	</select>
  	<delete id="deleteReply">
@@ -67,7 +67,7 @@
  	<select id="getLastRno" resultType="int">
  		select max(rno) as lastNo from reviewReply
  	</select>
- 	<select id="gerReply" resultType="com.boritgogae.board.prodReply.domain.ReplyVo">
+ 	<select id="gerReply" resultType="com.boritgogae.board.prodReply.domain.ProdReplyVo">
  		select * from reviewReply where rno = #{rno}
  	</select>
  	<update id="updateStepRO">

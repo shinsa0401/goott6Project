@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.boritgogae.board.prodReply.domain.ReplyVo;
+import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
@@ -57,7 +57,7 @@ public class ProductController {
 			}
 		}
 		
-		List<ReplyVo> replies = reviewService.getReplies(prodNo);
+		List<ProdReplyVo> replies = reviewService.getReplies(prodNo);
 		
 		model.addAttribute("reviews",reviews);
 		model.addAttribute("reviewImg", imgLst);

@@ -10,5 +10,6 @@
 		<package name="com.boritgogae.board.ask.domain"/>
 		<package name="com.boritgogae.board.market.domain"/>
 		<package name="com.boritgogae.board.tip.domain"/>
+		<package name="com.boritgogae.board.prodReply.domain"/>
 	</typeAliases>
 </configuration>

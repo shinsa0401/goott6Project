@@ -28,10 +28,10 @@ import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.AskReplyVo;
 import com.boritgogae.board.ask.domain.AskPagingInfo;
-import com.boritgogae.board.ask.domain.SearchCriteria;
+import com.boritgogae.board.ask.domain.AskSearchCriteria;
 import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
-import com.boritgogae.board.ask.etc.UploadFileProcess;
+import com.boritgogae.board.ask.etc.AskUploadFileProcess;
 import com.boritgogae.board.ask.service.AskBoardService;
 
 @Controller // 컨트롤러단
@@ -47,7 +47,7 @@ public class AskBoardController {
 	
 	@RequestMapping(value = "/list")
 	public String listAll(Model model, @RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo,
-			RedirectAttributes rttr, SearchCriteria sc, HttpServletRequest request) throws Exception {
+			RedirectAttributes rttr, AskSearchCriteria sc, HttpServletRequest request) throws Exception {
 		System.out.println("컨트롤러 : 게시판 전체 목록 요청 페이지 번호 : " + pageNo);
 		if(pageNo < 1) {
 			pageNo = 1;
@@ -79,6 +79,7 @@ public class AskBoardController {
 		return "boardAsk/viewAskAll";
 	}
 	
+	// 글 등록
 	@RequestMapping(value = "/register")
 	public String registerBoard(Model model) throws Exception {
 		System.out.println("컨트롤러 : 게시판 글쓰기 요청");
@@ -102,13 +103,6 @@ public class AskBoardController {
 	}
 	
 	// 글 수정 페이지 불러오는 메서드
-	/**
-	 * @methodName : modifyBoard
-	 * @author : webisjeong
-	 * @data : 2022. 10. 11.
-	 * @입력 param : 글번호(no)
-	 * @returnType : String
-	 */
 	@RequestMapping(value = "/modify")
 	public String modifyBoard(Model model, @RequestParam("no") String no) throws Exception {
 		List<AskCodeVo> askCodeList = service.loadAskCode();
@@ -141,7 +135,7 @@ public class AskBoardController {
 			UploadAskFile upFile;
 			try {
 				// 실제로 파일이 넘어가는 구문임
-				upFile = UploadFileProcess.uploadFileProcess(upPath, upfile.getOriginalFilename(), upfile.getBytes(),
+				upFile = AskUploadFileProcess.uploadFileProcess(upPath, upfile.getOriginalFilename(), upfile.getBytes(),
 						upfile.getContentType());
 				this.UploadFileLst.add(upFile); // 업로드 될 파일이 여러개일 경우를 대비해 리스트에 넣어둠
 				result = new ResponseEntity<>(upFile, HttpStatus.OK); // 업로드된 파일의 정보와 통신상태 "성공"
@@ -177,7 +171,7 @@ public class AskBoardController {
 		if (upfile.getSize() > 0) {
 			UploadAskFile upFile;
 			try {
-				upFile = UploadFileProcess.uploadFileProcess(upPath, upfile.getOriginalFilename(), upfile.getBytes(),
+				upFile = AskUploadFileProcess.uploadFileProcess(upPath, upfile.getOriginalFilename(), upfile.getBytes(),
 						upfile.getContentType());
 				this.UploadFileLst.add(upFile); // 업로드 될 파일이 여러개일 경우를 대비해 리스트에 넣어둠
 				this.addTempFileLst.add(upFile); // 수정 취소시 삭제시켜야 할 파일들의 목록임

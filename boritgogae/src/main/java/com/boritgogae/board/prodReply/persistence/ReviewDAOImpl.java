@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.boritgogae.board.prodReply.domain.OrderDetailVO;
 import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
-import com.boritgogae.board.prodReply.domain.ReplyVo;
+import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.PageAndProdNo;
@@ -106,7 +106,7 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 
 	@Override
-	public List<ReplyVo> getReplies(String prodNo) throws Exception {
+	public List<ProdReplyVo> getReplies(String prodNo) throws Exception {
 		
 		return ses.selectList(ns+".gerReplies", prodNo);
 	}
@@ -136,13 +136,13 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 
 	@Override
-	public ReplyVo getReply(int rno) throws Exception {
+	public ProdReplyVo getReply(int rno) throws Exception {
 		
 		return ses.selectOne(ns+".gerReply", rno);
 	}
 
 	@Override
-	public int updateStepRO(ReplyVo parentvo, int rno) throws Exception {
+	public int updateStepRO(ProdReplyVo parentvo, int rno) throws Exception {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("step", parentvo.getStep());
 		map.put("refOrder", parentvo.getRefOrder());

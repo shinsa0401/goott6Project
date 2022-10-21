@@ -15,7 +15,7 @@ import org.springframework.util.FileCopyUtils;
 
 import com.boritgogae.board.ask.domain.UploadAskFile;
 
-public class UploadFileProcess {
+public class AskUploadFileProcess {
 
 	public static UploadAskFile uploadFileProcess(String upPath, String originalFileName, byte[] file, String contentType) throws IOException {
 		UUID uuid = UUID.randomUUID();
@@ -29,7 +29,7 @@ public class UploadFileProcess {
 		File originTarget = new File(upPath + savePath, saveFileName);
 		FileCopyUtils.copy(file, originTarget); // 원본 파일 저장
 		
-		if(ImageMediaConfirm.getMediaType(contentType.toLowerCase()) != null) { // 이미지 파일이라면
+		if(AskImageMediaConfirm.getMediaType(contentType.toLowerCase()) != null) { // 이미지 파일이라면
 			System.out.println("이미지 파일!");
 			upFile.setImage(true);
 			

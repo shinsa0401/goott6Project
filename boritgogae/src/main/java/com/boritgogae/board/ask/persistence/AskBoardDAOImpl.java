@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.AskPagingInfo;
-import com.boritgogae.board.ask.domain.SearchCriteria;
+import com.boritgogae.board.ask.domain.AskSearchCriteria;
 import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
 
@@ -37,7 +37,7 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 	}
 
 	@Override
-	public List<AskBoardVo> getSearchResult(SearchCriteria sc, AskPagingInfo pi) throws Exception {
+	public List<AskBoardVo> getSearchResult(AskSearchCriteria sc, AskPagingInfo pi) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("searchType", sc.getSearchType());
 		map.put("searchWord", sc.getSearchWord());
@@ -48,7 +48,7 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 	}
 
 	@Override
-	public int getSearchResultCnt(SearchCriteria sc) throws Exception {
+	public int getSearchResultCnt(AskSearchCriteria sc) throws Exception {
 		return ses.selectOne(ns + ".getSearchResultCnt", sc);
 	}
 

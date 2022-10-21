@@ -51,8 +51,7 @@
 	</sql>
 
 	<update id="deleteReply">
-		update askReplyBoard set contents = #{contents}
-		where
+		update askReplyBoard set contents = #{contents}, isDelete = #{isDelete}	where
 		askRno = #{askRno}
 	</update>
 
