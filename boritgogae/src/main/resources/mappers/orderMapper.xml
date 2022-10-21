@@ -5,4 +5,17 @@
   
   <mapper namespace="com.boritgogae.orderMapper">
   
+  <!-- 사용가능한 쿠폰 얻어옴 -->
+  	<select id="getUsableCoupon" resultType="com.boritgogae.domain.CouponUsedVo">
+  		select * from couponUsed where memberId = #{memberId} and orderNo is null
+  	</select>
+  	
+  	<!-- 쿠폰이름으로 쿠폰vo얻어옴 -->
+  	<select id="getCouponByCouponName" resultType="com.boritgogae.domain.CouponVo">
+  		select * from coupon where couponName = #{couponName}
+  	</select>
+  	
+  	<select id="getDeliveryInfoVo" resultType="com.boritgogae.domain.DeliveryFeeVo">
+  		select * from deliveryFee where deliveryOption = ${deliveryOption}
+  	</select>
   </mapper>

@@ -5,10 +5,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 
 import com.boritgogae.domain.ProdImgVO;
 import com.boritgogae.domain.ProductVO;
 
+@Repository
 public class ProductDAOImpl implements ProductDAO {
 	
 	@Inject
@@ -29,6 +31,14 @@ public class ProductDAOImpl implements ProductDAO {
 	@Override
 	public List<ProdImgVO> getProdImg(String prodNo) {
 		return ses.selectList(ns+".getProdImg", prodNo);
+	}
+
+
+
+	@Override
+	public int updateProdReview(String prodNo) {
+		
+		return ses.update(ns+".updateProdReview", prodNo);
 	}
 
 }

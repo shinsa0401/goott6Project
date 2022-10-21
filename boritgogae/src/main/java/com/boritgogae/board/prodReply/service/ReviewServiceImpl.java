@@ -19,12 +19,16 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.persistence.ReviewDAO;
+import com.boritgogae.persistence.ProductDAO;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
 	
 	@Inject
 	private ReviewDAO dao;
+	
+	@Inject
+	private ProductDAO prodDao;
 
 	//리뷰쓰는 메서드
 	@Override
@@ -41,6 +45,10 @@ public class ReviewServiceImpl implements ReviewService {
 			//계산하기
 			//insert하기
 			//회원의 총 포인트 업데이트 해주기
+			
+			//상품의 reviewCount 업데이트
+			System.out.println(dto.getProdNo());
+			prodDao.updateProdReview(dto.getProdNo());
 			result = true;
 		}
 		return result;

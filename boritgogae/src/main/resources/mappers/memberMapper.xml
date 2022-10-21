@@ -5,4 +5,13 @@
   
   <mapper namespace="com.boritgogae.memberMapper">
   
+  <!-- 멤버vo를 id로 가져오는 메서드 -->
+  	<select id="getMemberInfo" resultType="com.boritgogae.domain.MemberVo">
+  		select * from members where memberId = #{memberId}
+  	</select>
+  	
+  	<!-- 유저 주소를 list로 가져오는 메서드 -->
+  	<select id="getMemAddrs" resultType="com.boritgogae.domain.DeliveryInfoVo">
+  		select * from deliveryInfo where memberId = #{memberId}
+  	</select>
   </mapper>

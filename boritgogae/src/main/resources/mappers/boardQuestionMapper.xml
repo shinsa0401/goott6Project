@@ -8,7 +8,7 @@
   	<!-- 게시판 -->
   	
   	<!-- 게시글 전체목록 검색 -->
-  	<select id="selectAllBoard" resultType="BoardVo">
+  	<select id="selectAllBoard" resultType="com.boritgogae.board.question.domain.BoardVo">
   		select * from questionBoard where isDelete = 'N' order by no desc limit #{startNum}, #{postPerPage}
   	</select>
   	
@@ -41,12 +41,12 @@
   	</insert>
   	
   	<!-- 글번호로 게시글 검색 -->
-  	<select id="getBoardByNo" resultType="BoardVo">
+  	<select id="getBoardByNo" resultType="com.boritgogae.board.question.domain.BoardVo">
   		select * from questionBoard where no = #{no}
   	</select>
   	
   	<!-- 글번호로 첨부파일 검색 -->
-  	<select id="getAttachFiles" resultType="UploadFileVo">
+  	<select id="getAttachFiles" resultType="com.boritgogae.board.question.domain.UploadFileVo">
   		select * from questionUploadFile where bno = #{no}
   	</select>
   	
@@ -66,7 +66,7 @@
   	</update>
   	
   	<!-- 조회된글인지 검색 -->
-  	<select id="selectReadCountCheck" resultType="ReadCountVo">
+  	<select id="selectReadCountCheck" resultType="com.boritgogae.board.question.domain.ReadCountVo">
   		select * from questionReadCount where bno = #{bno} and ipAddr = #{ipAddr}
   	</select>
   	
@@ -115,7 +115,7 @@
   	</select>
   	
   	<!-- 검색어가 있을 때 페이징 하며 검색 결과 -->
-  	<select id="listAllWithSearch" resultType="BoardVo">
+  	<select id="listAllWithSearch" resultType="com.boritgogae.board.question.domain.BoardVo">
   		select * from questionBoard where
   		<if test="searchType == 'writer'">
   			writer like concat('%', #{searchWord}, '%')
@@ -151,7 +151,7 @@
   	</update>
   	
   	<!-- 현재 글의 모든 댓글 검색 -->
-  	<select id="selectAllReply" resultType="ReplyVo">
+  	<select id="selectAllReply" resultType="com.boritgogae.board.question.domain.ReplyVo">
   		select * from questionReply where bno = #{bno} order by ref asc, refOrder asc
   	</select>
   	
@@ -171,7 +171,7 @@
   	</select>
   	
   	<!-- rno로 부모댓글의 정보 얻어오기 -->
-  	<select id="getParentReply" resultType="ReplyVo">
+  	<select id="getParentReply" resultType="com.boritgogae.board.question.domain.ReplyVo">
   		select * from questionReply where rno = #{rno}
   	</select>
   	

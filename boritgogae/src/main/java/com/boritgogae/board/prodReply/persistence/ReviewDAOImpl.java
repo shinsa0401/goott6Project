@@ -158,6 +158,12 @@ public class ReviewDAOImpl implements ReviewDAO {
 		map.put("rno", rno);
 		return ses.update(ns+".updateReRef", map);
 	}
+
+	@Override
+	public int insertPoint(int point, String userId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 	

@@ -10,4 +10,7 @@
   	<select id="getProdImg" resultType="com.boritgogae.domain.ProdImgVO">
   		select * from prodImg where prodNo = #{prodNo}
   	</select>
+  	<update id="updateProdReview">
+  		update product set reviewCount = reviewCount + 1 where prodNo = #{prodNo}
+  	</update>
   </mapper>

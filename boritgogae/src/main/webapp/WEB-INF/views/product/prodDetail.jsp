@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page session="false"%>
 
 <html>
@@ -95,7 +96,7 @@ function openReply(reviewNo) {
 
 function writeReply(reviewNo) {
 	output = "";
-	output += '<div class="container"><div class="review_box"><form class="row contact_form" action="/prodReply/writeReply" method="post" id="replyWrite" novalidate="novalidate"><input type="hidden" id="reviewNo" name="reviewNo" value="'+reviewNo+'" readonly="readonly"/> <input type="hidden" id="prodNo" name="prodNo" value="${param.prodNo}" readonly="readonly"/> <div class="col-md-5"> <div class="form-group"> writer: <input type="text" class="form-control" id="replyWriter" name="replyWriter" value="'+'abcd'+'" /> </div> </div> <div class="col-md-12"> <div class="form-group"> content : <textarea class="form-control" style="height: 74px;" name="replyContent" id="replyContent" rows="1" placeholder="내용을 입력해주세요." ></textarea> </div> </div> <div class="col-md-12 text-right"> <button type="submit" value="submit" style="font-size: 14px;" class="genric-btn primary circle" onclick="return replyValid()">등록</button><button type="reset" value="submit" style="font-size: 14px;" class="genric-btn primary circle" onclick="replyCancel('+reviewNo+')">취소</button> </div> </form> </div> </div>';
+	output += '<div class="container"><div class="review_box"><form class="row contact_form" action="/prodReply/writeReply" method="post" id="replyWrite" novalidate="novalidate"><input type="hidden" id="reviewNo" name="reviewNo" value="'+reviewNo+'" readonly="readonly"/> <input type="hidden" id="prodNo" name="prodNo" value="${param.prodNo}" readonly="readonly"/> <div class="col-md-5"> <div class="form-group"> writer: <input type="text" class="form-control" id="replyWriter" name="replyWriter" value="'+'abcd'+'" /> </div> </div> <div class="col-md-12"> <div> content : <textarea class="form-control" style="height: 74px;" name="replyContent" id="replyContent" rows="1" placeholder="내용을 입력해주세요." ></textarea> </div> </div> <div class="col-md-12 text-right"> <button type="submit" value="submit" style="font-size : 14px; padding: 10px; border:0; outline:0; margin:3px;" class="primary-btn"  onclick="return replyValid()">등록</button><button type="reset" value="submit" style="font-size: 14px; padding: 10px; border:0; outline:0; margin:3px; background-color:orange;" class="primary-btn" onclick="replyCancel('+reviewNo+')">취소</button> </div> </form> </div> </div>';
 	
 	$("#replyWrite"+reviewNo).html(output);
 }
@@ -117,7 +118,7 @@ function replyValid() {
 
 function writeReReply(rno, reviewNo) {
 	let output = "";
-	output += '<div class="container"><div class="review_box"><form class="row contact_form" action="/prodReply/writeReReply" method="post" id="replyWrite" novalidate="novalidate"><input type="hidden" id="reviewNo" name="reviewNo" value="'+ reviewNo +'" readonly="readonly"/><input type="hidden" id="parentRno" name="parentRno" value="'+rno+'" readonly="readonly"/> <input type="hidden" id="prodNo" name="prodNo" value="${param.prodNo}" readonly="readonly"/> <div class="col-md-5"> <div class="form-group"> writer: <input type="text" class="form-control" id="replyWriter" name="replyWriter" value="'+'abcd'+'" /> </div> </div> <div class="col-md-12"> <div class="form-group"> content : <textarea class="form-control" style="height: 74px;" name="replyContent" id="rereplyContent" rows="1" placeholder="내용을 입력해주세요." ></textarea> </div> </div> <div class="col-md-12 text-right"> <button type="submit" value="submit" style="font-size: 14px;" class="genric-btn primary circle" onclick="return rereplyValid()">등록</button><button type="reset" value="submit" style="font-size: 14px;" class="genric-btn primary circle" onclick="rereplyCancel('+rno+')">취소</button> </div> </form> </div> </div>';
+	output += '<div class="container"><div class="review_box"><form class="row contact_form" action="/prodReply/writeReReply" method="post" id="replyWrite" novalidate="novalidate"><input type="hidden" id="reviewNo" name="reviewNo" value="'+ reviewNo +'" readonly="readonly"/><input type="hidden" id="parentRno" name="parentRno" value="'+rno+'" readonly="readonly"/> <input type="hidden" id="prodNo" name="prodNo" value="${param.prodNo}" readonly="readonly"/> <div class="col-md-5"> <div class="form-group"> writer: <input type="text" class="form-control" id="replyWriter" name="replyWriter" value="'+'abcd'+'" /> </div> </div> <div class="col-md-12"> <div class="form-group"> content : <textarea class="form-control" style="height: 74px;" name="replyContent" id="rereplyContent" rows="1" placeholder="내용을 입력해주세요." ></textarea> </div> </div> <div class="col-md-12 text-right"> <button type="submit" value="submit" class="primary-btn" style="font-size : 14px; padding: 10px; border:0; outline:0; margin:3px;" onclick="return rereplyValid()">등록</button><button type="reset" value="submit" class="primary-btn" style="font-size: 14px; padding: 10px; border:0; outline:0; margin:3px; background-color:orange;" onclick="rereplyCancel('+rno+')">취소</button> </div> </form> </div> </div>';
 	
 	$("#rereplyWrite"+rno).html(output);
 }
@@ -198,6 +199,9 @@ function getParameter(param) {
 
 </script>
 <style>
+.product__details__rating i {
+	color: orange;
+}
 </style>
 </head>
 <body>
@@ -210,56 +214,73 @@ function getParameter(param) {
 				<div class="col-lg-6 col-md-6">
 					<div class="product__details__pic">
 						<div class="product__details__pic__item">
-							<img class="product__details__pic__item--large"
-								src="img/product/details/product-details-1.jpg" alt="">
+							<c:forEach var="img" items="${prodImg}">
+								<img class="product__details__pic__item--large"
+									src="${img.originalFile }" alt="">
+							</c:forEach>
+
 						</div>
 						<div class="product__details__pic__slider owl-carousel">
-							<img data-imgbigurl="img/product/details/product-details-2.jpg"
-								src="img/product/details/thumb-1.jpg" alt=""> <img
-								data-imgbigurl="img/product/details/product-details-3.jpg"
-								src="img/product/details/thumb-2.jpg" alt=""> <img
-								data-imgbigurl="img/product/details/product-details-5.jpg"
-								src="img/product/details/thumb-3.jpg" alt=""> <img
-								data-imgbigurl="img/product/details/product-details-4.jpg"
-								src="img/product/details/thumb-4.jpg" alt="">
+							<c:forEach var="img" items="${prodImg}">
+								<img class="product__details__pic__item--large"
+									src="${img.originalFile }" alt="">
+							</c:forEach>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-6 col-md-6">
 					<div class="product__details__text">
-						<h3>Vetgetable’s Package</h3>
+						<h3>${product.prodName }</h3>
 						<div class="product__details__rating">
-							<i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-								class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-								class="fa fa-star-half-o"></i> <span>(18 reviews)</span>
+							<c:forEach var="review" items="${reviews }">
+								<c:set var="totalAssess" value="${totalAssess + review.assess }" />
+							</c:forEach>
+							<c:set var="avgAssess" value="${totalAssess / product.reviewCount }" />
+							<c:forEach var="i" begin="1" end="${avgAssess }" step="1">
+								<i class="fa fa-star"></i>
+							</c:forEach>
+							<c:forEach begin="${avgAssess }" end="4" step="1">
+								<i class="fa fa-star" style="color: gray;"></i>
+							</c:forEach>
+
+							<span>&nbsp &nbsp ${product.reviewCount } &nbsp reviews</span>
 						</div>
-						<div class="product__details__price">$50.00</div>
+						<div class="product__details__price">${product.prodPrice }₩</div>
 						<p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar
 							a. Vestibulum ac diam sit amet quam vehicula elementum sed sit
 							amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet
 							quam vehicula elementum sed sit amet dui. Proin eget tortor
 							risus.</p>
-						<div class="product__details__quantity">
-							<div class="quantity">
-								<div class="pro-qty">
-									<input type="text" value="1">
+						<form action="${pageContext.request.contextPath}/order/orderSheet" method="post">
+							<div class="product__details__quantity">
+							<input type="hidden" value="${param.prodNo }" name="orderProducts[0].prodNo" />
+								<div class="quantity">
+									<div class="pro-qty">
+										<input type="text" value="1" pattern="[0-9]+" name="orderProducts[0].qty">
+									</div>
 								</div>
 							</div>
-						</div>
-						<a href="#" class="primary-btn"> TO CARD</a> <a href="#"
-							class="heart-icon"><span class="icon_heart_alt"></span></a>
+							<button type="submit" class="primary-btn" style="border:0; outline:0;"> TO CART</button> 
+							<a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+						</form>
+						
 						<ul>
-							<li><b>Availability</b> <span>In Stock</span></li>
-							<li><b>Shipping</b> <span>01 day shipping. <samp>Free
-										pickup today</samp></span></li>
-							<li><b>Weight</b> <span>0.5 kg</span></li>
-							<li><b>Share on</b>
-								<div class="share">
-									<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
-										class="fa fa-twitter"></i></a> <a href="#"><i
-										class="fa fa-instagram"></i></a> <a href="#"><i
-										class="fa fa-pinterest"></i></a>
-								</div></li>
+							<li><b>Availability</b> <span>${product.prodQuantity }</span></li>
+							<li><b>Shipping</b> <span>3000₩ <samp>5만원 이상 구매시 무료배송</samp></span></li>
+								<c:choose>
+									<c:when test="${options.materialSubOption != '성격없음'}">
+										<li><b>Main Material</b> <span>${options.materialSubOption}</span></li>
+									</c:when>
+									<c:when test="${options.sizeSubOption != '성격없음'}">
+										<li><b>Size</b> <span>${options.sizeSubOption}</span></li>
+									</c:when>
+									<c:when test="${options.colorSubOption != '성격없음'}">
+										<li><b>Color</b> <span>${options.colorSubOption}</span></li>
+									</c:when>
+									<c:when test="${options.weightSubOption != '성격없음'}">
+										<li><b>Weight</b> <span>${options.weightSubOption}</span></li>
+									</c:when>
+								</c:choose>
 						</ul>
 					</div>
 				</div>
@@ -270,115 +291,89 @@ function getParameter(param) {
 								id="Description" data-toggle="tab" href="#tabs-1" role="tab"
 								aria-selected="true">Description</a></li>
 							<li class="nav-item"><a class="nav-link" data-toggle="tab"
-								id="Information" href="#tabs-2" role="tab" aria-selected="false">Information</a>
-							</li>
-							<li class="nav-item"><a class="nav-link" data-toggle="tab"
 								id="Reviews" href="#review" role="tab" aria-selected="false">Reviews
-									<span>(1)</span>
+									<span>(${product.reviewCount })</span>
 							</a></li>
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" id="tabs-1" role="tabpanel">
 								<div class="product__details__tab__desc">
-									<h6>Products Infomation</h6>
-									<p>Vestibulum ac diam sit amet quam vehicula elementum sed
-										sit amet dui. Pellentesque in ipsum id orci porta dapibus.
-										Proin eget tortor risus. Vivamus suscipit tortor eget felis
-										porttitor volutpat. Vestibulum ac diam sit amet quam vehicula
-										elementum sed sit amet dui. Donec rutrum congue leo eget
-										malesuada. Vivamus suscipit tortor eget felis porttitor
-										volutpat. Curabitur arcu erat, accumsan id imperdiet et,
-										porttitor at sem. Praesent sapien massa, convallis a
-										pellentesque nec, egestas non nisi. Vestibulum ac diam sit
-										amet quam vehicula elementum sed sit amet dui. Vestibulum ante
-										ipsum primis in faucibus orci luctus et ultrices posuere
-										cubilia Curae; Donec velit neque, auctor sit amet aliquam vel,
-										ullamcorper sit amet ligula. Proin eget tortor risus.</p>
-									<p>Praesent sapien massa, convallis a pellentesque nec,
-										egestas non nisi. Lorem ipsum dolor sit amet, consectetur
-										adipiscing elit. Mauris blandit aliquet elit, eget tincidunt
-										nibh pulvinar a. Cras ultricies ligula sed magna dictum porta.
-										Cras ultricies ligula sed magna dictum porta. Sed porttitor
-										lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh
-										pulvinar a. Vestibulum ac diam sit amet quam vehicula
-										elementum sed sit amet dui. Sed porttitor lectus nibh.
-										Vestibulum ac diam sit amet quam vehicula elementum sed sit
-										amet dui. Proin eget tortor risus.</p>
+									<img src="${product.prodContent }" style="display: block; margin: auto;">
 								</div>
 							</div>
-							<div class="tab-pane" id="tabs-2" role="tabpanel">
-								<div class="product__details__tab__desc">
-									<h6>Products Infomation</h6>
-									<p>Vestibulum ac diam sit amet quam vehicula elementum sed
-										sit amet dui. Pellentesque in ipsum id orci porta dapibus.
-										Proin eget tortor risus. Vivamus suscipit tortor eget felis
-										porttitor volutpat. Vestibulum ac diam sit amet quam vehicula
-										elementum sed sit amet dui. Donec rutrum congue leo eget
-										malesuada. Vivamus suscipit tortor eget felis porttitor
-										volutpat. Curabitur arcu erat, accumsan id imperdiet et,
-										porttitor at sem. Praesent sapien massa, convallis a
-										pellentesque nec, egestas non nisi. Vestibulum ac diam sit
-										amet quam vehicula elementum sed sit amet dui. Vestibulum ante
-										ipsum primis in faucibus orci luctus et ultrices posuere
-										cubilia Curae; Donec velit neque, auctor sit amet aliquam vel,
-										ullamcorper sit amet ligula. Proin eget tortor risus.</p>
-									<p>Praesent sapien massa, convallis a pellentesque nec,
-										egestas non nisi. Lorem ipsum dolor sit amet, consectetur
-										adipiscing elit. Mauris blandit aliquet elit, eget tincidunt
-										nibh pulvinar a. Cras ultricies ligula sed magna dictum porta.
-										Cras ultricies ligula sed magna dictum porta. Sed porttitor
-										lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh
-										pulvinar a.</p>
-								</div>
-							</div>
-
 							<div class="tab-pane" id="review" role="tabpanel">
 								<section class="blog-details spad">
 									<div class="product__details__tab__desc">
 										<div class="row">
 											<div class="col-lg-4 col-md-5 order-md-1 order-2">
 												<div class="blog__sidebar">
-
 													<div class="blog__sidebar__search">
 														<a href="/prodReply/writeReview?prodNo=${param.prodNo }"
 															class="primary-btn">add review</a>
 													</div>
-
 													<div class="blog__sidebar__item">
 														<h4>stars</h4>
 														<ul>
 															<li>
 																<div class="product__details__rating">
 																	5 &nbsp; <i class="fa fa-star"></i> <i
-																		class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-																		class="fa fa-star"></i> <i class="fa fa-star"></i> <span>(18
-																		reviews)</span>
+																		class="fa fa-star" ></i> <i class="fa fa-star"></i> <i
+																		class="fa fa-star"></i> <i class="fa fa-star" ></i> 
+																		<c:set var="cnt" value="0" />
+																		<c:forEach var="i" items="${reviews}">
+																			<c:if test="${i.assess == 5 }">
+																				<c:set var="cnt" value="${cnt+1 }" />
+																			</c:if>							
+																		</c:forEach> 
+																		<span>(${cnt } reviews)</span>
 																</div>
 															</li>
 															<li>
 																<div class="product__details__rating">
 																	4 &nbsp; <i class="fa fa-star"></i> <i
 																		class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-																		class="fa fa-star"></i> <span>(18 reviews)</span>
+																		class="fa fa-star"></i> <c:set var="cnt" value="0" />
+																		<c:forEach var="i" items="${reviews}">
+																			<c:if test="${i.assess == 4 }">
+																				<c:set var="cnt" value="${cnt+1 }" />
+																			</c:if>							
+																		</c:forEach> 
+																		<span>(${cnt } reviews)</span>
 																</div>
 															</li>
 															<li>
 																<div class="product__details__rating">
 																	3 &nbsp; <i class="fa fa-star"></i> <i
-																		class="fa fa-star"></i> <i class="fa fa-star"></i> <span>(18
-																		reviews)</span>
+																		class="fa fa-star"></i> <i class="fa fa-star"></i> <c:set var="cnt" value="0" />
+																		<c:forEach var="i" items="${reviews}">
+																			<c:if test="${i.assess == 3 }">
+																				<c:set var="cnt" value="${cnt+1 }" />
+																			</c:if>							
+																		</c:forEach> 
+																		<span>(${cnt } reviews)</span>
 																</div>
 															</li>
 															<li>
 																<div class="product__details__rating">
 																	2 &nbsp; <i class="fa fa-star"></i> <i
-																		class="fa fa-star"></i> <span>(18 reviews)</span>
+																		class="fa fa-star"></i> <c:set var="cnt" value="0" />
+																		<c:forEach var="i" items="${reviews}">
+																			<c:if test="${i.assess == 2 }">
+																				<c:set var="cnt" value="${cnt+1 }" />
+																			</c:if>							
+																		</c:forEach> 
+																		<span>(${cnt } reviews)</span>
 																</div>
 															</li>
 															<li>
 																<div class="product__details__rating">
-																	1 &nbsp; <i class="fa fa-star"></i> <span>(18
-																		reviews)</span>
+																	1 &nbsp; <i class="fa fa-star"></i> <c:set var="cnt" value="0" />
+																		<c:forEach var="i" items="${reviews}">
+																			<c:if test="${i.assess == 1 }">
+																				<c:set var="cnt" value="${cnt+1 }" />
+																			</c:if>							
+																		</c:forEach> 
+																		<span>(${cnt } reviews)</span>
 																</div>
 															</li>
 														</ul>
@@ -505,22 +500,16 @@ function getParameter(param) {
 															<div class="drawLine" style="display: none;"
 																id="replyTap${review.reviewNo }">
 																<c:forEach var="reply" items="${replies }">
-																	<c:set var="replycnt" value="0" />
 																	<c:if test="${review.reviewNo == reply.reviewNo}">
-																		<c:set var="replycnt" value="${cnt+1}" />
-
-																		<c:forEach var="i" begin="1" end="${replycnt }">
 																			<div class="row" id="reply${reply.rno }">
 																				<div class="col-lg-4">
 																					<div class="blog__details__author">
 																						<div class="blog__details__author__text">
-
 																							<h6>
 																								<c:if test="${reply.step > 0 }">
 																									<c:forEach var="i" begin="1"
 																										end="${reply.step}">
-																										<img alt="" src="/resources/img/rereply.png"
-																											style="height: 20px; margin: auto;" />
+																										<img alt="" src="/resources/img/rereply.png" style="height: 20px; margin: auto;" />
 																									</c:forEach>
 																								</c:if>
 																								${reply.replyWriter }
@@ -532,8 +521,9 @@ function getParameter(param) {
 																					<div class="blog__details__widget">
 																						${reply.replyContent }</div>
 																					<div>
-																					<fmt:formatDate value="${reply.replyWrittenDate }"
-																					pattern="yyyy-MM-dd a hh:mm" /></div>
+																						<fmt:formatDate value="${reply.replyWrittenDate }"
+																							pattern="yyyy-MM-dd a hh:mm" />
+																					</div>
 																					<div class="blog__details__social text-right">
 																						<img alt="" src="/resources/img/deleteReview.png"
 																							onclick="delReply(${reply.rno});"
@@ -545,7 +535,6 @@ function getParameter(param) {
 																				</div>
 																			</div>
 																			<div id="rereplyWrite${reply.rno}"></div>
-																		</c:forEach>
 																	</c:if>
 																</c:forEach>
 

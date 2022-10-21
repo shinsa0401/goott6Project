@@ -26,6 +26,8 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.service.ReviewService;
+import com.boritgogae.domain.OptionVo;
+import com.boritgogae.domain.OrderSheetDTO;
 import com.boritgogae.domain.ProdImgVO;
 import com.boritgogae.domain.ProductVO;
 import com.boritgogae.service.ProductService;
@@ -65,6 +67,7 @@ public class ProductController {
 		List<ReviewVO> reviews = (List<ReviewVO>) reviewMap.get("reviews");
 		Paging page = (Paging) reviewMap.get("page");
 		
+		
 		for (ReviewVO vo : reviews) {
 			List<UploadImg> imgs = reviewService.getReviewImgs(vo.getReviewNo());
 			for (UploadImg img : imgs) {
@@ -73,6 +76,7 @@ public class ProductController {
 		}
 		
 		List<ReplyVo> replies = reviewService.getReplies(prodNo);
+		OptionVo options = new OptionVo(prodNo);
 		
 		model.addAttribute("reviews",reviews);
 		model.addAttribute("reviewImg", imgLst);
@@ -80,6 +84,7 @@ public class ProductController {
 		model.addAttribute("replies", replies);
 		model.addAttribute("product", prod);
 		model.addAttribute("prodImg", prodImgLst);
+		model.addAttribute("options", options);
 		
 		return "/product/prodDetail";
 	}
