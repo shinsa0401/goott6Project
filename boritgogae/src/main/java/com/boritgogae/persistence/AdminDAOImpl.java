@@ -1,6 +1,8 @@
 package com.boritgogae.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -49,6 +51,20 @@ public class AdminDAOImpl implements AdminDAO {
     public List<CouponVo> getCoupon() throws Exception {
         return ses.selectList(ns + ".getCoupon");
     }
+
+	@Override
+	public int delCoupon(String couponName) throws Exception {
+		return ses.delete(ns + ".delCoupon", couponName);
+	}
+
+	@Override
+	public int modifyCoupon(CouponVo coupon, String modiCouponName) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("modiCouponName", modiCouponName);
+		map.put("coupon", coupon);
+		
+		return ses.update(ns + ".modifyCoupon", map);
+	}
 
     
 

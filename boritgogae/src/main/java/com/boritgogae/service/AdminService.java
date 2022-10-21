@@ -27,10 +27,17 @@ public interface AdminService {
     
     // 등록된 모든 쿠폰을 가져오는 메서드
     public List<CouponVo> getCoupon() throws Exception;
+	
+	// 등록된 쿠폰을 삭제하는 메서드
+	public boolean delCoupon(String couponName) throws Exception;
    
+	// 등록된 쿠폰을 수정하는 메서드
+	public boolean modifyCoupon(CouponVo coupon, String modiCouponName) throws Exception;
 
     // ----------------- 상품 관련 메서드 -----------------
 
     // 재고가 적은 순
     public List<ProductVO> getLowestProduct() throws Exception;
+
+
 }

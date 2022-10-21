@@ -11,6 +11,15 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
+	let couponName = "";
+	let beforeCouponName = "";
+	$(document).ready(function() {
+		$(".closeModal").click(function() {
+			$("#modiModal").hide(100);
+			$("#statusModal").hide(100);
+		});
+	});
+
 	function createCoupon() {
 		let couponName = $("#couponName").val();
 		let couponDiscount = $("#couponDiscount").val();
@@ -49,6 +58,74 @@
 		});
 
 	}
+
+	function deleteCoupon() {
+		let url = "/admin/coupon/delete";
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			data : {
+				"couponName" : couponName
+			},
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				if (data == "success") {
+					$("#status").html("쿠폰을 삭제하였습니다.");
+					$("#modiModal").hide(100);
+					$("#statusModal").show(200);
+				} else if (data == "fail") {
+					$("#status").html("쿠폰 삭제에 실패하였습니다.");
+					$("#modiModal").hide(100);
+					$("#statusModal").show(200);
+				}
+
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+
+	function modifyCoupon() {
+		let couponName = $("#modiCouponName").val();
+		let couponDiscount = $("#modiCouponDiscount").val();
+		let couponUseDate = $("#modiCouponUseDate").val();
+		let modiCouponName = beforeCouponName;
+		
+		let url = "/admin/coupon/modify";
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			data : {"couponName" : couponName, "couponDiscount" : couponDiscount, "couponUseDate" : couponUseDate, "modiCouponName" : modiCouponName},
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				if (data == "success") {
+					$("#status").html("쿠폰 수정이 완료되었습니다.");
+					$("#modiModal").hide(100);
+					$("#statusModal").show(200);
+				} else if (data == "fail") {
+					$("#status").html("쿠폰 수정에 실패하였습니다.");
+					$("#modiModal").hide(100);
+					$("#statusModal").show(200);
+				}
+
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+
+	function modiModal(beforeName, beforeDiscount, beforeUseDate) {
+		couponName = beforeName;
+		beforeCouponName = beforeName;
+		$("#modiModal").show(200);
+		$("#modiCouponName").val(beforeName);
+		$("#modiCouponDiscount").val(beforeDiscount);
+		$("#modiCouponUseDate").val(beforeUseDate);
+	}
 </script>
 <style type="text/css">
 .coupon {
@@ -59,6 +136,10 @@
 
 .table-bordered {
 	text-align: center;
+}
+
+#coupons :hover {
+	cursor: pointer;
 }
 </style>
 </head>
@@ -115,7 +196,7 @@
 								<div class="mb-3 row">
 									<input type="number" class="form-control col-sm-4"
 										name="couponUseDate" id="couponUseDate"
-										placeholder="생성할 쿠폰의 할인율을 입력해주세요">
+										placeholder="생성할 쿠폰의 사용 기한을 입력해주세요">
 									<div class="col-sm-6">
 										<span class="coupon">일</span>
 									</div>
@@ -129,15 +210,15 @@
 								onclick="createCoupon();">등록</button>
 						</div>
 					</div>
-					
+
 					<div class="card card-primary">
 						<div class="card-header">
 							<h3 class="card-title">쿠폰 목록</h3>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
-						
-							<table class="table table-bordered">
+
+							<table class="table table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>쿠 폰 명</th>
@@ -148,11 +229,10 @@
 								</thead>
 								<tbody>
 									<c:forEach items="${couponList }" var="coupon">
-										<tr>
+										<tr id="coupons" onclick="modiModal('${coupon.couponName }', '${coupon.couponDiscount * 100 }', '${coupon.couponUseDate }');">
 											<td>${coupon.couponName }</td>
-											
-											<td>${coupon.couponDiscount * 100 } %</td>
-											<td>${coupon.couponUseDate } 일</td>
+											<td>${coupon.couponDiscount * 100 }%</td>
+											<td>${coupon.couponUseDate }일</td>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -192,5 +272,60 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="modal" id="modiModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title" id="modiTitle">쿠폰 수정</h4>
+					<button type="button" class="btn-close close closeModal"
+						data-bs-dismiss="modal">X</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="modiCouponName">쿠폰명</label> <input type="text"
+							class="form-control col-sm-8" id="modiCouponName" name="modiCouponName"
+							placeholder="수정할 쿠폰 이름을 입력해주세요">
+					</div>
+					<div class="form-group">
+						<label for="modiCouponDiscount">쿠폰 할인율</label>
+						<div class="mb-3 row">
+							<input type="number" class="form-control col-sm-8"
+								name="couponDiscount" id="modiCouponDiscount"
+								placeholder="수정할 쿠폰의 할인율을 입력해주세요">
+							<div class="col-sm-2">
+								<span class="coupon">%</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="modiCouponUseDate">사용 기한</label>
+						<div class="mb-3 row">
+							<input type="number" class="form-control col-sm-8"
+								name="modiCouponUseDate" id="modiCouponUseDate"
+								placeholder="수정할 쿠폰의 사용기한을 입력해주세요">
+							<div class="col-sm-2">
+								<span class="coupon">일</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success"
+						data-bs-dismiss="modal" onclick="modifyCoupon();">쿠폰 수정</button>
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal" onclick="deleteCoupon();">쿠폰 삭제</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
 </body>
 </html>

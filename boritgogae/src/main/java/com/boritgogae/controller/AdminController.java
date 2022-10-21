@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -26,87 +28,122 @@ import com.boritgogae.service.AdminService;
 @RequestMapping(value = "/admin/*")
 public class AdminController {
 
-    @Inject
-    private AdminService service;
+	@Inject
+	private AdminService service;
 
-    @RequestMapping(value = "/main")
-    public String adminMainPage(Model model) throws Exception {
-        System.out.println("관리자 페이지로 이동");
-        List<MemberVo> members = service.getMembers();
+	@RequestMapping(value = "/main")
+	public String adminMainPage(Model model) throws Exception {
+		System.out.println("관리자 페이지로 이동");
+		List<MemberVo> members = service.getMembers();
 
-        Long time = Calendar.getInstance().getTimeInMillis();
-        Timestamp nowDate = new Timestamp(time);
-        List<MemberVo> newMembers = service.getNewMembers();
-        List<ProductVO> lowestProduct = service.getLowestProduct();
+		Long time = Calendar.getInstance().getTimeInMillis();
+		Timestamp nowDate = new Timestamp(time);
+		List<MemberVo> newMembers = service.getNewMembers();
+		List<ProductVO> lowestProduct = service.getLowestProduct();
 
-        model.addAttribute("lowestProduct", lowestProduct);
-        model.addAttribute("newMembers", newMembers);
-        model.addAttribute("members", members);
+		model.addAttribute("lowestProduct", lowestProduct);
+		model.addAttribute("newMembers", newMembers);
+		model.addAttribute("members", members);
 
-        return "/admin/main";
-    }
+		return "/admin/main";
+	}
 
-    @RequestMapping(value = "/member")
-    public String memberManagememt(Model model) throws Exception {
-        System.out.println("회원 관리 페이지로 이동");
-        List<MemberVo> members = service.getMembers();
+	@RequestMapping(value = "/member")
+	public String memberManagememt(Model model) throws Exception {
+		System.out.println("회원 관리 페이지로 이동");
+		List<MemberVo> members = service.getMembers();
 
-        model.addAttribute("members", members);
+		model.addAttribute("members", members);
 
-        return "/admin/member";
-    }
+		return "/admin/member";
+	}
 
-    @RequestMapping(value = "/member/new")
-    public String newMemberManagememt(Model model) throws Exception {
-        System.out.println("회원 관리 페이지로 이동");
-        List<MemberVo> members = service.getNewMembers();
+	@RequestMapping(value = "/member/new")
+	public String newMemberManagememt(Model model) throws Exception {
+		System.out.println("회원 관리 페이지로 이동");
+		List<MemberVo> members = service.getNewMembers();
 
-        model.addAttribute("members", members);
+		model.addAttribute("members", members);
 
-        return "/admin/newMember";
-    }
-    
-    @RequestMapping(value = "/member/searchMember")
-    public String searchMember(HttpServletRequest request, String inputString, Model model) throws Exception {
-        System.out.println("회원 검색");
-        String getUrl = request.getRemoteAddr();
-        
-        return getUrl;
-    }
-    
-    @RequestMapping(value = "/member/delMembers")
-    public String getDelMember(Model model) throws Exception {
-        List<DeleteAccountVo> deleteMember = service.getDelMembers();
-        System.out.println(deleteMember);
-        model.addAttribute("deleteMember", deleteMember);
-        return "/admin/delMember";
-    }
-    
-    @RequestMapping(value = "/coupon")
-    public String getCoupon(Model model) throws Exception {
-        List<CouponVo> couponList = service.getCoupon();
-        
-        model.addAttribute("couponList", couponList);
-        System.out.println(couponList);
-        
-        return "/admin/coupon";
-    }
-    
-    @RequestMapping(value = "/coupon/create", method = RequestMethod.POST)
-    public ResponseEntity<String> createCoupon(Model model, @RequestBody CouponVo coupon) {
-        coupon.setCouponDiscount(coupon.getCouponDiscount() * 0.01);
-        
-        ResponseEntity<String> result = null;
-        
-        try {
-            if(service.createCoupon(coupon)) {
-                result = new ResponseEntity<String>("success", HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            result = new ResponseEntity<String>("fail", HttpStatus.OK);
-        }
-        
-        return result;
-    }
-    
+		return "/admin/newMember";
+	}
+
+	@RequestMapping(value = "/member/searchMember")
+	public String searchMember(HttpServletRequest request, String inputString, Model model) throws Exception {
+		System.out.println("회원 검색");
+		String getUrl = request.getRemoteAddr();
+
+		return getUrl;
+	}
+
+	@RequestMapping(value = "/member/delMembers")
+	public String getDelMember(Model model) throws Exception {
+		List<DeleteAccountVo> deleteMember = service.getDelMembers();
+		System.out.println(deleteMember);
+		model.addAttribute("deleteMember", deleteMember);
+		return "/admin/delMember";
+	}
+
+	@RequestMapping(value = "/coupon")
+	public String getCoupon(Model model) throws Exception {
+		List<CouponVo> couponList = service.getCoupon();
+
+		model.addAttribute("couponList", couponList);
+		System.out.println(couponList);
+
+		return "/admin/coupon";
+	}
+
+	@RequestMapping(value = "/coupon/create", method = RequestMethod.POST)
+	public ResponseEntity<String> createCoupon(@RequestBody CouponVo coupon) {
+		coupon.setCouponDiscount(coupon.getCouponDiscount() * 0.01);
+
+		ResponseEntity<String> result = null;
+
+		try {
+			if (service.createCoupon(coupon)) {
+				result = new ResponseEntity<String>("success", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			result = new ResponseEntity<String>("fail", HttpStatus.OK);
+		}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/coupon/modify", method = RequestMethod.POST)
+	public ResponseEntity<String> moodifyCoupon(@RequestParam("couponName") String couponName,
+			@RequestParam("couponDiscount") String couponDiscount,
+			@RequestParam("couponUseDate") String couponUseDate,
+			@RequestParam("modiCouponName") String modiCouponName) throws Exception {
+		
+		CouponVo coupon = new CouponVo(couponName, Double.parseDouble(couponDiscount), Integer.parseInt(couponUseDate));
+		coupon.setCouponDiscount(coupon.getCouponDiscount() * 0.01);
+		
+		System.out.println(coupon);
+		System.out.println(modiCouponName);
+		ResponseEntity<String> result = null;
+
+			if (service.modifyCoupon(coupon, modiCouponName)) {
+				System.out.println("수정 완료");
+				result = new ResponseEntity<String>("success", HttpStatus.OK);
+			} else {
+				result = new ResponseEntity<String>("fail", HttpStatus.OK);
+			}
+		return result;
+	}
+
+	@RequestMapping(value = "/coupon/delete", method = RequestMethod.POST)
+	public @ResponseBody String deleteCoupon(@RequestParam("couponName") String couponName) throws Exception {
+
+		String result = null;
+
+		if (service.delCoupon(couponName)) {
+			result = "success";
+		} else {
+			result = "fail";
+		}
+
+		return result;
+	}
 }

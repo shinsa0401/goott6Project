@@ -30,4 +30,13 @@
   <insert id="createCoupon">
   	insert into coupon values (#{couponName}, #{couponDiscount}, #{couponUseDate})
   </insert>
+  
+  <delete id="delCoupon">
+  	delete from coupon where couponName = #{couponName}
+  </delete>
+  
+  <update id="modifyCoupon">
+  	update coupon set couponName = #{coupon.couponName}, couponDiscount = #{coupon.couponDiscount}, couponUseDate = #{coupon.couponUseDate} where couponName = #{modiCouponName}
+  </update>
+  
 </mapper>

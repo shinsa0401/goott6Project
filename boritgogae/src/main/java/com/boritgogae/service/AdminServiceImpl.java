@@ -54,6 +54,28 @@ public class AdminServiceImpl implements AdminService {
         return dao.getCoupon();
     }
 
+	@Override
+	public boolean delCoupon(String couponName) throws Exception {
+		boolean result = false;
+		
+		if(dao.delCoupon(couponName) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean modifyCoupon(CouponVo coupon, String modiCouponName) throws Exception {
+		boolean result = false;
+		
+		if(dao.modifyCoupon(coupon, modiCouponName) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
 
 
 }
