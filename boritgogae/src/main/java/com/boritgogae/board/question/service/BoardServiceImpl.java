@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.board.question.domain.BoardVo;
-import com.boritgogae.board.question.domain.ReadCountVo;
-import com.boritgogae.board.question.domain.UploadFileVo;
+import com.boritgogae.board.question.domain.QuestionBoardVo;
+import com.boritgogae.board.question.domain.QuestionReadCountVo;
+import com.boritgogae.board.question.domain.QuestionUploadFileVo;
 import com.boritgogae.board.question.etc.IPCheck;
 import com.boritgogae.board.question.etc.PagingInfo;
 import com.boritgogae.board.question.etc.SearchCriteria;
@@ -33,7 +33,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		PagingInfo pi = pagingProcess(pageNo, sc);
 		
-		List<BoardVo> lst = null;
+		List<QuestionBoardVo> lst = null;
 		
 		if (sc.getSearchWord() != null && !sc.getSearchType().equals("")) { // 검색어가 있다
 			lst = dao.getSearchResult(pi, sc);
@@ -52,7 +52,7 @@ public class BoardServiceImpl implements BoardService {
 
 	// 게시판 글 작성
 	@Override
-	public Map<String, Object> writeBoard(BoardVo board, List<UploadFile> uploadFileLst) throws Exception {
+	public Map<String, Object> writeBoard(QuestionBoardVo board, List<UploadFile> uploadFileLst) throws Exception {
 		
 		Map<String, Object> map = new HashMap<>();
 		// 글 저장
@@ -105,7 +105,7 @@ public class BoardServiceImpl implements BoardService {
 		System.out.println(readCount.toString());
 		
 		// 글을 조회했던 기록을 검색
-		ReadCountVo rc = dao.getLastReadDate(readCount);
+		QuestionReadCountVo rc = dao.getLastReadDate(readCount);
 					
 		if (rc == null) { // 처음 조회하는 글이라면
 			// ip주소, 글번호로 조회시간을 현재시간으로 insert
@@ -138,9 +138,9 @@ public class BoardServiceImpl implements BoardService {
 		Map<String, Object> result = new HashMap<String, Object>();
 		
 		// 게시글 정보 얻어오기
-		BoardVo board = dao.getBoard(no);
+		QuestionBoardVo board = dao.getBoard(no);
 		// 첨부파일 얻어오기
-		List<UploadFileVo> fileList = dao.getAttachFiles(no);
+		List<QuestionUploadFileVo> fileList = dao.getAttachFiles(no);
 		
 		result.put("board", board);
 		result.put("fileList", fileList);
@@ -150,7 +150,7 @@ public class BoardServiceImpl implements BoardService {
 
 	// 게시글 수정
 	@Override
-	public boolean modifyBoard(BoardVo board, List<UploadFile> uploadFileLst) throws Exception {
+	public boolean modifyBoard(QuestionBoardVo board, List<UploadFile> uploadFileLst) throws Exception {
 		boolean result = false;
 		System.out.println("서비스단 글 수정");
 		

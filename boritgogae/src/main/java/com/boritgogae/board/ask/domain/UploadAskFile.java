@@ -1,16 +1,16 @@
 package com.boritgogae.board.ask.domain;
 
-public class UploadFile {
+public class UploadAskFile {
 	private String savedOriginImageFileName; // 저장된 원본 파일의 이름
 	private String thumbnailFileName; // 썸네일 파일의 이름
 	private String notImageFileName; // 이미지가 아닐경우 파일의 이름
 	private boolean isImage; // 이미지 파일인지 아닌지	
 	
-	public UploadFile() {
+	public UploadAskFile() {
 		super();
 	}
 
-	public UploadFile(String savedOriginImageFileName, String thumbnailFileName, String notImageFileName,
+	public UploadAskFile(String savedOriginImageFileName, String thumbnailFileName, String notImageFileName,
 			boolean isImage) {
 		super();
 		this.savedOriginImageFileName = savedOriginImageFileName;
@@ -54,7 +54,7 @@ public class UploadFile {
 
 	@Override
 	public String toString() {
-		return "UploadFile [savedOriginImageFileName=" + savedOriginImageFileName + ", thumbnailFileName="
+		return "UploadAskFile [savedOriginImageFileName=" + savedOriginImageFileName + ", thumbnailFileName="
 				+ thumbnailFileName + ", notImageFileName=" + notImageFileName + ", isImage=" + isImage + "]";
 	}
 

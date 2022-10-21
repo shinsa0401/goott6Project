@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.boritgogae.board.question.domain.ReplyVo;
+import com.boritgogae.board.question.domain.QuestionReplyVo;
 
 @Repository
 public class ReplyDAOImpl implements ReplyDAO{
@@ -21,7 +21,7 @@ public class ReplyDAOImpl implements ReplyDAO{
 
 	// 댓글 등록
 	@Override
-	public int insertReply(ReplyVo reply) throws Exception {
+	public int insertReply(QuestionReplyVo reply) throws Exception {
 		
 		return ses.insert(ns + ".insertReply", reply);
 	}
@@ -42,28 +42,28 @@ public class ReplyDAOImpl implements ReplyDAO{
 
 	// 현재 글(bno번)의 모든 댓글 검색
 	@Override
-	public List<ReplyVo> selectAllReply(int bno) {
+	public List<QuestionReplyVo> selectAllReply(int bno) {
 		
 		return ses.selectList(ns + ".selectAllReply", bno);
 	}
 
 	// 댓글 수정
 	@Override
-	public int updateReply(ReplyVo reply) throws Exception {
+	public int updateReply(QuestionReplyVo reply) throws Exception {
 		
 		return ses.update(ns + ".updateReply", reply);
 	}
 
 	// 댓글 삭제
 	@Override
-	public int deleteReply(ReplyVo reply) throws Exception {
+	public int deleteReply(QuestionReplyVo reply) throws Exception {
 		
 		return ses.delete(ns + ".deleteReply", reply);
 	}
 
 	// rno로 부모댓글의 정보 얻어오기
 	@Override
-	public ReplyVo getParentReply(int rno) throws Exception {
+	public QuestionReplyVo getParentReply(int rno) throws Exception {
 		
 		return ses.selectOne(ns + ".getParentReply", rno);
 	}
@@ -77,7 +77,7 @@ public class ReplyDAOImpl implements ReplyDAO{
 	
 	// 댓글의 댓글 작성전 refOrder 업데이트
 	@Override
-	public int updateRefOrder(ReplyVo parentReply) throws Exception {
+	public int updateRefOrder(QuestionReplyVo parentReply) throws Exception {
 		System.out.println("다오단 refOrder 업데이트");
 		return ses.update(ns + ".updateRefOrder", parentReply);
 	}

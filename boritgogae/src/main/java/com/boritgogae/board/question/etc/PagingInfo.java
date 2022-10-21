@@ -104,7 +104,7 @@ public class PagingInfo {
 
 	   @Override
 	   public String toString() {
-	      return "PagingInfo [postPerPage=" + postPerPage + ", pageCntPerBlock=" + pageCntPerBlock + ", totalPage="
+	      return "AskPagingInfo [postPerPage=" + postPerPage + ", pageCntPerBlock=" + pageCntPerBlock + ", totalPage="
 	            + totalPage + ", totalPostCnt=" + totalPostCnt + ", startNum=" + startNum + ", totalPagingBlock="
 	            + totalPagingBlock + ", currentPagingBlock=" + currentPagingBlock + ", startNumOfCurPagingBlock="
 	            + startNumOfCurPagingBlock + ", endNumOfCurPagingBlock=" + endNumOfCurPagingBlock + "]";

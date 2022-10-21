@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
-import com.boritgogae.board.ask.domain.PagingInfo;
-import com.boritgogae.board.ask.domain.SearchCriteria;
-import com.boritgogae.board.ask.domain.UploadFile;
+import com.boritgogae.board.ask.domain.AskPagingInfo;
+import com.boritgogae.board.ask.domain.AskSearchCriteria;
+import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
 import com.boritgogae.board.ask.persistence.AskBoardDAO;
 
@@ -25,10 +25,10 @@ public class AskBoardServiceImpl implements AskBoardService {
 	public AskBoardDAO dao;
 
 	@Override
-	public Map<String, Object> readAllBoard(int pageNo, SearchCriteria sc) throws Exception {
+	public Map<String, Object> readAllBoard(int pageNo, AskSearchCriteria sc) throws Exception {
 		System.out.println("서비스단 : 게시판 전체 목록 요청");
 		System.out.println("서비스단 : sc " + sc.toString());
-		PagingInfo pi = pagingProcess(pageNo, sc);
+		AskPagingInfo pi = pagingProcess(pageNo, sc);
 		List<AskBoardVo> lst = null;
 		if (sc.getSearchWord() != null && !sc.getSearchType().equals("")) { // 검색어가 있다면
 			lst = dao.getSearchResult(sc, pi);
@@ -52,8 +52,8 @@ public class AskBoardServiceImpl implements AskBoardService {
 		return lst;
 	}
 
-	private PagingInfo pagingProcess(int pageNo, SearchCriteria sc) throws Exception {
-		PagingInfo result = new PagingInfo();
+	private AskPagingInfo pagingProcess(int pageNo, AskSearchCriteria sc) throws Exception {
+		AskPagingInfo result = new AskPagingInfo();
 		System.out.println("pagingProcess : sc " + sc.toString());
 		if (sc.getSearchWord() != null && !sc.getSearchType().equals("")) {
 			// 검색어가 있을 때
@@ -82,7 +82,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 	}
 
 	@Override
-	public boolean create(AskBoardVo board, List<UploadFile> uploadFileLst) throws Exception {
+	public boolean create(AskBoardVo board, List<UploadAskFile> uploadFileLst) throws Exception {
 		boolean result = false;
 		System.out.println("글 등록중");
 
@@ -102,7 +102,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 			if (row2 == 1) {
 				// 3) 업로드된 파일이 있다면 업로드된 파일의 갯수만큼 반복하여 uploadfile 테이블에 insert
 				if (uploadFileLst.size() > 0) {
-					for (UploadFile up : uploadFileLst) {
+					for (UploadAskFile up : uploadFileLst) {
 						if (up.isImage()) {
 							dao.imageInsert(lastNo, up.getSavedOriginImageFileName(), up.getThumbnailFileName());
 						} else {
@@ -123,7 +123,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 	}
 
 	@Override
-	public boolean answerCreate(AskBoardVo board, List<UploadFile> uploadFileLst) throws Exception {
+	public boolean answerCreate(AskBoardVo board, List<UploadAskFile> uploadFileLst) throws Exception {
 		boolean result = false;
 		System.out.println("답글 등록중 서비스단" + board);
 		board.setContents(board.getContents().replace("\r\n", "<br />")); // 게시글 내용.. 줄바꿈 처리
@@ -157,7 +157,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 			int lastNo = dao.getLastNo();
 			// 3) 업로드된 파일이 있다면 업로드된 파일의 갯수만큼 반복하여 uploadfile 테이블에 insert
 			if (uploadFileLst.size() > 0) {
-				for (UploadFile up : uploadFileLst) {
+				for (UploadAskFile up : uploadFileLst) {
 					if (up.isImage()) {
 						dao.imageInsert(lastNo, up.getSavedOriginImageFileName(), up.getThumbnailFileName());
 					} else {
@@ -249,14 +249,14 @@ public class AskBoardServiceImpl implements AskBoardService {
 
 	// 글에 첨부되어있는 파일리스트를 가져오는 메서드
 	@Override
-	public List<UploadFile> showFileList(String no) throws Exception {
+	public List<UploadAskFile> showFileList(String no) throws Exception {
 		System.out.println("service : showFileList : no = " + no + "번");
 		return dao.showFileList(no);
 	}
 
 	// 게시판 글 등록 + (업로드된 파일 등록) 하는 메서드
 	@Override
-	public boolean update(AskBoardVo board, List<UploadFile> addTempFileLst) throws Exception {
+	public boolean update(AskBoardVo board, List<UploadAskFile> addTempFileLst) throws Exception {
 		boolean result = false;
 		System.out.println("글 수정등록중");
 
@@ -270,7 +270,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 		if (row == 1) {
 				// 3) 업로드된 파일이 있다면 업로드된 파일의 갯수만큼 반복하여 uploadfile 테이블에 insert
 				if (addTempFileLst.size() > 0) {
-					for (UploadFile up : addTempFileLst) {
+					for (UploadAskFile up : addTempFileLst) {
 						if (up.isImage()) {
 							dao.imageInsert(board.getAskBno(), up.getSavedOriginImageFileName(), up.getThumbnailFileName());
 						} else {

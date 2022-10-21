@@ -5,18 +5,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="../../../resources/js/jquery-3.6.1.min.js"></script>
 <meta charset="UTF-8">
 <title>문의게시판</title>
 
-<link href="../../../resources/css/bootstrap.min.css" rel="stylesheet">
-<script type="text/javascript"
-	src="../../../resources/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
 
 	$(document).ready(function() {
 		viewAskReply();
 	});
+	
+	// 댓글 등록하는 메서드
 	function addAskReply() {
 		let askBno = ${board.askBno}
 		let memberId = $("#memberId").val();
@@ -100,9 +101,12 @@
 			output += "<div class='col'></div>";
 			output += "<div class='col'></div>";
 			output += "<div class='col'>"; // 2
-			output += "<span onclick='modifyReplyModalOpen("+ item.askRno + "," + item.isDelete +");'>수정&nbsp&nbsp</span>";
-			output += "<span onclick='deleteReplyModalOpen("+ item.askRno + "," + item.isDelete +");'>삭제&nbsp&nbsp</span>";
-			output += "<span onclick='nestedReplyModalOpen(" +item.ref  +","+item.refOrder  +","+item.step  +","+item.contents + ",\'" + item.isDelete + "\');'>답글&nbsp&nbsp</span>";
+			if(item.isDelete == 'N'){
+				output += "<span onclick='modifyReplyModalOpen("+ item.askRno +");'>수정&nbsp&nbsp</span>";
+				output += "<span onclick='deleteReplyModalOpen("+ item.askRno +");'>삭제&nbsp&nbsp</span>";
+				output += "<span onclick='nestedReplyModalOpen(" +item.ref  +","+item.refOrder  +","+item.step + ");'>답글&nbsp&nbsp</span>";
+			}
+			
 			output += "</div>"; // 2
 			output += "</div>"; // 1
 			
@@ -125,29 +129,20 @@
 		return new Date(wd).toLocaleString();
 	}
 	
-	function modifyReplyModalOpen(rno, isDelete) {
-		if(idDelete == "Y"){
-			
-		} else{
-			$("#modifyRno").val(rno);
-			$("#modifyReplyModal").show();			
-		}
+	function modifyReplyModalOpen(rno) {
+		$("#modifyRno").val(rno);
+		$("#modifyReplyModal").show();	
 	}
 	
 	function modifyReplyModalClose() {
 		$("#modifyReplyModal").hide();
 		$("#modifyReply").val("");
 	}
-	function nestedReplyModalOpen(ref, refOrder, step ,targetReply, isDelete) {
-		if(idDelete == "Y"){
-			
-		} else{
-			$("#targetRef").val(ref);
-			$("#targetRefOrder").val(refOrder);
-			$("#targetStep").val(step);
-			$("#targetReply").val(targetReply);
-			$("#nestedReplyModal").show();			
-		}
+	function nestedReplyModalOpen(ref, refOrder, step) {
+		$("#targetRef").val(ref);
+		$("#targetRefOrder").val(refOrder);
+		$("#targetStep").val(step);
+		$("#nestedReplyModal").show();		
 	}
 	
 	function nestedReplyModalClose() {
@@ -155,13 +150,9 @@
 		$("#nestedReply").val("");
 	}
 
-	function deleteReplyModalOpen(rno, isDelete) {
-		if(idDelete == "Y"){
-			
-		} else{
-			$("#deleteRno").val(rno);
-			$("#deleteReplyModal").show();	
-		}
+	function deleteReplyModalOpen(rno) {
+		$("#deleteRno").val(rno);
+		$("#deleteReplyModal").show();	
 	}
 	
 	function deleteReplyModalClose() {
@@ -315,6 +306,8 @@
 			}
          });		
 	}
+	
+	// 좋아요 상태 바꾸기
 	function changeLikeStatus(data){
 		console.log(data);
 		if(data=="register"){
@@ -426,7 +419,7 @@
 		</div>
 
 
-
+		<!-- 글 수정삭제 등 -->
 		<div class="row">
 			<div class="col"></div>
 			<div class="col"></div>
@@ -515,7 +508,6 @@
 
 				<!-- Modal body -->
 				<div class="modal-body">
-					<textarea class="form-control" id="targetReply" readonly="readonly"></textarea>
 					<textarea rows="5" class="form-control" id="nestedReply"></textarea>
 					<input type="hidden" id="targetRef"> <input type="hidden"
 						id="targetRefOrder"> <input type="hidden" id="targetStep">

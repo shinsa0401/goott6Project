@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.boritgogae.board.question.domain.BoardVo;
-import com.boritgogae.board.question.domain.UploadFileVo;
+import com.boritgogae.board.question.domain.QuestionBoardVo;
+import com.boritgogae.board.question.domain.QuestionUploadFileVo;
 import com.boritgogae.board.question.etc.PagingInfo;
 import com.boritgogae.board.question.etc.SearchCriteria;
 import com.boritgogae.board.question.etc.UploadFile;
@@ -43,7 +43,7 @@ public class BoardController {
 	 * @methodName : viewAllBoard
 	 * @author : 신태호
 	 * @date : 2022. 10. 4.
-	 * @입력 param : int pageNo, SearchCriteria sc
+	 * @입력 param : int pageNo, AskSearchCriteria sc
 	 * @returnType : String
 	 * 게시판의 전체 게시글을 얻어온다
 	 */
@@ -57,7 +57,7 @@ public class BoardController {
 		}
 		
 		Map<String, Object> map = this.service.viewAllBoard(pageNo, sc);
-		List<BoardVo> lst = (List<BoardVo>) map.get("boardLst");
+		List<QuestionBoardVo> lst = (List<QuestionBoardVo>) map.get("boardLst");
 		PagingInfo pi = (PagingInfo) map.get("pagingInfo");
 		
 		model.addAttribute("boardLst", lst); // 바인딩
@@ -89,12 +89,12 @@ public class BoardController {
 	 * @methodName : writeBoard
 	 * @author : 신태호
 	 * @date : 2022. 10. 5.
-	 * @입력 param : BoardVo board
+	 * @입력 param : QuestionBoardVo board
 	 * @returnType : String
 	 * 게시글을 저장, 저장한 후 저장된글을 보여줌
 	 */
 	@RequestMapping(value = "/question/writeSave", method = RequestMethod.POST)
-	public String writeBoard(BoardVo board) throws Exception {
+	public String writeBoard(QuestionBoardVo board) throws Exception {
 		System.out.println("컨트롤러 : 글쓰기 요청");
 		
 		String result = "";
@@ -129,14 +129,14 @@ public class BoardController {
 		System.out.println(bno + " 번 글을 조회");
 		
 		Map<String, Object> map = new HashMap<>();
-		BoardVo board = null;
-		List<UploadFileVo> fileList = null;
+		QuestionBoardVo board = null;
+		List<QuestionUploadFileVo> fileList = null;
 		
 		try {
 			map = service.viewBoard(bno);
 			
-			board = (BoardVo) map.get("board");
-			fileList = (List<UploadFileVo>) map.get("fileList");
+			board = (QuestionBoardVo) map.get("board");
+			fileList = (List<QuestionUploadFileVo>) map.get("fileList");
 			System.out.println(fileList.toString());
 			
 		} catch (Exception e) {
@@ -165,15 +165,15 @@ public class BoardController {
 		int bno = Integer.parseInt(no);
 		
 		Map<String, Object> map = new HashMap<>();
-		BoardVo board = null;
-		List<UploadFileVo> fileList = null;
+		QuestionBoardVo board = null;
+		List<QuestionUploadFileVo> fileList = null;
 		
 		
 		try {
 			map = service.viewBoard(bno);
 			
-			board = (BoardVo) map.get("board");
-			fileList = (List<UploadFileVo>) map.get("fileList");
+			board = (QuestionBoardVo) map.get("board");
+			fileList = (List<QuestionUploadFileVo>) map.get("fileList");
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -191,12 +191,12 @@ public class BoardController {
 	 * @methodName : modifySave
 	 * @author : 신태호
 	 * @date : 2022. 10. 5.
-	 * @입력 param : BoardVo board
+	 * @입력 param : QuestionBoardVo board
 	 * @returnType : String
 	 * 게시글 수정하고 수정된 글을 보여줌
 	 */
 	@RequestMapping(value = "/question/modifySave", method = RequestMethod.POST)
-	public String modifySave(BoardVo board) throws Exception {
+	public String modifySave(QuestionBoardVo board) throws Exception {
 		String result = "";
 		if (service.modifyBoard(board, this.uploadFileLst)) {
 			result = "redirect:/board/question/view/?no="+ board.getNo();

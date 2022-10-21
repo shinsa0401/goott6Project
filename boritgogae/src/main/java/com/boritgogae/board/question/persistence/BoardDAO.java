@@ -4,18 +4,18 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-import com.boritgogae.board.question.domain.BoardVo;
-import com.boritgogae.board.question.domain.ReadCountVo;
-import com.boritgogae.board.question.domain.UploadFileVo;
+import com.boritgogae.board.question.domain.QuestionBoardVo;
+import com.boritgogae.board.question.domain.QuestionReadCountVo;
+import com.boritgogae.board.question.domain.QuestionUploadFileVo;
 import com.boritgogae.board.question.etc.PagingInfo;
 import com.boritgogae.board.question.etc.SearchCriteria;
 
 public interface BoardDAO {
 	// 게시판 전체목록을 가져오는 메서드
-	public List<BoardVo> selectAllBoard(PagingInfo pi) throws Exception;
+	public List<QuestionBoardVo> selectAllBoard(PagingInfo pi) throws Exception;
 	
 	// 게시판 글 작성하는 메서드
-	public int insertBoard(BoardVo board) throws Exception;
+	public int insertBoard(QuestionBoardVo board) throws Exception;
 	
 	// 최근 등록된 글의 글번호 가져오는 메서드
 	public int getLastNo() throws Exception;
@@ -30,13 +30,13 @@ public interface BoardDAO {
 	public void insertFile(int lastNo, String savedOriginImageFileName);
 	
 	// 글번호로 상세 조회 하는 메서드
-	public BoardVo getBoard(int no) throws Exception;
+	public QuestionBoardVo getBoard(int no) throws Exception;
 	
 	// 글번호로 첨부파일 조회하는 메서드
-	public List<UploadFileVo> getAttachFiles(int no) throws Exception;
+	public List<QuestionUploadFileVo> getAttachFiles(int no) throws Exception;
 	
 	// 게시글 조회 시간 검색하는 메서드
-	public ReadCountVo getLastReadDate(Map<String, Object> readCount) throws Exception;
+	public QuestionReadCountVo getLastReadDate(Map<String, Object> readCount) throws Exception;
 	
 	// 조회수 처리를 위한 ip주소, 글번호, 현재시간을 insert 하는 메서드
 	public int insertReadCount(Map<String, Object> readCount) throws Exception;
@@ -48,7 +48,7 @@ public interface BoardDAO {
 	public int updateReadCountBoard(int no) throws Exception;
 
 	// 게시판 글 수정하는 메서드
-	public int updateBoard(BoardVo board) throws Exception;
+	public int updateBoard(QuestionBoardVo board) throws Exception;
 	
 	// 게시판 글 삭제(삭제여부 업데이트)하는 메서드
 	public int deleteBoard(int no, String pwd) throws Exception;
@@ -69,6 +69,6 @@ public interface BoardDAO {
 	public int getSearchResultCnt(SearchCriteria sc) throws Exception;
 		
 	// 검색어가 있을 때 페이징 하며 검색 결과를 가져 오는 메서드
-	public List<BoardVo> getSearchResult(PagingInfo pi, SearchCriteria sc) throws Exception;
+	public List<QuestionBoardVo> getSearchResult(PagingInfo pi, SearchCriteria sc) throws Exception;
 	
 }

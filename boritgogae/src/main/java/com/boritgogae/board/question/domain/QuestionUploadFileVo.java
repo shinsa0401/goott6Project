@@ -1,16 +1,16 @@
 package com.boritgogae.board.question.domain;
 
-public class UploadFileVo {
+public class QuestionUploadFileVo {
 	private int no;
 	private int bno;
 	private String originFileName;
 	private String thumbnailFileName;
 	
-	public UploadFileVo() {
+	public QuestionUploadFileVo() {
 		super();
 	}
 	
-	public UploadFileVo(int no, int bno, String originFileName, String thumbnailFileName) {
+	public QuestionUploadFileVo(int no, int bno, String originFileName, String thumbnailFileName) {
 		super();
 		this.no = no;
 		this.bno = bno;

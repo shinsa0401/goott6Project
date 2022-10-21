@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.board.question.domain.ReplyVo;
+import com.boritgogae.board.question.domain.QuestionReplyVo;
 import com.boritgogae.board.question.persistence.BoardDAO;
 import com.boritgogae.board.question.persistence.ReplyDAO;
 
@@ -22,7 +22,7 @@ public class ReplyServiceImpl implements ReplyService {
 	
 	// 댓글 등록
 	@Override
-	public boolean addReply(ReplyVo reply) throws Exception {
+	public boolean addReply(QuestionReplyVo reply) throws Exception {
 		boolean result = false;
 		int lastRno = 0;
 		
@@ -49,14 +49,14 @@ public class ReplyServiceImpl implements ReplyService {
 
 	// 모든 댓글 얻어오기
 	@Override
-	public List<ReplyVo> getAllReply(int bno) throws Exception {
+	public List<QuestionReplyVo> getAllReply(int bno) throws Exception {
 		
 		return dao.selectAllReply(bno);
 	}
 
 	// 댓글 수정
 	@Override
-	public boolean modifyReply(ReplyVo reply) throws Exception {
+	public boolean modifyReply(QuestionReplyVo reply) throws Exception {
 		boolean result = false;
 		
 		if (dao.updateReply(reply) == 1) {
@@ -69,7 +69,7 @@ public class ReplyServiceImpl implements ReplyService {
 
 	// 댓글 삭제
 	@Override
-	public boolean removeReply(ReplyVo reply) throws Exception {
+	public boolean removeReply(QuestionReplyVo reply) throws Exception {
 		boolean result = false;
 		
 		if (dao.deleteReply(reply) == 1) {
@@ -87,10 +87,10 @@ public class ReplyServiceImpl implements ReplyService {
 
 	// 댓글의 댓글
 	@Override
-	public boolean reReply(ReplyVo reply) throws Exception {
+	public boolean reReply(QuestionReplyVo reply) throws Exception {
 		boolean result = false;
 		// rno로 부모댓글 정보 얻어오기
-		ReplyVo parentReply = dao.getParentReply(reply.getRno());
+		QuestionReplyVo parentReply = dao.getParentReply(reply.getRno());
 		
 		// ref 업데이트
 		dao.updateRefOrder(parentReply);
@@ -124,11 +124,11 @@ public class ReplyServiceImpl implements ReplyService {
 	
 //	// 댓글의 댓글
 //	@Override
-//	public boolean reReply(ReplyVo reply) throws Exception {
+//	public boolean reReply(QuestionReplyVo reply) throws Exception {
 //		boolean result = false;
 //		
 //		// rno로 부모댓글 정보 얻어오기
-//		ReplyVo parentReply = dao.getParentReply(reply.getRno());
+//		QuestionReplyVo parentReply = dao.getParentReply(reply.getRno());
 //		System.out.println("부모댓글의 정보 : " + parentReply.toString());
 //		
 //		// 저장할 대댓글의 ref, step, refOrder

@@ -51,8 +51,7 @@
 	</sql>
 
 	<update id="deleteReply">
-		update askReplyBoard set contents = #{contents}
-		where
+		update askReplyBoard set contents = #{contents}, isDelete = #{isDelete}	where
 		askRno = #{askRno}
 	</update>
 
@@ -220,7 +219,7 @@
 	</select>
 
 
-	<select id="showFileList" resultType="UploadFile">
+	<select id="showFileList" resultType="UploadAskFile">
 		select originalFile as
 		savedOriginImageFileName, thumbNailFile as thumbnailFileName from
 		askFile where askBno = #{bno};

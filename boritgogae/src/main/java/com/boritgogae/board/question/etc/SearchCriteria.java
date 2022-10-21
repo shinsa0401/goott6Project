@@ -29,6 +29,6 @@ public class SearchCriteria {
 	
 	@Override
 	public String toString() {
-		return "SearchCriteria [searchType=" + searchType + ", searchWord=" + searchWord + "]";
+		return "AskSearchCriteria [searchType=" + searchType + ", searchWord=" + searchWord + "]";
 	}
 }

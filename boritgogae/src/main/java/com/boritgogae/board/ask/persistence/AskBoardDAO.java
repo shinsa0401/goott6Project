@@ -8,21 +8,21 @@ import org.springframework.stereotype.Repository;
 
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
-import com.boritgogae.board.ask.domain.PagingInfo;
-import com.boritgogae.board.ask.domain.SearchCriteria;
-import com.boritgogae.board.ask.domain.UploadFile;
+import com.boritgogae.board.ask.domain.AskPagingInfo;
+import com.boritgogae.board.ask.domain.AskSearchCriteria;
+import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
 
 @Repository
 public interface AskBoardDAO {
 	// 게시판 전체 목록 가져오기
-	public List<AskBoardVo> selectAllBoard(PagingInfo pi) throws Exception;
+	public List<AskBoardVo> selectAllBoard(AskPagingInfo pi) throws Exception;
 	
 	// 검색어가 있을 때 페이징을 하며 검색 결과를 가져오는 메서드
-	public List<AskBoardVo> getSearchResult(SearchCriteria sc, PagingInfo pi) throws Exception;
+	public List<AskBoardVo> getSearchResult(AskSearchCriteria sc, AskPagingInfo pi) throws Exception;
 
 	// 검색된 글의 갯수를 반환하는 메서드
-	public int getSearchResultCnt(SearchCriteria sc) throws Exception;
+	public int getSearchResultCnt(AskSearchCriteria sc) throws Exception;
 	
 	// 전체 글의 갯수 반환하는 메서드
 	public int getTotalPostCnt() throws Exception;
@@ -82,7 +82,7 @@ public interface AskBoardDAO {
 	public AskBoardVo getboardVo(String bno) throws Exception;
 	
 	// 글에 첨부되어있는 파일리스트를 가져오는 메서드
-	public List<UploadFile> showFileList(String bno) throws Exception;
+	public List<UploadAskFile> showFileList(String bno) throws Exception;
 	
 	// DB에서 파일명을 가지고 있는 컬럼 삭제
 	public int deleteFileDB(String savedOriginImageFileName) throws Exception;

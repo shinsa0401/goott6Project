@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.MediaType;
 
-public class ImageMediaConfirm {
+public class AskImageMediaConfirm {
 	private static Map<String, MediaType> mediaMap;
 	
 	{

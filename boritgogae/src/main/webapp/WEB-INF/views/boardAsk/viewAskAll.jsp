@@ -7,9 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <title>문의게시판</title>
-<link href="../resources/css/bootstrap.min.css" rel="stylesheet">
-<script type="text/javascript" src="../resources/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../resources/js/commonJS.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
 	window.onload = function() {
 		let pageNo = request.getParameter("pageNo");
@@ -20,6 +21,7 @@
 			//	}
 	}
 
+	// 검색시 유효성 검사
 	function validate() {
 		let result = false;
 		let st = document.getElementById("searchType").value;
@@ -66,7 +68,7 @@
 					<col width="12%">
 					<col width="30%">
 					<col width="9%">
-					<col width="13%">
+					<col width="13%">	
 					<col width="9%">
 					<col width="9%">
 					<col width="9%">
@@ -162,7 +164,7 @@
 						</td>
 					</c:forEach>
 					<tr style="height:15px;"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-					<!-- 여기서부터가 진짜 글들 -->					
+					<!-- 여기서부터가 진짜 작성글들 -->					
 					<c:forEach var="board" items="${askBoardList }">
 						<c:choose>
 							<c:when test="${board.isFAQ eq 'Y'}">

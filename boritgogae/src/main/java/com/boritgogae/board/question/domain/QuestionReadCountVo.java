@@ -2,17 +2,17 @@ package com.boritgogae.board.question.domain;
 
 import java.sql.Timestamp;
 
-public class ReadCountVo {
+public class QuestionReadCountVo {
 	private int no;
 	private String ipAddr;
 	private int bno;
 	private Timestamp readDate;
 	
-	public ReadCountVo() {
+	public QuestionReadCountVo() {
 		super();
 	}
 	
-	public ReadCountVo(int no, String ipAddr, int bno, Timestamp readDate) {
+	public QuestionReadCountVo(int no, String ipAddr, int bno, Timestamp readDate) {
 		super();
 		this.no = no;
 		this.ipAddr = ipAddr;
@@ -47,7 +47,7 @@ public class ReadCountVo {
 	
 	@Override
 	public String toString() {
-		return "ReadCountVo [no=" + no + ", ipAddr=" + ipAddr + ", bno=" + bno + ", readDate=" + readDate + "]";
+		return "QuestionReadCountVo [no=" + no + ", ipAddr=" + ipAddr + ", bno=" + bno + ", readDate=" + readDate + "]";
 	}
 	
 	

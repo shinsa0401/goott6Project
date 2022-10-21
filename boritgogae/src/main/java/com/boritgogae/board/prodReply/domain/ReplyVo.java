@@ -129,7 +129,7 @@ public class ReplyVo {
 
 	@Override
 	public String toString() {
-		return "ReplyVo [rno=" + rno + ", reviewNo=" + reviewNo + ", replyWriter=" + replyWriter + ", replyContent="
+		return "QuestionReplyVo [rno=" + rno + ", reviewNo=" + reviewNo + ", replyWriter=" + replyWriter + ", replyContent="
 				+ replyContent + ", replyWrittenDate=" + replyWrittenDate + ", replyUpdateDate=" + replyUpdateDate
 				+ ", ref=" + ref + ", step=" + step + ", refOrder=" + refOrder + "]";
 	}

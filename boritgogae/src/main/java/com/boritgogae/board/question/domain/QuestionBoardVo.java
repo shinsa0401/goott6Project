@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class BoardVo {
+public class QuestionBoardVo {
 	private int no;
 	private String writer;
 	private String pwd;	
@@ -20,11 +20,11 @@ public class BoardVo {
 	private String isDelete;
 	private int replyCount;
 	
-	public BoardVo() {
+	public QuestionBoardVo() {
 		super();
 	}
 	
-	public BoardVo(int no, String writer, String pwd, Timestamp writtenDate, int readCount, int likeCount, String title,
+	public QuestionBoardVo(int no, String writer, String pwd, Timestamp writtenDate, int readCount, int likeCount, String title,
 			String content, String uploadFile, int ref, int step, int refOrder, String isDelete, int replyCount) {
 		super();
 		this.no = no;
@@ -130,7 +130,7 @@ public class BoardVo {
 	
 	@Override
 	public String toString() {
-		return "BoardVo [no=" + no + ", writer=" + writer + ", pwd=" + pwd + ", writtenDate=" + writtenDate
+		return "QuestionBoardVo [no=" + no + ", writer=" + writer + ", pwd=" + pwd + ", writtenDate=" + writtenDate
 				+ ", readCount=" + readCount + ", likeCount=" + likeCount + ", title=" + title + ", content=" + content
 				+ ", uploadFile=" + uploadFile + ", ref=" + ref + ", step=" + step + ", refOrder=" + refOrder
 				+ ", isDelete=" + isDelete + ", replyCount=" + replyCount + "]";

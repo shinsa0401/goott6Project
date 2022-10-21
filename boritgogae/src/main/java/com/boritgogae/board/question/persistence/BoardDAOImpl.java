@@ -10,9 +10,9 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.boritgogae.board.question.domain.BoardVo;
-import com.boritgogae.board.question.domain.ReadCountVo;
-import com.boritgogae.board.question.domain.UploadFileVo;
+import com.boritgogae.board.question.domain.QuestionBoardVo;
+import com.boritgogae.board.question.domain.QuestionReadCountVo;
+import com.boritgogae.board.question.domain.QuestionUploadFileVo;
 import com.boritgogae.board.question.etc.PagingInfo;
 import com.boritgogae.board.question.etc.SearchCriteria;
 
@@ -29,14 +29,14 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	// 게시판 전체목록 보기 
 	@Override
-	public List<BoardVo> selectAllBoard(PagingInfo pi) throws Exception {
+	public List<QuestionBoardVo> selectAllBoard(PagingInfo pi) throws Exception {
 		
 		return ses.selectList(ns + ".selectAllBoard", pi);
 	}
 
 	// 게시판 글 작성하기
 	@Override
-	public int insertBoard(BoardVo board) throws Exception {
+	public int insertBoard(QuestionBoardVo board) throws Exception {
 		
 		return ses.insert(ns + ".insertBoard", board);
 	}
@@ -80,14 +80,14 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	// 글 번호로 게시글 얻어오기
 	@Override
-	public BoardVo getBoard(int no) throws Exception {
+	public QuestionBoardVo getBoard(int no) throws Exception {
 		
 		return ses.selectOne(ns + ".getBoardByNo", no);
 	}
 	
 	// 글 번호로 첨부파일 얻어오기
 	@Override
-	public List<UploadFileVo> getAttachFiles(int no) throws Exception {
+	public List<QuestionUploadFileVo> getAttachFiles(int no) throws Exception {
 		
 		return ses.selectList(ns + ".getAttachFiles", no);
 	}
@@ -105,7 +105,7 @@ public class BoardDAOImpl implements BoardDAO {
 		
 	// 게시글 수정
 	@Override
-	public int updateBoard(BoardVo board) throws Exception {
+	public int updateBoard(QuestionBoardVo board) throws Exception {
 		
 		return ses.update(ns + ".updateBoard", board);
 	}
@@ -123,7 +123,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	// 게시글 조회시간 검색하기
 	@Override
-	public ReadCountVo getLastReadDate(Map<String, Object> readCount) throws Exception {
+	public QuestionReadCountVo getLastReadDate(Map<String, Object> readCount) throws Exception {
 		
 		return ses.selectOne(ns + ".selectReadCountCheck", readCount);
 	}
@@ -180,7 +180,7 @@ public class BoardDAOImpl implements BoardDAO {
 
 	// 검색어가 있을 때 페이징 하며 검색 결과를 가져 오는 메서드
 	@Override
-	public List<BoardVo> getSearchResult(PagingInfo pi, SearchCriteria sc) throws Exception {
+	public List<QuestionBoardVo> getSearchResult(PagingInfo pi, SearchCriteria sc) throws Exception {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("searchType", sc.getSearchType());

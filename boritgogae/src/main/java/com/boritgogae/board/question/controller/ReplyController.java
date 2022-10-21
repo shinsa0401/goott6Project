@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.boritgogae.board.question.domain.ReplyVo;
+import com.boritgogae.board.question.domain.QuestionReplyVo;
 import com.boritgogae.board.question.service.ReplyService;
 
 @RestController
@@ -27,12 +27,12 @@ public class ReplyController {
 	 * @methodName : addReply
 	 * @author : 신태호
 	 * @date : 2022. 10. 9.
-	 * @입력 param : ReplyVo reply
+	 * @입력 param : QuestionReplyVo reply
 	 * 새로운 댓글 등록
 	 * @returnType : ResponseEntity<String>
 	 */
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public ResponseEntity<String> addReply(@RequestBody ReplyVo reply) {
+	public ResponseEntity<String> addReply(@RequestBody QuestionReplyVo reply) {
 		ResponseEntity<String> result = null;
 		System.out.println(reply.toString());
 		try {
@@ -54,21 +54,21 @@ public class ReplyController {
 	 * @date : 2022. 10. 9.
 	 * @입력 param : int bno
 	 * 현재글의 모든 댓글을 얻어온다
-	 * @returnType : ResponseEntity<List<ReplyVo>>
+	 * @returnType : ResponseEntity<List<QuestionReplyVo>>
 	 */
 	@RequestMapping(value = "/{bno}")
-	public ResponseEntity<List<ReplyVo>> getAllReply(@PathVariable("bno") int bno) {
-		ResponseEntity<List<ReplyVo>> result = null;
+	public ResponseEntity<List<QuestionReplyVo>> getAllReply(@PathVariable("bno") int bno) {
+		ResponseEntity<List<QuestionReplyVo>> result = null;
 		
 		System.out.println("컨트롤러 " + bno + " 번의 모든 댓글을 얻어오자");
 		
 		try {
-			List<ReplyVo> lst = service.getAllReply(bno);
+			List<QuestionReplyVo> lst = service.getAllReply(bno);
 			
 			if (lst.size() < 1) {
 				result = null;
 			} else {
-				result = new ResponseEntity<List<ReplyVo>>(lst, HttpStatus.OK);
+				result = new ResponseEntity<List<QuestionReplyVo>>(lst, HttpStatus.OK);
 			}
 			
 		} catch (Exception e) {
@@ -84,12 +84,12 @@ public class ReplyController {
 	 * @methodName : modifyReply
 	 * @author : 신태호
 	 * @date : 2022. 10. 10.
-	 * @입력 param : ReplyVo reply
+	 * @입력 param : QuestionReplyVo reply
 	 * @returnType : ResponseEntity<String>
 	 * 댓글 수정
 	 */
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
-	public ResponseEntity<String> modifyReply(@RequestBody ReplyVo reply) {
+	public ResponseEntity<String> modifyReply(@RequestBody QuestionReplyVo reply) {
 		ResponseEntity<String> result = null;
 		
 		try {
@@ -114,7 +114,7 @@ public class ReplyController {
 	 * @returnType : ResponseEntity<String>
 	 */
 	@RequestMapping(value = "/remove", method = RequestMethod.POST)
-	public ResponseEntity<String> removeReply(@RequestBody ReplyVo reply) {
+	public ResponseEntity<String> removeReply(@RequestBody QuestionReplyVo reply) {
 		ResponseEntity<String> result = null;
 		System.out.println("컨트롤러 댓글 삭제");
 		
@@ -137,12 +137,12 @@ public class ReplyController {
 	 * @author : 신태호
 	 * @throws Exception 
 	 * @date : 2022. 10. 11.
-	 * @입력 param :ReplyVo reply
+	 * @입력 param :QuestionReplyVo reply
 	 * @returnType : ResponseEntity<String>
 	 * 댓글의 댓글 등록
 	 */
 	@RequestMapping(value = "/reReply", method = RequestMethod.POST)
-	public ResponseEntity<String> reReply(@RequestBody ReplyVo reply) throws Exception {
+	public ResponseEntity<String> reReply(@RequestBody QuestionReplyVo reply) throws Exception {
 		ResponseEntity<String> result = null;
 		
 		System.out.println(reply.toString());

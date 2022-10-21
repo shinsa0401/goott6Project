@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
-import com.boritgogae.board.ask.domain.PagingInfo;
-import com.boritgogae.board.ask.domain.SearchCriteria;
-import com.boritgogae.board.ask.domain.UploadFile;
+import com.boritgogae.board.ask.domain.AskPagingInfo;
+import com.boritgogae.board.ask.domain.AskSearchCriteria;
+import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
 
 @Repository // 현재 클래스가 DAO임
@@ -29,7 +29,7 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 
 	// 게시글 전체 보기
 	@Override
-	public List<AskBoardVo> selectAllBoard(PagingInfo pi) throws Exception {
+	public List<AskBoardVo> selectAllBoard(AskPagingInfo pi) throws Exception {
 		System.out.println("DAO : 게시판 전체 목록 요청");
 		List<AskBoardVo> lst = ses.selectList(ns + ".listAll", pi);
 		System.out.println("DAO : 게시판 전체 목록 요청" + lst);
@@ -37,7 +37,7 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 	}
 
 	@Override
-	public List<AskBoardVo> getSearchResult(SearchCriteria sc, PagingInfo pi) throws Exception {
+	public List<AskBoardVo> getSearchResult(AskSearchCriteria sc, AskPagingInfo pi) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("searchType", sc.getSearchType());
 		map.put("searchWord", sc.getSearchWord());
@@ -48,7 +48,7 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 	}
 
 	@Override
-	public int getSearchResultCnt(SearchCriteria sc) throws Exception {
+	public int getSearchResultCnt(AskSearchCriteria sc) throws Exception {
 		return ses.selectOne(ns + ".getSearchResultCnt", sc);
 	}
 
@@ -181,7 +181,7 @@ public class AskBoardDAOImpl implements AskBoardDAO {
 
 	// 글에 첨부되어있는 파일리스트를 가져오는 메서드
 	@Override
-	public List<UploadFile> showFileList(String bno) throws Exception {
+	public List<UploadAskFile> showFileList(String bno) throws Exception {
 		System.out.println("DAO : showFileList : no = " + bno + "번");
 		return ses.selectList(ns + ".showFileList", bno);
 	}
