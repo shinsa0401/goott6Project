@@ -1,9 +1,8 @@
-package com.miniproject.persistence;
+package com.boritgogae.persistence;
 
 import java.util.List;
 import java.sql.Timestamp;
 
-import org.springframework.stereotype.Repository;
 
 import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;

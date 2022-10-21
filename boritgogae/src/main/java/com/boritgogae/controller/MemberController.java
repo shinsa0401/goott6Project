@@ -168,7 +168,8 @@ public class MemberController {
 		result = service.convertProdNoToProdName(prodCode);
 		return result;
 	}
-
+	
+	/*
 	 * @methodName : logIn
 	 * @author : 신태호
 	 * @date : 2022. 10. 20.

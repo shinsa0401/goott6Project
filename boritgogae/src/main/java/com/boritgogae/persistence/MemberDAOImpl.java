@@ -27,13 +27,13 @@ public class MemberDAOImpl implements MemberDAO {
 	private static String ns = "com.boritgogae.memberMapper";
 	
 	@Inject
-	private SqlSession session;
+	private SqlSession ses;
 	
 	// 로그인하기위해 회원정보를 얻어오는 메서드
 	@Override
 	public MemberVo logIn(LogInDTO dto) throws Exception {
 		
-		return session.selectOne(ns + ".logIn", dto);
+		return ses.selectOne(ns + ".logIn", dto);
 	}
 
 //	// 자동로그인 체크한 회원 세션의 정보를 업데이트
@@ -46,16 +46,9 @@ public class MemberDAOImpl implements MemberDAO {
 //		map.put("sessionId", sessionId);
 //		map.put("sessionLimit", sessionLimit);
 //		
-//		return session.update(ns + ".updateMemberSession", map);
+//		return ses.update(ns + ".updateMemberSession", map);
 //	}
 
-
-	// Mapper NameSpace 처리하기
-	private static String ns = "com.boritgogae.memberMapper";
-	
-	// sqlSession 객체 주입
-	@Inject
-	private SqlSession ses;	
 
 	// 등급혜택을 가져오는 메서드
 	@Override
