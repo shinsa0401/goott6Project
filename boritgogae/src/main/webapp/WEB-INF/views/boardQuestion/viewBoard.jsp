@@ -72,7 +72,7 @@
 		let bno = ${board.no };
 		let replyWriter = $("#replyWriter").val();
 		let replyContent = $("#replyContent").val();
-		let url = "/reply/write";
+		let url = "/questionreply/write";
 		let sendData = JSON.stringify({
 			bno : bno, replyWriter : replyWriter, replyContent : replyContent
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
@@ -110,7 +110,7 @@
 	// 현재 글의 모든 댓글 출력
 	function viewAllReply() {
 		let bno = ${board.no}
-		let url = "/reply/" + bno;
+		let url = "/questionreply/" + bno;
 		
 		$.ajax({
 	        url: url, // 데이터 송수신될 주소
@@ -198,7 +198,7 @@
 			output += "<div>"
 			output += "<input type='text' class='form-control' id='replyWriter"+item.rno+"' value='${sessionScope.loginMember.userId }' />"
 			output += "<textarea rows='5' class='form-control' id='replyContent"+item.rno+"'>"+item.replyContent+"</textarea>"
-			output += "<button type='button' class='btn btn-info' onclick='modifyReply("+item.rno+");'>작성</button>"
+			output += "<button type='button' class='btn btn-info' onclick='modifyReply("+item.rno+");'>수정</button>"
 			output += "</div></a></div>"
 			
 			// 댓글의 댓글
@@ -207,7 +207,7 @@
 			output += "<div>"
 			output += "<input type='text' class='form-control' id='reReplyWriter"+item.rno+"' value='${sessionScope.loginMember.userId }' />"
 			output += "<textarea rows='5' class='form-control' id='reReplyContent"+item.rno+"'></textarea>"
-			output += "<button type='button' class='btn btn-info' onclick='reReply("+item.rno+");'>작성</button>"
+			output += "<button type='button' class='btn btn-info' onclick='reReply("+item.rno+");'>추가</button>"
 			output += "</div></a></div>"
 		});
 		
@@ -236,7 +236,7 @@
 		let rno = no;
 		let replyWriter = $("#replyWriter" + rno).val();
 		let replyContent = $("#replyContent" + rno).val();
-		let url = "/reply/modify";
+		let url = "/questionreply/modify";
 		let sendData = JSON.stringify({
 			rno : rno, replyWriter : replyWriter, replyContent : replyContent
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
@@ -287,7 +287,7 @@
 		let sendData = JSON.stringify({
 			rno : rno, bno : bno
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
-		let url = "/reply/remove";
+		let url = "/questionreply/remove";
 		
 		// REST
 		$.ajax({
@@ -335,7 +335,7 @@
 		let replyWriter = $("#reReplyWriter"+rno).val();
 		let replyContent = $("#reReplyContent"+rno).val();
 		
-		let url = "/reply/reReply";
+		let url = "/questionreply/reReply";
 		let sendData = JSON.stringify({
 			rno : rno, bno : bno, replyWriter : replyWriter, replyContent : replyContent
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
@@ -506,6 +506,15 @@
 		padding: 20px;
 	}
 	
+	
+	.aFile:visited {
+		color : purple;
+	}
+	.aFile:hover {
+		color : blue;
+	}
+	
+	
 </style>
 </head>
 <body>
@@ -534,7 +543,7 @@
 				<div class="attachFiles ">
 					<c:forEach var="file" items="${fileList }">
 						<c:if test="${file.thumbnailFileName == null }">
-							<div class="files"><a href="/resources/uploads/${file.originFileName }">${fn:split(file.originFileName,"_")[1]}</a></div>
+							<div class="files"><a class="aFile" href="/resources/uploads/${file.originFileName }" download="${fn:split(file.originFileName,'_')[1]}" >${fn:split(file.originFileName,"_")[1]}</a></div>
 						</c:if>
 					</c:forEach>
 				</div>
@@ -575,30 +584,7 @@
 		</div>
 	</div>
 	
-			<br />
-	
-	
-		<div id="btns">
-	         <button type="button" class="btn btn-primary" onclick="location.href='/board/question/modify?no=${board.no}';">수정</button>
-	         <button type="button" class="btn btn-danger" onclick="removeModal();">삭제</button>
-	         <button type="button" class="btn btn-secondary" onclick="javascript:history.back();">뒤로가기</button>
-	         <button type="button" class="btn text-white" style="background-color: #7FAD39;"
-	            onclick="location.href='/board/question?pageNo=1';">전체목록</button>
-	    </div>
-	    <br />
-		
-		<div id="replies"></div>
-	
-		<!-- 댓글 -->
-		<div id="replyDiv">
-			<br />
-			<label for="replyWrite" class="form-label">댓글쓰기</label>
-			<input type="text" class="form-control" id="replyWriter" value="${sessionScope.loginMember.userId }" />
-			<textarea rows="5" class="form-control" id="replyContent"></textarea>
-			<button type="button" class="btn btn-primary"
-	            onclick="addReply();">댓글등록</button>
-		</div>
-	</div>
+			
 	
 		<!-- The Modal -->
 		<div class="modal" id="removeModal">

@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boritgogae.board.prodReply.domain.OrderDetailVO;
@@ -20,12 +21,14 @@ import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.PointHistoryVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
+import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.service.MemberService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 
+
 @Controller
-@RequestMapping("/member/") // member 요청들 매핑
+@RequestMapping("/member/*") // member 요청들 매핑
 public class MemberController {
 
 	@Inject
@@ -159,4 +162,38 @@ public class MemberController {
 		result = service.convertProdNoToProdName(prodCode);
 		return result;
 	}
+
+		/**
+	 * @methodName : logIn
+	 * @author : 신태호
+	 * @date : 2022. 10. 20.
+	 * @입력 param :
+	 * @returnType : String
+	 * 로그인 정보를 입력하기 위한 폼 호출
+	 */
+	@RequestMapping(value = "/logIn")
+	public String logIn() {
+		System.out.println("로그인 하기");
+		
+		return "member/logIn";
+	}
+	
+	 
+	/**
+	 * @methodName : logInPost
+	 * @author : 신태호
+	 * @date : 2022. 10. 20.
+	 * @입력 param : LoginDTO
+	 * @returnType : String
+	 * 로그인 정보를 입력한 뒤
+	 */
+	@RequestMapping(value = "/logInPost", method = RequestMethod.POST)
+	public String logInPost(LogInDTO dto) {
+		
+		System.out.println(dto.toString());
+		System.out.println("로그인 성공");
+		
+		return "/";
+	}
+
 }

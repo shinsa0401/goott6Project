@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="description" content="Ogani Template">
-<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="keywords" content="Ogani, unia577d2e5cb3081154c520bafe633fbf69efadb95ca, creative, html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
@@ -39,6 +39,9 @@
 </head>
 <body>
 	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
+
+	
+
 	
 	<!-- Humberger Begin 모바일 -->
     <div class="humberger__menu__overlay"></div>
@@ -49,7 +52,7 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="${contextPath}/order/cartList"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
             </ul>
             <div class="header__cart__price">item: <span>$150.00</span></div>
         </div>
@@ -75,8 +78,8 @@
                 	<ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">자유게시판</a></li>
                         <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
-                        <li><a href="./checkout.html">장터게시판</a></li>
-                        <li><a href="./blog-details.html">고개팁</a></li>
+                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
+                        <li><a href="/boardTip/listAll">고개팁</a></li>
                     </ul>
                 </li>
                 <li><a href="/board/notice/list">고객센터</a>
@@ -125,8 +128,8 @@
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
 			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
-			                        <li><a href="./checkout.html">장터게시판</a></li>
-			                        <li><a href="./blog-details.html">고개팁</a></li>
+			                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
+			                        <li><a href="/boardTip/listAll">고개팁</a></li>
 			                    </ul>
 			                </li>
 			                <li><a href="/board/notice/list">고객센터</a>
@@ -143,10 +146,10 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="${contextPath}/order/cartList"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
                         <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                <a href="${contextPath }/member/logIn"><i class="fa fa-user"></i> Login</a>
             </div>
                     </div>
                 </div>

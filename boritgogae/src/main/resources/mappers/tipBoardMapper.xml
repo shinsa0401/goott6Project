@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.boritgogae.tipBoardMapper">
+  	<select id="listAll" resultType="TipBoardVo">
+  		select * from tipBoard order by ref desc ,refOrder asc limit #{startNum},#{postPerPage}
+  	</select>
+  	<select id="detail" resultType="TipBoardVo">
+  		select * from tipBoard where bno = #{bno}
+  	</select>
+  	<insert id="addBoard">
+  		insert into tipBoard(memberId,title,categories,content,pwd,imgFile) values(#{memberId},#{title},#{categories},#{content},#{pwd},#{imgFile})
+  	</insert>
+  	<delete id="deleteBoard">
+  		delete from tipBoard where bno = #{bno}
+  	</delete>
+  	<update id="updateBoard">
+  		update tipBoard set title = #{vo.title} , content = #{vo.content}, categories = #{vo.categories}, imgFile = #{vo.imgFile} where bno = #{vo.bno}
+  	</update>
+  	<update id="updateReadCnt">
+  		update tipBoard set readCount = (readCount + 1) where bno = #{bno} 
+  	</update>
+  	<select id="totalCnt" resultType="int">
+  		select count(*) from tipBoard
+  	</select>
+  	<select id="maxBno" resultType="int">
+  		select max(bno) from tipBoard
+  	</select>
+  	<update id="updateRef">
+  		update tipBoard set ref = #{bno} where bno = #{bno}
+  	</update>
+  	<select id="selectRef" resultType="int">
+  		select ref from tipBoard where bno = #{bno}
+  	</select>
+  	<update id="updateReplyRef">
+  		update tipBoard set ref = #{ref} where bno = #{maxBno}
+  	</update>
+  	<select id="getRefOrder" resultType="int">
+  		select refOrder from tipBoard where bno = #{maxNo}
+  	</select>
+  	<update id="updateRefOrder">
+  		update tipBoard set refOrder = #{refOrder} - 1, step = step + 1 where bno = #{bno}
+  	</update>
+  	<select id="countRef" resultType="int">
+  		select count(*) from tipBoard where ref = #{ref}
+  	</select>
+  	<select id="minRef" resultType="int">
+  		select min(bno) from tipBoard where ref = #{ref}
+  	</select>
+  	<select id="minNum" resultType="int">
+  		select step from tipBoard where bno = #{bno}
+  	</select>
+  	<update id="updateStep">
+  		update tipBoard set refOrder = #{refOrder} - 1, step = #{step} + 1 where bno = #{bno}
+  	</update>
+  </mapper>
