@@ -53,8 +53,12 @@
                             <input type="checkbox" value="None" id="remember" name="remember">
                             <label for="remember"></label>
                         </div>
-                        <span class="text">자동 로그인</span>
-                        <button type="submit" class="btn btn-default">로그인</button>
+                        <div class="text">자동 로그인</div>
+                        
+                    </div>
+                    <div class="form-group" id="btns">
+	                        <button type="reset" id="cancel" class="btn btn-cancel" onclick="location.href='${contextPath}/';">취소</button>
+	                        <button type="submit" class="btn btn-login">로그인</button>
                     </div>
                 </form>
             </div>

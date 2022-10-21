@@ -148,9 +148,22 @@
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                             <li><a href="${contextPath}/order/cartList"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
-                        <div class="header__top__right__auth">
-                <a href="${contextPath }/member/logIn"><i class="fa fa-user"></i> Login</a>
-            </div>
+                        <c:choose>
+                        	<c:when test="${sessionScope.logInMember == null }">
+                        	<!-- 로그인을 하지 않았을 경우 -->
+                        		<div class="header__top__right__auth">
+                        			<a href="${contextPath }/member/logIn">
+                        				<i class="fa fa-user"></i> 로그인</a>
+                        		</div>
+                        	</c:when>
+                        	<c:when test="${sessionScope.logInMember != null }">
+                        	<!-- 로그인을 했을 경우 -->
+                        		<div class="header__top__right__auth">
+                        			<a href="${contextPath }/member/logOut">
+                        				<i class="fa fa-user"></i> 로그아웃</a>
+                        		</div>
+                        	</c:when>
+                        </c:choose>
                     </div>
                 </div>
             </div>

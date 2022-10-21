@@ -101,7 +101,7 @@
     padding-top: 5px;
     text-transform: capitalize;
 }
-.form-horizontal .btn{
+.form-horizontal .btn-login{
     float: right;
     font-size: 14px;
     color: #fff;
@@ -111,9 +111,22 @@
     border: none;
     text-transform: capitalize;
     transition: all 0.5s ease 0s;
-}.form-horizontal .btn:hover{
+}.form-horizontal .btn-cancel{
+	float: right;
+    font-size: 14px;
+    color: #fff;
+    background: #828282;
+    border-radius: 30px;
+    padding: 10px 25px;
+    border: none;
+    text-transform: capitalize;
+    transition: all 0.5s ease 0s;
+}.form-horizontal .btn-login:hover{
 	color: #fff;
-    background: #7FAD39;
+    background: #2E8B57;
+}.form-horizontal .btn-cancel:hover{
+	color: #fff;
+    background: #5a5a5a;
 }
 
 @media only screen and (max-width: 479px){
