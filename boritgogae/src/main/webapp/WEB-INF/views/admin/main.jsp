@@ -67,7 +67,7 @@
               <div class="small-box bg-success">
                 <div class="inner">
                   <h3>${fn:length(newMembers)}</h3>
-                  <p>최근 30일간 가입한 회원</p>
+                  <p style="font-size: 14px;">최근 30일간 가입한 회원</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-person-add"></i>

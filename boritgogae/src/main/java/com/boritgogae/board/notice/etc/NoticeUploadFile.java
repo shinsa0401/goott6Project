@@ -1,17 +1,17 @@
 package com.boritgogae.board.notice.etc;
 
-public class UploadFile {
+public class NoticeUploadFile {
 	private String savedOriginImageFileName; // 저장된 원본 파일의 이름
 	private String notImageFileName; // 이미지가 아닐경우 파일의 이름
 	private boolean isImage; // 이미지 파일인지 아닌지
 	
 	
-	public UploadFile() {
+	public NoticeUploadFile() {
 		super(); 
 	}
 
 
-	public UploadFile(String savedOriginImageFileName, String notImageFileName,
+	public NoticeUploadFile(String savedOriginImageFileName, String notImageFileName,
 			boolean isImage) {
 		super();
 		this.savedOriginImageFileName = savedOriginImageFileName;

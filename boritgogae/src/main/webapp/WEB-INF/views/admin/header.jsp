@@ -82,6 +82,10 @@
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/member/delMember" class="nav-link">탈퇴한 회원</a></li>
 					</c:when>
+					<c:when test="${pageContext.request.servletPath == '/WEB-INF/views/admin/coupon.jsp' }">
+						<li class="nav-item d-none d-sm-inline-block"><a
+							href="/admin/coupon" class="nav-link">쿠폰관리</a></li>
+					</c:when>
 				</c:choose>
 			</ul>
 

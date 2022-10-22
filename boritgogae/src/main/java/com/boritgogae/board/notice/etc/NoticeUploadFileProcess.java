@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import org.imgscalr.Scalr;
 import org.springframework.util.FileCopyUtils;
 
-public class UploadFileProcess {
+public class NoticeUploadFileProcess {
 	/**
 	 * @methodName : uploadFileRename
 	 * @author : shh
@@ -36,19 +36,19 @@ public class UploadFileProcess {
 	 * 이미지 파일이 아니라면 원본 파일만 저장
 	 * 
 	 */
-	public static UploadFile uploadFileProcess(String upPath, String originalFileName, byte[] file, String contentType) throws IOException {
+	public static NoticeUploadFile uploadFileProcess(String upPath, String originalFileName, byte[] file, String contentType) throws IOException {
 		UUID uuid = UUID.randomUUID();
 		String saveFileName = uuid.toString() + "_" + originalFileName; // 중복되지 않는 파일 이름
 		String savePath = calcSavePath(upPath); // 파일이 저장될 경로 계산하여 얻어옴 (최종 저장될 경로 = upPath + savePath)
 		
-		UploadFile upFile = new UploadFile(null, null, false);
+		NoticeUploadFile upFile = new NoticeUploadFile(null, null, false);
 		
 		upFile.setSavedOriginImageFileName(savePath + File.separator + File.separator + saveFileName);
 		
 		File originTarget = new File(upPath + savePath, saveFileName);
 		
 		
-		if(ImageMediaConfirm.getMediaType(contentType.toLowerCase()) != null) { // 이미지 파일이라면
+		if(NoticeImageMediaConfirm.getMediaType(contentType.toLowerCase()) != null) { // 이미지 파일이라면
 			System.out.println("이미지 파일!");
 			FileCopyUtils.copy(file, originTarget); // 원본 파일 저장
 			upFile.setImage(true);
