@@ -43,18 +43,6 @@
 .form-horizontal .form-control:focus + i{
     color: #7FAD39;
 }
-.form-horizontal .fa-question-circle{
-    display: inline-block;
-    position: absolute;
-    top: 12px;
-    right: 60px;
-    font-size: 20px;
-    color: #808080;
-    transition: all 0.5s ease 0s;
-}
-.form-horizontal .fa-question-circle:hover{
-    color: #000;
-}
 .form-horizontal .main-checkbox{
     float: left;
     width: 20px;
@@ -102,8 +90,7 @@
     text-transform: capitalize;
 }
 .form-horizontal .btn-login{
-    float: right;
-    font-size: 14px;
+	font-size: 14px;
     color: #fff;
     background: #7FAD39;
     border-radius: 30px;
@@ -111,9 +98,9 @@
     border: none;
     text-transform: capitalize;
     transition: all 0.5s ease 0s;
-}.form-horizontal .btn-cancel{
-	float: right;
-    font-size: 14px;
+}
+.form-horizontal .btn-cancel{
+	font-size: 14px;
     color: #fff;
     background: #828282;
     border-radius: 30px;
@@ -121,12 +108,26 @@
     border: none;
     text-transform: capitalize;
     transition: all 0.5s ease 0s;
-}.form-horizontal .btn-login:hover{
+}
+.form-horizontal .btn-login:hover{
 	color: #fff;
     background: #2E8B57;
-}.form-horizontal .btn-cancel:hover{
+}
+.form-horizontal .btn-cancel:hover{
 	color: #fff;
     background: #5a5a5a;
+}
+.form-horizontal .addLink .find{
+	color: black;
+}
+.form-horizontal .addLink .find:hover{
+	color: black;	
+}
+.form-horizontal .addLink .signUp{
+	color: blue;
+}
+.form-horizontal .addLink .signUp:hover{
+	color: blue;	
 }
 
 @media only screen and (max-width: 479px){

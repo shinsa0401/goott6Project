@@ -262,26 +262,26 @@ select * from questionReadCount where bno = 1 and ipAddr = '211.21.31.43';
 select count(*) as cnt from questionBoard where content like '%세종%';
 -- select count(*) as cnt from board where
 --   <if test="searchType == 'writer'">
--- 	writer like concat('%', #{searchWord}, '%')
+--    writer like concat('%', #{searchWord}, '%')
 --   </if>
 --   <if test="searchType == 'title'">
--- 	title like concat('%', #{searchWord}, '%')
+--    title like concat('%', #{searchWord}, '%')
 --   </if>
 --   <if test="searchType == 'content'">
--- 	content like concat('%', #{searchWord}, '%')
+--    content like concat('%', #{searchWord}, '%')
 --   </if>
 
 
 -- 검색어가 있을 때 페이징하며 검색결과를 가져오기
 -- select * from board where
 --   <if test="searchType == 'writer'">
---   	writer like concat('%', #{searchWord}, '%')
+--      writer like concat('%', #{searchWord}, '%')
 --   </if>
 --   <if test="searchType == 'title'">
---   	title like concat('%', #{searchWord}, '%')
+--      title like concat('%', #{searchWord}, '%')
 --   </if>
 --   <if test="searchType == 'content'">
---   	content like concat('%', #{searchWord}, '%')
+--      content like concat('%', #{searchWord}, '%')
 --   </if>
 -- order by ref desc, reforder asc limit #{startNum}, #{postPerPage}
 

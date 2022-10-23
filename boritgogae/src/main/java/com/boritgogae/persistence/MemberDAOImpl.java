@@ -36,18 +36,18 @@ public class MemberDAOImpl implements MemberDAO {
 		return ses.selectOne(ns + ".logIn", dto);
 	}
 
-//	// 자동로그인 체크한 회원 세션의 정보를 업데이트
-//	@Override
-//	public int updateMemberSession(String memberId, String sessionId, Timestamp sessionLimit) throws Exception {
-//		System.out.println("다오단 : 세션 업데이트");
-//		
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("memberId", memberId);
-//		map.put("sessionId", sessionId);
-//		map.put("sessionLimit", sessionLimit);
-//		
-//		return ses.update(ns + ".updateMemberSession", map);
-//	}
+	// 자동로그인 체크한 회원 세션의 정보를 업데이트
+	@Override
+	public int updateMemberSession(String memberId, String sessionId, Timestamp sessionLimit) throws Exception {
+		System.out.println("다오단 : 세션 업데이트");
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("sessionId", sessionId);
+		map.put("sessionLimit", sessionLimit);
+		
+		return ses.update(ns + ".updateMemberSession", map);
+	}
 
 
 	// 등급혜택을 가져오는 메서드

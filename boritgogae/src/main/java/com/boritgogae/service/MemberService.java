@@ -23,7 +23,7 @@ public interface MemberService {
 	public MemberVo logIn(LogInDTO dto, HttpServletRequest request) throws Exception;
 
 	// 자동로그인을 체크했을 경우 로그인 유지를 위한 sessionId, sessionLimit 업데이트
-	// public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit);
+	public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit) throws Exception;
 	
 	// 등급혜택을 가져오는 메서드
 	List<GradesVo> showGradeBenefit() throws Exception;

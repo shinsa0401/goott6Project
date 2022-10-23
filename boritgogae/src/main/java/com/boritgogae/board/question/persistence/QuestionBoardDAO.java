@@ -20,9 +20,6 @@ public interface QuestionBoardDAO {
 	// 최근 등록된 글의 글번호 가져오는 메서드
 	public int getLastNo() throws Exception;
 	
-	// 최근 등록된 글의 ref 업데이트하는 메서드
-	public int updateRef(int lastNo) throws Exception;
-	
 	// 업로드된 이미지 파일 저장
 	public void insertImg(int lastNo, String savedOriginImageFileName, String thumbnailFileName);
 

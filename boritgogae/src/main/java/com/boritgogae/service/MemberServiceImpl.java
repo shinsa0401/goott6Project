@@ -41,12 +41,12 @@ public class MemberServiceImpl implements MemberService {
 		return logInMember;
 	}
 
-	//	// 자동로그인을 체크했을 경우 로그인 유지를 위한 sessionId, sessionLimit 업데이트 
-	//	@Override
-	//	public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit) throws Exception {
-	//		dao.updateMemberSession(memberId, sessionId, sessionLimit);
-	//		return 0;
-	//	}
+	// 자동로그인을 체크했을 경우 로그인 유지를 위한 sessionId, sessionLimit 업데이트 
+	@Override
+	public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit) throws Exception {
+		
+		return dao.updateMemberSession(memberId, sessionId, sessionLimit);
+	}
 
 
 	// 등급혜택을 가져오는 메서드

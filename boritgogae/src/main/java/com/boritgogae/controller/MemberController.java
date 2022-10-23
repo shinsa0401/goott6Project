@@ -179,18 +179,17 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/logIn")
 	public String logIn(HttpServletRequest request, HttpSession session) {
+		
+		// 현재 페이지로 오기전 URL 정보를 referer에 저장
 		String referer = request.getHeader("Referer");
 		
 		try {
 			URL refererUrl = new URL(referer);
+			// destination의 이름으로 URL의 정보를 세션에 저장
 			session.setAttribute("destination", refererUrl.getFile());
-			
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		
 		System.out.println("로그인 하기");
 		
@@ -208,39 +207,32 @@ public class MemberController {
 	 * 
 	 */
 	@RequestMapping(value = "/logInPost", method = RequestMethod.POST)
-	public void logInPost(LogInDTO dto, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void logInPost(LogInDTO dto, Model model, HttpSession session, HttpServletRequest request) throws Exception {
+		// 인터셉터 preHandle 수행하고 옴
+		
 		System.out.println(dto.toString() + "로 로그인 하자");
 		
 		MemberVo logInMember = service.logIn(dto, request);
-		System.out.println(logInMember.toString());
 		
-		HttpSession session = request.getSession();
-		
-		if (logInMember != null) {
-			System.out.println("세션아이디 : " + session.getId());
-			session.setAttribute("logInMember", logInMember); // 세션에 바인딩
-			
+		if (logInMember == null) { // 로그인 실패 유저
+			return;
 		}
 		
-//		if (dto.isRemember()) { // 자동 로그인을 체크 했을경우
-//			int ms = 1000 * 60 * 60 * 24 * 7;
-//			long now = System.currentTimeMillis();
-//			
-//			String memberId = dto.getMemberId();
-//			String sessionId = session.getId();
-//			Timestamp sessionLimit = new Timestamp(now + ms);
-//			
-//			service.keepLogIn(memberId, sessionId, sessionLimit);
-//		}
-		
+		if (dto.isRemember()) { // 자동 로그인을 체크 했을경우 DB에 세션 정보 저장
+			int ms = 1000 * 60 * 60 * 24 * 7;
+			long now = System.currentTimeMillis();
+			
+			String memberId = dto.getMemberId();
+			String sessionId = session.getId();
+			Timestamp sessionLimit = new Timestamp(now + ms);
+			
+			service.keepLogIn(memberId, sessionId, sessionLimit);
+		}
 		
 		model.addAttribute("dto", dto);
 		model.addAttribute("logInMember", logInMember); // model 객체에 바인딩
 		
-		
-		
-		response.sendRedirect("/");
-		
+		// 인터셉터 postHandle에 의해 나머지 과정 수행
 	}
 	
 	/**
@@ -258,6 +250,7 @@ public class MemberController {
 			
 		}
 		System.out.println("로그아웃");
+		
 		response.sendRedirect("/");
 	}
 }
