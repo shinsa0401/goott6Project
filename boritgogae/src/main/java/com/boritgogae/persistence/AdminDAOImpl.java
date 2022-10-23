@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -70,6 +71,26 @@ public class AdminDAOImpl implements AdminDAO {
 	@Override
 	public int sendCoupon(CouponUsedVo sendCoupon) throws Exception {
 		return ses.insert(ns + ".sendCoupon", sendCoupon);
+	}
+
+	@Override
+	public List<ProductVO> getTopLikeCount() throws Exception {
+		return ses.selectList(ns + ".getTopLikeCount");
+	}
+
+	@Override
+	public List<OrdersVO> getNewOrder() throws Exception {
+		return ses.selectList(ns + ".getNewOrder");
+	}
+
+	@Override
+	public List<ProductVO> getTopReadCount() throws Exception {
+		return ses.selectList(ns + ".getTopReadCount");
+	}
+
+	@Override
+	public List<MemberVo> searchMember(String inputString) throws Exception {
+		return ses.selectList(ns + ".searchMember", inputString);
 	}
 
 

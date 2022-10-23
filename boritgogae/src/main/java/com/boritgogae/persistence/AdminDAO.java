@@ -2,6 +2,7 @@ package com.boritgogae.persistence;
 
 import java.util.List;
 
+import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -21,6 +22,8 @@ public interface AdminDAO {
 	// 탈퇴한 회원 목록을 가져오는 메서드
 	public List<DeleteAccountVo> getDelMembers() throws Exception;
 	
+	// 입력한 값으로 회원을 검색
+	public List<MemberVo> searchMember(String inputString) throws Exception;
 	
 	// ----------------- 쿠폰 관련 메서드 -----------------
 	
@@ -45,7 +48,16 @@ public interface AdminDAO {
 	// 재고가 적은 순
 	public List<ProductVO> getLowestProduct() throws Exception;
 
+    // 찜수가 많은 순
+    public List<ProductVO> getTopLikeCount() throws Exception;
+    
+    // 조회수 많은 순
+    public List<ProductVO> getTopReadCount() throws Exception;
+    
+	// 새로 들어온 주문 
+    public List<OrdersVO> getNewOrder() throws Exception;
+
+
 	
-	
-	
+    
 }

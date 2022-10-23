@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -88,6 +89,26 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 	}
 
+	@Override
+	public List<ProductVO> getTopLikeCount() throws Exception {
+		return dao.getTopLikeCount();
+	}
+
+	@Override
+	public List<OrdersVO> getNewOrder() throws Exception {
+		return dao.getNewOrder();
+	}
+
+	@Override
+	public List<ProductVO> getTopReadCount() throws Exception {
+		return dao.getTopReadCount();
+	}
+
+	@Override
+	public List<MemberVo> searchMember(String inputString) throws Exception {
+		return dao.searchMember(inputString);
+	}
+	
 
 
 }

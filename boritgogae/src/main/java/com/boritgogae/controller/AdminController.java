@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -41,7 +42,13 @@ public class AdminController {
 		Timestamp nowDate = new Timestamp(time);
 		List<MemberVo> newMembers = service.getNewMembers();
 		List<ProductVO> lowestProduct = service.getLowestProduct();
-
+		List<ProductVO> topLikeCountList = service.getTopLikeCount();
+		List<OrdersVO> getNewOrders = service.getNewOrder();
+		List<ProductVO> topReadCountList = service.getTopReadCount();
+		
+		model.addAttribute("topReadCountList", topReadCountList);
+		model.addAttribute("getNewOrders", getNewOrders);
+		model.addAttribute("topLikeCountList", topLikeCountList);
 		model.addAttribute("lowestProduct", lowestProduct);
 		model.addAttribute("newMembers", newMembers);
 		model.addAttribute("members", members);
@@ -69,12 +76,16 @@ public class AdminController {
 		return "/admin/newMember";
 	}
 
-	@RequestMapping(value = "/member/searchMember")
-	public String searchMember(HttpServletRequest request, String inputString, Model model) throws Exception {
-		System.out.println("회원 검색");
-		String getUrl = request.getRemoteAddr();
-
-		return getUrl;
+	@RequestMapping(value = "/member/searchMember", method = RequestMethod.POST)
+	public String searchMember(@RequestParam("inputString") String inputString, Model model) throws Exception {
+		System.out.println(inputString + "회원 검색");
+		
+		List<MemberVo> searchMember = service.searchMember(inputString);
+		System.out.println(searchMember);
+		
+		model.addAttribute("searchMember", searchMember);
+		
+		return "/admin/member";
 	}
 
 	@RequestMapping(value = "/member/delMembers")
@@ -177,4 +188,6 @@ public class AdminController {
 
 		return result;
 	}
+	
+	
 }

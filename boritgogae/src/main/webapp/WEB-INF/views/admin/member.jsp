@@ -12,6 +12,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>보릿고개 | 회원관리</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+		function searchMember() {
+			let url = "/admin/member/searchMember";
+			let inputString = $("#searchMember").val();
+			$.ajax({
+				url : url, // 데이터 송수신될 주소 
+				type : "post", // 전송 방식
+				dataType : "json", // 수신할 데이터
+				data : {"inputString" : inputString },
+				success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+					console.log(data);
+					if (data != null) {
+						console.log("회원이 있음");
+					} else {
+						console.log("회원이 없음");
+					}
+
+				},
+				error : function(e) {
+					console.log(e);
+				}
+			});
+		}
+</script>
 
 </head>
 
@@ -42,17 +68,16 @@
 				<!-- /.container-fluid -->
 				<div class="row">
 					<div class="col-md-8 offset-md-2">
-						<form action="/admin/member/searchMember">
-							<div class="input-group">
-								<input type="search" class="form-control form-control-lg"
-									placeholder="검색할 회원을 입력해주세요">
-								<div class="input-group-append">
-									<button type="submit" class="btn btn-lg btn-default">
-										<i class="fa fa-search"></i>
-									</button>
-								</div>
+						<div class="input-group">
+							<input type="search" class="form-control form-control-lg"
+								placeholder="검색할 회원을 입력해주세요" id="searchMember">
+							<div class="input-group-append">
+								<button type="button" class="btn btn-lg btn-default"
+									onclick="searchMember();">
+									<i class="fa fa-search"></i>
+								</button>
 							</div>
-						</form>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -111,20 +136,7 @@
 						</div>
 					</div>
 					<!-- /.card-body -->
-					<div class="card-footer">
-						<nav aria-label="Contacts Page Navigation">
-							<ul class="pagination justify-content-center m-0">
-								<li class="page-item active"><a class="page-link" href="#">1</a></li>
-								<li class="page-item"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item"><a class="page-link" href="#">4</a></li>
-								<li class="page-item"><a class="page-link" href="#">5</a></li>
-								<li class="page-item"><a class="page-link" href="#">6</a></li>
-								<li class="page-item"><a class="page-link" href="#">7</a></li>
-								<li class="page-item"><a class="page-link" href="#">8</a></li>
-							</ul>
-						</nav>
-					</div>
+					<div class="card-footer"></div>
 					<!-- /.card-footer -->
 				</div>
 				<!-- /.card -->
