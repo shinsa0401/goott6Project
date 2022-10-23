@@ -1,8 +1,6 @@
 package com.boritgogae.controller;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -13,6 +11,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +22,7 @@ import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
+import com.boritgogae.domain.DeleteReasonVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVO;
 import com.boritgogae.service.AdminService;
@@ -38,9 +38,6 @@ public class AdminController {
 	public String adminMainPage(Model model) throws Exception {
 		System.out.println("관리자 페이지로 이동");
 		List<MemberVo> members = service.getMembers();
-
-		Long time = Calendar.getInstance().getTimeInMillis();
-		Timestamp nowDate = new Timestamp(time);
 		List<MemberVo> newMembers = service.getNewMembers();
 		List<ProductVO> lowestProduct = service.getLowestProduct();
 		List<ProductVO> topLikeCountList = service.getTopLikeCount();
@@ -93,7 +90,9 @@ public class AdminController {
 	@RequestMapping(value = "/member/delMembers")
 	public String getDelMember(Model model) throws Exception {
 		List<DeleteAccountVo> deleteMember = service.getDelMembers();
-		System.out.println(deleteMember);
+		List<DeleteReasonVo> deleteReasons = service.getDeleteReason();
+		
+		model.addAttribute("deleteReasons", deleteReasons);
 		model.addAttribute("deleteMember", deleteMember);
 		return "/admin/delMember";
 	}
@@ -191,5 +190,15 @@ public class AdminController {
 		return result;
 	}
 	
+	@RequestMapping(value = "/member/detail/${memberId}")
+	public ResponseEntity<MemberVo> viewMemberProfile(@PathVariable("memberId") String memberId) throws Exception {
+		ResponseEntity<MemberVo> result = null;
+		
+		MemberVo member = service.getMemberProfile(memberId);
+		
+		result = new ResponseEntity<MemberVo>(member, HttpStatus.OK);
+		
+		return result;
+	}
 	
 }

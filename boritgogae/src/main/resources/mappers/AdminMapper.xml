@@ -13,6 +13,10 @@
 		where joinDate between date_sub(now(), interval 30 day) and now() and
 		delStatus = 'N'
 	</select>
+	
+	<select id="getMemberProfile" resultType="MemberVo">
+		select * from members where memberId = #{memberId}
+	</select>
 
 	<select id="getLowestProductQTY" resultType="ProductVO">
   	<![CDATA[
@@ -22,6 +26,10 @@
 
 	<select id="getDelMembers" resultType="DeleteAccountVo">
 		select * from deleteAccount order by deleteDate desc
+	</select>
+	
+	<select id="getDeleteReason" resultType="DeleteReasonVo">
+		select * from deleteReason order by deleteCode
 	</select>
 	
 	<select id="searchMember" resultType="MemberVo">

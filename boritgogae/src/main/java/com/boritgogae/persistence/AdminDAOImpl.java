@@ -13,6 +13,7 @@ import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
+import com.boritgogae.domain.DeleteReasonVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVO;
 
@@ -91,6 +92,16 @@ public class AdminDAOImpl implements AdminDAO {
 	@Override
 	public List<MemberVo> searchMember(String inputString) throws Exception {
 		return ses.selectList(ns + ".searchMember", inputString);
+	}
+
+	@Override
+	public List<DeleteReasonVo> getDeleteReason() throws Exception {
+		return ses.selectList(ns + ".getDeleteReason");
+	}
+
+	@Override
+	public MemberVo getMemberProfile(String memberId) throws Exception {
+		return ses.selectOne(ns + ".getMemberProfile", memberId);
 	}
 
 

@@ -215,21 +215,21 @@
 					<!--  쿠폰 등록 시작 -->
 					<div class="card card-primary">
 						<div class="card-header">
-							<h3 class="card-title">쿠폰 등록</h3>
+							<h3 class="card-title">쿠폰 생성</h3>
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
 							<div class="form-group">
 								<label for="couponName">쿠폰명</label> <input type="text"
 									class="form-control col-sm-4" id="couponName" name="couponName"
-									placeholder="생성할 쿠폰 이름을 입력해주세요">
+									placeholder="쿠폰 이름">
 							</div>
 							<div class="form-group">
 								<label for="couponDiscount">쿠폰 할인율</label>
 								<div class="mb-3 row">
 									<input type="number" class="form-control col-sm-4"
 										name="couponDiscount" id="couponDiscount"
-										placeholder="생성할 쿠폰의 할인율을 입력해주세요">
+										placeholder="쿠폰 할인율">
 									<div class="col-sm-6">
 										<span class="coupon">%</span>
 									</div>
@@ -240,7 +240,7 @@
 								<div class="mb-3 row">
 									<input type="number" class="form-control col-sm-4"
 										name="couponUseDate" id="couponUseDate"
-										placeholder="생성할 쿠폰의 사용 기한을 입력해주세요">
+										placeholder="쿠폰 사용 기한">
 									<div class="col-sm-6">
 										<span class="coupon">일</span>
 									</div>

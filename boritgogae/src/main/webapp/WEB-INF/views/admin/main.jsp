@@ -176,7 +176,7 @@
 					<!-- Main row -->
 					<div class="row">
 						<!-- Left col -->
-						<section class="col-lg-7 connectedSortable">
+						<section class="col-lg-6 connectedSortable">
 							<!-- Custom tabs (Charts with tabs)-->
 							<!-- DONUT CHART -->
 							<div class="card card-danger">
@@ -202,29 +202,7 @@
 							</div>
 							<!-- /.card -->
 
-							<div class="card card-danger">
-								<div class="card-header">
-									<h3 class="card-title">좋아요가 많은 상품 (상위 5개)</h3>
-
-									<div class="card-tools">
-										<button type="button" class="btn btn-tool"
-											data-card-widget="collapse">
-											<i class="fas fa-minus"></i>
-										</button>
-										<button type="button" class="btn btn-tool"
-											data-card-widget="remove">
-											<i class="fas fa-times"></i>
-										</button>
-									</div>
-								</div>
-								<div class="card-body">
-									<canvas id="likeDonutChart"
-										style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-								</div>
-								<!-- /.card-body -->
-							</div>
-							<!-- /.card -->
-
+							
 							<!-- TO DO List -->
 							<div class="card">
 								<div class="card-header">
@@ -333,8 +311,30 @@
 						</section>
 						<!-- /.Left col -->
 						<!-- right col (We are only adding the ID to make the widgets sortable)-->
-						<section class="col-lg-5 connectedSortable">
+						<section class="col-lg-6 connectedSortable">
+							<div class="card card-danger">
+								<div class="card-header">
+									<h3 class="card-title">좋아요가 많은 상품 (상위 5개)</h3>
 
+									<div class="card-tools">
+										<button type="button" class="btn btn-tool"
+											data-card-widget="collapse">
+											<i class="fas fa-minus"></i>
+										</button>
+										<button type="button" class="btn btn-tool"
+											data-card-widget="remove">
+											<i class="fas fa-times"></i>
+										</button>
+									</div>
+								</div>
+								<div class="card-body">
+									<canvas id="likeDonutChart"
+										style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+								</div>
+								<!-- /.card-body -->
+							</div>
+							<!-- /.card -->
+							
 							<!-- Map card -->
 							<div class="card bg-gradient-primary" style="display: none;">
 								<div class="card-header border-0">

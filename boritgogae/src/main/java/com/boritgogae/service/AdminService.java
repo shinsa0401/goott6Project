@@ -6,6 +6,7 @@ import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
+import com.boritgogae.domain.DeleteReasonVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVO;
 
@@ -22,8 +23,14 @@ public interface AdminService {
     // 탈퇴한 회원 목록을 가져오는 메서드
     public List<DeleteAccountVo> getDelMembers() throws Exception;
     
+	// 탈퇴 사유를 가져오는 메서드
+	public List<DeleteReasonVo> getDeleteReason() throws Exception;
+    
     // 입력한 값으로 회원 검색
     public List<MemberVo> searchMember(String inputString) throws Exception;
+    
+	// 회원의 상세 목록을 가져오는 메서드
+	public MemberVo getMemberProfile(String memberId) throws Exception;
     
     // ----------------- 쿠폰 관련 메서드 -----------------
     

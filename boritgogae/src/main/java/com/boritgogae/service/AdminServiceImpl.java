@@ -10,6 +10,7 @@ import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
+import com.boritgogae.domain.DeleteReasonVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVO;
 import com.boritgogae.persistence.AdminDAO;
@@ -107,6 +108,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<MemberVo> searchMember(String inputString) throws Exception {
 		return dao.searchMember(inputString);
+	}
+
+	@Override
+	public List<DeleteReasonVo> getDeleteReason() throws Exception {
+		return dao.getDeleteReason();
+	}
+
+	@Override
+	public MemberVo getMemberProfile(String memberId) throws Exception {
+		return dao.getMemberProfile(memberId);
 	}
 	
 

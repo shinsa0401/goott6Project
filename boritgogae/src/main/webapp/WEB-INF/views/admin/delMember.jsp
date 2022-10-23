@@ -44,7 +44,7 @@
 						<div class="row">
 
 							<div class="col-12">
-								<div class="card">
+								<div class="card card-danger">
 									<div class="card-header">
 										<h3 class="card-title">탈퇴한 회원 목록</h3>
 									</div>
@@ -67,6 +67,37 @@
 													<td>${member.deleteWhyMemo }</td>
 													<td>${member.deleteDate }</td>
 													<td>${member.deleteCode }</td>
+												</tr>
+											</c:forEach>
+											</tbody>
+											
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+								<!-- /.card -->
+							</div>
+							
+							<div class="col-12">
+								<div class="card card-info">
+									<div class="card-header">
+										<h3 class="card-title">탈퇴 사유 목록</h3>
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body">
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th>탈퇴 코드</th>
+													<th>탈퇴 사유</th>
+												</tr>
+												
+											</thead>
+											<tbody>
+											<c:forEach items="${deleteReasons }" var="deleteReason">
+												<tr>
+													<td>${deleteReason.deleteCode }</td>
+													<td>${deleteReason.deleteWhy }</td>
 												</tr>
 											</c:forEach>
 											</tbody>

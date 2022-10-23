@@ -62,6 +62,10 @@
 			$("#members").html(output);
 		}
 		
+		function viewMemberProfile(memberId) {
+			location.href = "/admin/member/detail/" + memberId;
+		}
+		
 </script>
 
 </head>
@@ -148,7 +152,7 @@
 											</div>
 											<div class="card-footer">
 												<div class="text-right">
-													<a href="#" class="btn btn-sm btn-primary"> <i
+													<a href="#" class="btn btn-sm btn-primary" onclick="viewMemberProfile('${member.memberId }');"> <i
 														class="fas fa-user"></i> 프로필 보기
 													</a>
 												</div>
