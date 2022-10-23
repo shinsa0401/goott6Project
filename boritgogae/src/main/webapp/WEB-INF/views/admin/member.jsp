@@ -27,6 +27,7 @@
 					console.log(data);
 					if (data != null) {
 						console.log("회원이 있음");
+						searchMemberOutput(data);
 					} else {
 						console.log("회원이 없음");
 					}
@@ -37,6 +38,30 @@
 				}
 			});
 		}
+		
+		function searchMemberOutput(data) {
+			let output = "";
+			
+			
+			$.each(data, function(i, item){
+				let memberJoinDate = new Date(item.joinDate);
+				
+				output += '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">';
+				output += '<div class="card bg-light d-flex flex-fill">';
+				output += '<div class="card-header text-muted border-bottom-0"><b>아이디 : </b>' + item.memberId + '</div>';
+				output += '<div class="card-body pt-0"><div class="row"><div class="col-7">';
+				output += '<h2 class="lead"><b>닉네임 : </b>' + item.nickName + '</h2><p class="text-muted text-sm">';
+				output += '<b>이름 : </b>' + item.memberName + '</p><p class="text-muted text-sm"><b>등급 : </b>' + item.grade + '</p>';
+				output += '<p class="text-muted text-sm"><b>가입일 : </b>' + memberJoinDate.getFullYear() + '년 ' + (memberJoinDate.getMonth() +1) + '월 ' + memberJoinDate.getDate() + '일';
+				output += '</p></div><div class="col-5 text-center">';
+				output += '<img src="${pageContext.request.contextPath}/resources/' + item.memberImg + '" alt="user-avatar" class="img-circle img-fluid">';
+				output += '</div></div></div><div class="card-footer"><div class="text-right"><a href="#" class="btn btn-sm btn-primary">';
+				output += '<i class="fas fa-user"></i> 프로필 보기</a></div></div></div></div>';
+			});
+				
+			$("#members").html(output);
+		}
+		
 </script>
 
 </head>
@@ -88,7 +113,7 @@
 				<!-- Default box -->
 				<div class="card card-solid">
 					<div class="card-body pb-0">
-						<div class="row">
+						<div class="row" id="members">
 
 							<c:forEach items="${members }" var="member">
 								<c:if test="${member.memberId != 'admin' }">

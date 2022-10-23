@@ -14,15 +14,9 @@
 <title>보릿고개 | 관리자페이지</title>
 <script
 	src="${pageContext.request.contextPath}/resources/admin/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script
-	src="${pageContext.request.contextPath}/resources/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
 <script
 	src="${pageContext.request.contextPath}/resources/admin/plugins/chart.js/Chart.min.js"></script>
-<!-- AdminLTE App -->
-<script
-	src="${pageContext.request.contextPath}/resources/admin/dist/js/adminlte.min.js"></script>
 <script>
 	$(document).ready(function() {
 		let likeDonutChartCanvas = $('#likeDonutChart').get(0).getContext('2d');

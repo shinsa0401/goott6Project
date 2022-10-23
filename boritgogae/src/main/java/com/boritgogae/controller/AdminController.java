@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,15 +78,16 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/member/searchMember", method = RequestMethod.POST)
-	public String searchMember(@RequestParam("inputString") String inputString, Model model) throws Exception {
+	public ResponseEntity<List<MemberVo>> searchMember(@RequestParam("inputString") String inputString, Model model) throws Exception {
 		System.out.println(inputString + "회원 검색");
+		ResponseEntity<List<MemberVo>> result = null;
 		
 		List<MemberVo> searchMember = service.searchMember(inputString);
 		System.out.println(searchMember);
 		
-		model.addAttribute("searchMember", searchMember);
+		result = new ResponseEntity<>(searchMember, HttpStatus.OK);
 		
-		return "/admin/member";
+		return result;
 	}
 
 	@RequestMapping(value = "/member/delMembers")
