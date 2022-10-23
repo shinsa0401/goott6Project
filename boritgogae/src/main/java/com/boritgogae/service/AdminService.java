@@ -7,6 +7,7 @@ import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.DeleteReasonVo;
+import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVO;
 
@@ -32,6 +33,12 @@ public interface AdminService {
 	// 회원의 상세 목록을 가져오는 메서드
 	public MemberVo getMemberProfile(String memberId) throws Exception;
     
+	// 회원의 주소를 가져오는 메서드
+	public List<DeliveryInfoVo> getMemberAddress(String memberId) throws Exception;
+	
+	// 회원의 정보를 수정하는 메서드
+	public boolean modifyMemberForAdmin(MemberVo member) throws Exception;
+	
     // ----------------- 쿠폰 관련 메서드 -----------------
     
     // 쿠폰 신규 등록 하는 메서드
@@ -49,6 +56,8 @@ public interface AdminService {
 	// 쿠폰을 회원 or 회원 전체 에게 전송하는 메서드
 	public boolean sendCoupon(CouponUsedVo sendCoupon) throws Exception;
 	
+	// 회원이 보유한 쿠폰을 가져오는 메서드
+	public List<CouponUsedVo> getCouponFromMember(String memberId) throws Exception;
 	
     // ----------------- 상품 관련 메서드 -----------------
 

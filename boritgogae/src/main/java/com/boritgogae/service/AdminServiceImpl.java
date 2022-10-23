@@ -11,6 +11,7 @@ import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.DeleteReasonVo;
+import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVO;
 import com.boritgogae.persistence.AdminDAO;
@@ -118,6 +119,25 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public MemberVo getMemberProfile(String memberId) throws Exception {
 		return dao.getMemberProfile(memberId);
+	}
+
+	@Override
+	public List<CouponUsedVo> getCouponFromMember(String memberId) throws Exception {
+		return dao.getCouponFromMember(memberId);
+	}
+
+	@Override
+	public List<DeliveryInfoVo> getMemberAddress(String memberId) throws Exception {
+		return dao.getMemberAddress(memberId);
+	}
+
+	@Override
+	public boolean modifyMemberForAdmin(MemberVo member) throws Exception {
+		boolean result = false;
+		if(dao.modifyMemberForAdmin(member) == 1) {
+			result = true;
+		}
+		return result;
 	}
 	
 

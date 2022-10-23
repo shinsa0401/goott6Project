@@ -63,7 +63,7 @@
 		}
 		
 		function viewMemberProfile(memberId) {
-			location.href = "/admin/member/detail/" + memberId;
+			location.href = "/admin/member/detail?memberId=" + memberId;
 		}
 		
 </script>
@@ -152,7 +152,7 @@
 											</div>
 											<div class="card-footer">
 												<div class="text-right">
-													<a href="#" class="btn btn-sm btn-primary" onclick="viewMemberProfile('${member.memberId }');"> <i
+													<a class="btn btn-sm btn-primary" onclick="viewMemberProfile('${member.memberId }');"> <i
 														class="fas fa-user"></i> 프로필 보기
 													</a>
 												</div>

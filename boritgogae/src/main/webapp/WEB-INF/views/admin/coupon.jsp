@@ -295,6 +295,7 @@
 					</div>
 					<!--  쿠폰 전송 끝 -->
 
+					<!--  쿠폰 목록 시작 -->
 					<div class="card card-info">
 						<div class="card-header">
 							<h3 class="card-title">쿠폰 목록</h3>
@@ -325,6 +326,7 @@
 						</div>
 						<!-- /.card-body -->
 					</div>
+					<!--  쿠폰 목록 끝 -->
 				</div>
 
 			</section>

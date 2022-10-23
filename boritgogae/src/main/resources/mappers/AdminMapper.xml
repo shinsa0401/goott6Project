@@ -35,9 +35,23 @@
 	<select id="searchMember" resultType="MemberVo">
 		select * from members where nickName = #{inputString} or memberId = #{inputString}
 	</select>
+	
+	<select id="getMemberAddress" resultType="deliveryInfoVo">
+		select * from deliveryInfo where memberId = #{memberId}
+	</select>
+	
+	<update id="modifyMemberForAdmin">
+		update members set memberPwd = #{memberPwd}, memberName = #{memberName}, 
+		memberEmail = #{memberEmail}, nickName = #{nickName}, phoneNumber = #{phoneNumber} 
+	 	where memberId = #{memberId}
+	</update>
 
 	<select id="getCoupon" resultType="CouponVo">
 		select * from coupon
+	</select>
+	
+	<select id="getCouponFromMember" resultType="CouponUsedVo">
+		select * from couponUsed where memberId = #{memberId}
 	</select>
 
 	<insert id="createCoupon">
@@ -56,9 +70,9 @@
 	</update>
 
 	<insert id="sendCoupon">
-		insert into couponUsed (memberId, couponName, issueDate, couponWhy
+		insert into couponUsed (memberId, couponName, issueDate, expirationDate, couponWhy
 		)
-		values (#{memberId}, #{couponName}, (SELECT DATE_ADD(NOW(), INTERVAL
+		values (#{memberId}, #{couponName}, now(), (SELECT DATE_ADD(NOW(), INTERVAL
 		(select couponUseDate from coupon where couponName = #{couponName})
 		day) as date), #{couponWhy})
 	</insert>

@@ -14,6 +14,7 @@ import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.DeleteReasonVo;
+import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVO;
 
@@ -104,7 +105,22 @@ public class AdminDAOImpl implements AdminDAO {
 		return ses.selectOne(ns + ".getMemberProfile", memberId);
 	}
 
+	@Override
+	public List<CouponUsedVo> getCouponFromMember(String memberId) throws Exception {
+		return ses.selectList(ns + ".getCouponFromMember", memberId);
+	}
 
+	@Override
+	public List<DeliveryInfoVo> getMemberAddress(String memberId) throws Exception {
+		return ses.selectList(ns + ".getMemberAddress", memberId);
+	}
+
+	@Override
+	public int modifyMemberForAdmin(MemberVo member) throws Exception {
+		return ses.update(ns + ".modifyMemberForAdmin", member);
+	}
+
+	
     
 
 }

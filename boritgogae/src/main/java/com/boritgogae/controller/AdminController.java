@@ -23,6 +23,7 @@ import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.DeleteReasonVo;
+import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVO;
 import com.boritgogae.service.AdminService;
@@ -190,15 +191,18 @@ public class AdminController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/member/detail/${memberId}")
-	public ResponseEntity<MemberVo> viewMemberProfile(@PathVariable("memberId") String memberId) throws Exception {
-		ResponseEntity<MemberVo> result = null;
+	@RequestMapping(value = "/member/detail")
+	public String viewMemberProfile(@RequestParam("memberId") String memberId, Model model) throws Exception {
 		
 		MemberVo member = service.getMemberProfile(memberId);
+		List<CouponUsedVo> memberCoupon = service.getCouponFromMember(memberId);
+		List<DeliveryInfoVo> memberAddressList = service.getMemberAddress(memberId);
 		
-		result = new ResponseEntity<MemberVo>(member, HttpStatus.OK);
+		model.addAttribute("memberAddressList", memberAddressList);
+		model.addAttribute("memberCoupon", memberCoupon);
+		model.addAttribute("member", member);
 		
-		return result;
+		return "/admin/memberProfile";
 	}
 	
 }

@@ -12,7 +12,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>보릿고개 | 신규 회원</title>
-
+<script type="text/javascript">
+	function viewMemberProfile(memberId) {
+		location.href = "/admin/member/detail?memberId=" + memberId;
+	}
+</script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -74,7 +78,7 @@
                 </div>
                 <div class="card-footer">
                   <div class="text-right">
-                    <a href="#" class="btn btn-sm btn-primary">
+                    <a class="btn btn-sm btn-primary" onclick="viewMemberProfile('${member.memberId }');">
                       <i class="fas fa-user"></i>  프로필 보기
                     </a>
                   </div>

@@ -8,21 +8,23 @@ public class CouponUsedVo {
 	private String couponName;
 	private Timestamp useDate;
 	private Timestamp issueDate;
+	private Timestamp expirationDate;
 	private String couponWhy;
 	private int orderNo;
-	
+
 	public CouponUsedVo() {
 		super();
 	}
-
+	
 	public CouponUsedVo(int no, String memberId, String couponName, Timestamp useDate, Timestamp issueDate,
-			String couponWhy, int orderNo) {
+			Timestamp expirationDate, String couponWhy, int orderNo) {
 		super();
 		this.no = no;
 		this.memberId = memberId;
 		this.couponName = couponName;
 		this.useDate = useDate;
 		this.issueDate = issueDate;
+		this.expirationDate = expirationDate;
 		this.couponWhy = couponWhy;
 		this.orderNo = orderNo;
 	}
@@ -67,6 +69,14 @@ public class CouponUsedVo {
 		this.issueDate = issueDate;
 	}
 
+	public Timestamp getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(Timestamp expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+
 	public String getCouponWhy() {
 		return couponWhy;
 	}
@@ -86,8 +96,10 @@ public class CouponUsedVo {
 	@Override
 	public String toString() {
 		return "CouponUsedVo [no=" + no + ", memberId=" + memberId + ", couponName=" + couponName + ", useDate="
-				+ useDate + ", issueDate=" + issueDate + ", couponWhy=" + couponWhy + ", orderNo=" + orderNo + "]";
+				+ useDate + ", issueDate=" + issueDate + ", expirationDate=" + expirationDate + ", couponWhy="
+				+ couponWhy + ", orderNo=" + orderNo + "]";
 	}
+	
 	
 	
 }
