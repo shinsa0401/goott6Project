@@ -32,8 +32,10 @@ where lastPwdUpdate + (select date_add(now(), interval 6 month)) < now();
 
 ----- 로그아웃
 -- 로그아웃시간 업데이트
+insert into members(logOutDate) values(now());
 -- 세션아이디 만료, 삭제 
 update members set logOutDate = now() where sessionId = 'AaBbCc112233';
+
 
 
 -- 비회원 주문내역조회

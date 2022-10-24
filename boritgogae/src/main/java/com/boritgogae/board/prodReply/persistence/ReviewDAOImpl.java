@@ -9,8 +9,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.boritgogae.board.prodReply.domain.OrderDetailVO;
-import com.boritgogae.board.prodReply.domain.OrdersVO;
+import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
@@ -34,12 +34,12 @@ public class ReviewDAOImpl implements ReviewDAO {
 	}
 
 	@Override
-	public List<OrdersVO> getOrder(String userId, String prodNo) throws Exception{
+	public List<OrdersVo> getOrder(String userId, String prodNo) throws Exception{
 		Map<String, String> map = new HashMap<>();
 		map.put("userId", userId);
 		map.put("prodNo", prodNo);
 
-		List<OrdersVO> orderLst = ses.selectList(ns + ".getOrders", map);
+		List<OrdersVo> orderLst = ses.selectList(ns + ".getOrders", map);
 		
 		System.out.println(orderLst.toString());
 		

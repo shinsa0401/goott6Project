@@ -127,8 +127,9 @@
 	color: blue;
 }
 .form-horizontal .addLink .signUp:hover{
-	color: blue;	
+	color: blue;
 }
+
 
 @media only screen and (max-width: 479px){
     .form-horizontal .form-group{

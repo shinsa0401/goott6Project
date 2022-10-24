@@ -18,5 +18,9 @@
   		select count(*) as orderCnt, prodNo from detailOrder group by prodNo order by orderCnt desc limit 0,6
   	</select>
   	
+  	<!-- 비회원 로그인하기위해 주문내역 검색 -->
+  	<select id="selectGuestOrderInfo" resultType="OrdersVo">
+  		select * from orders where name = #{name} and phoneNumber = #{phoneNumber} and guestPwd = #{guestPwd}
+  	</select>
   	
   </mapper>

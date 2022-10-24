@@ -19,6 +19,16 @@
   	<select id="selectAutoLogIn" resultType="MemberVo">
   		select * from members where sessionId = #{sessionId}
   	</select>
+  	
+  	<!-- 로그인 시간 업데이트 -->
+  	<update id="updateLogInDate">
+  		update members set logInDate = now() where memberId = #{memberId}
+  	</update>
+  	
+  	<!-- 로그아웃 시간 업데이트 -->
+	<update id="updateLogOutDate">
+		update members set logOutDate = now() where memberId = #{memberId}
+	</update>
 
 	<!-- 등급혜택을 가져오는 메서드 -->
 	<select id="showGradeBenefit" resultType="GradesVo">

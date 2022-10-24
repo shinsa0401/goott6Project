@@ -10,10 +10,10 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
-import com.boritgogae.board.prodReply.domain.OrderDetailVO;
-import com.boritgogae.board.prodReply.domain.ReviewVO;
+import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.GradesVo;
@@ -55,7 +55,21 @@ public class MemberDAOImpl implements MemberDAO {
 		System.out.println("DAO : 자동로그인 체크한 회원 검색");
 		return ses.selectOne(ns + ".selectAutoLogIn", sessionId);
 	}
-
+	
+	// 기존 로그인시 로그인시간 업데이트
+	@Override
+	public int updateLogInDate(String memberId) throws Exception {
+		System.out.println("DAO : 로그인 시간 업데이트");
+		return ses.update(ns + ".updateLogInDate", memberId);
+	}
+	
+	// 기존 회원 로그아웃시 로그아웃시간 업데이트
+	@Override
+	public int updateLogOutDate(String memberId) throws Exception {
+		System.out.println("DAO : 로그아웃시간 업데이트");
+		return ses.update(ns + ".updateLogOutDate", memberId);
+	}
+	
 
 	// 등급혜택을 가져오는 메서드
 	@Override
@@ -122,7 +136,7 @@ public class MemberDAOImpl implements MemberDAO {
 
 	// 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드
 	@Override
-	public List<OrderDetailVO> userAbleReviewList(String memberId) throws Exception {
+	public List<OrderDetailVo> userAbleReviewList(String memberId) throws Exception {
 		System.out.println("DAO : 유저 리뷰를 쓰지 않은 구매확정 리스트 불러오기 ");
 		return ses.selectList(ns+".userAbleReviewList", memberId);
 	}
@@ -135,5 +149,6 @@ public class MemberDAOImpl implements MemberDAO {
 		return ses.selectOne(ns+".convertProdNoToProdName", prodCode);
 	}
 
+	
 
 }

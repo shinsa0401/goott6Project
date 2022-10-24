@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.boritgogae.board.prodReply.domain.OrderDetailVO;
-import com.boritgogae.board.prodReply.domain.OrdersVO;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
 import com.boritgogae.board.prodReply.domain.ReviewVO;

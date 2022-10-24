@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
+import com.boritgogae.domain.GuestOrderDTO;
+import com.boritgogae.domain.OrdersVo;
 @Repository
 public class OrderDAOImpl implements OrderDAO {
 	
@@ -21,8 +23,6 @@ public class OrderDAOImpl implements OrderDAO {
 	public int addCart(CartDTO cart) throws Exception {
 		
 		return ses.insert(ns+".addCart");
-		
-		
 	}
 
 	@Override
@@ -35,6 +35,13 @@ public class OrderDAOImpl implements OrderDAO {
 	public List<DetailOrderVo> getPopular() throws Exception {
 	
 		return ses.selectList(ns+".popularList");
+	}
+	
+	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
+	@Override
+	public List<OrdersVo> selectGuestOrderInfo(GuestOrderDTO gdto) throws Exception {
+		System.out.println("DAO : 비회원 주문내역 조회");
+		return ses.selectList(ns + ".selectGuestOrderInfo", gdto);
 	}
 
 }

@@ -26,7 +26,6 @@ public class LogInInterceptor extends HandlerInterceptorAdapter {
 		System.out.println("Log In Interceptor : 이전 로그인 세션 삭제");
 		
 		HttpSession ses = request.getSession();
-		System.out.println("프리핸들러 세션 : " + ses);
 		
 		if (ses.getAttribute("logInMember") != null) { // 로그인 한 기록이 있다면
 			ses.removeAttribute("logInMember"); // 이전에 로그인 기록을 삭제
@@ -42,7 +41,6 @@ public class LogInInterceptor extends HandlerInterceptorAdapter {
 			ModelAndView modelAndView) throws Exception {
 		
 		HttpSession ses = request.getSession();
-		System.out.println("포스트핸들러 세션 : " + ses);
 		
 		String destination = "";
 		

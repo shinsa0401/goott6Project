@@ -15,13 +15,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.boritgogae.board.prodReply.domain.OrderDetailVO;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
+import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.GradesVo;
+import com.boritgogae.domain.GuestOrderDTO;
 import com.boritgogae.domain.PointHistoryVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
@@ -31,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.service.MemberService;
 
 @Controller
@@ -201,8 +204,8 @@ public class MemberController {
 	 * @throws Exception 
 	 * @date : 2022. 10. 20.
 	 * @입력 param : dto, model, request, response
-	 * @returnType : String
-	 * 
+	 * @returnType : void
+	 * 로그인 정보를 입력하고 난 후 인터셉터핸들러에 의해 로그인 처리
 	 */
 	@RequestMapping(value = "/logInPost", method = RequestMethod.POST)
 	public void logInPost(LogInDTO dto, Model model, HttpSession ses, HttpServletRequest request) throws Exception {
@@ -234,19 +237,30 @@ public class MemberController {
 	/**
 	 * @methodName : logOut
 	 * @author : 신태호
+	 * @throws Exception 
 	 * @date : 2022. 10. 21.
 	 * @입력 param : session, response
 	 * @returnType : void
 	 */
 	@RequestMapping(value = "/logOut")
-	public void logOut(HttpSession ses, HttpServletResponse response) throws IOException {
-		if (ses.getAttribute("logInMember") != null) {
+	public void logOut(HttpSession ses, HttpServletResponse response) throws Exception {
+		MemberVo logInMember = (MemberVo) ses.getAttribute("logInMember");
+		
+		if (ses.getAttribute("logInMember") != null) { // 회원 정보가 있다면
+			// DB 로그아웃시간 업데이트
+			service.updateLogOutDate(logInMember.getMemberId());
+			
 			ses.removeAttribute("logInMember"); // 로그인 정보 삭제
 			ses.invalidate(); // 세션 만료
 			
 		}
+		
 		System.out.println("로그아웃");
 		
 		response.sendRedirect("/");
 	}
+	
+	
+	
+	
 }

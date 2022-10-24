@@ -20,19 +20,37 @@
 <title>로그인 페이지</title>
 <script>
 	$(function () {
-		logInFail();
+		logInFail(); // 로그인 실패시 실패 메세지 출력
+		$("#failMsgDiv").hide();
+		$(".guestForm").hide();
+		
+		
+		// 회원, 비회원 로그인폼 변경
+		$("input[name='member']").change(function() {
+			let memberSelect = $("input[name='member']:checked").val();
+			
+			if (memberSelect == "guest") {
+				$("#guestFailMsgDiv").hide();
+				$(".memberForm").hide();
+				$(".guestForm").show();
+			} else if (memberSelect == "member") {
+				$("#memberFailMsgDiv").hide();
+				$(".guestForm").hide();
+				$(".memberForm").show();
+			}
+		});
+		
+		
 	});
 	
 	
 	
-	// 로그인 실패시 실패 메세지 출력
+	// 회원 로그인 실패시 실패 메세지 출력
 	function logInFail() {
 		if (getParameter("status") == "fail") {
-			$("#failMsgDiv").show();
-			
-			
+			$("#memberFailMsgDiv").show();
 		} else {
-			$("#failMsgDiv").hide();
+			$("#memberFailMsgDiv").hide();
 		}	
 	}
 	
@@ -56,7 +74,6 @@
 		        return decodeURIComponent(returnVal);
 		    } 
 		}
-		
 		return -1; // 찾을 매개변수가 없다
 	}
 	
@@ -65,11 +82,16 @@
 </script>
 <style>
 	.logInArea {
-		height: 550px;
+		height: 600px;
 	}
 	
 	.row {
 		justify-content: center;
+	}
+	
+	#memberSelect {
+		margin-top: 30px;
+		text-align: center;
 	}
 	
 	.btns {
@@ -86,20 +108,30 @@
     	transform: translate(-50%, -100%);
     }
     
-    #failMsgDiv {
-    	display: none;
-    }
-    
     .failMsg {
     	text-align: left;
     	font-size: 15px;
     }
     
-    #failMsg1 {
+    #memberFailMsg1 {
     	color: blue;
     }
-    #failMsg2 {
+    #memberFailMsg2 {
     	color: red;
+    }
+    
+    .guestForm {
+    	display: none;
+    }
+    
+    .guestFailMsg {
+    	color: red;
+    }
+    .guestFind {
+    	color: blue;
+    }
+    .guestFind:hover {
+    	color: blue;
     }
 </style>
 </head>
@@ -108,15 +140,31 @@
 
 	
     <div class="container">
-        <div class="row">
-            <div class="col-md-offset-3 col-md-6 logInArea">
+    	<div class="row">
+    	    <div class="col-md-offset-3 col-md-6 logInArea">
+    	    
+    	    	<div class="form-check" id="memberSelect">
+    	    		<label class="form-check-label" for="member">
+  						<input type="radio" class="form-check-input" class="radioBtn" name="member" value="member" checked>
+  						<spna>회원</spna>
+  					</label>
+  					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  					<label class="form-check-label" for="guest">
+  						<input type="radio" class="form-check-input" id="guestRadio" class="radioBtn" name="member" value="guest">
+  						<spna>비회원</spna>
+  					</label>
+				</div>
+				
+    	    	<div class="memberForm">
                 <form class="form-horizontal" action="${contextPath }/member/logInPost" method="post">
                     <span class="heading">Log In</span>
-                    <div id="failMsgDiv" class="form-group">
+                    <div id="memberFailMsgDiv" class="form-group" style="display:none">
                     	<p class="failMsg">죄송합니다. 로그인에 실패했습니다.</p>
                     	<p class="failMsg">
-                    		<span id="failMsg1">아이디와 비밀번호</span>를 
-                    		<span id="failMsg2">확인</span>하고 다시 로그인해주세요.
+                    		<span id="memberFailMsg1">아이디와 비밀번호</span>를 
+                    		<span id="memberFailMsg2">확인</span>하고 다시 로그인해주세요.
                     	</p>
                     </div>
                     <div class="form-group">
@@ -151,6 +199,51 @@
                     </div>
                     
                 </form>
+                </div>
+                
+                
+                <div class="guestForm">
+                <form class="form-horizontal" action="${contextPath }/order/detailGuest" method="post">
+                    <span class="heading">Guest</span>
+                    <div class="form-group" id="guestFailMsgDiv" style="display:none">
+                    	<p class="failMsg">
+                    		<span class="guestFailMsg">주문 시 입력한 주문자 명과 휴대폰 번호,</span>
+                    	</p>
+                    	<p class="failMsg">
+                    		<span class="guestFailMsg">주문 비밀번호를 정확히 입력해주세요.</span>
+                    	</p>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="주문자명을 입력하세요" autofocus />
+                        <i class="fa fa-user"></i>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="휴대폰 번호를 입력하세요" />
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="guestPwd"  name="guestPwd" placeholder="비밀번호를 입력하세요" />
+                        <i class="fa fa-lock"></i>
+                        
+                    </div>
+                    
+                    <div class="form-group">
+                    	<div class="btns">
+                    		<button type="submit" class="btn btn-login">로그인</button>
+	                        <button type="reset" class="btn btn-cancel" onclick="location.href='${contextPath}/';">취소</button>
+	                    </div>
+                    </div>
+                    
+                    <div class="form-group">
+                    	<div class="addLink">
+                    		<a class="guestFind" href="#">주문 비밀번호찾기</a>
+                    	</div>
+                    </div>
+                    
+                </form>
+                </div>
             </div>
         </div>
     </div>

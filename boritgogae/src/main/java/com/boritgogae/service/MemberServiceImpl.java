@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
-import com.boritgogae.board.prodReply.domain.OrderDetailVO;
+import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
@@ -33,8 +33,11 @@ public class MemberServiceImpl implements MemberService {
 		MemberVo logInMember = dao.logIn(dto);
 		
 		if (logInMember != null) {
+			dao.updateLogInDate(logInMember.getMemberId());
 			System.out.println("로그인 성공");
+			
 		} else {
+			
 			System.out.println("일치하는 정보가 없다");
 		}
 		
@@ -48,14 +51,22 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updateMemberSession(memberId, sessionId, sessionLimit);
 	}
 	
-	// 자동로그인 회원 체크
+	// 자동로그인 회원 체크하는 메서드
 	@Override
 	public MemberVo checkAutoLogIn(String sessionId) throws Exception {
 		
 		return dao.selectAutoLogIn(sessionId);
 	}
-
-
+	
+	// 기존 회원 로그아웃 시간 업데이트
+	@Override
+	public int updateLogOutDate(String memberId) throws Exception {
+		
+		return dao.updateLogOutDate(memberId);
+	}
+	
+	
+	
 	// 등급혜택을 가져오는 메서드
 	@Override
 	public List<GradesVo> showGradeBenefit() throws Exception {
@@ -121,7 +132,7 @@ public class MemberServiceImpl implements MemberService {
 
 	// 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드
 	@Override
-	public List<OrderDetailVO> userAbleReviewList(String memberId) throws Exception {
+	public List<OrderDetailVo> userAbleReviewList(String memberId) throws Exception {
 		System.out.println("서비스단 : 리뷰를 쓰지 않은 구매확정 내역 가져오기");
 		return dao.userAbleReviewList(memberId);
 	}
@@ -133,7 +144,6 @@ public class MemberServiceImpl implements MemberService {
 		return dao.convertProdNoToProdName(prodCode);
 	}
 
-	
 
 
 }

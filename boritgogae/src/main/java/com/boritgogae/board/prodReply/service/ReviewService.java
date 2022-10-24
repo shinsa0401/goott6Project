@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.board.prodReply.domain.OrderDetailVO;
-import com.boritgogae.board.prodReply.domain.OrdersVO;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;

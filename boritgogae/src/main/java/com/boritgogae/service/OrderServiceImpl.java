@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
+import com.boritgogae.domain.GuestOrderDTO;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.persistence.OrderDAO;
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -42,5 +44,11 @@ public class OrderServiceImpl implements OrderService {
 		List<DetailOrderVo> lst = dao.getPopular();
 		return lst;
 	} 
+	
+	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
+	@Override
+	public List<OrdersVo> guestOrderInfo(GuestOrderDTO gdto) throws Exception {
+		return dao.selectGuestOrderInfo(gdto);
+	}
 
 }

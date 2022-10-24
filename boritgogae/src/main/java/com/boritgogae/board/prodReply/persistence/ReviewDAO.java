@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.boritgogae.board.prodReply.domain.OrderDetailVO;
-import com.boritgogae.board.prodReply.domain.OrdersVO;
+import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
@@ -20,7 +20,7 @@ public interface ReviewDAO {
 	public int insertReview(ReviewDTO dto) throws Exception;
 	
 	//아이디와 상품id로 주문 불러오는 메서드
-	public List<OrdersVO> getOrder(String userId, String prodNo) throws Exception;
+	public List<OrdersVo> getOrder(String userId, String prodNo) throws Exception;
 	
 	//마지막 리뷰번호 불러오는 메서드
 	public int getLastReviewNo() throws Exception;

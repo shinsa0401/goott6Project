@@ -144,7 +144,7 @@
 </head>
 
 <body>
-	<jsp:include page="../head.jsp"></jsp:include>
+	<jsp:include page="../header.jsp"></jsp:include>
 
 	<!-- summernote 설정 -->
 	<script
