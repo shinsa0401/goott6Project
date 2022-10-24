@@ -9,11 +9,11 @@ public class MemberVo {
 	private String nickName;
 	private Timestamp birthDay;
 	private String phoneNumber;
-	private String MemberEmail;
+	private String memberEmail;
 	private String memberImg;
 	private Timestamp joinDate;
 	private Timestamp logOutDate;
-	private Timestamp lastLoginDate;
+	private Timestamp logInDate;
 	private String delStatus;
 	private Timestamp lastPwdUpdate;
 	private String isAdmin;
@@ -29,7 +29,7 @@ public class MemberVo {
 
 	public MemberVo(String memberId, String memberName, String memberPwd, String nickName, Timestamp birthDay,
 			String phoneNumber, String memberEmail, String memberImg, Timestamp joinDate, Timestamp logOutDate,
-			Timestamp lastLoginDate, String delStatus, Timestamp lastPwdUpdate, String isAdmin, String sessionId,
+			Timestamp logInDate, String delStatus, Timestamp lastPwdUpdate, String isAdmin, String sessionId,
 			Timestamp sessionLimit, int memberPoint, int purchaseAmount, String grade) {
 		super();
 		this.memberId = memberId;
@@ -38,11 +38,11 @@ public class MemberVo {
 		this.nickName = nickName;
 		this.birthDay = birthDay;
 		this.phoneNumber = phoneNumber;
-		MemberEmail = memberEmail;
+		memberEmail = memberEmail;
 		this.memberImg = memberImg;
 		this.joinDate = joinDate;
 		this.logOutDate = logOutDate;
-		this.lastLoginDate = lastLoginDate;
+		this.logInDate = logInDate;
 		this.delStatus = delStatus;
 		this.lastPwdUpdate = lastPwdUpdate;
 		this.isAdmin = isAdmin;
@@ -101,12 +101,12 @@ public class MemberVo {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getMemberEmail() {
-		return MemberEmail;
+	public String getmemberEmail() {
+		return memberEmail;
 	}
 
-	public void setMemberEmail(String memberEmail) {
-		MemberEmail = memberEmail;
+	public void setmemberEmail(String memberEmail) {
+		memberEmail = memberEmail;
 	}
 
 	public String getMemberImg() {
@@ -133,12 +133,12 @@ public class MemberVo {
 		this.logOutDate = logOutDate;
 	}
 
-	public Timestamp getLastLoginDate() {
-		return lastLoginDate;
+	public Timestamp getlogInDate() {
+		return logInDate;
 	}
 
-	public void setLastLoginDate(Timestamp lastLoginDate) {
-		this.lastLoginDate = lastLoginDate;
+	public void setlogInDate(Timestamp logInDate) {
+		this.logInDate = logInDate;
 	}
 
 	public String getDelStatus() {
@@ -209,8 +209,8 @@ public class MemberVo {
 	public String toString() {
 		return "MemberVo [memberId=" + memberId + ", memberName=" + memberName + ", memberPwd=" + memberPwd
 				+ ", nickName=" + nickName + ", birthDay=" + birthDay + ", phoneNumber=" + phoneNumber
-				+ ", MemberEmail=" + MemberEmail + ", memberImg=" + memberImg + ", joinDate=" + joinDate
-				+ ", logOutDate=" + logOutDate + ", lastLoginDate=" + lastLoginDate + ", delStatus=" + delStatus
+				+ ", memberEmail=" + memberEmail + ", memberImg=" + memberImg + ", joinDate=" + joinDate
+				+ ", logOutDate=" + logOutDate + ", logInDate=" + logInDate + ", delStatus=" + delStatus
 				+ ", lastPwdUpdate=" + lastPwdUpdate + ", isAdmin=" + isAdmin + ", sessionId=" + sessionId
 				+ ", sessionLimit=" + sessionLimit + ", memberPoint=" + memberPoint + ", purchaseAmount="
 				+ purchaseAmount + ", grade=" + grade + "]";

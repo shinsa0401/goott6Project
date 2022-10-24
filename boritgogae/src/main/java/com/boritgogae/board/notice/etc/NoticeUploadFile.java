@@ -47,7 +47,7 @@ public class NoticeUploadFile {
 
 	@Override
 	public String toString() {
-		return "UploadFile [savedOriginImageFileName=" + savedOriginImageFileName + ","
+		return "UploadAskFile [savedOriginImageFileName=" + savedOriginImageFileName + ","
 				+ " notImageFileName=" + notImageFileName + ", isImage=" + isImage + "]";
 	}
 
