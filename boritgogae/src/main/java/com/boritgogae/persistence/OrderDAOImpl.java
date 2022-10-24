@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.boritgogae.domain.CartDTO;
+import com.boritgogae.domain.DetailOrderVo;
 @Repository
 public class OrderDAOImpl implements OrderDAO {
 	
@@ -28,6 +29,12 @@ public class OrderDAOImpl implements OrderDAO {
 	public List<CartDTO> getCartList(String memberId) throws Exception {
 		
 		return ses.selectList(ns+".selectCartList");
+	}
+	
+	@Override
+	public List<DetailOrderVo> getPopular() throws Exception {
+	
+		return ses.selectList(ns+".popularList");
 	}
 
 }

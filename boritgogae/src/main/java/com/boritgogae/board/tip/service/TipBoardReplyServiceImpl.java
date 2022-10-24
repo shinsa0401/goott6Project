@@ -7,13 +7,13 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.boritgogae.board.tip.domain.TipReplyVo;
-import com.boritgogae.board.tip.persistence.BoardReplyDAO;
+import com.boritgogae.board.tip.persistence.TipBoardReplyDAO;
 
 @Service
-public class BoardReplyServiceImpl implements BoardReplyService {
+public class TipBoardReplyServiceImpl implements TipBoardReplyService {
 
 	@Inject
-	private BoardReplyDAO dao;
+	private TipBoardReplyDAO dao;
 	
 	@Override
 	public List<TipReplyVo> allReply(int bno) throws Exception {

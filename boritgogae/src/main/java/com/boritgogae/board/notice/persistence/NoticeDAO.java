@@ -69,4 +69,6 @@ public interface NoticeDAO {
 	
 	// 조회 테이블 update
 	public int updateNoticeBoardRead(String readMemberIp, int bno,Timestamp nowTime) throws Exception;
+	
+	public List<NoticeVo> getNoticeBoarMain() throws Exception;
 }

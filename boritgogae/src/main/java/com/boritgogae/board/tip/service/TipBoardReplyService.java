@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.boritgogae.board.tip.domain.TipReplyVo;
 
-public interface BoardReplyService {
+public interface TipBoardReplyService {
 
 	List<TipReplyVo> allReply(int bno) throws Exception;
 

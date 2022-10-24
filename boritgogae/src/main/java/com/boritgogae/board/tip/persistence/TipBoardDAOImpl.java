@@ -7,13 +7,15 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import com.boritgogae.board.tip.domain.TipBoardVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
+import com.boritgogae.board.tip.domain.TipReplyVo;
 
 @Repository
-public class BoardDAOImpl implements BoardDAO {
+public class TipBoardDAOImpl implements TipBoardDAO {
 
 	@Inject
 	private SqlSession ses;
@@ -133,6 +135,12 @@ public class BoardDAOImpl implements BoardDAO {
 		map.put("bno", maxNo+"");
 		map.put("step", step+"");
 		return ses.update(ns+".updateStep", map);
+	}
+
+	@Override
+	public List<TipBoardVo> getMiniBoard() throws Exception {
+		
+		return ses.selectList(ns+".miniBoard");
 	}
 
 	

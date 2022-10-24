@@ -194,4 +194,10 @@ public class NoticeServiceImpl implements NoticeService {
 		return result;
 	}
 
+	@Override
+	public List<NoticeVo> getNoticeBoardMain() throws Exception {
+		List<NoticeVo> notice = dao.getNoticeBoarMain();
+		return notice;
+	}
+
 }

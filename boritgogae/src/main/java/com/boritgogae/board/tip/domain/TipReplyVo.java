@@ -59,7 +59,7 @@ public class TipReplyVo {
 	}
 	@Override
 	public String toString() {
-		return "ProdReplyVo [rno=" + rno + ", bno=" + bno + ", createDate=" + createDate + ", memberId=" + memberId
+		return "ReplyVo [rno=" + rno + ", bno=" + bno + ", createDate=" + createDate + ", memberId=" + memberId
 				+ ", content=" + content + ", likeCount=" + likeCount + "]";
 	}
 	
