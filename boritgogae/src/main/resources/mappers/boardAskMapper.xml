@@ -2,7 +2,102 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.boritgogae.boardAskMapper">
-  
-  </mapper>
+
+<mapper namespace="com.boritgogae.boardAskMapper">
+	<select id="listAll" resultType="AskBoardVo">
+		select * from askBoard where
+		isDelete = 'N' order by ref
+		desc, reforder asc limit #{startNum},
+		#{postPerPage}
+	</select>
+
+	<select id="listAllWithSearch" resultType="AskBoardVo">
+		select * from askBoard where isDelete = 'N' and
+		<if test="searchType == 'writer'">
+			writer like concat('%', #{searchWord }, '%')
+		</if>
+		<if test="searchType == 'title'">
+			title like concat('%', #{searchWord }, '%')
+		</if>
+		<if test="searchType == 'contents'">
+			contents like concat('%', #{searchWord }, '%')
+		</if>
+		order by ref desc, refOrder asc limit #{startNum}, #{postPerPage}
+	</select>
+
+
+	<select id="getSearchResultCnt" resultType="int">
+		select count(*) as cnt from askBoard where isDelete = 'N' and
+		<choose>
+			<when test="searchType == 'writer'">
+				writer like concat('%', #{searchWord }, '%')
+			</when>
+			<when test="searchType == 'title'">
+				title like concat('%', #{searchWord }, '%')
+			</when>
+			<when test="searchType == 'contents'">
+				contents like concat('%', #{searchWord }, '%')
+			</when>
+		</choose>
+	</select>
+
+	<select id="getTotalPostCnt" resultType="int">
+		select count(*) as cnt
+		from askBoard where isDelete = 'N'
+	</select>
+
+	<select id="loadAskCode" resultType="AskCodeVo">
+		select * from askClass
+	</select>
+
+	<insert id="create">
+		insert into askBoard(writer, title, contents,
+		askCode)
+		values (#{writer}, #{title}, #{contents} , #{askCode})
+	</insert>
+
+	<select id="getLastNo" resultType="int">
+		select max(askBno) as lastpk
+		from askBoard
+	</select>
+
+	<update id="updateRef">
+		update askBoard set ref = #{lastNo} where askBno =
+		#{lastNo}
+	</update>
+
+	<insert id="insertImageFile">
+		insert into askFile(askBno, originalFile,
+		thumbnailFile)
+		values (#{lastNo}, #{savedOriginImageFileName},
+		#{thumbnailFileName})
+	</insert>
+
+	<insert id="insertFile">
+		insert into askFile(askBno, originalFile)
+		values
+		(#{lastNo}, #{savedOriginImageFileName})
+	</insert>
+
+	<select id="getAskBoardByNo" resultType="AskBoardVo">
+		select * from askBoard
+		where
+		askBno = #{bno}
+	</select>
+
+	<select id="getAttrachFiles" resultType="UploadFileVo">
+		select * from askFile
+		where askBno = #{bno}
+	</select>
+
+	<update id="updateReadCount">
+		update board set readcount = readcount + 1 where no =
+		#{bno}
+	</update>
+
+	<select id="readAskOptionByAskCode" resultType="String">
+		select askOption from askClass where askCode = #{askCode}
+	</select>
+
+
+</mapper>

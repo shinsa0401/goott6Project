@@ -6,6 +6,6 @@
 	<typeAliases>
 		<package name="com.boritgogae.domain"/>
 		<package name="com.boritgogae.board.notice.domain"/>
-		<package name="com.boritgogae.board.question.domain"/>
+		<package name="com.boritgogae.board.ask.domain"/>
 	</typeAliases>
 </configuration>
