@@ -32,11 +32,11 @@ public class OrderDAOImpl implements OrderDAO {
 	   return ses.selectList(ns+".getUsableCoupon", memberId);
    }
 
-@Override
-public DeliveryFeeVo getdeliInfo(String deliveryOption) {
+   @Override
+   public DeliveryFeeVo getdeliFee(String deliveryOption) {
 	
-	return ses.selectOne(ns+".getDeliveryInfoVo", deliveryOption);
-}
+	   return ses.selectOne(ns+".getDeliveryFeeVo", deliveryOption);
+   }
 
 
 }

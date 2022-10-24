@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.boritgogae.domain.DeliveryInfoVo;
+import com.boritgogae.domain.GradeVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.persistence.MemberDAO;
 
@@ -26,6 +27,12 @@ public class MemberServiceImpl implements MemberService {
 	public List<DeliveryInfoVo> getMemAddrs(String memberId) {
 		
 		return memDao.getMemAddrs(memberId);
+	}
+
+	@Override
+	public GradeVo getGrade(String memberId) {
+		
+		return memDao.getGrade(memberId);
 	}
 
 }

@@ -14,4 +14,8 @@
   	<select id="getMemAddrs" resultType="com.boritgogae.domain.DeliveryInfoVo">
   		select * from deliveryInfo where memberId = #{memberId}
   	</select>
+  	
+  	<select id="getGrade" resultType="com.boritgogae.domain.GradeVo">
+  		select * from grades where grade = (select grade from members where memberId = #{memberId})
+  	</select>
   </mapper>

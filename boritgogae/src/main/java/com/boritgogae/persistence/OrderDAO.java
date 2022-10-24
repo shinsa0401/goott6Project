@@ -33,6 +33,6 @@ public interface OrderDAO {
 	 * @입력 param : 주소
 	 * @returnType : DeliveryFeeVo
 	 **/
-	public DeliveryFeeVo getdeliInfo(String addr);
+	public DeliveryFeeVo getdeliFee(String deliveryOption);
 	
 }

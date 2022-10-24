@@ -4,10 +4,12 @@ import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,11 +18,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boritgogae.board.prodReply.etc.UploadImg;
+import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
+import com.boritgogae.domain.DeliveryFeeVo;
 import com.boritgogae.domain.DeliveryInfoVo;
+import com.boritgogae.domain.GradeVo;
 import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OrderDTO;
 import com.boritgogae.domain.OrderProductDTO;
 import com.boritgogae.domain.OrderSheetDTO;
 import com.boritgogae.domain.ProductVO;
@@ -64,15 +71,17 @@ public class OrderController {
 		List<DeliveryInfoVo> addrs = memService.getMemAddrs(memberId);
 		
 		//가져올 데이터
-		List<CouponVo> coupon = orderService.getAvailableCoupon(memberId);
+		Map<CouponVo, CouponUsedVo> coupon = orderService.getAvailableCoupon(memberId);
 		MemberVo member = memService.getMemberInfo(memberId);
 		List<ProductVO> products = prodService.getProducts(orderSheet);
+		GradeVo grade = memService.getGrade(memberId);
 		
 		model.addAttribute("receivedProducts", orders);
 		model.addAttribute("member", member);
 		model.addAttribute("orders", products);
 		model.addAttribute("coupons", coupon);
 		model.addAttribute("addrs", addrs);
+		model.addAttribute("grade", grade);
 		
 	}
 	
@@ -100,12 +109,23 @@ public class OrderController {
 		return "/order/jusoPopup";
 	}
 	
+	/**
+	 * @methodName : getDeliveryOption 배송비 옵션 가져오기
+	 * @author : kjy
+	 * @date : 2022. 10. 22.
+	 * @입력 param : OrderDTO
+	 * @returnType : JSONObject
+	 **/
 	@RequestMapping(value = "/getDeliveryOption", method = RequestMethod.POST)
-	public ResponseEntity<String> getDeliveryOption(@RequestBody DeliveryInfoVo addr){
-		ResponseEntity<String> result = null;
+	public @ResponseBody DeliveryFeeVo getDeliveryOption(@RequestBody OrderDTO order, HttpServletRequest request){
 		
-//		orderService.getDeliveryOption(addr);
+		//request.getSession().getAttribute("member");
+
+		order.setIsMember("Y");
+		order.setMemberId("naver");
 		
-		return null;
+
+		
+		return orderService.getDeliveryOption(order);
 	}
 }

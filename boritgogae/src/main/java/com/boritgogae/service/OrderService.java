@@ -1,6 +1,7 @@
 package com.boritgogae.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public interface OrderService {
 	 * @입력 param : memberId
 	 * @returnType : CouponVo
 	 **/
-	public List<CouponVo> getAvailableCoupon(String memberId);
+	public Map<CouponVo, CouponUsedVo> getAvailableCoupon(String memberId);
 	
 	/**
 	 * @methodName : getDeliveryOption

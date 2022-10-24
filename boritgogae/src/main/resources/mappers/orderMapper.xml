@@ -15,7 +15,7 @@
   		select * from coupon where couponName = #{couponName}
   	</select>
   	
-  	<select id="getDeliveryInfoVo" resultType="com.boritgogae.domain.DeliveryFeeVo">
-  		select * from deliveryFee where deliveryOption = ${deliveryOption}
+  	<select id="getDeliveryFeeVo" resultType="com.boritgogae.domain.DeliveryFeeVo">
+  		select * from deliveryFee where deliveryOption = #{deliveryOption}
   	</select>
   </mapper>

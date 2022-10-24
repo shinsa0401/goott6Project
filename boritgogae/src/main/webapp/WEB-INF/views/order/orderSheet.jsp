@@ -69,20 +69,48 @@
   
 <script type="text/javascript">
 
-	//서브토탈을 구하여 화면에 출력하는 메서드
-	function calSubtotal(obj, price) {
+$(function() {
+	calSubtotal();
+	
+	document.addEventListener('keydown', function(event) {
+		  if (event.keyCode === 13) {
+		    event.preventDefault();
+		  };
+		}, true);
+});
+
+	function calProdtotal(obj, price) {
 		$(obj).siblings("span").html($(obj).val() * price);
 		
-		let totalSubTotal = "";
-		let subTotalLst = [];
+		calSubtotal();
+		deliveryOption();
+	}
+
+	//서브토탈을 구하여 화면에 출력하는 메서드
+	function calSubtotal() {
+		//li 클래스 orderProducts, 각 상품x수량 = li밑의 span에 있음
 		
-		subTotalLst.push($(".orderProducts span").html());
-		for(let i =0 ; i < subTotalLst.length; i++){
-			totalSubTotal = eval(totalSubTotal + subTotalLst[i]);
+		let totalSubTotal = 0;
+		
+		//서브토탈 계산
+		$(".orderProducts").each(function() {
+			totalSubTotal += parseInt($(this).find("span").html())* 1.0;
+		});
+		
+		let couponPercent = 0;
+		
+		if($("#couponPercent").html()!=""){
+			couponPercent = parseInt($("#couponPercent").html().replace("%","")) * 0.01;
 		}
+			
+		//쿠폰 적용+포인트 적용
+		totalSubTotal = totalSubTotal * (1-couponPercent) - parseInt($("#usePoint").val()*1.0);
 		
 		$("#subTotal").html(totalSubTotal);
 		$("#inputSubTotal").val(totalSubTotal);
+		
+		calcAccum(totalSubTotal);
+		calcTotal(totalSubTotal);
 	}
 
 	//컨트롤러의 주문리스트에서 상품을 삭제하는 메서드
@@ -103,6 +131,7 @@
 		        }
 	         }
 	      });
+		calSubtotal();
 	}
 	
 	//선택한 주소에 표시 남기는 메서드
@@ -133,7 +162,6 @@
 				$("#name").attr("value", $(this).find("td").eq(2).html());
 				$("#phoneNumber").attr("value", $(this).find("td").eq(3).html());
 				$("#postCode").attr("value", $(this).find("td").eq(4).html());
-				alert("!");
 				deliveryOption();
 				return false;
 			}else{
@@ -171,13 +199,16 @@
 			if(color == "rgb(127, 173, 57)"){
 				$("#coupon").attr("value", $(this).attr("id"));
 				$("#couponSelect").html(""+$(this).attr("id")+"(" +$(this).find("td").eq(1).html()+")");
+				$("#couponPercent").html($(this).find("td").eq(1).html());
+				calSubtotal();
 				return false;
 			}else{
 				$("#coupon").attr("value", "");
 				$("#couponSelect").html("");
+				$("#couponPercent").html(0);
 			}
 		});
-
+		calSubtotal();
 	}
 	
 	
@@ -195,28 +226,60 @@
 		$("#address").val(roadAddrPart1);
 		$("#detailAddress").val(addrDetail);
 		$("#postCode").val(zipNo);
+		
+		deliveryOption();
 }
 	
 	function deliveryOption() {
 		let url = "/order/getDeliveryOption";
 		
-		let memberId = $("#memberId").val();
 		let address = $("#address").val();
 		let detailAddress = $("#detailAddress").val();
+		let prodTotalPrice = $("#inputSubTotal").val();
 		
-		let deliveryVo = {"memberId": memberId, "address":address, "detailAddress" : detailAddress};
+		let OrderDTO = {"address":address, "detailAddress" : detailAddress, "prodTotalPrice" : prodTotalPrice};
 		
 		$.ajax({
 	         url : url, // 데이터 송수신될 주소 
 	         type : "post", // 통신 방식(get, post)
 			 contentType : "application/json",
-	         dataType : "text", // 수신받을 데이터 타입 text라서 boardcontroller의 메서드도 responsebody string으로 리턴함
-			 data : JSON.stringify(deliveryVo), // 전송할 데이터
+	         dataType : "json", // 수신받을 데이터 타입 text라서 boardcontroller의 메서드도 responsebody string으로 리턴함
+			 data : JSON.stringify(OrderDTO), // 전송할 데이터
 	         success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
 	        	 console.log(data);
+	        	 if(data != null){
+	        		 
+	        		 $("#ship").html(data.deliveryFee+"("+data.deliveryOption+")");
+		        	 $("#shipInput").val(data.deliveryOption);
+		        	 $("#shipFee").html(data.deliveryFee);
+		        	 calSubtotal();
+	        	 }else{
+	        		 $("#ship").html("3000(기본)");
+	        		 $("#shipInput").val("기본");
+	        		 $("#shipFee").html(3000);
+	        		 calSubtotal();
+	        	 }
 	        	 
 	         }
 	      });
+		
+		
+	}
+	
+	//적립예정 포인트 구하는 메서드
+	function calcAccum(subTotal) {
+		let accum = Math.floor(subTotal * ${grade.reservePoint});
+		
+		$("#accum").html(accum);
+		$("#accumPoint").val(accum);
+	}
+	
+	//총 금액 구해서 출력하는 메서드
+	function calcTotal(subTotal) {
+		let totalPrice = subTotal+ parseInt($("#shipFee").html());
+		
+		$("#total").html(totalPrice);
+		$("#inputTotal").val(totalPrice);
 	}
 
 </script>
@@ -332,32 +395,48 @@
 								</div>
 								<form>
 									<ul>
-										<c:set var="subTotal" value="0" />
+
 										<c:forEach var="product" items="${orders }" varStatus="status">
 											<li id="${product.prodNo}" class="orderProducts">
 												<img src="/resources/img/delete.png" style="height: 20px; margin: auto;"  onclick="deleteProds('${product.prodNo}')" />${product.prodName }&nbsp 
 												<input type="hidden" value="${product.prodNo }" />
-												<input type="number" value="${receivedProducts[status.index].qty }" style="width: 43px; height: 30px; color: '#6f6f6f';" class="qty" onchange="calSubtotal(this, ${product.prodPrice });" min="1" />
+												<input type="number" value="${receivedProducts[status.index].qty }" style="width: 43px; height: 30px; color: '#6f6f6f';" class="qty" onchange="calProdtotal(this, ${product.prodPrice });" min="1" />
 												<span>${product.prodPrice * receivedProducts[status.index].qty}</span>
-												<c:set var="subTotal" value = "${subTotal + product.prodPrice * receivedProducts[status.index].qty} " />
 											</li>
 										</c:forEach>
 									</ul>
 									<div class="checkout__order__subtotal">
-										Subtotal <span id="subTotal">${subTotal}</span>
-										<input type="hidden" value="${subTotal }" id="inputSubTotal"/>
+										Subtotal <span id="subTotal"></span>
+										<input type="hidden" value="" id="inputSubTotal" name="prodTotalPrice" />
 									</div>
 									<div class="checkout__order__total" style=" position: relative;">
 										Coupons
 										<img alt="" src="${pageContext.request.contextPath}/resources/img/coupon.png" style="position: absolute; right: 150px; bottom: 7px;" data-toggle="modal" data-target="#couponModal" id="couponImg"/>
 										<span id="couponSelect" style="position: absolute;  right: 10px;"></span>
 										<input type="hidden" id="coupon" name="coupon" value=""/>
+										<div style="display: none;" id = "couponPercent"></div>
 									</div>
+									<div class="checkout__order__products">
+									쿠폰 
+									</div>
+									<ul>
+										<li>사용가능 포인트 &nbsp; : &nbsp; <span>${member.memberPoint }</span>
+										</li>
+										<li>
+											<input type="number" value="" style="width: 100px; height: 30px; color: '#6f6f6f';" id="usePoint" name="usePoint" min="0" max="${member.memberPoint }" onchange="calSubtotal();" /> &nbsp;&nbsp;사용하기
+										</li>
+										<li>적립 예정 포인트 &nbsp; : &nbsp; <span id="accum"></span>
+											<input type="hidden" value="" min="0" name="accumPoint" id="accumPoint" />
+										</li>
+									</ul>
 									<div class="checkout__order__total">
 										Ship <span id="ship">3000(기본)</span>
+										<input type="hidden" id="shipInput" name="deliveryOption" value="3000"/>
+										<div style="display: none;" id="shipFee">3000</div>
 									</div>
 									<div class="checkout__order__total">
-										Total <span></span>
+										Total <span id = "total"></span>
+										<input type="hidden" id="inputTotal" name="totalPrice" value=""/>
 									</div>
 
 									<div class="checkout__input__checkbox">
@@ -398,10 +477,10 @@
           </thead>
           <tbody>
           	<c:forEach var="coupon" items="${coupons }">
-          		<tr onclick="selectCoupon('${coupon.couponName}')" id="${coupon.couponName }" class="couponLst">
-              		<td>${coupon.couponName }</td>
-              		<td><fmt:formatNumber value="${coupon.couponDiscount}" type="percent" /> </td>
-              		<td><fmt:formatDate value="${coupon.dueDate }" pattern="yyyy-MM-dd a hh:mm" /></td>
+          		<tr onclick="selectCoupon('${coupon.key.couponName}')" id="${coupon.key.couponName }" class="couponLst">
+              		<td>${coupon.key.couponName }</td>
+              		<td><fmt:formatNumber value="${coupon.key.couponDiscount}" type="percent" /> </td>
+              		<td><fmt:formatDate value="${coupon.value.expirationDate }" pattern="yyyy-MM-dd a hh:mm" /></td>
             	</tr>
           	</c:forEach>
           </tbody>

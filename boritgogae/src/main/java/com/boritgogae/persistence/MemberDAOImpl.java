@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.boritgogae.domain.DeliveryInfoVo;
+import com.boritgogae.domain.GradeVo;
 import com.boritgogae.domain.MemberVo;
 
 @Repository
@@ -28,6 +29,12 @@ public class MemberDAOImpl implements MemberDAO {
 	public List<DeliveryInfoVo> getMemAddrs(String memberId) {
 		// TODO Auto-generated method stub
 		return ses.selectList(ns+".getMemAddrs", memberId);
+	}
+
+	@Override
+	public GradeVo getGrade(String memberId) {
+		
+		return ses.selectOne(ns+".getGrade", memberId);
 	}
 
 }
