@@ -205,4 +205,18 @@ public class AdminController {
 		return "/admin/memberProfile";
 	}
 	
+	@RequestMapping(value = "/member/modify", method = RequestMethod.POST)
+	public @ResponseBody String modifyMember(@RequestBody MemberVo member) throws Exception {
+		String result = ""; 
+		
+		if(service.modifyMemberForAdmin(member)) {
+			result = "success";
+		}else {
+			result = "fail";
+		}
+		
+		
+		return result;
+	}
+	
 }

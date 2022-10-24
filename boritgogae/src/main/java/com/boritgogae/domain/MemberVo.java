@@ -38,7 +38,7 @@ public class MemberVo {
 		this.nickName = nickName;
 		this.birthDay = birthDay;
 		this.phoneNumber = phoneNumber;
-		memberEmail = memberEmail;
+		this.memberEmail = memberEmail;
 		this.memberImg = memberImg;
 		this.joinDate = joinDate;
 		this.logOutDate = logOutDate;
@@ -106,7 +106,7 @@ public class MemberVo {
 	}
 
 	public void setmemberEmail(String memberEmail) {
-		memberEmail = memberEmail;
+		this.memberEmail = memberEmail;
 	}
 
 	public String getMemberImg() {

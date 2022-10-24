@@ -15,57 +15,77 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
-		function searchMember() {
-			let url = "/admin/member/searchMember";
-			let inputString = $("#searchMember").val();
-			$.ajax({
-				url : url, // 데이터 송수신될 주소 
-				type : "post", // 전송 방식
-				dataType : "json", // 수신할 데이터
-				data : {"inputString" : inputString },
-				success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
-					console.log(data);
-					if (data != null) {
-						console.log("회원이 있음");
-						searchMemberOutput(data);
-					} else {
-						console.log("회원이 없음");
-					}
+	$(document).ready(function() {
+		$(".closeModal").click(function() {
+			$("#statusModal").hide(100);
+		});
+	});
 
-				},
-				error : function(e) {
-					console.log(e);
+	function searchMember() {
+		let url = "/admin/member/searchMember";
+		let inputString = $("#searchMember").val();
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "post", // 전송 방식
+			dataType : "json", // 수신할 데이터
+			data : {
+				"inputString" : inputString
+			},
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				if (data.lenth > 0) {
+					searchMemberOutput(data);
+				} else {
+					$("#status").html("검색하신 조건의 회원이 없습니다.");
+					$("#statusModal").show(200);
 				}
-			});
-		}
-		
-		function searchMemberOutput(data) {
-			let output = "";
-			
-			
-			$.each(data, function(i, item){
-				let memberJoinDate = new Date(item.joinDate);
-				
-				output += '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">';
-				output += '<div class="card bg-light d-flex flex-fill">';
-				output += '<div class="card-header text-muted border-bottom-0"><b>아이디 : </b>' + item.memberId + '</div>';
-				output += '<div class="card-body pt-0"><div class="row"><div class="col-7">';
-				output += '<h2 class="lead"><b>닉네임 : </b>' + item.nickName + '</h2><p class="text-muted text-sm">';
-				output += '<b>이름 : </b>' + item.memberName + '</p><p class="text-muted text-sm"><b>등급 : </b>' + item.grade + '</p>';
-				output += '<p class="text-muted text-sm"><b>가입일 : </b>' + memberJoinDate.getFullYear() + '년 ' + (memberJoinDate.getMonth() +1) + '월 ' + memberJoinDate.getDate() + '일';
-				output += '</p></div><div class="col-5 text-center">';
-				output += '<img src="${pageContext.request.contextPath}/resources/' + item.memberImg + '" alt="user-avatar" class="img-circle img-fluid">';
-				output += '</div></div></div><div class="card-footer"><div class="text-right"><a href="#" class="btn btn-sm btn-primary">';
-				output += '<i class="fas fa-user"></i> 프로필 보기</a></div></div></div></div>';
-			});
-				
-			$("#members").html(output);
-		}
-		
-		function viewMemberProfile(memberId) {
-			location.href = "/admin/member/detail?memberId=" + memberId;
-		}
-		
+
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+
+	function searchMemberOutput(data) {
+		let output = "";
+
+		$
+				.each(
+						data,
+						function(i, item) {
+							let memberJoinDate = new Date(item.joinDate);
+
+							output += '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">';
+							output += '<div class="card bg-light d-flex flex-fill">';
+							output += '<div class="card-header text-muted border-bottom-0"><b>아이디 : </b>'
+									+ item.memberId + '</div>';
+							output += '<div class="card-body pt-0"><div class="row"><div class="col-7">';
+							output += '<h2 class="lead"><b>닉네임 : </b>'
+									+ item.nickName
+									+ '</h2><p class="text-muted text-sm">';
+							output += '<b>이름 : </b>'
+									+ item.memberName
+									+ '</p><p class="text-muted text-sm"><b>등급 : </b>'
+									+ item.grade + '</p>';
+							output += '<p class="text-muted text-sm"><b>가입일 : </b>'
+									+ memberJoinDate.getFullYear()
+									+ '년 '
+									+ (memberJoinDate.getMonth() + 1)
+									+ '월 '
+									+ memberJoinDate.getDate() + '일';
+							output += '</p></div><div class="col-5 text-center">';
+							output += '<img src="${pageContext.request.contextPath}/resources/' + item.memberImg + '" alt="user-avatar" class="img-circle img-fluid">';
+							output += '</div></div></div><div class="card-footer"><div class="text-right"><a href="#" class="btn btn-sm btn-primary">';
+							output += '<i class="fas fa-user"></i> 프로필 보기</a></div></div></div></div>';
+						});
+
+		$("#members").html(output);
+	}
+
+	function viewMemberProfile(memberId) {
+		location.href = "/admin/member/detail?memberId=" + memberId;
+	}
 </script>
 
 </head>
@@ -152,7 +172,8 @@
 											</div>
 											<div class="card-footer">
 												<div class="text-right">
-													<a class="btn btn-sm btn-primary" onclick="viewMemberProfile('${member.memberId }');"> <i
+													<a class="btn btn-sm btn-primary"
+														onclick="viewMemberProfile('${member.memberId }');"> <i
 														class="fas fa-user"></i> 프로필 보기
 													</a>
 												</div>
@@ -176,15 +197,27 @@
 		<!-- /.content-wrapper -->
 
 
-		<!-- Control Sidebar -->
-		<aside class="control-sidebar control-sidebar-dark">
-			<!-- Control sidebar content goes here -->
-		</aside>
-		<!-- /.control-sidebar -->
-	</div>
-	<!-- ./wrapper -->
+		<div class="modal" id="statusModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
 
-	<jsp:include page="footer.jsp"></jsp:include>
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title" id="status"></h4>
+						<button type="button" class="btn-close close closeModal"
+							data-bs-dismiss="modal">X</button>
+					</div>
 
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success"
+							data-bs-dismiss="modal" onclick="location.reload();">확인</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

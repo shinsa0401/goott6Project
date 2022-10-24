@@ -12,7 +12,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>보릿고개 | 회원 프로필</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
+	$(document).ready(function() {
+		$(".closeModal").click(function() {
+			$("#statusModal").hide(100);
+		});
+	});
 	function modifyMember() {
 		let memberId = $("#memberId").val();
 		let memberPwd = $("#memberPwd").val();
@@ -21,7 +28,7 @@
 		let phoneNumber = $("#phoneNumber").val();
 		let memberEmail = $("#memberEmail").val();
 		let url = "/admin/member/modify";
-		
+
 		let sendData = JSON.stringify({
 			"memberId" : memberId,
 			"memberPwd" : memberPwd,
@@ -43,9 +50,11 @@
 			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
 				console.log(data);
 				if (data == "success") {
-					alert("성공");
+					$("#status").html("회원 수정이 완료되었습니다.");
+					$("#statusModal").show(200);
 				} else if (data == "fail") {
-					alert("실패");
+					$("#status").html("회원 수정에 실패하였습니다.");
+					$("#statusModal").show(200);
 				}
 
 			},
@@ -241,8 +250,7 @@
 																		<c:otherwise>
 																			미사용
 																		</c:otherwise>
-																	</c:choose>
-																</td>
+																	</c:choose></td>
 															</tr>
 														</c:forEach>
 													</tbody>
@@ -280,43 +288,44 @@
 											<div class="form-group row">
 												<label for="memberName" class="col-sm-2 col-form-label">이름</label>
 												<div class="col-sm-10">
-													<input type="text" class="form-control" id="memberName" name="memberName"
-														value="${member.memberName }">
+													<input type="text" class="form-control" id="memberName"
+														name="memberName" value="${member.memberName }">
 												</div>
 											</div>
 											<div class="form-group row">
 												<label for="nickName" class="col-sm-2 col-form-label">닉네임</label>
 												<div class="col-sm-10">
-													<input type="text" class="form-control" id="nickName" name="nickName"
-														value="${member.nickName }">
+													<input type="text" class="form-control" id="nickName"
+														name="nickName" value="${member.nickName }">
 												</div>
 											</div>
-											<input type="hidden" class="form-control" id="memberId" name="memberId"
-												value="${member.memberId }">
+											<input type="hidden" class="form-control" id="memberId"
+												name="memberId" value="${member.memberId }">
 											<div class="form-group row">
 												<label for="memberPwd" class="col-sm-2 col-form-label">비밀번호</label>
 												<div class="col-sm-10">
-													<input type="text" class="form-control" id="memberPwd" name="memberPwd"
-														value="${member.memberPwd }">
+													<input type="text" class="form-control" id="memberPwd"
+														name="memberPwd" value="${member.memberPwd }">
 												</div>
 											</div>
 											<div class="form-group row">
 												<label for="memberEmail" class="col-sm-2 col-form-label">이메일</label>
 												<div class="col-sm-10">
-													<input type="text" class="form-control" id="memberEmail" name="memberEmail"
-														value="${member.memberEmail }">
+													<input type="text" class="form-control" id="memberEmail"
+														name="memberEmail" value="${member.memberEmail }">
 												</div>
 											</div>
 											<div class="form-group row">
 												<label for="phoneNumber" class="col-sm-2 col-form-label">연락처</label>
 												<div class="col-sm-10">
-													<input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-														value="${member.phoneNumber }">
+													<input type="text" class="form-control" id="phoneNumber"
+														name="phoneNumber" value="${member.phoneNumber }">
 												</div>
 											</div>
 											<div class="form-group row">
 												<div class="offset-sm-2 col-sm-10">
-													<button type="button" class="btn btn-success" onclick="modifyMember();">정보 수정</button>
+													<button type="button" class="btn btn-success"
+														onclick="modifyMember();">정보 수정</button>
 												</div>
 											</div>
 										</div>
@@ -338,5 +347,26 @@
 		</div>
 
 		<jsp:include page="footer.jsp"></jsp:include>
+
+		<div class="modal" id="statusModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title" id="status"></h4>
+						<button type="button" class="btn-close close closeModal"
+							data-bs-dismiss="modal">X</button>
+					</div>
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success"
+							data-bs-dismiss="modal" onclick="location.reload();">확인</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
 </body>
 </html>

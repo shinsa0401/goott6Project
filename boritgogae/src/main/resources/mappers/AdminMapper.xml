@@ -33,7 +33,7 @@
 	</select>
 	
 	<select id="searchMember" resultType="MemberVo">
-		select * from members where nickName = #{inputString} or memberId = #{inputString}
+		select * from members where nickName = #{inputString} or memberId = #{inputString} or memberName = #{memberName}
 	</select>
 	
 	<select id="getMemberAddress" resultType="deliveryInfoVo">
