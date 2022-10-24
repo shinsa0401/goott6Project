@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boritgogae.board.tip.domain.TipReplyVo;
-import com.boritgogae.board.tip.service.BoardReplyService;
+import com.boritgogae.board.tip.service.TipBoardReplyService;
 
 @RestController
 @RequestMapping(value="/replys")
 public class TipReplyBoardController {
 	
 	@Inject
-	private BoardReplyService service;
+	private TipBoardReplyService service;
 	
 	// 댓글조회 메서드
 	@RequestMapping(value = "/{bno}", method = RequestMethod.GET)

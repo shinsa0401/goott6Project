@@ -3,10 +3,13 @@ package com.boritgogae.board.tip.persistence;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
+
 import com.boritgogae.board.tip.domain.TipBoardVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
+import com.boritgogae.board.tip.domain.TipReplyVo;
 
-public interface BoardDAO {
+public interface TipBoardDAO {
 	public List<TipBoardVo> selectAllBoard(TipPagingInfo pi) throws Exception;
 
 	public TipBoardVo selectDetail(int bno) throws Exception;
@@ -40,6 +43,8 @@ public interface BoardDAO {
 	public int stepNum(int bno) throws Exception;
 
 	public int updateReplyRefOrder(int cntRef, int maxNo, int step) throws Exception;
+
+	public List<TipBoardVo> getMiniBoard() throws Exception;
 
 
 }

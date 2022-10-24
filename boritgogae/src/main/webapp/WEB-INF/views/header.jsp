@@ -72,7 +72,7 @@
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="${contextPath}/">Home</a></li>
-                <li><a href="${contextPath}/product/category/detail?prodNo=a">Shop</a></li>
+                <li><a href="${contextPath}/product/category">Shop</a></li>
                 <li><a href="./blog.html">병원</a></li>
                 <li><a href="./contact.html">게시판</a>
                    <ul class="header__menu__dropdown">
@@ -122,7 +122,7 @@
                     <nav class="header__menu">
                         <ul>
 			                <li class="active"><a href="${contextPath}/">Home</a></li>
-			                <li><a href="/product/category/detail?prodNo=a">Shop</a></li>
+			                <li><a href="${contextPath}/product/category"">Shop</a></li>
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">

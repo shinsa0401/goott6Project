@@ -24,14 +24,14 @@ import com.boritgogae.board.tip.domain.TipBoardVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
 import com.boritgogae.board.tip.domain.TipUploadFile;
 import com.boritgogae.board.tip.domain.TipUploadFileProcess;
-import com.boritgogae.board.tip.service.BoardService;
+import com.boritgogae.board.tip.service.TipBoardService;
 
 @RestController
 @RequestMapping(value = "/boardTip")
 public class TipBoardController {
 
 	@Inject
-	private BoardService service;
+	private TipBoardService service;
 	
 	private List<TipUploadFile> UploadFileLst = new ArrayList<>();
 

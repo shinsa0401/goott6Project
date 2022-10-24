@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.boritgogae.board.tip.domain.TipReplyVo;
 
 @Repository
-public class BoardReplyDAOImpl implements BoardReplyDAO {
+public class TipBoardReplyDAOImpl implements TipBoardReplyDAO {
 	
 	@Inject
 	private SqlSession ses;

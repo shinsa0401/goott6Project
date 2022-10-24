@@ -143,6 +143,11 @@ public class NoticeDAOImpl implements NoticeDAO {
 		return ses.update(ns + ".updateNoticeBoardRead", map);
 	}
 
+	@Override
+	public List<NoticeVo> getNoticeBoarMain() throws Exception {
+		
+		return ses.selectList(ns+".MainNotice");
+	}
 	
 	
 

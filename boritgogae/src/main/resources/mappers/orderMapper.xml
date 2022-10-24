@@ -14,7 +14,9 @@
   	<delete id="delCartProd">
   		delete from cart where memberId='haha' and prodNo='CB1AR05W00M03S03C00E00'
   	</delete>
-  	
+  	<select id="popularList" resultType="DetailOrderVo">
+  		select count(*) as orderCnt, prodNo from detailOrder group by prodNo order by orderCnt desc limit 0,6
+  	</select>
   	
   	
   </mapper>

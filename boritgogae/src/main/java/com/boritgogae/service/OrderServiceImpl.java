@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.boritgogae.domain.CartDTO;
+import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.persistence.OrderDAO;
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -34,6 +35,12 @@ public class OrderServiceImpl implements OrderService {
 		
 		return cart;
 	
+	} 
+	
+	@Override
+	public List<DetailOrderVo> popularProd() throws Exception {
+		List<DetailOrderVo> lst = dao.getPopular();
+		return lst;
 	} 
 
 }

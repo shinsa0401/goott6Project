@@ -25,6 +25,8 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.service.ReviewService;
+import com.boritgogae.board.tip.domain.TipPagingInfo;
+import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.service.ProductService;
 
 
@@ -39,6 +41,35 @@ public class ProductController {
 	@Inject
 	private ReviewService reviewService;
 	
+	@Inject
+	private ProductService prodService;
+	
+	// 상품리스트페이지
+		@RequestMapping(value = "/category")
+		public String prodList(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
+				Model model) throws Exception {
+
+			Map<String, Object> productList = prodService.getProductAll(pageNo);
+			List<ProductDTO> prodLst = (List<ProductDTO>) productList.get("prodLst");
+			int total = (int) productList.get("cnt");
+			
+			TipPagingInfo pi = (TipPagingInfo) productList.get("pi");
+			
+			if (pageNo < 1) {
+				pageNo = 1;
+			} else if (pageNo > pi.getTotalPage()) {
+				pageNo = pi.getTotalPage();
+			}
+
+			model.addAttribute("prodLst", prodLst);
+			model.addAttribute("total", total);
+			model.addAttribute("pi", pi);
+			model.addAttribute("pageNo", pageNo);
+			
+			return "/product/prodList";
+
+		}
+		
 	//상세페이지
 	@RequestMapping(value = "/category/detail")
 	public String prodDetail(@RequestParam("prodNo") String prodNo,@RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, Model model) throws Exception {

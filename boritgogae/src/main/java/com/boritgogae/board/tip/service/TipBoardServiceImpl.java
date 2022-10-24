@@ -6,16 +6,18 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.boritgogae.board.tip.domain.TipBoardVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
-import com.boritgogae.board.tip.persistence.BoardDAO;
+import com.boritgogae.board.tip.domain.TipReplyVo;
+import com.boritgogae.board.tip.persistence.TipBoardDAO;
 
 @Service
-public class BoardServiceImpl implements BoardService {
+public class TipBoardServiceImpl implements TipBoardService {
 	@Inject
-	private BoardDAO dao;
+	private TipBoardDAO dao;
 
 	@Override
 	public Map<String, Object> getListBoard(int pageNo) throws Exception {
@@ -146,6 +148,12 @@ public class BoardServiceImpl implements BoardService {
 		}
 
 		return result;
+	}
+
+	@Override
+	public List<TipBoardVo> miniBoard() throws Exception {
+		
+		return dao.getMiniBoard();
 	}
 
 }
