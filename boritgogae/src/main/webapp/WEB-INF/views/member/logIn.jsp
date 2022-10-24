@@ -130,7 +130,7 @@
                     </div>
                     <div class="form-group">
                         <div class="main-checkbox">
-                            <input type="checkbox" value="None" id="remember" name="remember">
+                            <input type="checkbox" id="remember" name="remember">
                             <label for="remember"></label>
                         </div>
                         <div class="text">자동 로그인</div>

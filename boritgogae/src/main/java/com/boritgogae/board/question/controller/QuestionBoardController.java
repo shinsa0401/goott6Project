@@ -43,7 +43,7 @@ public class QuestionBoardController {
 	 * @methodName : viewAllBoard
 	 * @author : 신태호
 	 * @date : 2022. 10. 4.
-	 * @입력 param : int pageNo, AskSearchCriteria sc
+	 * @입력 param : int pageNo, QuestionSearchCriteria sc
 	 * @returnType : String
 	 * 게시판의 전체 게시글을 얻어온다
 	 */
@@ -245,7 +245,7 @@ public class QuestionBoardController {
 	 * ajax로 업로드된 파일을 저장하고, 업로드 된 파일 리스트에 추가
 	 */
 	@RequestMapping(value = "/question/uploadFile", method = RequestMethod.POST)
-	public ResponseEntity<QuestionUploadFile> uploadFile(MultipartFile upFiles, HttpServletRequest request) {
+	public ResponseEntity<QuestionUploadFile> questionUploadFile(MultipartFile upFiles, HttpServletRequest request) {
 		System.out.println("파일이 업로드 됨");
 		
 		System.out.println("업로드된 파일 이름 : " + upFiles.getOriginalFilename());

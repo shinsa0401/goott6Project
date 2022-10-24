@@ -50,6 +50,41 @@
 			<beans:ref bean="logInInterceptor"/>
 		</interceptor>
 		
+		<!-- authInterceptor객체가 가로채어 수행되는 조건 -->
+		<interceptor>
+			<!-- 질문게시판 신태호 -->
+			<mapping path="/board/question/write"/> <!-- 글 쓰기 -->
+			<mapping path="/board/question/modify"/> <!-- 글 수정 -->
+			<mapping path="/questionReply/write"/> <!-- 댓글쓰기 -->
+			<mapping path="/questionReply/modify"/> <!-- 댓글수정 -->
+			<mapping path="/questionReply/remove"/> <!-- 댓글삭제 -->
+			<mapping path="/questionReply/reReply"/> <!-- 대댓글쓰기 -->
+			
+			
+			<!-- 문의게시판 정인식 -->
+			
+			
+			<!-- 자유게시판 강무진 -->
+			
+			
+			<!-- 공지사항 신희환 -->
+			
+			
+			<!-- 병원리뷰 최윤정 -->
+			
+			
+			<!-- 장터게시판 하수영 -->
+			
+			
+			<!-- 상품리뷰 김지영 -->
+			
+			
+			<!-- 팁게시판 이중현 -->
+			
+			
+			
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
 		
 	</interceptors>
 	

@@ -25,11 +25,12 @@ public class LogInInterceptor extends HandlerInterceptorAdapter {
 		
 		System.out.println("Log In Interceptor : 이전 로그인 세션 삭제");
 		
-		HttpSession session = request.getSession();
+		HttpSession ses = request.getSession();
+		System.out.println("프리핸들러 세션 : " + ses);
 		
-		if (session.getAttribute("logInMember") != null) { // 로그인 한 기록이 있다면
-			session.removeAttribute("logInMember"); // 이전에 로그인 기록을 삭제
-			session.invalidate(); // 세션 만료
+		if (ses.getAttribute("logInMember") != null) { // 로그인 한 기록이 있다면
+			ses.removeAttribute("logInMember"); // 이전에 로그인 기록을 삭제
+			ses.invalidate(); // 세션 만료
 		}
 		
 		return true;
@@ -40,8 +41,8 @@ public class LogInInterceptor extends HandlerInterceptorAdapter {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		
-		System.out.println("Log In Interceptor : 로그인한 유저의 정보를 세션에 저장");
-		HttpSession session = request.getSession();
+		HttpSession ses = request.getSession();
+		System.out.println("포스트핸들러 세션 : " + ses);
 		
 		String destination = "";
 		
@@ -53,7 +54,7 @@ public class LogInInterceptor extends HandlerInterceptorAdapter {
 			if (dto.isRemember()) { // 자동로그인 체크를 한 유저라면
 				
 				// AutoLogInCookie라는 쿠키의 이름으로 세션 아이디를 저장 
-				Cookie AutoLogInCookie = new Cookie("AutoLogInCookie", session.getId());
+				Cookie AutoLogInCookie = new Cookie("AutoLogInCookie", ses.getId());
 				
 				AutoLogInCookie.setPath("/"); // "/"하위 경로에 쿠키 전송
 				AutoLogInCookie.setMaxAge(60 * 60 * 24 * 7); // 쿠키 만료일 7일
@@ -61,18 +62,15 @@ public class LogInInterceptor extends HandlerInterceptorAdapter {
 			}
 			
 			System.out.println(logInMember.toString() + "의 정보를 세션에 남김");
-			session.setAttribute("logInMember", logInMember); // 세션에 바인딩
+			ses.setAttribute("logInMember", logInMember); // 세션에 바인딩
 
 			// "destination" = 로그인을 요청하기전의 URL의 정보
-			if (session.getAttribute("destination") != null) {
+			if (ses.getAttribute("destination") != null) {
 				
-				if (session.getAttribute("destination") == "/member/logIn") {
-					destination = "/";
-				} else {
-					destination = (String) session.getAttribute("destination");
-				}
+				destination = (String) ses.getAttribute("destination");
 				
-			} else if (session.getAttribute("destination") == null) {
+			} else if (ses.getAttribute("destination") == null) {
+				
 				destination = "/"; // 홈, /, index.jsp
 			}
 			

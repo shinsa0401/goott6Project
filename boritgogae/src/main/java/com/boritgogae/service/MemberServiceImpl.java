@@ -47,6 +47,13 @@ public class MemberServiceImpl implements MemberService {
 		
 		return dao.updateMemberSession(memberId, sessionId, sessionLimit);
 	}
+	
+	// 자동로그인 회원 체크
+	@Override
+	public MemberVo checkAutoLogIn(String sessionId) throws Exception {
+		
+		return dao.selectAutoLogIn(sessionId);
+	}
 
 
 	// 등급혜택을 가져오는 메서드
@@ -125,6 +132,8 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println("서비스단 : 상품코드에 맞는 상품명 반환");
 		return dao.convertProdNoToProdName(prodCode);
 	}
+
+	
 
 
 }

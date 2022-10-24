@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ page session="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,7 +71,7 @@
 		let bno = ${board.no };
 		let replyWriter = $("#replyWriter").val();
 		let replyContent = $("#replyContent").val();
-		let url = "/questionreply/write";
+		let url = "/questionReply/write";
 		let sendData = JSON.stringify({
 			bno : bno, replyWriter : replyWriter, replyContent : replyContent
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
@@ -110,7 +109,7 @@
 	// 현재 글의 모든 댓글 출력
 	function viewAllReply() {
 		let bno = ${board.no}
-		let url = "/questionreply/" + bno;
+		let url = "/questionReply/" + bno;
 		
 		$.ajax({
 	        url: url, // 데이터 송수신될 주소
@@ -236,7 +235,7 @@
 		let rno = no;
 		let replyWriter = $("#replyWriter" + rno).val();
 		let replyContent = $("#replyContent" + rno).val();
-		let url = "/questionreply/modify";
+		let url = "/questionReply/modify";
 		let sendData = JSON.stringify({
 			rno : rno, replyWriter : replyWriter, replyContent : replyContent
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
@@ -287,7 +286,7 @@
 		let sendData = JSON.stringify({
 			rno : rno, bno : bno
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
-		let url = "/questionreply/remove";
+		let url = "/questionReply/remove";
 		
 		// REST
 		$.ajax({
@@ -335,7 +334,7 @@
 		let replyWriter = $("#reReplyWriter"+rno).val();
 		let replyContent = $("#reReplyContent"+rno).val();
 		
-		let url = "/questionreply/reReply";
+		let url = "/questionReply/reReply";
 		let sendData = JSON.stringify({
 			rno : rno, bno : bno, replyWriter : replyWriter, replyContent : replyContent
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌

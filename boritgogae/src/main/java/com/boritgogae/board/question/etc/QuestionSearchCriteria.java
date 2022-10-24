@@ -26,9 +26,11 @@ public class QuestionSearchCriteria {
 	public void setSearchWord(String searchWord) {
 		this.searchWord = searchWord;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "AskSearchCriteria [searchType=" + searchType + ", searchWord=" + searchWord + "]";
+		return "QuestionSearchCriteria [searchType=" + searchType + ", searchWord=" + searchWord + "]";
 	}
+	
+	
 }

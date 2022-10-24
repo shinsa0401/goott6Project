@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
-import com.boritgogae.board.notice.etc.PagingInfo;
+import com.boritgogae.board.notice.etc.NoticePagingInfo;
 
 public interface NoticeDAO {
 	// 공지사항 전체 글 가져오는 메서드
-	public List<NoticeVo> getNoticeBoard(PagingInfo pi) throws Exception;
+	public List<NoticeVo> getNoticeBoard(NoticePagingInfo pi) throws Exception;
 	
 	// 공지사항 글 작성하는 메서드
 	public int registerBoard(NoticeVo board) throws Exception;

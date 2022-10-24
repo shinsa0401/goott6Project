@@ -1,6 +1,6 @@
 package com.boritgogae.board.notice.etc;
 
-public class PagingInfo {
+public class NoticePagingInfo {
 	private int postPerPage = 10; // 1페이지당 보여줄 글의 갯수
 	private int pageCntPerBlock = 10; // 1개의 블럭에 보여줄 페이지 수
 	
@@ -108,7 +108,7 @@ public class PagingInfo {
 
 	@Override
 	public String toString() {
-		return "AskPagingInfo [postPerPage=" + postPerPage + ", pageCntPerBlock=" + pageCntPerBlock + ", totalPage="
+		return "NoticePagingInfo [postPerPage=" + postPerPage + ", pageCntPerBlock=" + pageCntPerBlock + ", totalPage="
 				+ totalPage + ", totalPostCnt=" + totalPostCnt + ", startNum=" + startNum + ", totalPagingBlock="
 				+ totalPagingBlock + ", currentPagingBlock=" + currentPagingBlock + ", startNumOfCurPagingBlock="
 				+ startNumOfCurPagingBlock + ", endNumOfCurPagingBlock=" + endNumOfCurPagingBlock + "]";

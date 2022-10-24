@@ -14,6 +14,11 @@
   	<update id="updateMemberSession">
   		update members set sessionId = #{sessionId}, sessionLimit = #{sessionLimit} where memberId = #{memberId}
   	</update>
+  	
+  	<!-- 자동로그인 체크한 회원인지 검색 -->
+  	<select id="selectAutoLogIn" resultType="MemberVo">
+  		select * from members where sessionId = #{sessionId}
+  	</select>
 
 	<!-- 등급혜택을 가져오는 메서드 -->
 	<select id="showGradeBenefit" resultType="GradesVo">

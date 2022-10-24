@@ -14,9 +14,6 @@ public class QuestionBoardVo {
 	private String title;
 	private String content;
 	private String uploadFile;
-	private int ref;
-	private int step;
-	private int refOrder;
 	private String isDelete;
 	private int replyCount;
 	
@@ -24,8 +21,8 @@ public class QuestionBoardVo {
 		super();
 	}
 	
-	public QuestionBoardVo(int no, String writer, String pwd, Timestamp writtenDate, int readCount, int likeCount, String title,
-			String content, String uploadFile, int ref, int step, int refOrder, String isDelete, int replyCount) {
+	public QuestionBoardVo(int no, String writer, String pwd, Timestamp writtenDate, int readCount, int likeCount,
+			String title, String content, String uploadFile, String isDelete, int replyCount) {
 		super();
 		this.no = no;
 		this.writer = writer;
@@ -36,9 +33,6 @@ public class QuestionBoardVo {
 		this.title = title;
 		this.content = content;
 		this.uploadFile = uploadFile;
-		this.ref = ref;
-		this.step = step;
-		this.refOrder = refOrder;
 		this.isDelete = isDelete;
 		this.replyCount = replyCount;
 	}
@@ -97,24 +91,6 @@ public class QuestionBoardVo {
 	public void setUploadFile(String uploadFile) {
 		this.uploadFile = uploadFile;
 	}
-	public int getRef() {
-		return ref;
-	}
-	public void setRef(int ref) {
-		this.ref = ref;
-	}
-	public int getStep() {
-		return step;
-	}
-	public void setStep(int step) {
-		this.step = step;
-	}
-	public int getRefOrder() {
-		return refOrder;
-	}
-	public void setRefOrder(int refOrder) {
-		this.refOrder = refOrder;
-	}
 	public String getIsDelete() {
 		return isDelete;
 	}
@@ -132,9 +108,10 @@ public class QuestionBoardVo {
 	public String toString() {
 		return "QuestionBoardVo [no=" + no + ", writer=" + writer + ", pwd=" + pwd + ", writtenDate=" + writtenDate
 				+ ", readCount=" + readCount + ", likeCount=" + likeCount + ", title=" + title + ", content=" + content
-				+ ", uploadFile=" + uploadFile + ", ref=" + ref + ", step=" + step + ", refOrder=" + refOrder
-				+ ", isDelete=" + isDelete + ", replyCount=" + replyCount + "]";
+				+ ", uploadFile=" + uploadFile + ", isDelete=" + isDelete + ", replyCount=" + replyCount + "]";
 	}
+	
+	
 	
 	
 	

@@ -169,7 +169,7 @@ public class MemberController {
 		return result;
 	}
 	
-	/*
+	/**
 	 * @methodName : logIn
 	 * @author : 신태호
 	 * @date : 2022. 10. 20.
@@ -178,18 +178,16 @@ public class MemberController {
 	 * 로그인 정보를 입력하기 위한 로그인 페이지 호출
 	 */
 	@RequestMapping(value = "/logIn")
-	public String logIn(HttpServletRequest request, HttpSession session) {
+	public String logIn(HttpServletRequest request, HttpSession ses) {
 		
 		// 현재 페이지로 오기전 URL 정보를 referer에 저장
 		String referer = request.getHeader("Referer");
 		
-		try {
-			URL refererUrl = new URL(referer);
-			// destination의 이름으로 URL의 정보를 세션에 저장
-			session.setAttribute("destination", refererUrl.getFile());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+		// 이전페이지로 돌아가기 위한 Referer 헤더값을 세션의 destination에 저장
+		// (로그인 여러회 실패시 이전페이지로 제대로 돌아가기 위함)
+	    if (referer != null && !referer.contains("logIn")) {
+	        request.getSession().setAttribute("destination", referer);
+	    }
 		
 		System.out.println("로그인 하기");
 		
@@ -207,10 +205,8 @@ public class MemberController {
 	 * 
 	 */
 	@RequestMapping(value = "/logInPost", method = RequestMethod.POST)
-	public void logInPost(LogInDTO dto, Model model, HttpSession session, HttpServletRequest request) throws Exception {
+	public void logInPost(LogInDTO dto, Model model, HttpSession ses, HttpServletRequest request) throws Exception {
 		// 인터셉터 preHandle 수행하고 옴
-		
-		System.out.println(dto.toString() + "로 로그인 하자");
 		
 		MemberVo logInMember = service.logIn(dto, request);
 		
@@ -223,9 +219,9 @@ public class MemberController {
 			long now = System.currentTimeMillis();
 			
 			String memberId = dto.getMemberId();
-			String sessionId = session.getId();
+			String sessionId = ses.getId();
 			Timestamp sessionLimit = new Timestamp(now + ms);
-			
+			System.out.println("자동로그인 체크 온");
 			service.keepLogIn(memberId, sessionId, sessionLimit);
 		}
 		
@@ -243,10 +239,10 @@ public class MemberController {
 	 * @returnType : void
 	 */
 	@RequestMapping(value = "/logOut")
-	public void logOut(HttpSession session, HttpServletResponse response) throws IOException {
-		if (session.getAttribute("logInMember") != null) {
-			session.removeAttribute("logInMember"); // 로그인 정보 삭제
-			session.invalidate(); // 세션 만료
+	public void logOut(HttpSession ses, HttpServletResponse response) throws IOException {
+		if (ses.getAttribute("logInMember") != null) {
+			ses.removeAttribute("logInMember"); // 로그인 정보 삭제
+			ses.invalidate(); // 세션 만료
 			
 		}
 		System.out.println("로그아웃");
