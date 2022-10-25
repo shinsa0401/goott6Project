@@ -10,8 +10,6 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.board.prodReply.domain.OrderDetailVO;
-import com.boritgogae.board.prodReply.domain.OrdersVO;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
@@ -19,6 +17,8 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.persistence.ReviewDAO;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -204,7 +204,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 //	@Override
-//	public List<OrdersVO> getOrder(String userId, String prodNo) {
+//	public List<OrdersVo> getOrder(String userId, String prodNo) {
 //		
 //		return dao.getOrder(userId, prodNo);
 //	}

@@ -6,11 +6,14 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.board.prodReply.domain.OrderDetailVO;
+import com.boritgogae.domain.DeliveryInfoVo;
+import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.GradesVo;
+import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.PointHistoryVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
@@ -86,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
 
 	// 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드
 	@Override
-	public List<OrderDetailVO> userAbleReviewList(String memberId) throws Exception {
+	public List<OrderDetailVo> userAbleReviewList(String memberId) throws Exception {
 		System.out.println("서비스단 : 리뷰를 쓰지 않은 구매확정 내역 가져오기");
 		return dao.userAbleReviewList(memberId);
 	}
@@ -98,4 +101,60 @@ public class MemberServiceImpl implements MemberService {
 		return dao.convertProdNoToProdName(prodCode);
 	}
 
+	// 회원정보를 가져오는 메서드
+	@Override
+	public MemberVo showUserInfo(String memberId) throws Exception {
+		System.out.println("서비스단 : 상품코드에 맞는 상품명 반환");
+		return dao.showUserInfo(memberId);
+	}
+
+	// 회원 아이디에 맞는 비번인지 확인하는 메서드
+	@Override
+	public int checkPwd(String memberId, String pwd) throws Exception {
+		System.out.println("서비스단 : 아이디에 맞는 비번인지 확인");
+		return dao.checkPwd(memberId, pwd);
+	}
+
+	// 회원이 정보를 변경할 때의 메서드
+	@Override
+	public int changeInfo(String memberId, String target, String value) throws Exception {
+		System.out.println("서비스단 : 정보 업데이트");
+		return dao.changeInfo(memberId, target, value);
+	}
+	
+	// 회원의 주소지 정보들을 불러오는 메서드
+	@Override
+	public List<DeliveryInfoVo> showDeliveryInfo(String memberId) throws Exception {
+		System.out.println("서비스단 : 회원 주소지 목록");
+		return dao.showDeliveryInfo(memberId);
+	}
+	
+	// 회원이 주소지를 삭제할 때의 메서드
+	@Override
+	public int deleteAddr(String memberId, String deliveryInfo) throws Exception {
+		System.out.println("서비스단 : 회원 주소지 삭제");
+		return dao.deleteAddr(memberId, deliveryInfo);
+	}
+
+	// 회원이 주소지를 추가할 때의 메서드
+	@Override
+	public int addAddr(String memberId, String address, String detailAddress, String postCode, String recipient,
+			String recipientPhoneNumber) throws Exception {
+		System.out.println("서비스단 : 회원 주소지 추가");
+		return dao.addAddr(memberId, address, detailAddress, postCode, recipient, recipientPhoneNumber);
+	}
+
+	// 회원이미지를 추가하는 메서드
+	@Override
+	public int addMemberImg(String memberId, String memberImg) throws Exception {
+		System.out.println("서비스단 : 멤버 이미지 변경");
+		return dao.addMemberImg(memberId, memberImg);
+	}
+
+	// 회원 이메일 변경 메서드
+	@Override
+	public int changeMemberEmail(String memberId, String memberEmail) throws Exception {
+		System.out.println("서비스단 : 회원 이메일 변경");
+		return dao.changeMemberEmail(memberId, memberEmail);
+	}
 }

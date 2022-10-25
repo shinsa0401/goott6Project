@@ -1,8 +1,8 @@
-package com.boritgogae.board.prodReply.domain;
+package com.boritgogae.domain;
 
 import java.sql.Timestamp;
 
-public class OrdersVO {
+public class OrdersVo {
 	private int orderNo;
 	private String memberId;
 	private int prodTotalPrice;
@@ -21,7 +21,7 @@ public class OrdersVO {
 	private int postCode;
 	private int accumPoint;
 	
-	public OrdersVO(int orderNo, String memberId, int prodTotalPrice, String deliveryOption, int totalPrice,
+	public OrdersVo(int orderNo, String memberId, int prodTotalPrice, String deliveryOption, int totalPrice,
 			Timestamp orderDate, char isMember, String phoneNumber, String guestEmail, String guestPwd, String name,
 			String memo, int usedPoint, String address, String detailAddress, int postCode, int accumPoint) {
 		super();
@@ -44,7 +44,7 @@ public class OrdersVO {
 		this.accumPoint = accumPoint;
 	}
 
-	public OrdersVO() {
+	public OrdersVo() {
 		super();
 	}
 
@@ -186,7 +186,7 @@ public class OrdersVO {
 
 	@Override
 	public String toString() {
-		return "OrdersVO [orderNo=" + orderNo + ", memberId=" + memberId + ", prodTotalPrice=" + prodTotalPrice
+		return "OrdersVo [orderNo=" + orderNo + ", memberId=" + memberId + ", prodTotalPrice=" + prodTotalPrice
 				+ ", deliveryOption=" + deliveryOption + ", totalPrice=" + totalPrice + ", orderDate=" + orderDate
 				+ ", isMember=" + isMember + ", phoneNumber=" + phoneNumber + ", guestEmail=" + guestEmail
 				+ ", guestPwd=" + guestPwd + ", name=" + name + ", memo=" + memo + ", usedPoint=" + usedPoint

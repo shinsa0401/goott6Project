@@ -1,6 +1,6 @@
-package com.boritgogae.board.prodReply.domain;
+package com.boritgogae.domain;
 
-public class OrderDetailVO {
+public class OrderDetailVo {
 	private int orderDetailNo;
 	private int orderNo;
 	private String prodNo;
@@ -14,7 +14,7 @@ public class OrderDetailVO {
 	private char reviewStatus;
 	private String memberId;
 	
-	public OrderDetailVO() {
+	public OrderDetailVo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -117,14 +117,14 @@ public class OrderDetailVO {
 
 	@Override
 	public String toString() {
-		return "OrderDetailVO [orderDetailNo=" + orderDetailNo + ", orderNo=" + orderNo + ", prodNo=" + prodNo
+		return "OrderDetailVo [orderDetailNo=" + orderDetailNo + ", orderNo=" + orderNo + ", prodNo=" + prodNo
 				+ ", qty=" + qty + ", prodSubTotalPrice=" + prodSubTotalPrice + ", cancelStatus=" + cancelStatus
 				+ ", returnOrExchange=" + returnOrExchange + ", initialOrderDetailNo=" + initialOrderDetailNo
 				+ ", purchaseConfirm=" + purchaseConfirm + ", returnOrExchangeConfirm=" + returnOrExchangeConfirm
 				+ ", reviewStatus=" + reviewStatus + ", memberId=" + memberId + "]";
 	}
 
-	public OrderDetailVO(int orderDetailNo, int orderNo, String prodNo, int qty, int prodSubTotalPrice,
+	public OrderDetailVo(int orderDetailNo, int orderNo, String prodNo, int qty, int prodSubTotalPrice,
 			char cancelStatus, char returnOrExchange, int initialOrderDetailNo, char purchaseConfirm,
 			char returnOrExchangeConfirm, char reviewStatus, String memberId) {
 		super();
