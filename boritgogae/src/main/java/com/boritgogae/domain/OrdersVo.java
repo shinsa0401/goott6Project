@@ -22,7 +22,7 @@ public class OrdersVo {
 	private int accumPoint;
 	
 	public OrdersVo(int orderNo, String memberId, int prodTotalPrice, String deliveryOption, int totalPrice,
-			Timestamp orderDate, char isMember, String phoneNumber, String guestEmail, String guestPwd, String name,
+			Timestamp orderDate, String isMember, String phoneNumber, String guestEmail, String guestPwd, String name,
 
 			String memo, int usedPoint, String address, String detailAddress, int postCode, int accumPoint) {
 		super();

@@ -73,8 +73,6 @@ public class MemberDAOImpl implements MemberDAO {
 		System.out.println("DAO : 로그아웃시간 업데이트");
 		return ses.update(ns + ".updateLogOutDate", memberId);
 	}
-	
->>>>>>> master
 
 	// 등급혜택을 가져오는 메서드
 	@Override

@@ -58,7 +58,6 @@ import com.boritgogae.service.MemberService;
 
 @Controller
 @RequestMapping(value="/member/*") // member 요청들 매핑
->>>>>>> master
 public class MemberController {
 
 	@Autowired

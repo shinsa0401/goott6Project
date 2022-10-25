@@ -18,24 +18,6 @@ public class OrderDetailVo {
 		super();
 	}
 	
-	public OrderDetailVo(int orderDetailNo, int orderNo, String prodNo, int qty, int prodSubTotalPrice,
-			String cancelStatus, String returnOrExchange, int initialOrderDetailNo, String purchaseConfirm,
-			String returnOrExchangeConfirm, String reviewStatus, String memberId) {
-		super();
-		this.orderDetailNo = orderDetailNo;
-		this.orderNo = orderNo;
-		this.prodNo = prodNo;
-		this.qty = qty;
-		this.prodSubTotalPrice = prodSubTotalPrice;
-		this.cancelStatus = cancelStatus;
-		this.returnOrExchange = returnOrExchange;
-		this.initialOrderDetailNo = initialOrderDetailNo;
-		this.purchaseConfirm = purchaseConfirm;
-		this.returnOrExchangeConfirm = returnOrExchangeConfirm;
-		this.reviewStatus = reviewStatus;
-		this.memberId = memberId;
-	}
-	
 	public int getOrderDetailNo() {
 		return orderDetailNo;
 	}
@@ -119,8 +101,8 @@ public class OrderDetailVo {
 	}
 
 	public OrderDetailVo(int orderDetailNo, int orderNo, String prodNo, int qty, int prodSubTotalPrice,
-			char cancelStatus, char returnOrExchange, int initialOrderDetailNo, char purchaseConfirm,
-			char returnOrExchangeConfirm, char reviewStatus, String memberId) {
+			String cancelStatus, String returnOrExchange, int initialOrderDetailNo, String purchaseConfirm,
+			String returnOrExchangeConfirm, String reviewStatus, String memberId) {
 		super();
 		this.orderDetailNo = orderDetailNo;
 		this.orderNo = orderNo;
