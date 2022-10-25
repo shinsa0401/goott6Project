@@ -19,30 +19,54 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <title>로그인 페이지</title>
 <script>
+
 	$(function () {
-		logInFail(); // 로그인 실패시 실패 메세지 출력
-		$("#failMsgDiv").hide();
-		$(".guestForm").hide();
 		
+		formChange(); // 폼 변경
 		
-		// 회원, 비회원 로그인폼 변경
-		$("input[name='member']").change(function() {
-			let memberSelect = $("input[name='member']:checked").val();
+		$("input:radio[name=member]:input[value='member']").attr("checked", true);
+		$(".memberForm").show();
+		
+		// 페이지 로딩시 guestFail 이면 게스트폼 호출
+		if (getParameter("status") == "guestFail") {
+			let memberSelect = $("input[name=member]:checked").val();
 			
-			if (memberSelect == "guest") {
-				$("#guestFailMsgDiv").hide();
-				$(".memberForm").hide();
-				$(".guestForm").show();
-			} else if (memberSelect == "member") {
-				$("#memberFailMsgDiv").hide();
-				$(".guestForm").hide();
-				$(".memberForm").show();
-			}
-		});
+			$("input:radio[name=member]:input[value='guest']").attr("checked", true);
+			$(".memberForm").hide();
+			$("#guestFailMsgDiv").show();
+			$(".guestForm").show();
+		} 
 		
+		
+		logInFail(); // 로그인 실패시 실패 메세지 출력
+		guestFail(); // 게스트 주문내역 로그인 실패시 실패 메세지 출력
 		
 	});
 	
+	
+	// 로그인 취소시 이전페이지로 가기
+	function logInCancel() {
+		
+	}
+	
+	
+	// 회원, 비회원 로그인 폼 변경
+	function formChange() {
+		$("input[name='member']").change(function() {
+			let memberSelect = $("input[name=member]:checked").val();
+	        
+			if (memberSelect == "guest") {
+				$(".memberForm").hide();
+				$("#guestFailMsgDiv").hide();
+				$(".guestForm").show();
+				
+			} else if (memberSelect == "member") {
+				$(".guestForm").hide();
+				$("#memberFailMsgDiv").hide();
+				$(".memberForm").show();
+			}
+		});
+	}
 	
 	
 	// 회원 로그인 실패시 실패 메세지 출력
@@ -51,6 +75,16 @@
 			$("#memberFailMsgDiv").show();
 		} else {
 			$("#memberFailMsgDiv").hide();
+		}	
+	}
+	
+	
+	// 비회원 주문내역 로그인 실패시 실패 메세지 출력
+	function guestFail() {
+		if (getParameter("status") == "guestFail") {
+			$("#guestFailMsgDiv").show();
+		} else {
+			$("#guestFailMsgDiv").hide();
 		}	
 	}
 	
@@ -82,7 +116,7 @@
 </script>
 <style>
 	.logInArea {
-		height: 600px;
+		height: 650px;
 	}
 	
 	.row {
@@ -127,12 +161,13 @@
     .guestFailMsg {
     	color: red;
     }
-    .guestFind {
+    #guestFind {
     	color: blue;
     }
-    .guestFind:hover {
+    #guestFind:hover {
     	color: blue;
     }
+    
 </style>
 </head>
 <body>
@@ -145,7 +180,7 @@
     	    
     	    	<div class="form-check" id="memberSelect">
     	    		<label class="form-check-label" for="member">
-  						<input type="radio" class="form-check-input" class="radioBtn" name="member" value="member" checked>
+  						<input type="radio" class="form-check-input" class="radioBtn" name="member" value="member">
   						<spna>회원</spna>
   					</label>
   					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -157,7 +192,7 @@
   					</label>
 				</div>
 				
-    	    	<div class="memberForm">
+    	    	<div class="memberForm" style="display:none">
                 <form class="form-horizontal" action="${contextPath }/member/logInPost" method="post">
                     <span class="heading">Log In</span>
                     <div id="memberFailMsgDiv" class="form-group" style="display:none">
@@ -186,7 +221,7 @@
                     <div class="form-group">
                     	<div class="btns">
                     		<button type="submit" class="btn btn-login">로그인</button>
-	                        <button type="reset" class="btn btn-cancel" onclick="location.href='${contextPath}/';">취소</button>
+	                        <button type="reset" class="btn btn-cancel" onclick="logInCancel();">취소</button>
 	                    </div>
                     </div>
                     
@@ -202,7 +237,7 @@
                 </div>
                 
                 
-                <div class="guestForm">
+                <div class="guestForm" style="display:none">
                 <form class="form-horizontal" action="${contextPath }/order/detailGuest" method="post">
                     <span class="heading">Guest</span>
                     <div class="form-group" id="guestFailMsgDiv" style="display:none">
@@ -231,14 +266,14 @@
                     
                     <div class="form-group">
                     	<div class="btns">
-                    		<button type="submit" class="btn btn-login">로그인</button>
+                    		<button type="submit" class="btn btn-login">주문내역보기</button>
 	                        <button type="reset" class="btn btn-cancel" onclick="location.href='${contextPath}/';">취소</button>
 	                    </div>
                     </div>
                     
                     <div class="form-group">
                     	<div class="addLink">
-                    		<a class="guestFind" href="#">주문 비밀번호찾기</a>
+                    		<a id="guestFind" href="#">주문 비밀번호찾기</a>
                     	</div>
                     </div>
                     

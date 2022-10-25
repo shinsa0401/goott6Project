@@ -6,8 +6,8 @@ MANIFEST.MF
 */Servers/*
 *.zip
 *tern*
-bin/
-bin\
+bin/*
+bin\*
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

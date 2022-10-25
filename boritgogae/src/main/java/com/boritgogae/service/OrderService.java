@@ -15,5 +15,5 @@ public interface OrderService {
 	public List<DetailOrderVo> popularProd() throws Exception;
 	
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
-	public List<OrdersVo> guestOrderInfo(GuestOrderDTO gdto) throws Exception;
+	public OrdersVo guestOrderInfo(GuestOrderDTO gdto) throws Exception;
 }

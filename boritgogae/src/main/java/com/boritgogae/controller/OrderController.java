@@ -22,6 +22,7 @@ import com.boritgogae.service.OrderService;
 @RequestMapping(value = "/order/*")
 public class OrderController {
 	
+	
 	@Inject
 	private OrderService service;
 	
@@ -56,14 +57,17 @@ public class OrderController {
 	 * @returnType : String
 	 */
 	@RequestMapping(value = "/detailGuest")
-	public void guestLogIn(GuestOrderDTO gdto, Model model, HttpServletResponse response) throws Exception {
-		String destination = "";
-		List<OrdersVo> guestOrderInfo = service.guestOrderInfo(gdto);
-		System.out.println(guestOrderInfo.toString());
+	public String guestLogIn(GuestOrderDTO gdto, Model model, HttpServletResponse response) throws Exception {
 		
+		OrdersVo guestOrderInfo = service.guestOrderInfo(gdto);
+		
+		if (guestOrderInfo == null) { // 주문내역이 없다
+			return "redirect:/member/logIn?status=guestFail";
+		}
 		
 		model.addAttribute("guestOrderInfo", guestOrderInfo); // 비회원주문정보 바인딩
 		
-		response.sendRedirect(destination);
+//		response.sendRedirect(destination);
+		return "/order/detailGuest";
 	}
 }

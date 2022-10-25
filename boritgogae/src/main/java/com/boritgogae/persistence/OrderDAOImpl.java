@@ -39,9 +39,9 @@ public class OrderDAOImpl implements OrderDAO {
 	
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
 	@Override
-	public List<OrdersVo> selectGuestOrderInfo(GuestOrderDTO gdto) throws Exception {
+	public OrdersVo selectGuestOrderInfo(GuestOrderDTO gdto) throws Exception {
 		System.out.println("DAO : 비회원 주문내역 조회");
-		return ses.selectList(ns + ".selectGuestOrderInfo", gdto);
+		return ses.selectOne(ns + ".selectGuestOrderInfo", gdto);
 	}
 
 }

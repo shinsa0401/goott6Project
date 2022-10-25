@@ -10,11 +10,7 @@
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 
-	<div>
-		<c:forEach var="guest" items="${guestOrderInfo }">
-			${guestOrderInfo }
-		</c:forEach>
-	</div>
+	<div>${guestOrderInfo }</div>
 	
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>

@@ -16,5 +16,5 @@ public interface OrderDAO {
 	public List<DetailOrderVo> getPopular() throws Exception;
 	
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
-	public List<OrdersVo> selectGuestOrderInfo(GuestOrderDTO gdto) throws Exception;
+	public OrdersVo selectGuestOrderInfo(GuestOrderDTO gdto) throws Exception;
 }
