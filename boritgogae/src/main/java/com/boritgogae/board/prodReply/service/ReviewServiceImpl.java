@@ -10,10 +10,10 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.board.prodReply.domain.OrderDetailVO;
-import com.boritgogae.board.prodReply.domain.OrdersVO;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
-import com.boritgogae.board.prodReply.domain.ReplyVo;
+import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
@@ -152,7 +152,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReplyVo> getReplies(String prodNo) throws Exception {
+	public List<ProdReplyVo> getReplies(String prodNo) throws Exception {
 		
 		return dao.getReplies(prodNo);
 	}
@@ -188,7 +188,7 @@ public class ReviewServiceImpl implements ReviewService {
 		int update = 0;
 		if(write == 1) {
 			//ref업데이트 : 기존 댓글의 ref가져와서
-			ReplyVo parentReply = dao.getReply(reply.getParentRno());
+			ProdReplyVo parentReply = dao.getReply(reply.getParentRno());
 			dao.updateReRef(dao.getLstRno(), parentReply.getRef());
 			
 			//step, refOrder업데이트
@@ -204,7 +204,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 //	@Override
-//	public List<OrdersVO> getOrder(String userId, String prodNo) {
+//	public List<OrdersVo> getOrder(String userId, String prodNo) {
 //		
 //		return dao.getOrder(userId, prodNo);
 //	}

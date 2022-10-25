@@ -19,13 +19,13 @@ import com.boritgogae.persistence.AdminDAO;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-	@Inject
-	private AdminDAO dao;
-	
-	@Override
-	public List<MemberVo> getMembers() throws Exception {
-		return dao.getMembers();
-	}
+   @Inject
+   private AdminDAO dao;
+   
+   @Override
+   public List<MemberVo> getMembers() throws Exception {
+      return dao.getMembers();
+   }
 
 	@Override
 	public List<MemberVo> getNewMembers() throws Exception {

@@ -101,11 +101,11 @@ public class MemberVo {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getmemberEmail() {
+	public String getMemberEmail() {
 		return memberEmail;
 	}
 
-	public void setmemberEmail(String memberEmail) {
+	public void setMemberEmail(String memberEmail) {
 		this.memberEmail = memberEmail;
 	}
 
@@ -133,11 +133,11 @@ public class MemberVo {
 		this.logOutDate = logOutDate;
 	}
 
-	public Timestamp getlogInDate() {
+	public Timestamp getLogInDate() {
 		return logInDate;
 	}
 
-	public void setlogInDate(Timestamp logInDate) {
+	public void setLogInDate(Timestamp logInDate) {
 		this.logInDate = logInDate;
 	}
 

@@ -63,6 +63,7 @@ public class AskReplyDAOImpl implements AskReplyDAO {
 		return ses.selectOne(ns + ".safeUpdatesDisable");
 	}
 
+	// 
 	@Override
 	public int deleteReply(AskReplyVo reply) throws Exception {
 		System.out.println("DAO단 : " + reply.toString());

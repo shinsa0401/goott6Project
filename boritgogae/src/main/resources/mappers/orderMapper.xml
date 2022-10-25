@@ -4,5 +4,23 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.boritgogae.orderMapper">
-  
+  	<!-- 장바구니 -->
+  	<insert id="addCart">
+  		insert into cart (prodNo, memberId, qty, sessionId,sessionLimit) values('CB1AR05W00M03S03C00E00',null,1 ,'7as8d787s8a78dada',now())
+  	</insert>
+  	<select id="selectCartList" resultType="com.boritgogae.domain.CartDTO">
+  		select * from cart where memberId='haha' or sessionId =''
+  	</select>
+  	<delete id="delCartProd">
+  		delete from cart where memberId='haha' and prodNo='CB1AR05W00M03S03C00E00'
+  	</delete>
+  	<select id="popularList" resultType="DetailOrderVo">
+  		select count(*) as orderCnt, prodNo from detailOrder group by prodNo order by orderCnt desc limit 0,6
+  	</select>
+  	
+  	<!-- 비회원 로그인하기위해 주문내역 검색 -->
+  	<select id="selectGuestOrderInfo" resultType="OrdersVo">
+  		select * from orders where name = #{name} and phoneNumber = #{phoneNumber} and guestPwd = #{guestPwd}
+  	</select>
+  	
   </mapper>

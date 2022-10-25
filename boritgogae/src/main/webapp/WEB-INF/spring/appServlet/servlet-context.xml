@@ -14,7 +14,7 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-
+	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
@@ -31,5 +31,62 @@
 		<beans:property name="maxUploadSize" value="10485760" />   <!-- Max upload size : 10MB -->
 		<beans:property name="maxInMemorySize" value="10485760" /> <!-- Max size of file in memory : 10MB -->
 	</beans:bean>
+	
+	
+	<!-- 인터셉터 객체 서블릿에 등록 -->
+	<beans:bean id="logInInterceptor" class="com.boritgogae.interceptor.LogInInterceptor">
+	</beans:bean>
+	
+	<beans:bean id="authInterceptor" class="com.boritgogae.interceptor.AuthInterceptor">
+	</beans:bean>
+	
+	
+	<!-- 인터셉터에 의해 mapping되는 URI 지정 -->
+	<interceptors>
+		<!-- /member/logInPost URI에 요청이 들어오면 logInInterceptor객체가 가로채어 수행된다 -->
+		<interceptor>
+			<mapping path="/member/logInPost"/>
+			
+			<beans:ref bean="logInInterceptor"/>
+		</interceptor>
+		
+		<!-- authInterceptor객체가 가로채어 수행되는 조건 -->
+		<interceptor>
+			<!-- 질문게시판 신태호 -->
+			<mapping path="/board/question/write"/> <!-- 글 쓰기 -->
+			<mapping path="/board/question/modify"/> <!-- 글 수정 -->
+			<mapping path="/questionReply/write"/> <!-- 댓글쓰기 -->
+			<mapping path="/questionReply/modify"/> <!-- 댓글수정 -->
+			<mapping path="/questionReply/remove"/> <!-- 댓글삭제 -->
+			<mapping path="/questionReply/reReply"/> <!-- 대댓글쓰기 -->
+			
+			
+			<!-- 문의게시판 정인식 -->
+			
+			
+			<!-- 자유게시판 강무진 -->
+			
+			
+			<!-- 공지사항 신희환 -->
+			
+			
+			<!-- 병원리뷰 최윤정 -->
+			
+			
+			<!-- 장터게시판 하수영 -->
+			
+			
+			<!-- 상품리뷰 김지영 -->
+			
+			
+			<!-- 팁게시판 이중현 -->
+			
+			
+			
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+		
+	</interceptors>
+	
 	
 </beans:beans>

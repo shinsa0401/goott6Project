@@ -98,5 +98,8 @@
 	<update id="updateNoticeBoardRead">
 		update noticeBoardRead set readTime = #{readTime} where readMemberIp = #{readMemberIp} and bno = #{bno}
 	</update>
-
+	
+	<select id="MainNotice" resultType="NoticeVo">
+  		select * from noticeBoard order by bno asc limit 0,5
+  	</select>
 </mapper>
