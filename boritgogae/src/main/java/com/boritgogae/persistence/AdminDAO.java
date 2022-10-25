@@ -38,6 +38,12 @@ public interface AdminDAO {
 	
 	// 회원의 정보를 수정하는 메서드
 	public int modifyMemberForAdmin(MemberVo member) throws Exception;
+
+	// 회원을 삭제하는 메서드
+	public int deleteMember(String memberId) throws Exception;
+	
+	// 일일 접속자 수를 구하는 메서드
+	public int getLogInMemberCount() throws Exception;
 	
 	// ----------------- 쿠폰 관련 메서드 -----------------
 	

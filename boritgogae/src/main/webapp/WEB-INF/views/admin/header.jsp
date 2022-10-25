@@ -61,7 +61,7 @@
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link" data-widget="pushmenu"
 					href="#" role="button"><i class="fas fa-bars"></i></a></li>
-					${pageContext.request.servletPath}
+				${pageContext.request.servletPath}
 				<li class="nav-item d-none d-sm-inline-block"><a
 					href="/admin/main" class="nav-link">Home</a></li>
 				<c:choose>
@@ -70,19 +70,22 @@
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/member" class="nav-link">회원 목록</a></li>
 					</c:when>
-					<c:when test="${pageContext.request.servletPath == '/WEB-INF/views/admin/newMember.jsp'}">
+					<c:when
+						test="${pageContext.request.servletPath == '/WEB-INF/views/admin/newMember.jsp'}">
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/member" class="nav-link">회원 목록</a></li>
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/member/new" class="nav-link">신규 가입 회원</a></li>
 					</c:when>
-					<c:when test="${pageContext.request.servletPath == '/WEB-INF/views/admin/delMember.jsp' }">
+					<c:when
+						test="${pageContext.request.servletPath == '/WEB-INF/views/admin/delMember.jsp' }">
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/member" class="nav-link">회원 목록</a></li>
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/member/delMember" class="nav-link">탈퇴한 회원</a></li>
 					</c:when>
-					<c:when test="${pageContext.request.servletPath == '/WEB-INF/views/admin/coupon.jsp' }">
+					<c:when
+						test="${pageContext.request.servletPath == '/WEB-INF/views/admin/coupon.jsp' }">
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/coupon" class="nav-link">쿠폰관리</a></li>
 					</c:when>
@@ -328,11 +331,10 @@
 							</ul></li>
 						<li class="nav-item"><a href="pages/calendar.html"
 							class="nav-link"> <i class="nav-icon far fa-calendar-alt"></i>
-								<p>
-									일정 관리 <span class="badge badge-info right"></span>
-								</p>
+								<p>일정 관리</p>
 						</a></li>
 					</ul>
+
 				</nav>
 				<!-- /.sidebar-menu -->
 			</div>

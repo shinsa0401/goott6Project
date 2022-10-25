@@ -44,7 +44,9 @@ public class AdminController {
 		List<ProductVO> topLikeCountList = service.getTopLikeCount();
 		List<OrdersVO> getNewOrders = service.getNewOrder();
 		List<ProductVO> topReadCountList = service.getTopReadCount();
+		int getLogInMemberCount = service.getLogInMemberCount();
 		
+		model.addAttribute("logInMemberCount", getLogInMemberCount);
 		model.addAttribute("topReadCountList", topReadCountList);
 		model.addAttribute("getNewOrders", getNewOrders);
 		model.addAttribute("topLikeCountList", topLikeCountList);
@@ -210,6 +212,20 @@ public class AdminController {
 		String result = ""; 
 		
 		if(service.modifyMemberForAdmin(member)) {
+			result = "success";
+		}else {
+			result = "fail";
+		}
+		
+		
+		return result;
+	}
+	
+	@RequestMapping(value = "/member/delete", method = RequestMethod.POST)
+	public @ResponseBody String deleteMember(@RequestParam("memberId") String memberId) throws Exception {
+		String result = ""; 
+		
+		if(service.deleteMember(memberId)) {
 			result = "success";
 		}else {
 			result = "fail";

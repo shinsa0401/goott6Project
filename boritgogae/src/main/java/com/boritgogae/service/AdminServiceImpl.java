@@ -139,6 +139,23 @@ public class AdminServiceImpl implements AdminService {
 		}
 		return result;
 	}
+
+	@Override
+	public boolean deleteMember(String memberId) throws Exception {
+		boolean result = false;
+		
+		
+		if(dao.deleteMember(memberId) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int getLogInMemberCount() throws Exception {
+		return dao.getLogInMemberCount();
+	}
 	
 
 

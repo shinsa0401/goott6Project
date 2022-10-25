@@ -120,6 +120,16 @@ public class AdminDAOImpl implements AdminDAO {
 		return ses.update(ns + ".modifyMemberForAdmin", member);
 	}
 
+	@Override
+	public int deleteMember(String memberId) throws Exception {
+		return ses.delete(ns + ".deleteMember", memberId);
+	}
+
+	@Override
+	public int getLogInMemberCount() throws Exception {
+		return ses.selectOne(ns + ".getLogInMemberCount");
+	}
+
 	
     
 

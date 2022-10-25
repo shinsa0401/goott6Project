@@ -4,6 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.boritgogae.AdminMapper">
+	<!-- 관리자 페이지 회원 관련 쿼리문 시작  -->
 	<select id="getMembers" resultType="MemberVo">
 		select * from members where delStatus = 'N' order by joinDate desc
 	</select>
@@ -16,12 +17,6 @@
 	
 	<select id="getMemberProfile" resultType="MemberVo">
 		select * from members where memberId = #{memberId}
-	</select>
-
-	<select id="getLowestProductQTY" resultType="ProductVO">
-  	<![CDATA[
-  		select * from product where prodQuantity < 100 
-  	]]>
 	</select>
 
 	<select id="getDelMembers" resultType="DeleteAccountVo">
@@ -41,11 +36,49 @@
 	</select>
 	
 	<update id="modifyMemberForAdmin">
-		update members set memberPwd = #{memberPwd}, memberName = #{memberName}, 
+		update members set memberPwd = sha1(md5(#{memberPwd})), memberName = #{memberName}, 
 		memberEmail = #{memberEmail}, nickName = #{nickName}, phoneNumber = #{phoneNumber} 
 	 	where memberId = #{memberId}
 	</update>
 
+	<delete id="deleteMember">
+		delete from members where memberId = #{memberId}
+	</delete>
+	
+	<select id="getLogInMemberCount" resultType="int">
+		select count(*) from members where logInDate 
+		between (select STR_TO_DATE(DATE_FORMAT(now(), '%Y-%m-%d 00:00:00'), '%Y-%m-%d %T') as today) 
+		and now() + 1
+	</select>
+	
+	<!-- 관리자 페이지 회원 관련 쿼리문 끝 -->
+	
+	<!-- 관리자 페이지 상품 관련 쿼리문 시작 -->
+	
+	<select id="getLowestProductQTY" resultType="ProductVO">
+  	<![CDATA[
+  		select * from product where prodQuantity < 100 
+  	]]>
+	</select>
+	
+	<select id="getTopLikeCount" resultType="ProductVO">
+		select * from product order by likeCount desc limit 0, 5
+	</select>
+	
+	<select id="getTopReadCount" resultType="ProductVO">
+		select * from product order by readCount desc limit 0, 5
+	</select>
+	
+	<select id="getNewOrder" resultType="OrdersVo">
+		select o.* from orders as o inner Join detailOrder as d
+		on o.orderNo = d.orderNo where d.purchaseConfirm = 'N'
+	</select>
+	
+	<!-- 관리자 페이지 상품 관련 쿼리문 끝 -->
+	
+
+	<!-- 관리자 페이지 쿠폰 관련 쿼리문 시작 -->
+	
 	<select id="getCoupon" resultType="CouponVo">
 		select * from coupon
 	</select>
@@ -77,18 +110,7 @@
 		day) as date), #{couponWhy})
 	</insert>
 	
-	<select id="getTopLikeCount" resultType="ProductVO">
-		select * from product order by likeCount desc limit 0, 5
-	</select>
-	
-	<select id="getNewOrder" resultType="OrdersVo">
-		select o.* from orders as o inner Join detailOrder as d
-		on o.orderNo = d.orderNo where d.purchaseConfirm = 'N'
-	</select>
-	
-	<select id="getTopReadCount" resultType="ProductVO">
-		select * from product order by readCount desc limit 0, 5
-	</select>
-	
+	<!-- 관리자 페이지 쿠폰 관련 쿼리문 끝 -->
+
 	
 </mapper>

@@ -39,6 +39,12 @@ public interface AdminService {
 	// 회원의 정보를 수정하는 메서드
 	public boolean modifyMemberForAdmin(MemberVo member) throws Exception;
 	
+	// 회원을 삭제하는 메서드
+	public boolean deleteMember(String memberId) throws Exception;
+	
+	// 일일 접속자 수를 구하는 메서드
+	public int getLogInMemberCount() throws Exception;
+	
     // ----------------- 쿠폰 관련 메서드 -----------------
     
     // 쿠폰 신규 등록 하는 메서드

@@ -15,11 +15,15 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
+	let delMemberId = "${member.memberId }";
+
 	$(document).ready(function() {
 		$(".closeModal").click(function() {
 			$("#statusModal").hide(100);
+			$("#deleteMemberModal").hide(100);
 		});
 	});
+	
 	function modifyMember() {
 		let memberId = $("#memberId").val();
 		let memberPwd = $("#memberPwd").val();
@@ -54,6 +58,47 @@
 					$("#statusModal").show(200);
 				} else if (data == "fail") {
 					$("#status").html("회원 수정에 실패하였습니다.");
+					$("#statusModal").show(200);
+				}
+
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+	
+	function showDeleteModal() {
+		$("#deleteModalStatus").html(delMemberId + " 회원을 삭제하시겠습니까?");
+		$("#deleteMemberModal").show(200);
+	}
+	
+	function ModalStatusOk() {
+		if(delMemberId =="") {
+			location.href="/admin/member";
+		} else {
+			location.reload();
+		}
+		
+	}
+	
+	function deleteMember() {
+		$("#deleteMemberModal").hide(100);
+		let url = "/admin/member/delete";
+		
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			data : {"memberId" : delMemberId},
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				if (data == "success") {
+					$("#status").html("회원을 삭제하였습니다.");
+					delMemberId = "";
+					$("#statusModal").show(200);
+				} else if (data == "fail") {
+					$("#status").html("회원 삭제에 실패하였습니다.");
 					$("#statusModal").show(200);
 				}
 
@@ -107,8 +152,8 @@
 											alt="User profile picture">
 									</div>
 
-									<h3 class="profile-username text-center">닉네임 :
-										${member.nickName }</h3>
+									<h5 class="profile-username text-center">닉네임</h5>
+									<h3 class="profile-username text-center">${member.nickName }</h3>
 
 
 									<ul class="list-group list-group-unbordered mb-3">
@@ -131,6 +176,7 @@
 													maxFractionDigits="3" value="${member.memberPoint }" />포인트
 										</a></li>
 									</ul>
+									<a class="btn btn-danger btn-block" onclick="showDeleteModal();"><b>회원 삭제</b></a>
 								</div>
 								<!-- /.card-body -->
 							</div>
@@ -305,7 +351,7 @@
 												<label for="memberPwd" class="col-sm-2 col-form-label">비밀번호</label>
 												<div class="col-sm-10">
 													<input type="text" class="form-control" id="memberPwd"
-														name="memberPwd" value="${member.memberPwd }">
+														name="memberPwd">
 												</div>
 											</div>
 											<div class="form-group row">
@@ -362,7 +408,30 @@
 					<!-- Modal footer -->
 					<div class="modal-footer">
 						<button type="button" class="btn btn-success"
-							data-bs-dismiss="modal" onclick="location.reload();">확인</button>
+							data-bs-dismiss="modal" onclick="ModalStatusOk();">확인</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal" id="deleteMemberModal">
+			<div class="modal-dialog"> 
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title" id="deleteModalStatus"></h4>
+						<button type="button" class="btn-close close closeModal"
+							data-bs-dismiss="modal">X</button>
+					</div>
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success"
+							data-bs-dismiss="modal" onclick="deleteMember();">확인</button>
+						<button type="button" class="btn btn-danger closeModal"
+							data-bs-dismiss="modal">취소</button>
 					</div>
 
 				</div>
