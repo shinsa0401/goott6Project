@@ -19,15 +19,27 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <title>로그인 페이지</title>
 <script>
+	let prevPage = "";
+	let notLogInPage = "";
 
 	$(function () {
 		
-		formChange(); // 폼 변경
+		// 로그인 실패횟수에 상관없이 로그인 페이지로 오기전 URL 세팅
+		notLogInPage = document.referrer;
+		if (notLogInPage.indexOf("/logIn") == -1) {
+			// page라는 이름으로 로그인페이지 오기전 url 세션에 저장
+			sessionStorage.setItem("page", notLogInPage);
+		}
 		
+		
+		formChange(); // 회원/비회원 폼 변경 메서드
+		
+		
+		// logIn.jsp 페이지 로딩시 회원 로그인 폼 기본호출
 		$("input:radio[name=member]:input[value='member']").attr("checked", true);
 		$(".memberForm").show();
 		
-		// 페이지 로딩시 guestFail 이면 게스트폼 호출
+		// 페이지 로딩시 쿼리스트링이 guestFail 이면 게스트폼 호출
 		if (getParameter("status") == "guestFail") {
 			let memberSelect = $("input[name=member]:checked").val();
 			
@@ -39,28 +51,18 @@
 		
 		
 		logInFail(); // 로그인 실패시 실패 메세지 출력
-		guestFail(); // 게스트 주문내역 로그인 실패시 실패 메세지 출력
+		guestFail(); // 게스트 주문내역 조회 실패시 실패 메세지 출력
 		
 	});
 	
 	
 	// 로그인 취소시 이전페이지로 가기
 	function logInCancel() {
-		let url = window.location.href;
+		let back = sessionStorage.getItem("page");
+		// page 세션 삭제
+		sessionStorage.removeItem("page");
 		
-		let aa = url.indexOf("logIn");
-		let i = 0 
-		
-		while (i < 100) {
-			history.back();
-			if (aa == -1) {
-				break;
-			}
-			i++;
-		}
-		
-		
-		// location.href = ${contextPath}"/";
+		location.href = back;
 	}
 	
 	
