@@ -36,5 +36,11 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		return ses.selectOne(ns+".getGrade", memberId);
 	}
+	
+	@Override
+	public int updateMemberPoint(String memberId) {
+		   
+		return ses.update(ns+".updateMemberPoint", memberId);
+	}
 
 }

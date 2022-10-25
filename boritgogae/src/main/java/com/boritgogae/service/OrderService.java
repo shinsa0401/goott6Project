@@ -12,6 +12,7 @@ import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDTO;
 import com.boritgogae.domain.OrderSheetDTO;
+import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.ProductVO;
 
 @Service
@@ -33,4 +34,6 @@ public interface OrderService {
 	 * @returnType : DeliveryFeeVo
 	 **/
 	public DeliveryFeeVo getDeliveryOption(OrderDTO order);
+	
+	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet);
 }

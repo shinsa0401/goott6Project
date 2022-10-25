@@ -18,4 +18,8 @@
   	<select id="getGrade" resultType="com.boritgogae.domain.GradeVo">
   		select * from grades where grade = (select grade from members where memberId = #{memberId})
   	</select>
+  	
+  	<update id="updateMemberPoint">
+  		update members set memberPoint = (select sum(pointHistory) from pointHistory where memberId = #{memberId}) where memberId = #{memberId};
+  	</update>
   </mapper>

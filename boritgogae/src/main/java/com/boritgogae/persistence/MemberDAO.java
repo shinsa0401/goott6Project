@@ -33,4 +33,6 @@ public interface MemberDAO {
 	 * @returnType : GradeVo
 	 **/
 	public GradeVo getGrade(String memberId);
+	
+	public int updateMemberPoint(String memberId);
 }

@@ -30,6 +30,7 @@ import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDTO;
 import com.boritgogae.domain.OrderProductDTO;
 import com.boritgogae.domain.OrderSheetDTO;
+import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.ProductVO;
 import com.boritgogae.service.MemberService;
 import com.boritgogae.service.OrderService;
@@ -48,8 +49,6 @@ public class OrderController {
 	@Inject
 	private ProductService prodService;
 	
-	//주문할 상품의 상품번호를 임시저장(더했다 뺄 수 있음)
-	List<OrderProductDTO> orderProds = new ArrayList<>();
 	
 	/**
 	 * @methodName : orderSheet(주문페이지)
@@ -65,9 +64,7 @@ public class OrderController {
 		memberId = "naver";
 		
 		List<OrderProductDTO> orders = orderSheet.getOrderProducts();
-		for(OrderProductDTO prods : orders) {
-			orderProds.add(prods);
-		}
+
 		List<DeliveryInfoVo> addrs = memService.getMemAddrs(memberId);
 		
 		//가져올 데이터
@@ -85,24 +82,7 @@ public class OrderController {
 		
 	}
 	
-	/**
-	 * @methodName : deleteProductFromOrder(컨트롤러의 리스트에서 상품 지움)
-	 * @author : kjy
-	 * @date : 2022. 10. 21.
-	 * @입력 param : prodNo
-	 * @returnType : ResponseEntity<String>
-	 **/
-	@RequestMapping(value = "/deleteProdFromOrder", method = RequestMethod.POST)
-	public ResponseEntity<String> deleteProductFromOrder(String prodNo){
-		ResponseEntity<String> result = new ResponseEntity<>("delFail", HttpStatus.BAD_REQUEST);
-		for(OrderProductDTO prods : orderProds) {
-			if(prods.getProdNo().equals(prodNo)) {
-				result = new ResponseEntity<String>("delSuccess", HttpStatus.OK);
-			}
-		}
-		
-		return result;
-	}
+
 	
 	@RequestMapping(value = "/jusoPopup")
 	public String jusoPopup() {
@@ -127,5 +107,19 @@ public class OrderController {
 
 		
 		return orderService.getDeliveryOption(order);
+	}
+	
+	@RequestMapping(value = "/placeOrder", method = RequestMethod.POST)
+	public String placeOrder(OrderDTO order, @RequestParam("coupon") String coupon, OrderSheetDTO orderSheet, Model model) {
+		System.out.println("order"+order.toString());
+		System.out.println("coupon"+coupon);
+		System.out.println("orderSheet"+orderSheet.toString());
+		
+		OrderVo currentOrder = orderService.placeOrder(order, coupon, orderSheet);
+
+		
+		model.addAttribute("order", currentOrder);
+		
+		return "order/orderComplete";
 	}
 }

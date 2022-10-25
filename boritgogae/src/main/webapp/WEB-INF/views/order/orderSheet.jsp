@@ -113,27 +113,13 @@ $(function() {
 		calcTotal(totalSubTotal);
 	}
 
-	//컨트롤러의 주문리스트에서 상품을 삭제하는 메서드
+	//상품을 삭제하는 메서드
 	function deleteProds(prodNo) {
-		
-		let url = "/order/deleteProdFromOrder";
-		$.ajax({
-	         url : url, // 데이터 송수신될 주소 
-	         type : "post", // 통신 방식(get, post)
-	         dataType : "text", // 수신받을 데이터 타입 text라서 boardcontroller의 메서드도 responsebody string으로 리턴함
-			 data : {"prodNo": prodNo}, // 전송할 데이터
-	         success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
-	        	 console.log(data);
-	        	 if(data == "delFail"){
-		        	alert("상품이 정상적으로 삭제되지 않았습니다. 다시 시도해주세요.");
-		        }else{
-		        	$("#"+prodNo).html("");
-		        }
-	         }
-	      });
+		$("#"+prodNo).html("");
+			        
 		calSubtotal();
 	}
-	
+
 	//선택한 주소에 표시 남기는 메서드
 	function selectAddr(addrNo) {
 		let color = "";
@@ -281,6 +267,131 @@ $(function() {
 		$("#total").html(totalPrice);
 		$("#inputTotal").val(totalPrice);
 	}
+	
+	//유효성 검사
+	function isValid() {
+		function nameCheck() {
+			let nameVal = false;
+			let name = $("#name").val();
+			if (name != ""){
+				nameVal = true;
+				$("#nameCheck").html("");
+			}else{
+				$("#nameCheck").html("*");
+			}
+			return nameVal;
+		}
+		
+		function phoneNumberCheck() {
+			let phoneNumberVal = false;
+			let phoneNumber = $("#phoneNumber").val();
+			numberExp = /(01[016789])([1-9]{1}[0-9]{2,3})([0-9]{4})$/;
+			if (numberExp.test(phoneNumber)){
+				phoneNumberVal = true;
+				$("#phoneNumberCheck").html("");
+			}else{
+				$("#phoneNumberCheck").html("*");
+			}
+			return phoneNumberVal;
+		}
+		
+		function addrCheck() {
+			let addressVal = false;
+			let address = $("#address").val();
+			if(address != ""){
+				addressVal = true;
+				$("#addrCheck").html("");
+			}else{
+				$("#addrCheck").html("*");
+			}
+			return addressVal;
+		}
+		
+		function detailAddrCheck() {
+			let detailAddress = $("#detailAddress").val();
+			let detailAddressVal = false;
+			
+			if(detailAddress != ""){
+				detailAddressVal = true;
+				$("#detailAddrCheck").html("");
+			}else{
+				$("#detailAddrCheck").html("*");
+			}
+			return detailAddressVal;
+		}
+		
+		function postCodeCheck() {
+			let postCode = $("#postCode").val();
+			let postCodeVal = false;
+			let postCodeExp = /\d{5}/;
+			
+			if(postCodeExp.test(postCode)){
+				postCodeVal = true;
+				$("#postCodeCheck").html("");
+			}else{
+				$("#postCodeCheck").html("*");
+			}
+			return postCodeVal;
+		}
+		
+		function guestMailCheck() {
+			let guestEmailVal = false;
+			let guestEmail = $("#guestEmail").val();
+			let emailExp = /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
+			
+			if(emailExp.test(guestEmail)){
+				guestEmailVal = true;
+				$("#guestMailCheck").html("");
+			}else{
+				$("#guestMailCheck").html("*");
+			}
+			return guestEmailVal;
+		}
+		
+		function guestPwdCheck() {
+			let guestPwdVal = false;
+			
+			let guestPwd = $("#guestPwd").val();
+			let pwdCheck = $("#pwdCheck").val();
+			let pwdExp = /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$/;
+			
+			if(pwdExp.test(guestPwd) && guestPwd == pwdCheck){
+				guestPwdVal = true;
+				$("#guestPwdCheck").html("");
+			}else{
+				$("#guestPwdCheck").html("*");
+			}
+			return guestPwdVal;
+		}
+		
+		function prodCheck() {
+			let prodNum = $(".product").length;
+			let prodNumVal = false;
+			
+			if(prodNum > 0){
+				prodNumVal = true;
+			}else{
+				alert("주문할 상품이 없습니다. 이전 페이지로 이동합니다.");
+				history.back();
+			}
+			return prodNumVal;
+		}
+		
+		let result = false;
+		let memberId = "${sessionScope.memberId}";
+		
+		if ( !memberId == "" || !memberId == "undefined" || !memberId == null){
+			if(nameCheck() && phoneNumberCheck() && addrCheck() && detailAddrCheck() && postCodeCheck()){
+				result = true;
+			}
+		}else{
+			if(nameCheck() && phoneNumberCheck() && addrCheck() && detailAddrCheck() && postCodeCheck() && guestMailCheck() && guestPwdCheck() && prodCheck()){
+				result = true;
+			}
+		}
+		console.log(result);
+		return result;
+	}
 
 </script>
 
@@ -292,14 +403,14 @@ $(function() {
 		<div class="container">
 			<div class="checkout__form">
 				<h4>Billing Details</h4>
-				<form action="#">
+				<form action="/order/placeOrder" method="post">
 					<div class="row">
 						<div class="col-lg-8 col-md-6">
 							<div class="row">
 								<div class="col-lg-6">
 									<div class="checkout__input">
 										<p>
-											이름<span>*</span>
+											이름<span id="nameCheck"></span>
 										</p>
 										<input type="text" id="name" name="name" value="${member.memberName }">
 										<input type="hidden" id="memberId" name="memberId" value="${member.memberId }">
@@ -308,10 +419,9 @@ $(function() {
 								<div class="col-lg-6">
 									<div class="checkout__input">
 										<p>
-											전화번호<span>*</span>
+											전화번호<span id="phoneNumberCheck"></span>
 										</p>
-										<!-- 형식 통일하기 -->
-										<input type="text" id="phoneNumber" name="phoneNumber" value="${member.phoneNumber }">
+										<input type="text" id="phoneNumber" name="phoneNumber" value="${member.phoneNumber }" placeholder="숫자만 입력해주세요"/>
 									</div>
 								</div>
 							</div>
@@ -319,7 +429,7 @@ $(function() {
 								<div class="col-lg-6">
 									<div class="checkout__input">
 										<p>
-											주소<span>*</span>
+											주소<span id="addrCheck"></span>
 										</p>
 										<input type="text" placeholder="주소" class="checkout__input__add" readonly="readonly" class="col-lg-6" id="address" name="address"/>
 									</div>
@@ -336,7 +446,7 @@ $(function() {
 								<div class="col-lg-6">
 									<div class="checkout__input">
 										<p>
-											상세주소<span>*</span>
+											상세주소<span id="detailAddrCheck"></span>
 										</p>
 											<!-- 형식 통일하기 -->
 										<input type="text" placeholder="건물이름/동호수" id="detailAddress" name="detailAddress" />
@@ -345,7 +455,7 @@ $(function() {
 								<div class="col-lg-6">
 									<div class="checkout__input">
 										<p>
-											우편번호<span>*</span>
+											우편번호<span id="postCodeCheck"></span>
 										</p>
 											<!-- 형식 통일하기 -->
 										<input type="text" placeholder="우편번호" id="postCode" name="postCode" />
@@ -354,27 +464,25 @@ $(function() {
 							</div>
 							<div class="checkout__input">
 								<p>
-									비회원 이메일<span>*</span>
+									비회원 이메일<span id="guestMailCheck"></span>
 								</p>
-								<input type="text" placeholder="이메일 주소를 입력해주세요">
+								<input type="text" placeholder="이메일 주소를 입력해주세요" name="guestEmail" id="guestEmail">
 							</div>
 						<div class="row">
 								<div class="col-lg-6">
 									<div class="checkout__input">
 										<p>
-											비회원 비밀번호<span>*</span>
+											비회원 비밀번호<span id="guestPwdCheck"></span>
 										</p>
-											<!-- 형식 통일하기 -->
-										<input type="password"  id="guestPwd" name="guestPwd" />
+										<input type="password"  id="guestPwd" name="guestPwd" placeholder="비밀번호는 8자이상으로, 영문자와 숫자를 포함하여 입력해주세요" />
 									</div>
 								</div>
 								<div class="col-lg-6">
 									<div class="checkout__input">
 										<p>
-											비밀번호 확인<span>*</span>
+											비밀번호 확인
 										</p>
-											<!-- 형식 통일하기 -->
-										<input type="password" id="pwdCheck" name="pwdCheck" />
+										<input type="password" id="pwdCheck" />
 									</div>
 								</div>
 							</div>
@@ -383,7 +491,7 @@ $(function() {
 									요청 사항
 								</p>
 								<input type="text"
-									placeholder="요청사항을 입력해주세요">
+									placeholder="요청사항을 입력해주세요" name="memo" />
 							</div>
 						</div>
 						<!-- your order 창 -->
@@ -393,14 +501,14 @@ $(function() {
 								<div class="checkout__order__products">
 									Products <span>Total</span>
 								</div>
-								<form>
+								
 									<ul>
 
 										<c:forEach var="product" items="${orders }" varStatus="status">
 											<li id="${product.prodNo}" class="orderProducts">
 												<img src="/resources/img/delete.png" style="height: 20px; margin: auto;"  onclick="deleteProds('${product.prodNo}')" />${product.prodName }&nbsp 
-												<input type="hidden" value="${product.prodNo }" />
-												<input type="number" value="${receivedProducts[status.index].qty }" style="width: 43px; height: 30px; color: '#6f6f6f';" class="qty" onchange="calProdtotal(this, ${product.prodPrice });" min="1" />
+												<input type="hidden" value="${product.prodNo }" name="orderProducts[0].prodNo" class="product"/>
+												<input type="number" value="${receivedProducts[status.index].qty }" style="width: 43px; height: 30px; color: '#6f6f6f';" class="qty" onchange="calProdtotal(this, ${product.prodPrice });" min="1" name="orderProducts[0].qty" />
 												<span>${product.prodPrice * receivedProducts[status.index].qty}</span>
 											</li>
 										</c:forEach>
@@ -423,7 +531,7 @@ $(function() {
 										<li>사용가능 포인트 &nbsp; : &nbsp; <span>${member.memberPoint }</span>
 										</li>
 										<li>
-											<input type="number" value="" style="width: 100px; height: 30px; color: '#6f6f6f';" id="usePoint" name="usePoint" min="0" max="${member.memberPoint }" onchange="calSubtotal();" /> &nbsp;&nbsp;사용하기
+											<input type="number" value="" style="width: 100px; height: 30px; color: '#6f6f6f';" id="usePoint" name="usedPoint" min="0" max="${member.memberPoint }" onchange="calSubtotal();" /> &nbsp;&nbsp;사용하기
 										</li>
 										<li>적립 예정 포인트 &nbsp; : &nbsp; <span id="accum"></span>
 											<input type="hidden" value="" min="0" name="accumPoint" id="accumPoint" />
@@ -444,8 +552,8 @@ $(function() {
 										id="paypal"> <span class="checkmark"></span>
 										</label>
 									</div>
-									<button type="submit" class="site-btn">PLACE ORDER</button>
-								</form>
+									<button type="submit" class="site-btn" onclick="return isValid();">PLACE ORDER</button>
+								
 							</div>
 						</div>
 					</div>

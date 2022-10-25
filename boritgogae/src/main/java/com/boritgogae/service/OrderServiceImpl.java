@@ -10,15 +10,19 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryFeeVo;
 import com.boritgogae.domain.DeliveryInfoVo;
+import com.boritgogae.domain.DetailOrderDTO;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDTO;
 import com.boritgogae.domain.OrderProductDTO;
 import com.boritgogae.domain.OrderSheetDTO;
+import com.boritgogae.domain.OrderVo;
+import com.boritgogae.domain.PointHistoryDTO;
 import com.boritgogae.domain.ProductVO;
 import com.boritgogae.persistence.MemberDAO;
 import com.boritgogae.persistence.OrderDAO;
@@ -88,4 +92,61 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 	}
 	return result;
 }
+
+//	@Transactional
+	@Override
+	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet) {
+		if(order.getMemberId() != null) {
+			order.setIsMember("Y");
+		}else {
+			order.setIsMember("N");
+		}
+		System.out.println(order.toString());
+		
+		//트랜잭션 처리 해보기
+		//order에 넣기
+		int orderRow = orderDao.insertOrder(order);
+		System.out.println("주문인서트"+orderRow);
+		//마지막으로 insert된 order의 no 불러오기
+		int orderNo = orderDao.lastOrderNo();
+		
+		OrderVo currentOrder = orderDao.getOrderByOrderNo(orderNo);
+		
+		//detailorder에 넣기, initialOrderDetailNo 업데이트
+		List<OrderProductDTO> orderProds = ordersheet.getOrderProducts();
+		
+		for(OrderProductDTO prod : orderProds) {
+			DetailOrderDTO detailOrder = new DetailOrderDTO(orderNo, prod.getProdNo(), prod.getQty(), prodDao.getProd(prod.getProdNo()).getProdPrice() * prod.getQty(), currentOrder.getMemberId());
+			int detailRow = orderDao.insertDetailOrder(detailOrder);
+			System.out.println("주문상세인서트" + detailRow);
+			int detailNo = orderDao.lastDetailNo();
+			orderDao.updateDetailInit(detailNo);
+		}
+		
+		//쿠폰 사용 했다면 쿠폰 사용내역 업데이트
+		if(couponName != null) {
+			CouponUsedVo coupon = new CouponUsedVo();
+			coupon.setCouponName(couponName);
+			coupon.setOrderNo(orderNo);
+			coupon.setUseDate(currentOrder.getOrderDate());
+			coupon.setMemberId(currentOrder.getMemberId());
+			orderDao.updateCouponUsed(coupon);
+		}
+		
+		// 포인트 사용, 적립 내역 업데이트(pointWhy불러와서)
+		int usePointNo = orderDao.getPointNo("구매사용");
+		PointHistoryDTO usedPoint = new PointHistoryDTO(order.getMemberId(), usePointNo, -order.getUsedPoint(), orderNo);
+		
+		int accumPointNo = orderDao.getPointNo("구매적립");
+		PointHistoryDTO accumPoint = new PointHistoryDTO(order.getMemberId(), accumPointNo, order.getAccumPoint(), orderNo);
+		
+		int useRow = orderDao.insertPointHistory(usedPoint);
+		int accumRow = orderDao.insertPointHistory(accumPoint);
+		
+		//회원 테이블의 포인트 업데이트
+		int pointrow = memDao.updateMemberPoint(currentOrder.getMemberId());
+		System.out.println(pointrow);
+		
+		return currentOrder;
+	}
 }
