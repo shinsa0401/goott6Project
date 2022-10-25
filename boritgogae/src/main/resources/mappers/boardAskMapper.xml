@@ -2,7 +2,270 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.boritgogae.boardAskMapper">
-  
-  </mapper>
+
+<mapper namespace="com.boritgogae.boardAskMapper">
+
+	<!-- 여기서부터 리플 매퍼임 -->
+	<insert id="addAskReply">
+		insert into askReplyBoard(askBno, contents, memberId,
+		ref)
+		values(#{askBno}, #{contents}, #{memberId}, #{ref})
+	</insert>
+
+	<select id="getLastReplyRef" resultType="String">
+		select max(ref) as
+		lastRef from askReplyBoard where askBno = #{askBno}
+	</select>
+
+	<select id="getLastReplyNo" resultType="String">
+		select max(askRno) as
+		lastNo from askReplyBoard where askBno = #{askBno}
+	</select>
+
+	<select id="selectAllRepliesByBno" resultType="AskReplyVo">
+		select * from
+		askReplyBoard where askBno = #{bno} order by ref asc, refOrder asc,
+		step desc
+	</select>
+
+	<update id="modifyReply">
+		update askReplyBoard set contents = #{contents} where
+		askRno = #{askRno}
+	</update>
+
+	<insert id="addNestedReply">
+		insert into askReplyBoard(askBno, memberId, contents,
+		ref, refOrder, step)
+		values(#{askBno}, #{memberId}, #{contents},
+		#{ref}, #{refOrder}+1, #{step}+1)
+	</insert>
+
+	<update id="updateNestedReply">
+		update askReplyBoard set refOrder = refOrder+1
+		where
+		ref = #{ref} and refOrder > #{refOrder}
+	</update>
+
+	<sql id="safeUpdatesDisable">
+		set sql_safe_updates=0
+	</sql>
+
+	<update id="deleteReply">
+		update askReplyBoard set contents = #{contents}, isDelete = #{isDelete}	where
+		askRno = #{askRno}
+	</update>
+
+	<!-- 여기서부터 보드 매퍼임 -->
+
+
+	<select id="listAll" resultType="AskBoardVo">
+		select * from askBoard order by
+		ref
+		desc, reforder asc, step desc limit
+		#{startNum},
+		#{postPerPage}
+	</select>
+
+	<select id="listAllWithSearch" resultType="AskBoardVo">
+		select * from askBoard where
+		<if test="searchType == 'writer'">
+			writer like concat('%', #{searchWord }, '%')
+		</if>
+		<if test="searchType == 'title'">
+			title like concat('%', #{searchWord }, '%')
+		</if>
+		<if test="searchType == 'contents'">
+			contents like concat('%', #{searchWord }, '%')
+		</if>
+		order by ref desc, refOrder asc, step desc limit #{startNum},
+		#{postPerPage}
+	</select>
+
+
+	<select id="getSearchResultCnt" resultType="int">
+		select count(*) as cnt from askBoard where
+		<choose>
+			<when test="searchType == 'writer'">
+				writer like concat('%', #{searchWord }, '%')
+			</when>
+			<when test="searchType == 'title'">
+				title like concat('%', #{searchWord }, '%')
+			</when>
+			<when test="searchType == 'contents'">
+				contents like concat('%', #{searchWord }, '%')
+			</when>
+		</choose>
+	</select>
+
+	<select id="getTotalPostCnt" resultType="int">
+		select count(*) as cnt
+		from askBoard
+	</select>
+
+	<select id="loadAskCode" resultType="AskCodeVo">
+		select * from askClass
+	</select>
+
+	<insert id="create">
+		insert into askBoard(writer, title, contents,
+		askCode, isSecret, isFAQ)
+		values (#{writer}, #{title}, #{contents} ,
+		#{askCode}, #{isSecret}, #{isFAQ})
+	</insert>
+
+	<update id="updateAskBoard">
+		update askBoard set writer = #{writer}, title =
+		#{title}, contents=
+		#{contents}, askCode = #{askCode}, isSecret =
+		#{isSecret}, isFAQ =
+		#{isFAQ}, modifyDate = now()
+		where askBno =
+		#{askBno}
+	</update>
+
+	<select id="getLastNo" resultType="int">
+		select max(askBno) as lastpk
+		from askBoard
+	</select>
+
+	<update id="updateRef">
+		update askBoard set ref = #{lastNo} where askBno =
+		#{lastNo}
+	</update>
+
+	<insert id="insertImageFile">
+		insert into askFile(askBno, originalFile,
+		thumbnailFile)
+		values (#{lastNo}, #{savedOriginImageFileName},
+		#{thumbnailFileName})
+	</insert>
+
+	<insert id="insertFile">
+		insert into askFile(askBno, originalFile)
+		values
+		(#{lastNo}, #{savedOriginImageFileName})
+	</insert>
+
+	<select id="getAskBoardByNo" resultType="AskBoardVo">
+		select * from askBoard
+		where
+		askBno = #{bno}
+	</select>
+
+	<select id="getAttrachFiles" resultType="UploadAskFileVo">
+		select * from askFile
+		where askBno = #{bno}
+	</select>
+
+	<select id="readAskOptionByAskCode" resultType="String">
+		select askOption
+		from askClass where askCode = #{askCode}
+	</select>
+
+	<insert id="createReadCount">
+		insert into askRead(askBno, readIp) values (#{bno},
+		#{clientIp});
+	</insert>
+
+
+	<select id="checkRecentlyRead" resultType="String">
+		select readTime from
+		askRead where askBno=#{bno} and readIp=#{clientIp}
+		order by readTime
+		desc limit 1;
+	</select>
+
+	<select id="getReadCountByBno" resultType="int">
+		select count(*) cnt
+		from askRead where askBno = #{askBno};
+	</select>
+
+	<select id="searchRefByBno" resultType="int">
+		select ref from askBoard
+		where askBno = #{askBno};
+	</select>
+
+	<update id="updateBoardsRef">
+		update askBoard set refOrder = refOrder+1
+		where
+		ref =
+		#{ref} and refOrder > #{refOrder}
+	</update>
+
+	<insert id="answerCreate">
+		insert into askBoard(writer, title, contents,
+		askCode, ref, refOrder, step, answerStatus)
+		values ('admin', #{title},
+		#{contents} ,
+		#{askCode}, #{ref}, #{refOrder}+1, #{step}+1,
+		#{answerStatus})
+	</insert>
+
+	<update id="answerStatusOk">
+		update askBoard set answerStatus = 'Y'
+		where askBno =
+		#{askBno}
+	</update>
+
+	<update id="removeBoard">
+		update askBoard set isDelete = 'Y'
+		where askBno =
+		#{no}
+	</update>
+
+	<select id="getboardVo" resultType="AskBoardVo">
+		select * from askBoard where
+		askBno = #{bno}
+	</select>
+
+
+	<select id="showFileList" resultType="UploadAskFile">
+		select originalFile as
+		savedOriginImageFileName, thumbNailFile as thumbnailFileName from
+		askFile where askBno = #{bno};
+	</select>
+
+	<delete id="deleteFileDB">
+		delete from askFile where originalFile =
+		#{savedOriginImageFileName}
+	</delete>
+
+	<select id="getLikeCount" resultType="int">
+		select count(*) from
+		askLike
+		where askBno = #{askBno};
+	</select>
+
+	<select id="getReadCount" resultType="int">
+		select count(*) from
+		askRead
+		where askBno = #{askBno};
+	</select>
+
+	<select id="likeCheck" resultType="int">
+		select count(*) from askLike
+		where askBno = #{bno} and likeIp = #{clientIp};
+	</select>
+
+	<delete id="deleteLike">
+		delete from askLike
+		where askBno = #{bno} and likeIp = #{clientIp};
+	</delete>
+
+	<insert id="insertLike">
+		insert into askLike(askBno, likeIp)
+		values(#{bno},
+		#{clientIp})
+	</insert>
+
+	<select id="readFAQBoard" resultType="AskBoardVo">
+		select * from askBoard
+		where
+		isFAQ = 'Y' limit 3
+	</select>
+
+	<update id="readCountUp">
+		update askBoard set readCount = askBoard.readCount + 1 
+		where askBno = #{bno}
+	</update>
+</mapper>
