@@ -1,13 +1,17 @@
 package com.boritgogae.service;
 
 import java.util.List;
+import java.sql.Timestamp;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 
 import com.boritgogae.domain.DeliveryInfoVo;
-import com.boritgogae.domain.DeliveryInfoVo;
+import com.boritgogae.domain.LogInDTO;
+import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
@@ -22,8 +26,50 @@ import com.boritgogae.persistence.MemberDAO;
 @Service
 public class MemberServiceImpl implements MemberService {
 	
-	@Inject MemberDAO dao;
+	@Inject 
+	private MemberDAO dao;
 
+	// 로그인 처리하는 메서드
+	@Override
+	public MemberVo logIn(LogInDTO dto, HttpServletRequest request) throws Exception {
+		
+		MemberVo logInMember = dao.logIn(dto);
+		
+		if (logInMember != null) {
+			dao.updateLogInDate(logInMember.getMemberId());
+			System.out.println("로그인 성공");
+			
+		} else {
+			
+			System.out.println("일치하는 정보가 없다");
+		}
+		
+		return logInMember;
+	}
+
+	// 자동로그인을 체크했을 경우 로그인 유지를 위한 sessionId, sessionLimit 업데이트 
+	@Override
+	public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit) throws Exception {
+		
+		return dao.updateMemberSession(memberId, sessionId, sessionLimit);
+	}
+	
+	// 자동로그인 회원 체크하는 메서드
+	@Override
+	public MemberVo checkAutoLogIn(String sessionId) throws Exception {
+		
+		return dao.selectAutoLogIn(sessionId);
+	}
+	
+	// 기존 회원 로그아웃 시간 업데이트
+	@Override
+	public int updateLogOutDate(String memberId) throws Exception {
+		
+		return dao.updateLogOutDate(memberId);
+	}
+	
+	
+	
 	// 등급혜택을 가져오는 메서드
 	@Override
 	public List<GradesVo> showGradeBenefit() throws Exception {
@@ -157,4 +203,5 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println("서비스단 : 회원 이메일 변경");
 		return dao.changeMemberEmail(memberId, memberEmail);
 	}
+
 }

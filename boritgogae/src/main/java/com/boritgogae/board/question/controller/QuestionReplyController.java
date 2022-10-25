@@ -17,7 +17,7 @@ import com.boritgogae.board.question.domain.QuestionReplyVo;
 import com.boritgogae.board.question.service.QuestionReplyService;
 
 @RestController
-@RequestMapping(value = "/questionreply")
+@RequestMapping(value = "/questionReply/")
 public class QuestionReplyController {
 	
 	@Inject

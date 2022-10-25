@@ -8,6 +8,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.Timestamp;
 
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
@@ -15,7 +19,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,20 +39,26 @@ import org.springframework.web.util.WebUtils;
 import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.etc.AskUploadFileProcess;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
+import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.GradesVo;
-import com.boritgogae.domain.MemberVo;
-import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.GuestOrderDTO;
 import com.boritgogae.domain.PointHistoryVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
 import com.boritgogae.service.MemberService;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.boritgogae.domain.LogInDTO;
+import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.service.MemberService;
 
 @Controller
-@RequestMapping(value = "/member/*") // member 요청들 매핑
+@RequestMapping(value="/member/*") // member 요청들 매핑
+>>>>>>> master
 public class MemberController {
 
 	@Autowired
@@ -531,19 +540,94 @@ public class MemberController {
         return num;
 	}
 
-	
 	/**
 	 * @methodName : logIn
 	 * @author : 신태호
 	 * @date : 2022. 10. 20.
-	 * @입력 param :
-	 * @returnType : String 로그인 정보를 입력하기 위한 폼 호출
+	 * @입력 param : request, session
+	 * @returnType : String
+	 * 로그인 정보를 입력하기 위한 로그인 페이지 호출
 	 */
 	@RequestMapping(value = "/logIn")
-	public String logIn() {
+	public String logIn(HttpServletRequest request, HttpSession ses) {
+		
+		// 현재 페이지로 오기전 URL 정보를 referer에 저장
+		String referer = request.getHeader("Referer");
+		
+		// 이전페이지로 돌아가기 위한 Referer 헤더값을 세션의 destination에 저장
+		// (로그인 여러회 실패시 이전페이지로 제대로 돌아가기 위함)
+	    if (referer != null && !referer.contains("logIn")) {
+	        request.getSession().setAttribute("destination", referer);
+	    }
+		
 		System.out.println("로그인 하기");
 
 		return "member/logIn";
 	}
-
+	 
+	/**
+	 * @methodName : logInPost
+	 * @author : 신태호
+	 * @throws Exception 
+	 * @date : 2022. 10. 20.
+	 * @입력 param : dto, model, request, response
+	 * @returnType : void
+	 * 로그인 정보를 입력하고 난 후 인터셉터핸들러에 의해 로그인 처리
+	 */
+	@RequestMapping(value = "/logInPost", method = RequestMethod.POST)
+	public void logInPost(LogInDTO dto, Model model, HttpSession ses, HttpServletRequest request) throws Exception {
+		// 인터셉터 preHandle 수행하고 옴
+		
+		MemberVo logInMember = service.logIn(dto, request);
+		
+		if (logInMember == null) { // 로그인 실패 유저
+			return;
+		}
+		
+		if (dto.isRemember()) { // 자동 로그인을 체크 했을경우 DB에 세션 정보 저장
+			int ms = 1000 * 60 * 60 * 24 * 7;
+			long now = System.currentTimeMillis();
+			
+			String memberId = dto.getMemberId();
+			String sessionId = ses.getId();
+			Timestamp sessionLimit = new Timestamp(now + ms);
+			System.out.println("자동로그인 체크 온");
+			service.keepLogIn(memberId, sessionId, sessionLimit);
+		}
+		
+		model.addAttribute("dto", dto);
+		model.addAttribute("logInMember", logInMember); // model 객체에 바인딩
+		
+		// 인터셉터 postHandle에 의해 나머지 과정 수행
+	}
+	
+	/**
+	 * @methodName : logOut
+	 * @author : 신태호
+	 * @throws Exception 
+	 * @date : 2022. 10. 21.
+	 * @입력 param : session, response
+	 * @returnType : void
+	 */
+	@RequestMapping(value = "/logOut")
+	public void logOut(HttpSession ses, HttpServletResponse response) throws Exception {
+		MemberVo logInMember = (MemberVo) ses.getAttribute("logInMember");
+		
+		if (ses.getAttribute("logInMember") != null) { // 회원 정보가 있다면
+			// DB 로그아웃시간 업데이트
+			service.updateLogOutDate(logInMember.getMemberId());
+			
+			ses.removeAttribute("logInMember"); // 로그인 정보 삭제
+			ses.invalidate(); // 세션 만료
+			
+		}
+		
+		System.out.println("로그아웃");
+		
+		response.sendRedirect("/");
+	}
+	
+	
+	
+	
 }

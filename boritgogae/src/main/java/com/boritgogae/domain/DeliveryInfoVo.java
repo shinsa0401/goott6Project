@@ -84,13 +84,9 @@ public class DeliveryInfoVo {
 
 	@Override
 	public String toString() {
-		return "DeliveryInfo [deliveryInfo=" + deliveryInfo + ", memberId=" + memberId + ", address=" + address
+		return "DeliveryInfoVo [deliveryInfo=" + deliveryInfo + ", memberId=" + memberId + ", address=" + address
 				+ ", detailAddress=" + detailAddress + ", recipient=" + recipient + ", recipientPhoneNumber="
 				+ recipientPhoneNumber + ", postCode=" + postCode + "]";
 	}
 
 }
-
-
-
-

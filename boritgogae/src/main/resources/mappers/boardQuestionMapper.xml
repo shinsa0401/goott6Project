@@ -23,11 +23,6 @@
         select max(no) as lastNo from questionBoard
      </select>
      
-     <!-- 최근등록된 글의 ref 업데이트 -->
-     <update id="updateRef">
-        update questionBoard set ref = #{lastNo} where no = #{lastNo}
-     </update>
-     
      <!-- 이미지 파일 저장 -->
      <insert id="insertImg">
         insert into questionUploadFile(bno, originFileName, thumbnailFileName) 

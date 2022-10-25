@@ -11,8 +11,8 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 <!-- Google Font -->
-	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-	
+   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+   
 <!-- Css Styles -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
@@ -72,23 +72,23 @@
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="${contextPath}/">Home</a></li>
-                <li><a href="/product/category/detail?prodNo=a">Shop</a></li>
+                <li><a href="${contextPath}/product/category">Shop</a></li>
                 <li><a href="./blog.html">병원</a></li>
                 <li><a href="./contact.html">게시판</a>
-                	<ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">자유게시판</a></li>
+                   <ul class="header__menu__dropdown">
+                        <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
                         <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
                         <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
                         <li><a href="/boardTip/listAll">고개팁</a></li>
                     </ul>
                 </li>
                 <li><a href="/board/notice/list">고객센터</a>
-					<ul class="header__menu__dropdown">
-						<li><a href="/board/notice/list">공지사항</a></li>
-						<li><a href="/board/ask/list">문의게시판</a></li>
-						<li><a href="/admin/main">관리자 페이지(임시)</a></li>
-					</ul>
-				</li>
+               <ul class="header__menu__dropdown">
+                  <li><a href="/board/notice/list">공지사항</a></li>
+                  <li><a href="/board/ask/list">문의게시판</a></li>
+                  <li><a href="/admin/main">관리자 페이지(임시)</a></li>
+               </ul>
+            </li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -107,8 +107,8 @@
     </div>
     <!-- Humberger End -->
     
-	
-	<!-- Header Section Begin PC버전 -->
+   
+   <!-- Header Section Begin PC버전 -->
     <header class="header">
         
         <div class="container">
@@ -122,7 +122,7 @@
                     <nav class="header__menu">
                         <ul>
 			                <li class="active"><a href="${contextPath}/">Home</a></li>
-			                <li><a href="/product/category/detail?prodNo=a">Shop</a></li>
+			                <li><a href="${contextPath}/product/category"">Shop</a></li>
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
@@ -148,9 +148,22 @@
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                             <li><a href="${contextPath}/order/cartList"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
-                        <div class="header__top__right__auth">
-                <a href="${contextPath }/member/logIn"><i class="fa fa-user"></i> Login</a>
-            </div>
+                        <c:choose>
+                        	<c:when test="${sessionScope.logInMember == null }">
+                        	<!-- 로그인을 하지 않았을 경우 -->
+                        		<div class="header__top__right__auth">
+                        			<a href="${contextPath }/member/logIn">
+                        				<i class="fa fa-user"></i> 로그인</a>
+                        		</div>
+                        	</c:when>
+                        	<c:when test="${sessionScope.logInMember != null }">
+                        	<!-- 로그인을 했을 경우 -->
+                        		<div class="header__top__right__auth">
+                        			<a href="${contextPath }/member/logOut">
+                        				<i class="fa fa-user"></i> 로그아웃</a>
+                        		</div>
+                        	</c:when>
+                        </c:choose>
                     </div>
                 </div>
             </div>

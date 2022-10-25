@@ -41,20 +41,13 @@ public class QuestionBoardDAOImpl implements QuestionBoardDAO {
 		return ses.insert(ns + ".insertBoard", board);
 	}
 	
-	// 최근 등록된 글의 번호 (ref 업데이트하기 위해)
+	// 최근 등록된 글의 번호
 	@Override
 	public int getLastNo() throws Exception {
 		
 		return ses.selectOne(ns + ".getLastNo");
 	}
 
-	// ref 업데이트
-	@Override
-	public int updateRef(int lastNo) throws Exception {
-		
-		return ses.update(ns + ".updateRef", lastNo);
-	}
-	
 	// 이미지 파일 저장
 	@Override
 	public void insertImg(int lastNo, String savedOriginImageFileName, String thumbnailFileName) {

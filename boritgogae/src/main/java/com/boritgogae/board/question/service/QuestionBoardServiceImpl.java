@@ -65,24 +65,21 @@ public class QuestionBoardServiceImpl implements QuestionBoardService {
 			// 방금 저장된 글번호 얻어오기
 			lastNo = dao.getLastNo();
 			System.out.println("lastNo 검색 : " + lastNo);
-			// 얻어온 글번호 ref 업데이트 (계층형 답글 구현시 필요)
-			if (dao.updateRef(lastNo) == 1) {
-				System.out.println("ref업데이트 성공");
-				
-				// 업로드된 파일이 있다면 업로드된 파일의 개수 만큼 반복하여 uploadFile 테이블에 insert
-				if (uploadFileLst.size() > 0) {
-					for (QuestionUploadFile up : uploadFileLst) {
-						if (up.isImage()) {
-							dao.insertImg(lastNo, up.getSavedOriginImageFileName(), up.getThumbnailFileName());
-						} else {
-							dao.insertFile(lastNo, up.getSavedOriginImageFileName());
-						}
+			
+			// 업로드된 파일이 있다면 업로드된 파일의 개수 만큼 반복하여 uploadFile 테이블에 insert
+			if (uploadFileLst.size() > 0) {
+				for (QuestionUploadFile up : uploadFileLst) {
+					if (up.isImage()) {
+						dao.insertImg(lastNo, up.getSavedOriginImageFileName(), up.getThumbnailFileName());
+					} else {
+						dao.insertFile(lastNo, up.getSavedOriginImageFileName());
 					}
 				}
-				
-				map.put("result", true);
-				map.put("lastNo", lastNo);
 			}
+			
+			map.put("result", true);
+			map.put("lastNo", lastNo);
+			
 		}
 		System.out.println(map.toString());
 		return map;

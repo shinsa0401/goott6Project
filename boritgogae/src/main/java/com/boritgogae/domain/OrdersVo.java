@@ -9,7 +9,7 @@ public class OrdersVo {
 	private String deliveryOption;
 	private int totalPrice;
 	private Timestamp orderDate;
-	private char isMember;
+	private String isMember;
 	private String phoneNumber;
 	private String guestEmail;
 	private String guestPwd;
@@ -23,6 +23,7 @@ public class OrdersVo {
 	
 	public OrdersVo(int orderNo, String memberId, int prodTotalPrice, String deliveryOption, int totalPrice,
 			Timestamp orderDate, char isMember, String phoneNumber, String guestEmail, String guestPwd, String name,
+
 			String memo, int usedPoint, String address, String detailAddress, int postCode, int accumPoint) {
 		super();
 		this.orderNo = orderNo;
@@ -42,10 +43,6 @@ public class OrdersVo {
 		this.detailAddress = detailAddress;
 		this.postCode = postCode;
 		this.accumPoint = accumPoint;
-	}
-
-	public OrdersVo() {
-		super();
 	}
 
 	public int getOrderNo() {
@@ -96,11 +93,11 @@ public class OrdersVo {
 		this.orderDate = orderDate;
 	}
 
-	public char getIsMember() {
+	public String getIsMember() {
 		return isMember;
 	}
 
-	public void setIsMember(char isMember) {
+	public void setIsMember(String isMember) {
 		this.isMember = isMember;
 	}
 
@@ -193,5 +190,6 @@ public class OrdersVo {
 				+ ", address=" + address + ", detailAddress=" + detailAddress + ", postCode=" + postCode
 				+ ", accumPoint=" + accumPoint + "]";
 	}
+	
 	
 }

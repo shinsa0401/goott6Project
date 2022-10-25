@@ -102,11 +102,14 @@ public class QuestionPagingInfo {
 	      this.endNumOfCurPagingBlock = (startNumOfCurPagingBlock + this.pageCntPerBlock) - 1;
 	   }
 
-	   @Override
-	   public String toString() {
-	      return "AskPagingInfo [postPerPage=" + postPerPage + ", pageCntPerBlock=" + pageCntPerBlock + ", totalPage="
-	            + totalPage + ", totalPostCnt=" + totalPostCnt + ", startNum=" + startNum + ", totalPagingBlock="
-	            + totalPagingBlock + ", currentPagingBlock=" + currentPagingBlock + ", startNumOfCurPagingBlock="
-	            + startNumOfCurPagingBlock + ", endNumOfCurPagingBlock=" + endNumOfCurPagingBlock + "]";
-	   }
+	@Override
+	public String toString() {
+		return "QuestionPagingInfo [postPerPage=" + postPerPage + ", pageCntPerBlock=" + pageCntPerBlock
+				+ ", totalPage=" + totalPage + ", totalPostCnt=" + totalPostCnt + ", startNum=" + startNum
+				+ ", totalPagingBlock=" + totalPagingBlock + ", currentPagingBlock=" + currentPagingBlock
+				+ ", startNumOfCurPagingBlock=" + startNumOfCurPagingBlock + ", endNumOfCurPagingBlock="
+				+ endNumOfCurPagingBlock + "]";
+	}
+
+	   
 }

@@ -20,9 +20,6 @@ public interface QuestionBoardDAO {
 	// 최근 등록된 글의 글번호 가져오는 메서드
 	public int getLastNo() throws Exception;
 	
-	// 최근 등록된 글의 ref 업데이트하는 메서드
-	public int updateRef(int lastNo) throws Exception;
-	
 	// 업로드된 이미지 파일 저장
 	public void insertImg(int lastNo, String savedOriginImageFileName, String thumbnailFileName);
 
@@ -68,7 +65,7 @@ public interface QuestionBoardDAO {
 	// 검색된 글의 개수 반환하는 메서드
 	public int getSearchResultCnt(QuestionSearchCriteria sc) throws Exception;
 		
-	// 검색어가 있을 때 페이징 하며 검색 결과를 가져 오는 메서드=======
+	// 검색어가 있을 때 페이징 하며 검색 결과를 가져 오는 메서드
 	public List<QuestionBoardVo> getSearchResult(QuestionPagingInfo pi, QuestionSearchCriteria sc) throws Exception;
 	
 }

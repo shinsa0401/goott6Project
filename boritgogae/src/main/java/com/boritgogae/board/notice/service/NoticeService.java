@@ -36,4 +36,6 @@ public interface NoticeService {
 	
 	// 댓글 수정 하는 메서드
 	public boolean modifyReplyBoard(NoticeReplyVo board) throws Exception;
+	
+	public List<NoticeVo> getNoticeBoardMain() throws Exception;
 }

@@ -19,8 +19,7 @@ public class QuestionReplyVo {
       super();
    }
    
-   public QuestionReplyVo(int rno, int bno, String replyWriter, String replyContent, Timestamp replyWrittenDate, int ref,
-         int step, int refOrder) {
+   public QuestionReplyVo(int rno, int bno, String replyWriter, String replyContent, Timestamp replyWrittenDate, int ref, int step, int refOrder) {
       super();
       this.rno = rno;
       this.bno = bno;

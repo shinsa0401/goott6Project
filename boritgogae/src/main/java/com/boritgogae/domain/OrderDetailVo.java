@@ -6,115 +6,109 @@ public class OrderDetailVo {
 	private String prodNo;
 	private int qty;
 	private int prodSubTotalPrice;
-	private char cancelStatus;
-	private char returnOrExchange;
+	private String cancelStatus;
+	private String returnOrExchange;
 	private int initialOrderDetailNo;
-	private char purchaseConfirm;
-	private char returnOrExchangeConfirm;
-	private char reviewStatus;
+	private String purchaseConfirm;
+	private String returnOrExchangeConfirm;
+	private String reviewStatus;
 	private String memberId;
 	
 	public OrderDetailVo() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-
+	
+	public OrderDetailVo(int orderDetailNo, int orderNo, String prodNo, int qty, int prodSubTotalPrice,
+			String cancelStatus, String returnOrExchange, int initialOrderDetailNo, String purchaseConfirm,
+			String returnOrExchangeConfirm, String reviewStatus, String memberId) {
+		super();
+		this.orderDetailNo = orderDetailNo;
+		this.orderNo = orderNo;
+		this.prodNo = prodNo;
+		this.qty = qty;
+		this.prodSubTotalPrice = prodSubTotalPrice;
+		this.cancelStatus = cancelStatus;
+		this.returnOrExchange = returnOrExchange;
+		this.initialOrderDetailNo = initialOrderDetailNo;
+		this.purchaseConfirm = purchaseConfirm;
+		this.returnOrExchangeConfirm = returnOrExchangeConfirm;
+		this.reviewStatus = reviewStatus;
+		this.memberId = memberId;
+	}
+	
 	public int getOrderDetailNo() {
 		return orderDetailNo;
 	}
-
 	public void setOrderDetailNo(int orderDetailNo) {
 		this.orderDetailNo = orderDetailNo;
 	}
-
 	public int getOrderNo() {
 		return orderNo;
 	}
-
 	public void setOrderNo(int orderNo) {
 		this.orderNo = orderNo;
 	}
-
 	public String getProdNo() {
 		return prodNo;
 	}
-
 	public void setProdNo(String prodNo) {
 		this.prodNo = prodNo;
 	}
-
 	public int getQty() {
 		return qty;
 	}
-
 	public void setQty(int qty) {
 		this.qty = qty;
 	}
-
 	public int getProdSubTotalPrice() {
 		return prodSubTotalPrice;
 	}
-
 	public void setProdSubTotalPrice(int prodSubTotalPrice) {
 		this.prodSubTotalPrice = prodSubTotalPrice;
 	}
-
-	public char getCancelStatus() {
+	public String getCancelStatus() {
 		return cancelStatus;
 	}
-
-	public void setCancelStatus(char cancelStatus) {
+	public void setCancelStatus(String cancelStatus) {
 		this.cancelStatus = cancelStatus;
 	}
-
-	public char getReturnOrExchange() {
+	public String getReturnOrExchange() {
 		return returnOrExchange;
 	}
-
-	public void setReturnOrExchange(char returnOrExchange) {
+	public void setReturnOrExchange(String returnOrExchange) {
 		this.returnOrExchange = returnOrExchange;
 	}
-
 	public int getInitialOrderDetailNo() {
 		return initialOrderDetailNo;
 	}
-
 	public void setInitialOrderDetailNo(int initialOrderDetailNo) {
 		this.initialOrderDetailNo = initialOrderDetailNo;
 	}
-
-	public char getPurchaseConfirm() {
+	public String getPurchaseConfirm() {
 		return purchaseConfirm;
 	}
-
-	public void setPurchaseConfirm(char purchaseConfirm) {
+	public void setPurchaseConfirm(String purchaseConfirm) {
 		this.purchaseConfirm = purchaseConfirm;
 	}
-
-	public char getReturnOrExchangeConfirm() {
+	public String getReturnOrExchangeConfirm() {
 		return returnOrExchangeConfirm;
 	}
-
-	public void setReturnOrExchangeConfirm(char returnOrExchangeConfirm) {
+	public void setReturnOrExchangeConfirm(String returnOrExchangeConfirm) {
 		this.returnOrExchangeConfirm = returnOrExchangeConfirm;
 	}
-
-	public char getReviewStatus() {
+	public String getReviewStatus() {
 		return reviewStatus;
 	}
-
-	public void setReviewStatus(char reviewStatus) {
+	public void setReviewStatus(String reviewStatus) {
 		this.reviewStatus = reviewStatus;
 	}
-
 	public String getMemberId() {
 		return memberId;
 	}
-
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "OrderDetailVo [orderDetailNo=" + orderDetailNo + ", orderNo=" + orderNo + ", prodNo=" + prodNo
@@ -141,7 +135,5 @@ public class OrderDetailVo {
 		this.reviewStatus = reviewStatus;
 		this.memberId = memberId;
 	}
-	
-	
 	
 }

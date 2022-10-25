@@ -55,4 +55,7 @@
   	<update id="updateStep">
   		update tipBoard set refOrder = #{refOrder} - 1, step = #{step} + 1 where bno = #{bno}
   	</update>
+  	<select id="miniBoard" resultType="TipBoardVo">
+  		select * from tipBoard order by createDate desc limit 0,6
+  	</select>
   </mapper>

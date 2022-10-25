@@ -45,9 +45,11 @@ public class QuestionUploadFileVo {
 	
 	@Override
 	public String toString() {
-		return "UploadAskFileVo [no=" + no + ", bno=" + bno + ", originFileName=" + originFileName + ", thumbnailFileName="
-				+ thumbnailFileName + "]";
+		return "QuestionUploadFileVo [no=" + no + ", bno=" + bno + ", originFileName=" + originFileName
+				+ ", thumbnailFileName=" + thumbnailFileName + "]";
 	}
+	
+	
 	
 	
 }

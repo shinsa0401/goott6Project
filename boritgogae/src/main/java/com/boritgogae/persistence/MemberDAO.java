@@ -1,7 +1,9 @@
 package com.boritgogae.persistence;
 
 import java.util.List;
+import java.sql.Timestamp;
 
+import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
@@ -15,6 +17,21 @@ import com.boritgogae.domain.UserReplyVo;
 
 public interface MemberDAO {
 
+	// 로그인하기 위해 회원정보를 얻어오는 메서드
+	public MemberVo logIn(LogInDTO dto) throws Exception;
+
+	// 자동로그인을 체크한 회원의 세션의 정보를 업데이트
+	public int updateMemberSession(String memberId, String sessionId, Timestamp sessionLimit) throws Exception;
+
+	// 자동로그인 체크한 회원인지 검색
+	public MemberVo selectAutoLogIn(String sessionId) throws Exception;
+
+	// 로그인시 로그인시간 업데이트
+	public int updateLogInDate(String memberId) throws Exception;
+	
+	// 로그아웃시 로그아웃시간 업데이트
+	public int updateLogOutDate(String memberId) throws Exception;
+	
 	// 등급혜택을 가져오는 메서드
 	public List<GradesVo> showGradeBenefit() throws Exception;
 
@@ -45,6 +62,7 @@ public interface MemberDAO {
 	// 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드
 	public List<OrderDetailVo> userAbleReviewList(String memberId) throws Exception;
 
+
 	// 상품코드에 맞는 상품명을 반환해준다.
 	public String convertProdNoToProdName(String prodCode) throws Exception;
 	
@@ -73,6 +91,8 @@ public interface MemberDAO {
 	// 회원 이메일 변경 메서드
 	public int changeMemberEmail(String memberId, String memberEmail) throws Exception;
 	
+	
+
 	
 
 }
