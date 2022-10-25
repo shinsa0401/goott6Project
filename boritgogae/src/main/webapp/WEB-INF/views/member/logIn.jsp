@@ -46,7 +46,21 @@
 	
 	// 로그인 취소시 이전페이지로 가기
 	function logInCancel() {
+		let url = window.location.href;
 		
+		let aa = url.indexOf("logIn");
+		let i = 0 
+		
+		while (i < 100) {
+			history.back();
+			if (aa == -1) {
+				break;
+			}
+			i++;
+		}
+		
+		
+		// location.href = ${contextPath}"/";
 	}
 	
 	

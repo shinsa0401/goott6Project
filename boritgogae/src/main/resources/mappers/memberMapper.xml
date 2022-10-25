@@ -7,7 +7,7 @@
 
 	<!-- 로그인하기위해 id와 pwd로 회원정보를 검색 -->
   	<select id="logIn" resultType="MemberVo">
-  		select * from members where memberId = #{memberId} and memberPwd = #{memberPwd}
+  		select * from members where memberId = #{memberId} and memberPwd = sha1(md5(#{memberPwd}))
   	</select>
   	
   	<!-- 자동로그인을 체크한 회원의 로그인유지를 위한 세션 정보 업데이트 -->
