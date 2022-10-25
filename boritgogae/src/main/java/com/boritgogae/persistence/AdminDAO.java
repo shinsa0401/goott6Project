@@ -2,14 +2,14 @@ package com.boritgogae.persistence;
 
 import java.util.List;
 
-import com.boritgogae.board.prodReply.domain.OrdersVO;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.DeleteReasonVo;
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
-import com.boritgogae.domain.ProductVO;
+import com.boritgogae.domain.ProductVo;
 
 public interface AdminDAO {
     
@@ -68,16 +68,16 @@ public interface AdminDAO {
 	// ----------------- 상품 관련 메서드 -----------------
 	
 	// 재고가 적은 순
-	public List<ProductVO> getLowestProduct() throws Exception;
+	public List<ProductVo> getLowestProduct() throws Exception;
 
     // 찜수가 많은 순
-    public List<ProductVO> getTopLikeCount() throws Exception;
+    public List<ProductVo> getTopLikeCount() throws Exception;
     
     // 조회수 많은 순
-    public List<ProductVO> getTopReadCount() throws Exception;
+    public List<ProductVo> getTopReadCount() throws Exception;
     
 	// 새로 들어온 주문 
-    public List<OrdersVO> getNewOrder() throws Exception;
+    public List<OrdersVo> getNewOrder() throws Exception;
 
 
 	

@@ -9,14 +9,14 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.boritgogae.board.prodReply.domain.OrdersVO;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.DeleteReasonVo;
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
-import com.boritgogae.domain.ProductVO;
+import com.boritgogae.domain.ProductVo;
 
 @Repository
 public class AdminDAOImpl implements AdminDAO {
@@ -42,7 +42,7 @@ public class AdminDAOImpl implements AdminDAO {
     }
 
     @Override
-    public List<ProductVO> getLowestProduct() throws Exception {
+    public List<ProductVo> getLowestProduct() throws Exception {
         return ses.selectList(ns + ".getLowestProductQTY");
     }
 
@@ -76,17 +76,17 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
-	public List<ProductVO> getTopLikeCount() throws Exception {
+	public List<ProductVo> getTopLikeCount() throws Exception {
 		return ses.selectList(ns + ".getTopLikeCount");
 	}
 
 	@Override
-	public List<OrdersVO> getNewOrder() throws Exception {
+	public List<OrdersVo> getNewOrder() throws Exception {
 		return ses.selectList(ns + ".getNewOrder");
 	}
 
 	@Override
-	public List<ProductVO> getTopReadCount() throws Exception {
+	public List<ProductVo> getTopReadCount() throws Exception {
 		return ses.selectList(ns + ".getTopReadCount");
 	}
 

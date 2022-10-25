@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.boritgogae.board.prodReply.domain.OrdersVO;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.DeleteReasonVo;
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
-import com.boritgogae.domain.ProductVO;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.service.AdminService;
 
 @Controller
@@ -40,10 +40,10 @@ public class AdminController {
 		System.out.println("관리자 페이지로 이동");
 		List<MemberVo> members = service.getMembers();
 		List<MemberVo> newMembers = service.getNewMembers();
-		List<ProductVO> lowestProduct = service.getLowestProduct();
-		List<ProductVO> topLikeCountList = service.getTopLikeCount();
-		List<OrdersVO> getNewOrders = service.getNewOrder();
-		List<ProductVO> topReadCountList = service.getTopReadCount();
+		List<ProductVo> lowestProduct = service.getLowestProduct();
+		List<ProductVo> topLikeCountList = service.getTopLikeCount();
+		List<OrdersVo> getNewOrders = service.getNewOrder();
+		List<ProductVo> topReadCountList = service.getTopReadCount();
 		int getLogInMemberCount = service.getLogInMemberCount();
 		
 		model.addAttribute("logInMemberCount", getLogInMemberCount);

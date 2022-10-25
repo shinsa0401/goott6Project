@@ -6,14 +6,14 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.board.prodReply.domain.OrdersVO;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.DeleteReasonVo;
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
-import com.boritgogae.domain.ProductVO;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.persistence.AdminDAO;
 
 @Service
@@ -38,7 +38,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<ProductVO> getLowestProduct() throws Exception {
+    public List<ProductVo> getLowestProduct() throws Exception {
         return dao.getLowestProduct();
     }
 
@@ -92,17 +92,17 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public List<ProductVO> getTopLikeCount() throws Exception {
+	public List<ProductVo> getTopLikeCount() throws Exception {
 		return dao.getTopLikeCount();
 	}
 
 	@Override
-	public List<OrdersVO> getNewOrder() throws Exception {
+	public List<OrdersVo> getNewOrder() throws Exception {
 		return dao.getNewOrder();
 	}
 
 	@Override
-	public List<ProductVO> getTopReadCount() throws Exception {
+	public List<ProductVo> getTopReadCount() throws Exception {
 		return dao.getTopReadCount();
 	}
 

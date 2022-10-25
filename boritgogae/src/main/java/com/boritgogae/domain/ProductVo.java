@@ -2,7 +2,7 @@ package com.boritgogae.domain;
 
 import java.sql.Timestamp;
 
-public class ProductVO {
+public class ProductVo {
 	private String prodNo;
 	private String prodName;
 	private String prodContent;
@@ -14,7 +14,7 @@ public class ProductVO {
 	private int reviewCount;
 	
 	
-	public ProductVO(String prodNo, String prodName, String prodContent, int prodQuantity, int prodPrice, int readCount,
+	public ProductVo(String prodNo, String prodName, String prodContent, int prodQuantity, int prodPrice, int readCount,
 			int likeCount, Timestamp prodPutDate, int reviewCount) {
 		super();
 		this.prodNo = prodNo;
@@ -29,7 +29,7 @@ public class ProductVO {
 	}
 
 
-	public ProductVO() {
+	public ProductVo() {
 		super();
 	}
 
@@ -126,7 +126,7 @@ public class ProductVO {
 
 	@Override
 	public String toString() {
-		return "ProductVO [prodNo=" + prodNo + ", prodName=" + prodName + ", prodContent=" + prodContent
+		return "ProductVo [prodNo=" + prodNo + ", prodName=" + prodName + ", prodContent=" + prodContent
 				+ ", prodQuantity=" + prodQuantity + ", prodPrice=" + prodPrice + ", readCount=" + readCount
 				+ ", likeCount=" + likeCount + ", prodPutDate=" + prodPutDate + ", reviewCount=" + reviewCount + "]";
 	}

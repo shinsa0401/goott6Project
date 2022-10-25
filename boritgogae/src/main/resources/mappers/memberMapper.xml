@@ -123,7 +123,7 @@
 
 
 	<!-- 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드 -->
-	<select id="userAbleReviewList" resultType="OrderDetailVO">
+	<select id="userAbleReviewList" resultType="OrderDetailVo">
 		select * from
 		detailOrder where memberId = #{memberId} and reviewStatus = 'N' and
 		purchaseConfirm = 'Y'
