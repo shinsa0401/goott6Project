@@ -5,6 +5,10 @@ import java.util.List;
 import com.boritgogae.domain.OrderSheetDTO;
 import com.boritgogae.domain.ProdImgVO;
 import com.boritgogae.domain.ProductVO;
+import java.util.Map;
+
+import com.boritgogae.domain.ProductDTO;
+
 
 public interface ProductService {
 	/**
@@ -16,6 +20,7 @@ public interface ProductService {
 	 **/
 	public ProductVO getProd(String prodNo);
 	
+
 	/**
 	 * @methodName : getProdImg
 	 * @author : kjy
@@ -33,4 +38,11 @@ public interface ProductService {
 	 * @returnType : List<ProductVO>
 	 **/
 	public List<ProductVO> getProducts(OrderSheetDTO orderSheet);
+
+	public ProductDTO getPopularProd(String prodNo) throws Exception;
+
+	public List<ProductDTO> getLastProduct() throws Exception;
+	
+	public Map<String, Object> getProductAll(int pageNo) throws Exception;
+
 }

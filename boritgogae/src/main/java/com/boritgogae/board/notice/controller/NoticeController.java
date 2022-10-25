@@ -27,9 +27,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
-import com.boritgogae.board.notice.etc.PagingInfo;
-import com.boritgogae.board.notice.etc.UploadFile;
-import com.boritgogae.board.notice.etc.UploadFileProcess;
+import com.boritgogae.board.notice.etc.NoticePagingInfo;
+import com.boritgogae.board.notice.etc.NoticeUploadFile;
+import com.boritgogae.board.notice.etc.NoticeUploadFileProcess;
 import com.boritgogae.board.notice.service.NoticeServiceImpl;
 
 @Controller
@@ -39,7 +39,7 @@ public class NoticeController {
 	@Inject
 	private NoticeServiceImpl service;
 	
-	private List<UploadFile> UploadFileLst = new ArrayList<>();
+	private List<NoticeUploadFile> UploadFileLst = new ArrayList<>();
 	
 	// 공지사항 가져오기
 	@RequestMapping(value="/list")
@@ -51,7 +51,7 @@ public class NoticeController {
 		
 		Map<String, Object> map = this.service.getNoticeBoard(pageNo);
 		List<NoticeVo> list = (List<NoticeVo>)map.get("boardList");
-		PagingInfo pi = (PagingInfo)map.get("pagingInfo");
+		NoticePagingInfo pi = (NoticePagingInfo)map.get("pagingInfo");
 		
 		
 		model.addAttribute("pagingInfo", pi);
@@ -134,7 +134,7 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public ResponseEntity<UploadFile> uploadFile(@RequestParam("file") MultipartFile upfile, HttpServletRequest request) {
+	public ResponseEntity<NoticeUploadFile> uploadFile(@RequestParam("file") MultipartFile upfile, HttpServletRequest request) {
 		System.out.println("컨트롤러 : 파일 업로드요청");
 		System.out.println("업로드된 파일 이름 : " + upfile.getOriginalFilename());
 		System.out.println("파일 사이즈 : " + upfile.getSize());
@@ -144,13 +144,13 @@ public class NoticeController {
 		String upPath = request.getSession().getServletContext().getRealPath("resources/uploads");
 		System.out.println("파일이 실제 저장 될 경로 : " + upfile);
 
-		ResponseEntity<UploadFile> result = null;
+		ResponseEntity<NoticeUploadFile> result = null;
 
 		if (upfile.getSize() > 0) {
 
-			UploadFile upFile;
+			NoticeUploadFile upFile;
 			try {
-				upFile = UploadFileProcess.uploadFileProcess(upPath, upfile.getOriginalFilename(), upfile.getBytes(),
+				upFile = NoticeUploadFileProcess.uploadFileProcess(upPath, upfile.getOriginalFilename(), upfile.getBytes(),
 						upfile.getContentType());
 				this.UploadFileLst.add(upFile); // 업로드 될 파일이 여러개일 경우를 대비해 리스트에 넣어둠
 				result = new ResponseEntity<>(upFile, HttpStatus.OK); // 업로드된 파일의 정보와 통신상태 "성공"

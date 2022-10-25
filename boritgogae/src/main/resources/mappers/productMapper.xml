@@ -4,7 +4,22 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.boritgogae.productMapper">
-  	<select id="getProd" resultType="com.boritgogae.domain.ProductVO">
+  	<select id="popularProduct" resultType="com.boritgogae.domain.ProductDTO">
+  		select substring_index(prodName,' ',1) as brand,a.*, b.originalFile from product as a , prodImg as b where a.prodNo= #{prodNo} and b.prodNo = #{prodNo} limit 0,1 
+  	</select>
+  	
+  	<select id="LastProduct" resultType="com.boritgogae.domain.ProductDTO">
+  		select substring_index(prodName,' ',1) as brand,a.*, b.originalFile from product as a , prodImg as b where a.prodNo=b.prodNo order by a.prodPutDate desc limit 0,6 
+  	</select>
+  	
+  	<select id="prodList" resultType="ProductDTO">
+  		select b.*,a.originalFile from prodImg as a, product as b where a.prodNo = b.prodNo order by prodNo desc limit #{startNum},#{postPerPage}
+  	</select>
+  	
+  	<select id="prodCnt" resultType="int">
+  		select count(*) from product
+  	</select>
+	<select id="getProd" resultType="com.boritgogae.domain.ProductVO">
   		select * from product where prodNo = #{prodNo}
   	</select>
   	<select id="getProdImg" resultType="com.boritgogae.domain.ProdImgVO">

@@ -7,10 +7,10 @@
  	<insert id="insertReview">
  		insert into review (writer, prodNo, title, content, assess) values(#{userId}, #{prodNo}, #{title}, #{reviewContent}, #{assess})
  	</insert>
- 	<!-- <select id="getOrderDetail" resultType="com.boritgogae.board.prodReply.domain.OrderDetailVO">
+ 	<!-- <select id="getOrderDetail" resultType="com.boritgogae.board.prodReply.domain.OrderDetailVo">
  		select * from detailOrder where prodNo = #{prodNo} and where cancelStatus != 'N' and where returnOrExchange != 'N'
  	</select> -->
- 	<select id="getOrders" resultType="com.boritgogae.board.prodReply.domain.OrdersVO">
+ 	<select id="getOrders" resultType="OrdersVo">
  		select * from orders o inner join detailOrder d on o.orderNo = d.orderNo where o.memberId = #{userId} and d.prodNo = #{prodNo} and d.cancelStatus != 'N' and where d.returnOrExchange != 'N'
  	</select>
  	<select id="getLastReviewNo" resultType="int">
@@ -55,7 +55,7 @@
  		insert into reviewReply (reviewNo, replyWriter, replyContent) values(#{reviewNo}, #{replyWriter}, #{replyContent})
  	</insert>
  	
- 	<select id="gerReplies" resultType="com.boritgogae.board.prodReply.domain.ReplyVo">
+ 	<select id="gerReplies" resultType="com.boritgogae.board.prodReply.domain.ProdReplyVo">
  		select p.* from reviewReply p inner join review v on p.reviewNo = v.reviewNo where v.prodNo = #{prodNo} order by ref desc, step, refOrder
  	</select>
  	<delete id="deleteReply">
@@ -67,7 +67,7 @@
  	<select id="getLastRno" resultType="int">
  		select max(rno) as lastNo from reviewReply
  	</select>
- 	<select id="gerReply" resultType="com.boritgogae.board.prodReply.domain.ReplyVo">
+ 	<select id="gerReply" resultType="com.boritgogae.board.prodReply.domain.ProdReplyVo">
  		select * from reviewReply where rno = #{rno}
  	</select>
  	<update id="updateStepRO">

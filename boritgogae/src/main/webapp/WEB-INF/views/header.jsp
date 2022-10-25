@@ -6,13 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="description" content="Ogani Template">
-<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="keywords" content="Ogani, unia577d2e5cb3081154c520bafe633fbf69efadb95ca, creative, html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 <!-- Google Font -->
-	<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-	
+   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+   
 <!-- Css Styles -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css" type="text/css">
@@ -33,11 +33,15 @@
     <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
     
+    
 <title>header</title>
 
 </head>
 <body>
 	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
+
+	
+
 	
 	<!-- Humberger Begin 모바일 -->
     <div class="humberger__menu__overlay"></div>
@@ -48,7 +52,7 @@
         <div class="humberger__menu__cart">
             <ul>
                 <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                <li><a href="${contextPath}/order/cartList"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
             </ul>
             <div class="header__cart__price">item: <span>$150.00</span></div>
         </div>
@@ -68,23 +72,23 @@
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="${contextPath}/">Home</a></li>
-                <li><a href="/product/category/detail?prodNo=CL1DC10W00M00S02C00E00">Shop</a></li>
+                <li><a href="${contextPath}/product/category">Shop</a></li>
                 <li><a href="./blog.html">병원</a></li>
                 <li><a href="./contact.html">게시판</a>
-                	<ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">자유게시판</a></li>
+                   <ul class="header__menu__dropdown">
+                        <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
                         <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
-                        <li><a href="./checkout.html">장터게시판</a></li>
-                        <li><a href="./blog-details.html">고개팁</a></li>
+                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
+                        <li><a href="/boardTip/listAll">고개팁</a></li>
                     </ul>
                 </li>
                 <li><a href="/board/notice/list">고객센터</a>
-					<ul class="header__menu__dropdown">
-						<li><a href="/board/notice/list">공지사항</a></li>
-						<li><a href="./shoping-cart.html">문의게시판</a></li>
-						<li><a href="/admin/main">관리자 페이지(임시)</a></li>
-					</ul>
-				</li>
+               <ul class="header__menu__dropdown">
+                  <li><a href="/board/notice/list">공지사항</a></li>
+                  <li><a href="/board/ask/list">문의게시판</a></li>
+                  <li><a href="/admin/main">관리자 페이지(임시)</a></li>
+               </ul>
+            </li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -103,8 +107,8 @@
     </div>
     <!-- Humberger End -->
     
-	
-	<!-- Header Section Begin PC버전 -->
+   
+   <!-- Header Section Begin PC버전 -->
     <header class="header">
         
         <div class="container">
@@ -118,20 +122,20 @@
                     <nav class="header__menu">
                         <ul>
 			                <li class="active"><a href="${contextPath}/">Home</a></li>
-			                <li><a href="/product/category/detail?prodNo=CL1DC10W00M00S02C00E00">Shop</a></li>
+			                <li><a href="${contextPath}/product/category"">Shop</a></li>
 			                <li><a href="./blog.html">병원</a></li>
 			                <li><a href="./contact.html">게시판</a>
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="./shop-details.html">자유게시판</a></li>
 			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
-			                        <li><a href="./checkout.html">장터게시판</a></li>
-			                        <li><a href="./blog-details.html">고개팁</a></li>
+			                        <li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
+			                        <li><a href="/boardTip/listAll">고개팁</a></li>
 			                    </ul>
 			                </li>
 			                <li><a href="/board/notice/list">고객센터</a>
 								<ul class="header__menu__dropdown">
 									<li><a href="/board/notice/list">공지사항</a></li>
-									<li><a href="./shoping-cart.html">문의게시판</a></li>
+									<li><a href="/board/ask/list">문의게시판</a></li>
 									<li><a href="/admin/main">관리자 페이지(임시)</a></li>
 								</ul>
 							</li>
@@ -142,11 +146,24 @@
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="${contextPath}/order/cartList"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
-                        <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
-            </div>
+                        <c:choose>
+                        	<c:when test="${sessionScope.logInMember == null }">
+                        	<!-- 로그인을 하지 않았을 경우 -->
+                        		<div class="header__top__right__auth">
+                        			<a href="${contextPath }/member/logIn">
+                        				<i class="fa fa-user"></i> 로그인</a>
+                        		</div>
+                        	</c:when>
+                        	<c:when test="${sessionScope.logInMember != null }">
+                        	<!-- 로그인을 했을 경우 -->
+                        		<div class="header__top__right__auth">
+                        			<a href="${contextPath }/member/logOut">
+                        				<i class="fa fa-user"></i> 로그아웃</a>
+                        		</div>
+                        	</c:when>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -197,7 +214,7 @@
                         </div>
                         <div class="hero__search__phone">
                             <div class="hero__search__phone__text">
-                                <h5>My Page</h5>
+                                <h5><a href="/member/myPage" style="color: black;">My Page</a></h5>
                             </div>
                         </div>
                     </div>
@@ -206,7 +223,5 @@
         </div>
     </section>
     <!-- Hero Section End -->
-    
-
 </body>
 </html>

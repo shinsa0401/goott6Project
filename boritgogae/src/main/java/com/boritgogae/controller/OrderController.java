@@ -1,5 +1,6 @@
 package com.boritgogae.controller;
 
+<<<<<<< HEAD
 import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.util.ArrayList;
@@ -121,5 +122,51 @@ public class OrderController {
 		model.addAttribute("order", currentOrder);
 		
 		return "order/orderComplete";
+
+	@Inject
+	private OrderService service;
+	
+	/**
+	 * @methodName : addCart
+	 * @author : 
+	 * @date : 2022. 10. 18.
+	 * @입력 param :
+	 * @returnType : String(int로 바꿀거임)
+	 */
+	
+	@RequestMapping(value = "/cartList")
+	public String addCart(CartDTO cart )throws Exception {
+		
+		service.addCart(cart);
+		return "order/cartList";
 	}
+	
+	@GetMapping("/cartList/{memberId}")
+	public String cartListGet(@PathVariable("memberId")String memberId, Model model) throws Exception {
+		
+		model.addAttribute("cartInfo",service.getCartList(memberId));
+		
+		return "/cartList";
+	}
+	
+	/**
+	 * @methodName : guestLogIn
+	 * @author : 신태호
+	 * @date : 2022. 10. 24.
+	 * @입력 param :
+	 * @returnType : String
+	 */
+	@RequestMapping(value = "/detailGuest")
+	public String guestLogIn(GuestOrderDTO gdto, Model model, HttpServletResponse response) throws Exception {
+		
+		OrdersVo guestOrderInfo = service.guestOrderInfo(gdto);
+		
+		if (guestOrderInfo == null) { // 주문내역이 없다
+			return "redirect:/member/logIn?status=guestFail";
+		}
+		
+		model.addAttribute("guestOrderInfo", guestOrderInfo); // 비회원주문정보 바인딩
+		
+//		response.sendRedirect(destination);
+		return "/order/detailGuest";
 }

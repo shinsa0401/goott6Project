@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
-import com.boritgogae.board.notice.etc.PagingInfo;
+import com.boritgogae.board.notice.etc.NoticePagingInfo;
 
 @Repository
 public class NoticeDAOImpl implements NoticeDAO {
@@ -24,7 +24,7 @@ public class NoticeDAOImpl implements NoticeDAO {
 	private static String ns = "com.boritgogae.boardNoticeMapper";
 	
 	@Override
-	public List<NoticeVo> getNoticeBoard(PagingInfo pi) throws Exception {
+	public List<NoticeVo> getNoticeBoard(NoticePagingInfo pi) throws Exception {
 		return ses.selectList(ns + ".getNoticeList", pi);
 	}
 	
@@ -143,6 +143,11 @@ public class NoticeDAOImpl implements NoticeDAO {
 		return ses.update(ns + ".updateNoticeBoardRead", map);
 	}
 
+	@Override
+	public List<NoticeVo> getNoticeBoarMain() throws Exception {
+		
+		return ses.selectList(ns+".MainNotice");
+	}
 	
 	
 

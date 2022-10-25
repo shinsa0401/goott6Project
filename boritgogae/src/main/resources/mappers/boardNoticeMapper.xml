@@ -2,7 +2,6 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.boritgogae.boardNoticeMapper">
 	<select id="getNoticeList" resultType="NoticeVo">
 		select * from noticeBoard order by bno desc limit #{startNum},
@@ -98,5 +97,8 @@
 	<update id="updateNoticeBoardRead">
 		update noticeBoardRead set readTime = #{readTime} where readMemberIp = #{readMemberIp} and bno = #{bno}
 	</update>
-
+	
+	<select id="MainNotice" resultType="NoticeVo">
+  		select * from noticeBoard order by bno asc limit 0,5
+  	</select>
 </mapper>

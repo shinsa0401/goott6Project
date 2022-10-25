@@ -51,7 +51,7 @@
 		<!-- mybatis 환경설정파일의 위치를 알려줌 -->
 		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
 		<!-- mapper 파일의 위치 -->
-		<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml">
+		<property name="mapperLocations" value="classpath*:/mappers/**/*Mapper.xml">
 		</property>
 	</bean>
 	
@@ -85,7 +85,7 @@
 	<!-- 게시판 패키지 -->
 	<context:component-scan base-package="com.boritgogae.board.*.service"></context:component-scan>
 	<context:component-scan base-package="com.boritgogae.board.*.persistence"></context:component-scan>
-	
+	<context:component-scan base-package="com.boritgogae.board.*.dao"></context:component-scan>
 	
 	
 	

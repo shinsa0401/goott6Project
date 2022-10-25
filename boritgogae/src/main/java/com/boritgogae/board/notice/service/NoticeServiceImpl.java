@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.boritgogae.board.notice.domain.NoticeReplyVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
-import com.boritgogae.board.notice.etc.IPCheck;
-import com.boritgogae.board.notice.etc.PagingInfo;
+import com.boritgogae.board.notice.etc.NoticeIPCheck;
+import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.board.notice.persistence.NoticeDAO;
 
 @Service
@@ -24,7 +24,7 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public Map<String, Object> getNoticeBoard(int pageNo) throws Exception {
 
-		PagingInfo pi = pagingProcess(pageNo);
+		NoticePagingInfo pi = pagingProcess(pageNo);
 
 		List<NoticeVo> lst = null;
 
@@ -54,7 +54,7 @@ public class NoticeServiceImpl implements NoticeService {
 
 		// 조회수 처리
 		// System.out.println("조회하는 컴퓨터 : " + request.getRemoteAddr());
-		String readMemberIp = IPCheck.getIPAddr();
+		String readMemberIp = NoticeIPCheck.getIPAddr();
 		System.out.println("조회하는 컴퓨터 ip 주소 : " + readMemberIp);
 
 		Timestamp lastReadTime = dao.getLastReadTime(readMemberIp, bno);
@@ -159,8 +159,8 @@ public class NoticeServiceImpl implements NoticeService {
 		return result;
 	}
 
-	private PagingInfo pagingProcess(int pageNo) throws Exception {
-		PagingInfo result = new PagingInfo();
+	private NoticePagingInfo pagingProcess(int pageNo) throws Exception {
+		NoticePagingInfo result = new NoticePagingInfo();
 
 		result.setTotalPostCnt(dao.getNoticeBoardCnt()); // 전체 글의 갯수 setting
 
@@ -192,6 +192,12 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 
 		return result;
+	}
+
+	@Override
+	public List<NoticeVo> getNoticeBoardMain() throws Exception {
+		List<NoticeVo> notice = dao.getNoticeBoarMain();
+		return notice;
 	}
 
 }
