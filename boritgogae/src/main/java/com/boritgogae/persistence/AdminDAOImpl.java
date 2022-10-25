@@ -10,6 +10,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -25,6 +27,7 @@ public class AdminDAOImpl implements AdminDAO {
     private SqlSession ses;
 
     private static String ns = "com.boritgogae.AdminMapper";
+    private static String prodNs = "com.boritgogae.productMapper";
 
     @Override
     public List<MemberVo> getMembers() throws Exception {
@@ -128,6 +131,21 @@ public class AdminDAOImpl implements AdminDAO {
 	@Override
 	public int getLogInMemberCount() throws Exception {
 		return ses.selectOne(ns + ".getLogInMemberCount");
+	}
+
+	@Override
+	public int getProdCnt() throws Exception {
+		return ses.selectOne(prodNs + ".prodCnt");
+	}
+
+	@Override
+	public List<ProductVo> getProdList(NoticePagingInfo pi) throws Exception {
+		return ses.selectList(ns + ".getProductList", pi);
+	}
+
+	@Override
+	public List<ProdImgVo> getProdImg() throws Exception {
+		return ses.selectList(ns + ".getProductImg");
 	}
 
 	

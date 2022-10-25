@@ -2,6 +2,7 @@ package com.boritgogae.controller;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.board.notice.domain.NoticeVo;
+import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -65,6 +70,29 @@ public class AdminController {
 		model.addAttribute("members", members);
 
 		return "/admin/member";
+	}
+	
+	@RequestMapping(value = "/product")
+	public String productList(Model model, @RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo, RedirectAttributes rttr) throws Exception {
+		
+		if(pageNo < 1) {
+			pageNo = 1;
+		}
+		
+		Map<String, Object> map = service.getProdList(pageNo);
+		
+		List<ProductVo> prodList = (List<ProductVo>)map.get("prodList");
+		List<ProdImgVo> prodImgList = service.getProdImg();
+		NoticePagingInfo pi = (NoticePagingInfo)map.get("pagingInfo");
+		int prodCnt = service.getProdCnt();
+		
+		model.addAttribute("prodImgList", prodImgList);
+		model.addAttribute("prodList", prodList);
+		model.addAttribute("pagingInfo", pi);
+		model.addAttribute("prodCnt", prodCnt);
+		rttr.addFlashAttribute("pageNo", pageNo);
+		
+		return "/admin/product";
 	}
 
 	@RequestMapping(value = "/member/new")

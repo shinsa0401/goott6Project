@@ -3,6 +3,8 @@ package com.boritgogae.persistence;
 import java.util.List;
 
 import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -79,7 +81,13 @@ public interface AdminDAO {
 	// 새로 들어온 주문 
     public List<OrdersVo> getNewOrder() throws Exception;
 
-
+    // 상품의 갯수를 가져오는 메서드
+    public int getProdCnt() throws Exception;
 	
+    // 상품 전체 목록을 가져오는 메서드
+    public List<ProductVo> getProdList(NoticePagingInfo pi) throws Exception;
+    
+    // 상품의 이미지를 가져오는 메서드
+    public List<ProdImgVo> getProdImg() throws Exception;
     
 }

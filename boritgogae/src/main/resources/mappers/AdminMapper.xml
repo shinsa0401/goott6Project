@@ -74,6 +74,14 @@
 		on o.orderNo = d.orderNo where d.purchaseConfirm = 'N'
 	</select>
 	
+	<select id="getProductList" resultType="ProductVo">
+		select * from product limit #{startNum}, #{postPerPage}
+	</select>
+	
+	<select id="getProductImg" resultType="ProdImgVo">
+		select * from prodImg
+	</select>
+	
 	<!-- 관리자 페이지 상품 관련 쿼리문 끝 -->
 	
 
