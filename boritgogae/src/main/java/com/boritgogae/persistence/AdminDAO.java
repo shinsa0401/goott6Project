@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
@@ -90,4 +91,6 @@ public interface AdminDAO {
     // 상품의 이미지를 가져오는 메서드
     public List<ProdImgVo> getProdImg() throws Exception;
     
+    // 상품의 컨텐츠를 가져오는 메서드
+    public List<ProductContentVo> getProdContent() throws Exception;
 }

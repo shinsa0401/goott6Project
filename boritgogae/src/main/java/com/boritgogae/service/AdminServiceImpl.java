@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
@@ -206,6 +207,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<ProdImgVo> getProdImg() throws Exception {
 		return dao.getProdImg();
+	}
+
+	@Override
+	public List<ProductContentVo> getProductContent() throws Exception {
+		return dao.getProdContent();
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -89,5 +90,8 @@ public interface AdminService {
 
 	// 상품의 이미지를 가져오는 메서드
 	public List<ProdImgVo> getProdImg() throws Exception;
+	
+	// 상품의 컨텐츠를 가져오는 메서드
+	public List<ProductContentVo> getProductContent() throws Exception;
 
 }

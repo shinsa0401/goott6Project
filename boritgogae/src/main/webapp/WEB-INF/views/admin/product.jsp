@@ -29,9 +29,105 @@
 		
 	});
 	
+	
+	function modiModal(prodImg, product) {
+		product = product.split(",");
+		let prodNo = product[0].split("=")[1];
+		let prodName = product[1].split("=")[1];
+		let brand = prodName.split(" ")[0];
+		if (brand.indexOf("]") != -1) {
+			brand = prodName.split(" ")[0].split("]")[1];
+		}
+		let prodQuantity = Number(product[3].split("=")[1]).toLocaleString();
+		let prodPrice = Number(product[4].split("=")[1]).toLocaleString();
+		let readCount = product[5].split("=")[1];
+		let likeCount = product[6].split("=")[1];
+		let prodPutDate = product[7].split("=")[1];
+		
+		let prodContent = [];
+		
+		
+		
+		<c:forEach var="productContents" items="${prodContentList}" >
+			if(prodNo == '${productContents.prodNo}') {
+				console.log("${productContents.prodContent}");
+				prodContent.push("${productContents.prodContent}");
+			}
+		</c:forEach>
+		
+		console.log(prodContent);
+		
+		console.log(product);
+		console.log(prodNo, prodName, prodQuantity, prodPrice, readCount, likeCount, prodPutDate);
+		
+		let output = "";
+		output += '<div class="modal" id="modal-xl"><div class="modal-dialog modal-xl"><div class="modal-content" style="max-height: 650px;">';
+		output += '<div class="modal-header"><h4 class="modal-title">상품 정보</h4>';
+		output += '<button type="button" class="close closeModal" onclick="modalClose();">';
+		output += '<span aria-hidden="true">&times;</span></button></div>';
+		output += '<div class="mx-auto prodInfo">각 정보를 클릭 시 수정할 수 있습니다. (상품코드, 브랜드 제외)</div>';
+		output += '<div class="modal-body row" >';
+		output += '<div class="col-6"><img src="' + prodImg + '" style="max-height: 400px; max-width: 400px;"/></div>';
+		output += '<div class="col-6"><ul class="list-group list-group-flush"><li class="list-group-item">';
+		output += '<div class="productDetail prodTitle">상품 코드</div><div class="productDetail dataTag">' + prodNo + '</div></li>';
+		output += '<li class="list-group-item""><div class="productDetail prodTitle">브 랜 드</div><div class="productDetail dataTag">' + brand + '</div></li>';
+		output += '<li class="list-group-item" onclick="return modify(this);"><div class="productDetail prodTitle">상품 이름</div><div class="productDetail"><span class="dataTag"> ' + prodName + '</span></div></li>';
+		output += '<li class="list-group-item" onclick="return modify(this);"><div class="productDetail prodTitle">상품 가격</div><div class="productDetail"><span class="dataTag">' + prodPrice + ' </span><span>원</span></div></li>';
+		output += '<li class="list-group-item" onclick="return modify(this);"><div class="productDetail prodTitle">현재 재고</div><div class="productDetail"><span class="dataTag">' + prodQuantity + ' </span><span>개</span></div></li>';
+		output += '</ul></div><div class="col-12" id="prodContent">';
+		for(let prodCont in prodContent) {
+			output += '<img src="' + prodContent[prodCont] + '" style="max-width: 600px;"/>';
+		}
+		output += '</div></div><div class="modal-footer justify-content-between">';
+		output += '<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>';
+		output += '<button type="button" class="btn btn-primary">수정</button>';
+		output += '</div></div></div></div>';
+		
+		$("#modalDiv").html(output);
+		modalShow();
+		
+		
+	  
+	}
+	
+	function modalShow() {
+		$("#modal-xl").show(200);
+	}
+	
+	function modalClose() {
+		$("#modal-xl").hide(100);
+	}
+	
+	function modify(tags) {
+		console.log(tags);
+		let prevData = $(tags).children(".productDetail").children(".dataTag").html();
+		$(tags).children(".productDetail").children(".dataTag").contents().unwrap().wrap( '<input type="text" class="form-control" value="' + prevData + '">' );
+	}
 
 </script>
 <style type="text/css">
+.productDetail {
+	margin-bottom: 3px;
+}
+
+.prodTitle {
+	font-size: 16px;
+	font-weight: bold;
+	color: #6c757d;
+}
+
+.prodInfo {
+	font-size: 14px;
+	color: #6c757d;
+}
+
+.modal-body {
+	overflow:auto;
+}
+
+.modal-body::-webkit-scrollbar {
+	position: relative;
+}
 </style>
 </head>
 
@@ -83,24 +179,25 @@
 										<th>상품 가격</th>
 										<th>상품 재고</th>
 									</tr>
-
 								</thead>
 								<tbody>
 									<c:forEach items="${prodList }" var="product">
-										<tr id="coupons" onclick="modiModal('');">
-											<td>${product.prodNo }</td>
 										<c:forEach items="${prodImgList}" var="prodImg">
 											<c:if test="${product.prodNo == prodImg.prodNo}">
-												<td><img src="${prodImg.originalFile}" style="max-height: 50px; max-width: 50px;">  ${product.prodName }</td>
+												<tr id="coupons"
+													onclick="modiModal('${prodImg.originalFile}','${product }');">
+													<td>${product.prodNo }</td>
+													<td><img src="${prodImg.originalFile}"
+														style="max-height: 50px; max-width: 50px;">
+														${product.prodName }</td>
 											</c:if>
-											
 										</c:forEach>
-												<td><fmt:formatNumber type="number"
-														maxFractionDigits="3" value="${product.prodPrice }" /> 원</td>
-												<td>${product.prodQuantity }개</td>
-											</tr>
-										</c:forEach>
-									
+										<td><fmt:formatNumber type="number" maxFractionDigits="3"
+												value="${product.prodPrice }" /> 원</td>
+										<td>${product.prodQuantity }개</td>
+										</tr>
+									</c:forEach>
+
 								</tbody>
 
 							</table>
@@ -159,81 +256,6 @@
 
 	<jsp:include page="footer.jsp"></jsp:include>
 
-
-	<div class="modal" id="statusModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-
-				<!-- Modal Header -->
-				<div class="modal-header">
-					<h4 class="modal-title" id="status"></h4>
-					<button type="button" class="btn-close close closeModal"
-						data-bs-dismiss="modal">X</button>
-				</div>
-
-				<!-- Modal footer -->
-				<div class="modal-footer">
-					<button type="button" class="btn btn-success"
-						data-bs-dismiss="modal" onclick="location.reload();">확인</button>
-				</div>
-
-			</div>
-		</div>
-	</div>
-
-	<div class="modal" id="modiModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-
-				<!-- Modal Header -->
-				<div class="modal-header">
-					<h4 class="modal-title" id="modiTitle">쿠폰 수정</h4>
-					<button type="button" class="btn-close close closeModal"
-						data-bs-dismiss="modal">X</button>
-				</div>
-
-				<!-- Modal body -->
-				<div class="modal-body">
-					<div class="form-group">
-						<label for="modiCouponName">쿠폰명</label> <input type="text"
-							class="form-control col-sm-8" id="modiCouponName"
-							name="modiCouponName" placeholder="수정할 쿠폰 이름을 입력해주세요">
-					</div>
-					<div class="form-group">
-						<label for="modiCouponDiscount">쿠폰 할인율</label>
-						<div class="mb-3 row">
-							<input type="number" class="form-control col-sm-8"
-								name="couponDiscount" id="modiCouponDiscount"
-								placeholder="수정할 쿠폰의 할인율을 입력해주세요">
-							<div class="col-sm-2">
-								<span class="coupon">%</span>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="modiCouponUseDate">사용 기한</label>
-						<div class="mb-3 row">
-							<input type="number" class="form-control col-sm-8"
-								name="modiCouponUseDate" id="modiCouponUseDate"
-								placeholder="수정할 쿠폰의 사용기한을 입력해주세요">
-							<div class="col-sm-2">
-								<span class="coupon">일</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- Modal footer -->
-				<div class="modal-footer">
-					<button type="button" class="btn btn-success"
-						data-bs-dismiss="modal" onclick="modifyCoupon();">쿠폰 수정</button>
-					<button type="button" class="btn btn-danger"
-						data-bs-dismiss="modal" onclick="deleteCoupon();">쿠폰 삭제</button>
-				</div>
-
-			</div>
-		</div>
-	</div>
-
+	<div id="modalDiv"></div>
 </body>
 </html>

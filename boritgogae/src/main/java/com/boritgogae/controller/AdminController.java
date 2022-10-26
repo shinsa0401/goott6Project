@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.board.notice.domain.NoticeVo;
 import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
@@ -85,7 +86,9 @@ public class AdminController {
 		List<ProdImgVo> prodImgList = service.getProdImg();
 		NoticePagingInfo pi = (NoticePagingInfo)map.get("pagingInfo");
 		int prodCnt = service.getProdCnt();
+		List<ProductContentVo> prodContentList = service.getProductContent();
 		
+		model.addAttribute("prodContentList", prodContentList);
 		model.addAttribute("prodImgList", prodImgList);
 		model.addAttribute("prodList", prodList);
 		model.addAttribute("pagingInfo", pi);

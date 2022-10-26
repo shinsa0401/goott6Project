@@ -82,6 +82,10 @@
 		select * from prodImg
 	</select>
 	
+	<select id="getProductContent" resultType="ProductContentVo">
+		select * from productContent
+	</select>
+	
 	<!-- 관리자 페이지 상품 관련 쿼리문 끝 -->
 	
 

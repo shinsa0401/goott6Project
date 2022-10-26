@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
@@ -146,6 +147,11 @@ public class AdminDAOImpl implements AdminDAO {
 	@Override
 	public List<ProdImgVo> getProdImg() throws Exception {
 		return ses.selectList(ns + ".getProductImg");
+	}
+
+	@Override
+	public List<ProductContentVo> getProdContent() throws Exception {
+		return ses.selectList(ns + ".getProductContent");
 	}
 
 	
