@@ -11,11 +11,13 @@ import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
+import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.GradesVo;
+import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.PointHistoryVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
-
 
 public interface MemberService {
 
@@ -32,37 +34,62 @@ public interface MemberService {
 	public int updateLogOutDate(String memberId) throws Exception;
 
 	// 등급혜택을 가져오는 메서드
-	List<GradesVo> showGradeBenefit() throws Exception;
+	public List<GradesVo> showGradeBenefit() throws Exception;
 	
 	// 쿠폰혜택을 가져오는 메서드
-	List<CouponVo> showCouponBenefit() throws Exception;
+	public List<CouponVo> showCouponBenefit() throws Exception;
 
 	// 유저가 보유한 포인트를 가져오는 메서드
-	int pointNow(String memberId) throws Exception;
+	public int pointNow(String memberId) throws Exception;
 	
 	// 유저의 포인트 내역을 가져오는 메서드
-	List<PointHistoryVo> showPointHistory(String memberId) throws Exception;
+	public List<PointHistoryVo> showPointHistory(String memberId) throws Exception;
 
 	// 유저의 쿠폰 보유 내역을 가져오는 메서드
-	List<CouponUsedVo> showCouponHaveList(String memberId) throws Exception;
+	public List<CouponUsedVo> showCouponHaveList(String memberId) throws Exception;
 	
 	// 유저의 쿠폰 사용 내역을 가져오는 메서드
-	List<CouponUsedVo> showCouponUsedList(String memberId) throws Exception;
+	public List<CouponUsedVo> showCouponUsedList(String memberId) throws Exception;
 
 	// 유저의 작성글을 가져오는 메서드
-	List<UserBoardVo> showUserBoardList(String memberId) throws Exception;
+	public List<UserBoardVo> showUserBoardList(String memberId) throws Exception;
 
 	// 유저의 작성 댓글을 가져오는 메서드
-	List<UserReplyVo> showUserReplyList(String memberId) throws Exception;
+	public List<UserReplyVo> showUserReplyList(String memberId) throws Exception;
 
 	// 유저가 쓴 리뷰 리스트를 가져오는 메서드
-	List<ReviewVO> showUserReviewList(String memberId) throws Exception;
+	public List<ReviewVO> showUserReviewList(String memberId) throws Exception;
 
 	// 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드
-	List<OrderDetailVo> userAbleReviewList(String memberId) throws Exception;
+	public List<OrderDetailVo> userAbleReviewList(String memberId) throws Exception;
 
 	// 상품코드에 맞는 상품명을 반환해준다.
-	String convertProdNoToProdName(String prodCode) throws Exception;
+	public String convertProdNoToProdName(String prodCode) throws Exception;
+
+	// 회원정보를 가져오는 메서드
+	public MemberVo showUserInfo(String memberId) throws Exception;
+
+	// 회원 아이디에 맞는 비번인지 확인하는 메서드
+	public int checkPwd(String memberId, String pwd) throws Exception;
+
+	// 회원이 정보를 변경할 때의 메서드
+	public int changeInfo(String memberId, String target, String value) throws Exception;
+
+	// 회원의 주소지 정보들을 불러오는 메서드
+	public List<DeliveryInfoVo> showDeliveryInfo(String memberId) throws Exception;
+
+	// 회원이 주소지를 삭제할 때의 메서드
+	public int deleteAddr(String memberId, String deliveryInfo) throws Exception;
+
+	// 회원이 주소지를 추가할 때의 메서드
+	public int addAddr(String memberId, String address, String detailAddress, String postCode, String recipient,
+			String recipientPhoneNumber) throws Exception;
+
+	// 회원이미지를 추가하는 메서드
+	public int addMemberImg(String memberId, String memberImg) throws Exception;
+
+	// 회원 이메일 변경 메서드
+	public int changeMemberEmail(String memberId, String memberEmail) throws Exception;
 
 	
 

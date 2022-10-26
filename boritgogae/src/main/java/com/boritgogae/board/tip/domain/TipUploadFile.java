@@ -1,16 +1,13 @@
 package com.boritgogae.board.tip.domain;
 
-
 public class TipUploadFile {
 	private String savedOriginImageFileName; // 저장된 원본 파일의 이름
 	private String notImageFileName; // 이미지가 아닐경우 파일의 이름
 	private boolean isImage; // 이미지 파일인지 아닌지
 	
-	
 	public TipUploadFile() {
 		super(); 
 	}
-
 
 	public TipUploadFile(String savedOriginImageFileName, String notImageFileName,
 			boolean isImage) {
@@ -48,7 +45,7 @@ public class TipUploadFile {
 
 	@Override
 	public String toString() {
-		return "UploadFile [savedOriginImageFileName=" + savedOriginImageFileName + ","
+		return "UploadAskFile [savedOriginImageFileName=" + savedOriginImageFileName + ","
 				+ " notImageFileName=" + notImageFileName + ", isImage=" + isImage + "]";
 	}
 

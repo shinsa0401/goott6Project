@@ -3,15 +3,12 @@ package com.boritgogae.board.ask.service;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
-
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
 
 import com.boritgogae.board.ask.domain.AskSearchCriteria;
 import com.boritgogae.board.ask.domain.UploadAskFile;
 
-@Service
 public interface AskBoardService {
 	// 게시판 전체 목록을 가져오는 메서드
 	public Map<String, Object> readAllBoard(int pageNo, AskSearchCriteria sc) throws Exception;

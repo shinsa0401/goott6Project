@@ -31,6 +31,8 @@ import com.boritgogae.board.prodReply.domain.ReviewDTO;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.service.ReviewService;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
 
 
 @Controller
@@ -47,7 +49,7 @@ public class prodReplyController {
 	
 //	@RequestMapping(value = "/getOrdersVo")
 //	public String getOrderDetail(String userId, @RequestParam("prodNo") String prodNo, Model model) {
-//		List<OrdersVO> vo = service.getOrder(userId, prodNo);
+//		List<OrdersVo> vo = service.getOrder(userId, prodNo);
 //		model.addAttribute("orders", vo);
 //		return "";
 //	}

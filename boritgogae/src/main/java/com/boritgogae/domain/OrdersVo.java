@@ -21,12 +21,9 @@ public class OrdersVo {
 	private int postCode;
 	private int accumPoint;
 	
-	public OrdersVo() {
-		super();
-	}
-
 	public OrdersVo(int orderNo, String memberId, int prodTotalPrice, String deliveryOption, int totalPrice,
 			Timestamp orderDate, String isMember, String phoneNumber, String guestEmail, String guestPwd, String name,
+
 			String memo, int usedPoint, String address, String detailAddress, int postCode, int accumPoint) {
 		super();
 		this.orderNo = orderNo;

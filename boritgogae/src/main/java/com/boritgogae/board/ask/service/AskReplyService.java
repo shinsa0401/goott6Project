@@ -2,11 +2,9 @@ package com.boritgogae.board.ask.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
 import com.boritgogae.board.ask.domain.AskReplyVo;
 
 
-@Service
 public interface AskReplyService {
 	// 댓글 등록하는 메서드
 	public boolean addReply(AskReplyVo reply) throws Exception;
