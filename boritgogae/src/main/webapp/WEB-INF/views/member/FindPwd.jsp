@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +19,8 @@
 	
 </script>
 <style>
-	.container div {
+	#container div {
+		width: 80%;
 		margin: auto;
 	}
 	
@@ -45,7 +47,7 @@
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 	
-	<div class="container">
+	<div id="container">
 	
 		<div class="heading">비밀번호 재설정</div>
 		
@@ -102,7 +104,7 @@
 			
 			<div class="col-lg-6">
 				<div class="checkout__input d-grid">
-					<button id="authCheck" class="btn btn-primary btn-block">인증번호 확인</button>
+					<button id="authCheck" class="btn btn-primary btn-block">비밀번호 재설정</button>
 				</div>
 			</div>
 			
@@ -130,7 +132,7 @@
 				<p>8~15자의 영문 대/소문자</p>
 				<p>아이디, 생일, 전화번호 등 개인정보 사용불가</p>
 				<div class="checkout__input d-grid">
-					<button id="pwdUpdate" class="btn btn-primary btn-block">비밀번호 재설정</button>
+					<button id="pwdUpdate" class="btn btn-primary btn-block">확인</button>
 				</div>
 			</div>
 		

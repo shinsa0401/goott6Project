@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,9 +40,18 @@
 	            // data : 성공했을 때 전달되는 데이터
 	            console.log(data);
     			if (data != null) {
-    				alert("!");
+					// timestamp 날짜변환
+    				let joinDate = new Date(data.joinDate);
+    				let year = joinDate.getFullYear();
+					let month = joinDate.getMonth() + 1;
+					let date = joinDate.getDate();
+					
+    				$("#resultName").html(data.memberName + " 님의 정보와 일치하는");
+    				$("#resultId").html("아이디는 " + data.memberId + " 입니다.");
+    				$("#resultJoinDate").html(year + "." + month + "." + date + " 가입");
+    				
     	        	$(".authForm").hide();
-        			$(".resultForm").show();		
+        			$(".resultForm").show();
     			}
     			
 	        },
@@ -57,7 +67,8 @@
 	
 </script>
 <style>
-	.container div {
+	#container div {
+		width: 80%;
 		margin: auto;
 	}
 	
@@ -78,12 +89,21 @@
 		font-size: 30px;
 		padding: 30px;
 	}
+	
+	.resultForm div{
+		text-align: center;
+		font-size: 25px;
+	}
+	
+	.btns {
+		padding: 50px;
+	}
 </style>
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 	
-	<div class="container">
+	<div id="container">
 	
 		<div class="heading">아이디 찾기</div>
 		
@@ -120,7 +140,7 @@
 			
 			<div class="col-lg-6">
 				<div class="checkout__input d-grid">
-					<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthCheck();">인증번호 확인</button>
+					<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthCheck();">아이디 찾기</button>
 				</div>
 			</div>
 			
@@ -129,24 +149,19 @@
 		
 		<!-- 2차 아이디찾기 결과 -->
 		<div class="resultForm" style="display: none">
-			<div>
-				<p>${data.memberName } 님의 정보와 일치하는 아이디입니다.</p>
-	    		<p>${data.memberId }</p>
-	    		<p>${data.joinDate } 가입</p>
-	    		
-	    		<p>로그인하러가기 | 비밀번호 재설정</p>
-    		</div>
+			<div id="resultName"></div>
+			<div id="resultId"></div>
+			<div id="resultJoinDate"></div>
+	    	<div class="btns">
+	    		<button class="btn btn-success" onclick="location.href='${contextPath}/member/logIn';">로그인 하러가기</button>
+				<button class="btn btn-primary" onclick="location.href='${contextPath}/member/findPwd';">비밀번호 재설정</button>
+			</div>
 		</div>
 		
     </div>
     
 	
 	<!--
-    <input type="text" placeholder="이름" /> 이름을 입력해주세요
-
-    <input type="email" placeholder="이메일" /> 이메일 주소를 정확히 입력해주세요
-
-    
     
     <hidden 인증번호 적는 곳>
 

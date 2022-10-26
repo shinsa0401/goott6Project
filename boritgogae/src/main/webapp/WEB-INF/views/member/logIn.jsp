@@ -17,7 +17,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-<title>로그인 페이지</title>
+<title>로그인</title>
 <script>
 	let prevPage = "";
 	let notLogInPage = "";
@@ -59,6 +59,7 @@
 	// 로그인 취소시 이전페이지로 가기
 	function logInCancel() {
 		let back = sessionStorage.getItem("page");
+		
 		// page 세션 삭제
 		sessionStorage.removeItem("page");
 		
