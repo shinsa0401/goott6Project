@@ -4,17 +4,149 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<!-- <script src="https://www.google.com/recaptcha/api.js?render=6Ld11bIiAAAAAKrv3Cqs8YDoEZFLmjLOVyCZHYo-"></script> -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <title>아이디 찾기</title>
+<script>
+
+	$(function () {
+		
+		$(".authForm").show();
+		
+	});
+	
+	function emailAuthCheck() {
+		// 아이디 찾기
+		let url = "/member/emailAuthCheck";
+		let memberName = $("#memberName").val();
+		let memberEmail = $("#memberEmail").val();
+		let sendData = JSON.stringify({
+			memberName : memberName, memberEmail : memberEmail
+		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
+		
+		console.log(memberName);
+		console.log(memberEmail);
+		
+		$.ajax({
+	        url: url, // 데이터 송수신될 주소
+	        type: "post", // 통신 방식(get, post)
+			data: sendData,
+	        dataType: "json", // 수신 받을 데이터 타입
+	        headers : { "content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+    			"X-HTTP-Method-Override" : "POST" }, // 구 버전의 웹 브라우저에서 (PUT/ DELETE)방식이 호환이 안되는 버전에서 호환 되도록
+	        success: function (data) { // 통신이 성공했을 때 호출되는 callback함수
+	            // data : 성공했을 때 전달되는 데이터
+	            console.log(data);
+    			if (data != null) {
+    				alert("!");
+    	        	$(".authForm").hide();
+        			$(".resultForm").show();		
+    			}
+    			
+	        },
+	        error : function(request, status, error) {
+	            console.log("code:" + request.status + "\n"
+	                  + "message:" + request.responseText + "\n"
+	                  + "error:" + error);
+	        }
+	    });
+	}
+	
+	
+	
+</script>
+<style>
+	.container div {
+		margin: auto;
+	}
+	
+	.inputBox {
+		margin-bottom: 20px;
+	}
+	.btn {
+		height: 46px;
+	}
+	
+	#authCheck {
+		margin-top: 20px;
+		margin-bottom: 50px;
+	}
+	
+	.heading {
+		text-align: center;
+		font-size: 30px;
+		padding: 30px;
+	}
+</style>
 </head>
 <body>
-
-    아이디 찾기 | 비밀번호 재설정
-
+	<jsp:include page="../header.jsp"></jsp:include>
+	
+	<div class="container">
+	
+		<div class="heading">아이디 찾기</div>
+		
+		<!-- 1차 인증 -->
+		<div class="authForm" style="display: none">
+			<div class="col-lg-6">
+				<div class="checkout__input">
+					<p>이름<span>*</span></p>
+					<input type="text" class="inputBox form-control" id="memberName" placeholder="이름을 입력하세요" />
+					<div class="valid-feedback">Valid.</div>
+    				<div class="invalid-feedback">Please fill out this field.</div>
+				</div>
+			</div>
+			
+			<div class="col-lg-6">
+				<div class="checkout__input">
+					<p>이메일<span>*</span></p>
+					<input type="email" class="inputBox form-control" id="memberEmail" placeholder="이메일을 입력하세요" />
+					<div class="valid-feedback">Valid.</div>
+    				<div class="invalid-feedback">Please fill out this field.</div>
+				</div>
+			</div>
+			
+			<!-- 캡챠자리 -->
+			
+			<div class="col-lg-6">
+				<div class="checkout__input input-group">
+					<input type="text" class="inputBox form-control" id="authNumber" placeholder="인증번호 입력" />
+					<span class="input-group-btn">
+						<button id="getAuthNumber" class="btn btn-secondary" type="button">인증번호 받기</button>
+		      		</span>
+				</div>
+			</div>
+			
+			<div class="col-lg-6">
+				<div class="checkout__input d-grid">
+					<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthCheck();">인증번호 확인</button>
+				</div>
+			</div>
+			
+		</div>
+		
+		
+		<!-- 2차 아이디찾기 결과 -->
+		<div class="resultForm" style="display: none">
+			<div>
+				<p>${data.memberName } 님의 정보와 일치하는 아이디입니다.</p>
+	    		<p>${data.memberId }</p>
+	    		<p>${data.joinDate } 가입</p>
+	    		
+	    		<p>로그인하러가기 | 비밀번호 재설정</p>
+    		</div>
+		</div>
+		
+    </div>
+    
+	
+	<!--
     <input type="text" placeholder="이름" /> 이름을 입력해주세요
 
     <input type="email" placeholder="이메일" /> 이메일 주소를 정확히 입력해주세요
 
-    캡챠자리
+    
     
     <hidden 인증번호 적는 곳>
 
@@ -37,7 +169,8 @@
     2009.8.12 가입
 
     로그인하러가기 버튼(logIn 호출) | 비밀번호 재설정 버튼
-
-
+-->
+	
+	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

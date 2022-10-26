@@ -29,6 +29,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -626,7 +627,62 @@ public class MemberController {
 		response.sendRedirect("/");
 	}
 	
+	/**
+	 * @methodName : findId
+	 * @author : 신태호
+	 * @date : 2022. 10. 26.
+	 * @입력 param : 
+	 * @returnType : String
+	 * 아이디 찾기 페이지 호출
+	 */
+	@RequestMapping(value = "/findId")
+	public String findId() throws Exception {
+		System.out.println("컨트롤러 : 아이디 찾기 페이지로 이동");
+		return "member/findId";
+	}
 	
+	/**
+	 * @methodName : emailAuthCheck
+	 * @author : 신태호
+	 * @date : 2022. 10. 26.
+	 * @입력 param :
+	 * @returnType : String
+	 * 이메일 인증하기
+	 */
+	@RequestMapping(value = "/emailAuthCheck", method = RequestMethod.POST)
+	public ResponseEntity<MemberVo> emailAuthCheck(@RequestBody MemberVo findMember) throws Exception {
+		ResponseEntity<MemberVo> result = null;
+		
+		String memberName = findMember.getMemberName();
+		String memberEmail = findMember.getMemberEmail();
+		
+		MemberVo member = service.selectMemberId(memberEmail);
+		
+		// 입력받은 이메일로 아이디 검색
+		if (member != null) {
+			result = new ResponseEntity<>(member, HttpStatus.OK);
+		} else {
+			result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		
+		return result;
+		
+	}
+	
+	/**
+	 * @methodName : findPwd
+	 * @author : 신태호
+	 * @date : 2022. 10. 26.
+	 * @입력 param :
+	 * @returnType : String
+	 * 비밀번호 재설정 페이지 호출
+	 */
+	@RequestMapping(value = "/findPwd")
+	public String findPwd() throws Exception {
+		System.out.println("컨트롤러 : 비밀번호 재설정 페이지로 이동");
+		return "member/findPwd";
+	}
 	
 	
 }

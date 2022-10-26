@@ -29,6 +29,11 @@
 	<update id="updateLogOutDate">
 		update members set logOutDate = now() where memberId = #{memberId}
 	</update>
+	
+	<!-- 이메일로 회원아이디 검색 -->
+	<select id="selectMemberId" resultType="MemberVo">
+		select * from members where memberEmail = #{memberEmail}
+	</select>
 
 	<!-- 등급혜택을 가져오는 메서드 -->
 	<select id="showGradeBenefit" resultType="GradesVo">

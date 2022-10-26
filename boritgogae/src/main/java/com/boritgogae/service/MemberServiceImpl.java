@@ -68,6 +68,13 @@ public class MemberServiceImpl implements MemberService {
 		return dao.updateLogOutDate(memberId);
 	}
 	
+	// 이메일로 회원 아이디 검색
+	@Override
+	public MemberVo selectMemberId(String memberEmail) throws Exception {
+		
+		return dao.selectMemberId(memberEmail);
+	}
+	
 	
 	
 	// 등급혜택을 가져오는 메서드
@@ -203,5 +210,7 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println("서비스단 : 회원 이메일 변경");
 		return dao.changeMemberEmail(memberId, memberEmail);
 	}
+
+	
 
 }

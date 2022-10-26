@@ -73,6 +73,13 @@ public class MemberDAOImpl implements MemberDAO {
 		System.out.println("DAO : 로그아웃시간 업데이트");
 		return ses.update(ns + ".updateLogOutDate", memberId);
 	}
+	
+	// 이메일로 회원 아이디 검색하는 메서드
+	@Override
+	public MemberVo selectMemberId(String memberEmail) throws Exception {
+		System.out.println("DAO : 이메일로 회원 아이디 검색");
+		return ses.selectOne(ns + ".selectMemberId", memberEmail);
+	}
 
 	// 등급혜택을 가져오는 메서드
 	@Override
@@ -243,4 +250,6 @@ public class MemberDAOImpl implements MemberDAO {
 
 		return ses.update(ns + ".changeMemberEmail", map);
 	}
+
+	
 }

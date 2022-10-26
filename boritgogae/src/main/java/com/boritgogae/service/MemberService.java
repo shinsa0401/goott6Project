@@ -32,6 +32,9 @@ public interface MemberService {
 	
 	// 회원 로그아웃시 로그아웃시간 업데이트하는 메서드
 	public int updateLogOutDate(String memberId) throws Exception;
+	
+	// 이메일로 회원 아이디 검색
+	public MemberVo selectMemberId(String memberEmail) throws Exception;
 
 	// 등급혜택을 가져오는 메서드
 	public List<GradesVo> showGradeBenefit() throws Exception;
@@ -90,6 +93,8 @@ public interface MemberService {
 
 	// 회원 이메일 변경 메서드
 	public int changeMemberEmail(String memberId, String memberEmail) throws Exception;
+
+	
 
 	
 
