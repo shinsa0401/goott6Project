@@ -2,8 +2,10 @@ package com.boritgogae.persistence;
 
 import java.util.List;
 
-import com.boritgogae.domain.ProdImgVO;
-import com.boritgogae.domain.ProductVO;
+
+import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
 import com.boritgogae.domain.ProductDTO;
 
@@ -16,7 +18,7 @@ public interface ProductDAO {
 	 * @입력 param : 상품번호 prodNo
 	 * @returnType : ProductVO
 	 **/
-	public ProductVO getProd(String prodNo);
+	public ProductVo getProd(String prodNo);
 	
 	/**
 	 * @methodName : getProdImg
@@ -25,7 +27,7 @@ public interface ProductDAO {
 	 * @입력 param : 상품번호
 	 * @returnType : List<ProdImgVO>
 	 **/
-	public List<ProdImgVO> getProdImg(String prodNo);
+	public List<ProdImgVo> getProdImg(String prodNo);
 	
 	/**
 	 * @methodName : updateProdReview
@@ -47,5 +49,15 @@ public interface ProductDAO {
 	public List<ProductDTO> getProdInfo(TipPagingInfo pi) throws Exception;
 
 	public int getProdCnt() throws Exception;
+	
+	
+	/**
+	 * @methodName : getProdContent
+	 * @author : kjy
+	 * @date : 2022. 10. 25.
+	 * @입력 param : prodNo
+	 * @returnType : ProductContentVo
+	 */
+	public ProductContentVo getProdContent(String prodNo) throws Exception;
 
 }

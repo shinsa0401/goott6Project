@@ -10,8 +10,6 @@
 	$(document).ready(function() {
 		//viewAllProdImg();
 	});
-	
-	
 </script>
 </head>
 

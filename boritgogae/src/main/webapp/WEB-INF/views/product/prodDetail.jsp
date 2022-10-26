@@ -298,7 +298,7 @@ function getParameter(param) {
 						<div class="tab-content">
 							<div class="tab-pane active" id="tabs-1" role="tabpanel">
 								<div class="product__details__tab__desc">
-									<img src="${product.prodContent }" style="display: block; margin: auto;">
+									<img src="${prodContent.prodContent }" style="display: block; margin: auto;">
 								</div>
 							</div>
 							<div class="tab-pane" id="review" role="tabpanel">

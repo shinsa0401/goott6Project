@@ -24,7 +24,6 @@ import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.PointHistoryVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
->>>>>>> master
 
 @Repository
 public class MemberDAOImpl implements MemberDAO {
@@ -58,10 +57,8 @@ public class MemberDAOImpl implements MemberDAO {
 		return ses.update(ns+".updateMemberPoint", memberId);
 	}
 
-	private static String ns = "com.boritgogae.memberMapper";
 	
-	@Inject
-	private SqlSession ses;
+
 	
 	// 로그인하기위해 회원정보를 얻어오는 메서드
 	@Override

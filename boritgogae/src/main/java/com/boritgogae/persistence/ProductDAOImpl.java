@@ -2,6 +2,7 @@ package com.boritgogae.persistence;
 
 import java.util.List;
 
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -9,8 +10,9 @@ import org.springframework.stereotype.Repository;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
 import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.domain.ProductVo;
-import com.boritgogae.domain.ProdImgVO;
-import com.boritgogae.domain.ProductVO;
+import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductVo;
 
 @Repository
 public class ProductDAOImpl implements ProductDAO {
@@ -23,7 +25,7 @@ public class ProductDAOImpl implements ProductDAO {
 
 
 	@Override
-	public ProductVO getProd(String prodNo) {
+	public ProductVo getProd(String prodNo) {
 		
 		return ses.selectOne(ns+".getProd", prodNo);
 	}
@@ -31,7 +33,7 @@ public class ProductDAOImpl implements ProductDAO {
 
 
 	@Override
-	public List<ProdImgVO> getProdImg(String prodNo) {
+	public List<ProdImgVo> getProdImg(String prodNo) {
 		return ses.selectList(ns+".getProdImg", prodNo);
 	}
 
@@ -43,7 +45,7 @@ public class ProductDAOImpl implements ProductDAO {
 		return ses.update(ns+".updateProdReview", prodNo);
 
 
-
+	}
 	
 
 	@Override
@@ -68,6 +70,21 @@ public class ProductDAOImpl implements ProductDAO {
 	@Override
 	public int getProdCnt() throws Exception {
 		return ses.selectOne(ns+".prodCnt");
+	}
+
+
+
+	 /**
+	 * @methodName : getProdContent
+	 * @author : kjy
+	 * @date : 2022. 10. 25.
+	 * @입력 param : prodNo
+	 * @returnType : ProductContentVo
+	 */
+	@Override
+	public ProductContentVo getProdContent(String prodNo) throws Exception {
+		
+		return ses.selectOne(ns+".getProdContent", prodNo);
 	}
 
 }

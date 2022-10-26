@@ -2,6 +2,7 @@ package com.boritgogae.service;
 
 import java.util.ArrayList;
 
+
 import java.util.List;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.boritgogae.domain.OrderProductDTO;
 import com.boritgogae.domain.OrderSheetDTO;
-import com.boritgogae.domain.ProdImgVO;
-import com.boritgogae.domain.ProductVO;
+import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.persistence.ProductDAO;
 import com.boritgogae.domain.ProductVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
@@ -30,20 +32,20 @@ public class ProductServiceImpl implements ProductService {
 	private ProductDAO prodDao;
 
 	@Override
-	public ProductVO getProd(String prodNo) {
+	public ProductVo getProd(String prodNo) {
 		
 		return prodDao.getProd(prodNo);
 	}
 
 	@Override
-	public List<ProdImgVO> getProdImg(String prodNo) {
+	public List<ProdImgVo> getProdImg(String prodNo) {
 		
 		return prodDao.getProdImg(prodNo);
 	}
 
 	@Override
-	public List<ProductVO> getProducts(OrderSheetDTO orderSheet) {
-		List<ProductVO> products = new ArrayList<>();
+	public List<ProductVo> getProducts(OrderSheetDTO orderSheet) {
+		List<ProductVo> products = new ArrayList<>();
 		List<OrderProductDTO> orders = orderSheet.getOrderProducts();
 		
 		
@@ -102,5 +104,11 @@ public class ProductServiceImpl implements ProductService {
 		System.out.println(result.toString());
 
 		return result;
+	}
+
+	@Override
+	public ProductContentVo getProdContent(String prodNo) throws Exception {
+		
+		return prodDao.getProdContent(prodNo);
 	}
 }

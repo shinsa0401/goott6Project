@@ -2,6 +2,7 @@ package com.boritgogae.controller;
 
 import java.util.ArrayList;
 
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,8 +29,9 @@ import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.service.ReviewService;
 import com.boritgogae.domain.OptionVo;
 import com.boritgogae.domain.OrderSheetDTO;
-import com.boritgogae.domain.ProdImgVO;
-import com.boritgogae.domain.ProductVO;
+import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
 import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.service.ProductService;
@@ -84,16 +86,17 @@ public class ProductController {
 	 * @returnType : String
 	 **/
 	@RequestMapping(value = "/category/detail")
-	public String prodDetail(@RequestParam(value="prodNo", required=true) String prodNo,@RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, Model model) throws Exception {
+	public String prodDetail(@RequestParam(value="prodNo", required=true) String prodNo, @RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, Model model) throws Exception {
 		
-		ProductVO prod = prodService.getProd(prodNo);
-		List<ProdImgVO> prodImgLst = prodService.getProdImg(prodNo);
+		ProductVo prod = prodService.getProd(prodNo);
+		List<ProdImgVo> prodImgLst = prodService.getProdImg(prodNo);
 		
 		Map<String, Object> reviewMap = reviewService.getReviews(prodNo, pageNo);
 		List<UploadImg> imgLst = new ArrayList<>();
 
 		List<ReviewVO> reviews = (List<ReviewVO>) reviewMap.get("reviews");
 		Paging page = (Paging) reviewMap.get("page");
+		ProductContentVo prodContent = prodService.getProdContent(prodNo);
 		
 		
 		for (ReviewVO vo : reviews) {
@@ -111,7 +114,7 @@ public class ProductController {
 		model.addAttribute("replies", replies);
 		model.addAttribute("product", prod);
 		model.addAttribute("prodImg", prodImgLst);
-		model.addAttribute("options", options);
+		model.addAttribute("prodContent", prodContent);
 		
 		return "/product/prodDetail";
 	}

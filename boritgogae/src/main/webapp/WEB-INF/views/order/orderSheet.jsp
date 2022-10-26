@@ -3,70 +3,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ page session="false"%>
 
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="Ogani Template">
-<meta name="keywords" content="Ogani, unica, creative, html">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-<!-- Google Font -->
 <link
-	href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+	
 
-<!-- Css Styles -->
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/elegant-icons.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/nice-select.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/jquery-ui.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/owl.carousel.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/slicknav.min.css"
-	type="text/css">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/style.css"
-	type="text/css">
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Js Plugins -->
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/jquery.nice-select.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/jquery-ui.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/jquery.slicknav.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/mixitup.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 
 
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-  
 <script type="text/javascript">
 
 $(function() {
@@ -77,6 +30,8 @@ $(function() {
 		    event.preventDefault();
 		  };
 		}, true);
+	
+	
 });
 
 	function calProdtotal(obj, price) {
@@ -98,18 +53,22 @@ $(function() {
 		});
 		
 		let couponPercent = 0;
+		let usePoint = 0;
 		
-		if($("#couponPercent").html()!=""){
-			couponPercent = parseInt($("#couponPercent").html().replace("%","")) * 0.01;
+		if("${member.memberId}" != ""){
+			couponPercent = Number($("#couponPercent").html().replace("%","")) * 0.01;
+			usePoint = parseInt($("#usePoint").val()*1.0);
 		}
 			
 		//쿠폰 적용+포인트 적용
-		totalSubTotal = totalSubTotal * (1-couponPercent) - parseInt($("#usePoint").val()*1.0);
+		totalSubTotal = totalSubTotal * (1-couponPercent) - usePoint;
 		
 		$("#subTotal").html(totalSubTotal);
 		$("#inputSubTotal").val(totalSubTotal);
 		
-		calcAccum(totalSubTotal);
+		if("${member.memberId}" != ""){
+			calcAccum(totalSubTotal);
+		}
 		calcTotal(totalSubTotal);
 	}
 
@@ -223,7 +182,7 @@ $(function() {
 		let detailAddress = $("#detailAddress").val();
 		let prodTotalPrice = $("#inputSubTotal").val();
 		
-		let OrderDTO = {"address":address, "detailAddress" : detailAddress, "prodTotalPrice" : prodTotalPrice};
+		let OrderDTO = {"address" : address, "detailAddress" : detailAddress, "prodTotalPrice" : prodTotalPrice, "memberId": "${member.memberId}"};
 		
 		$.ajax({
 	         url : url, // 데이터 송수신될 주소 
@@ -254,10 +213,18 @@ $(function() {
 	
 	//적립예정 포인트 구하는 메서드
 	function calcAccum(subTotal) {
-		let accum = Math.floor(subTotal * ${grade.reservePoint});
+		let reservePercent = 0;
 		
-		$("#accum").html(accum);
-		$("#accumPoint").val(accum);
+		if ("${member.memberId}" != ""){
+			reservePercent = $("#reservePercent").val();
+			let accum = Math.floor(subTotal * reservePercent);
+			
+			$("#accum").html(accum);
+			$("#accumPoint").val(accum);
+		}
+
+
+
 	}
 	
 	//총 금액 구해서 출력하는 메서드
@@ -378,9 +345,8 @@ $(function() {
 		}
 		
 		let result = false;
-		let memberId = "${sessionScope.memberId}";
 		
-		if ( !memberId == "" || !memberId == "undefined" || !memberId == null){
+		if ("${member.memberId}" != "" ){
 			if(nameCheck() && phoneNumberCheck() && addrCheck() && detailAddrCheck() && postCodeCheck()){
 				result = true;
 			}
@@ -412,8 +378,9 @@ $(function() {
 										<p>
 											이름<span id="nameCheck"></span>
 										</p>
-										<input type="text" id="name" name="name" value="${member.memberName }">
-										<input type="hidden" id="memberId" name="memberId" value="${member.memberId }">
+										<input type="text" id="name" name="name"
+											value="${member.memberName }"> <input type="hidden"
+											id="memberId" name="memberId" value="${member.memberId }">
 									</div>
 								</div>
 								<div class="col-lg-6">
@@ -421,7 +388,8 @@ $(function() {
 										<p>
 											전화번호<span id="phoneNumberCheck"></span>
 										</p>
-										<input type="text" id="phoneNumber" name="phoneNumber" value="${member.phoneNumber }" placeholder="숫자만 입력해주세요"/>
+										<input type="text" id="phoneNumber" name="phoneNumber"
+											value="${member.phoneNumber }" placeholder="숫자만 입력해주세요" />
 									</div>
 								</div>
 							</div>
@@ -431,15 +399,23 @@ $(function() {
 										<p>
 											주소<span id="addrCheck"></span>
 										</p>
-										<input type="text" placeholder="주소" class="checkout__input__add" readonly="readonly" class="col-lg-6" id="address" name="address"/>
+										<input type="text" placeholder="주소"
+											class="checkout__input__add" readonly="readonly"
+											class="col-lg-6" id="address" name="address" />
 									</div>
 								</div>
 								<div class="col-lg-6">
 									<div style="position: absolute; top: 35%;">
-										<input type="button" onClick="goPopup();" value="주소 검색하기" class="site-btn" style="" />
-										<input type="button" value="내 주소 목록" class="site-btn" style="background-color: #96AD73;" data-toggle="modal" data-target="#addressModal" />
+										<input type="button" onClick="goPopup();" value="주소 검색하기"
+											class="site-btn" />
+										<c:if test="${not empty member.memberId}">
+											<input type="button" value="내 주소 목록" class="site-btn"
+												style="background-color: #96AD73;" data-bs-toggle="modal"
+												data-bs-target="#addressModal" />
+										</c:if>
+
 									</div>
-										
+
 								</div>
 							</div>
 							<div class="row">
@@ -448,8 +424,9 @@ $(function() {
 										<p>
 											상세주소<span id="detailAddrCheck"></span>
 										</p>
-											<!-- 형식 통일하기 -->
-										<input type="text" placeholder="건물이름/동호수" id="detailAddress" name="detailAddress" />
+										<!-- 형식 통일하기 -->
+										<input type="text" placeholder="건물이름/동호수" id="detailAddress"
+											name="detailAddress" />
 									</div>
 								</div>
 								<div class="col-lg-6">
@@ -457,41 +434,42 @@ $(function() {
 										<p>
 											우편번호<span id="postCodeCheck"></span>
 										</p>
-											<!-- 형식 통일하기 -->
-										<input type="text" placeholder="우편번호" id="postCode" name="postCode" />
+										<!-- 형식 통일하기 -->
+										<input type="text" placeholder="우편번호" id="postCode"
+											name="postCode" />
 									</div>
 								</div>
 							</div>
+							<c:if test="${empty member.memberId}">
+								<div class="checkout__input">
+									<p>
+										비회원 이메일<span id="guestMailCheck"></span>
+									</p>
+									<input type="text" placeholder="이메일 주소를 입력해주세요"
+										name="guestEmail" id="guestEmail">
+								</div>
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="checkout__input">
+											<p>
+												비회원 비밀번호<span id="guestPwdCheck"></span>
+											</p>
+											<input type="password" id="guestPwd" name="guestPwd"
+												placeholder="비밀번호는 8자이상으로, 영문자와 숫자를 포함하여 입력해주세요" />
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="checkout__input">
+											<p>비밀번호 확인</p>
+											<input type="password" id="pwdCheck" />
+										</div>
+									</div>
+								</div>
+							</c:if>
+
 							<div class="checkout__input">
-								<p>
-									비회원 이메일<span id="guestMailCheck"></span>
-								</p>
-								<input type="text" placeholder="이메일 주소를 입력해주세요" name="guestEmail" id="guestEmail">
-							</div>
-						<div class="row">
-								<div class="col-lg-6">
-									<div class="checkout__input">
-										<p>
-											비회원 비밀번호<span id="guestPwdCheck"></span>
-										</p>
-										<input type="password"  id="guestPwd" name="guestPwd" placeholder="비밀번호는 8자이상으로, 영문자와 숫자를 포함하여 입력해주세요" />
-									</div>
-								</div>
-								<div class="col-lg-6">
-									<div class="checkout__input">
-										<p>
-											비밀번호 확인
-										</p>
-										<input type="password" id="pwdCheck" />
-									</div>
-								</div>
-							</div>
-							<div class="checkout__input">
-								<p>
-									요청 사항
-								</p>
-								<input type="text"
-									placeholder="요청사항을 입력해주세요" name="memo" />
+								<p>요청 사항</p>
+								<input type="text" placeholder="요청사항을 입력해주세요" name="memo" />
 							</div>
 						</div>
 						<!-- your order 창 -->
@@ -501,158 +479,184 @@ $(function() {
 								<div class="checkout__order__products">
 									Products <span>Total</span>
 								</div>
-								
-									<ul>
 
-										<c:forEach var="product" items="${orders }" varStatus="status">
-											<li id="${product.prodNo}" class="orderProducts">
-												<img src="/resources/img/delete.png" style="height: 20px; margin: auto;"  onclick="deleteProds('${product.prodNo}')" />${product.prodName }&nbsp 
-												<input type="hidden" value="${product.prodNo }" name="orderProducts[0].prodNo" class="product"/>
-												<input type="number" value="${receivedProducts[status.index].qty }" style="width: 43px; height: 30px; color: '#6f6f6f';" class="qty" onchange="calProdtotal(this, ${product.prodPrice });" min="1" name="orderProducts[0].qty" />
-												<span>${product.prodPrice * receivedProducts[status.index].qty}</span>
-											</li>
-										</c:forEach>
-									</ul>
-									<div class="checkout__order__subtotal">
-										Subtotal <span id="subTotal"></span>
-										<input type="hidden" value="" id="inputSubTotal" name="prodTotalPrice" />
+								<ul>
+
+									<c:forEach var="product" items="${orders }" varStatus="status">
+										<li id="${product.prodNo}" class="orderProducts"><img
+											src="/resources/img/delete.png"
+											style="height: 20px; margin: auto;"
+											onclick="deleteProds('${product.prodNo}')" />${product.prodName }&nbsp
+											<input type="hidden" value="${product.prodNo }"
+											name="orderProducts[0].prodNo" class="product" /> <input
+											type="number" value="${receivedProducts[status.index].qty }"
+											style="width: 43px; height: 30px; color: '#6f6f6f';"
+											class="qty"
+											onchange="calProdtotal(this, ${product.prodPrice });" min="1"
+											name="orderProducts[0].qty" /> <span>${product.prodPrice * receivedProducts[status.index].qty}</span>
+										</li>
+									</c:forEach>
+								</ul>
+								<div class="checkout__order__subtotal">
+									Subtotal <span id="subTotal"></span> <input type="hidden"
+										value="" id="inputSubTotal" name="prodTotalPrice" />
+								</div>
+
+								<c:if test="${not empty member.memberId}">
+									<div class="checkout__order__total" style="position: relative;">
+										쿠폰<img src="${pageContext.request.contextPath}/resources/img/coupon.png" id="couponImg" data-bs-toggle="modal" data-bs-target="#couponModal" />
+										<span id="couponSelect"></span> <input
+											type="hidden" id="coupon" name="coupon" value="" />
+										<div style="display: none;" id="couponPercent"></div>
 									</div>
-									<div class="checkout__order__total" style=" position: relative;">
-										Coupons
-										<img alt="" src="${pageContext.request.contextPath}/resources/img/coupon.png" style="position: absolute; right: 150px; bottom: 7px;" data-toggle="modal" data-target="#couponModal" id="couponImg"/>
-										<span id="couponSelect" style="position: absolute;  right: 10px;"></span>
-										<input type="hidden" id="coupon" name="coupon" value=""/>
-										<div style="display: none;" id = "couponPercent"></div>
-									</div>
-									<div class="checkout__order__products">
-									쿠폰 
-									</div>
+									<div class="checkout__order__products">포인트</div>
 									<ul>
 										<li>사용가능 포인트 &nbsp; : &nbsp; <span>${member.memberPoint }</span>
 										</li>
-										<li>
-											<input type="number" value="" style="width: 100px; height: 30px; color: '#6f6f6f';" id="usePoint" name="usedPoint" min="0" max="${member.memberPoint }" onchange="calSubtotal();" /> &nbsp;&nbsp;사용하기
-										</li>
-										<li>적립 예정 포인트 &nbsp; : &nbsp; <span id="accum"></span>
-											<input type="hidden" value="" min="0" name="accumPoint" id="accumPoint" />
+										<li><input type="number" value=""
+											style="width: 100px; height: 30px; color: '#6f6f6f';"
+											id="usePoint" name="usedPoint" min="0"
+											max="${logInMember.memberPoint }" onchange="calSubtotal();" />
+											&nbsp;&nbsp;사용하기</li>
+										<li>적립 예정 포인트 &nbsp; : &nbsp; <span id="accum"></span> <input
+											type="hidden" value="" min="0" name="accumPoint"
+											id="accumPoint" />
+											<input type="hidden" id="reservePercent" value="${grade.reservePoint}" />
 										</li>
 									</ul>
-									<div class="checkout__order__total">
-										Ship <span id="ship">3000(기본)</span>
-										<input type="hidden" id="shipInput" name="deliveryOption" value="3000"/>
-										<div style="display: none;" id="shipFee">3000</div>
-									</div>
-									<div class="checkout__order__total">
-										Total <span id = "total"></span>
-										<input type="hidden" id="inputTotal" name="totalPrice" value=""/>
-									</div>
+								</c:if>
 
-									<div class="checkout__input__checkbox">
-										<label for="paypal"> Paypal <input type="checkbox"
+								<div class="checkout__order__total">
+									Ship <span id="ship">3000(기본)</span> <input type="hidden"
+										id="shipInput" name="deliveryOption" value="기본" />
+									<div style="display: none;" id="shipFee">3000</div>
+								</div>
+								<div class="checkout__order__total">
+									Total <span id="total"></span> <input type="hidden"
+										id="inputTotal" name="totalPrice" value="" />
+								</div>
+
+								<div class="checkout__input__checkbox">
+									<label for="paypal"> Paypal <input type="checkbox"
 										id="paypal"> <span class="checkmark"></span>
-										</label>
-									</div>
-									<button type="submit" class="site-btn" onclick="return isValid();">PLACE ORDER</button>
-								
+									</label>
+								</div>
+								<button type="submit" class="site-btn"
+									onclick="return isValid();">PLACE ORDER</button>
+
 							</div>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
-		<!-- Modal: modalCart -->
-<div class="modal fade" id="couponModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <!--Header-->
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Your cart</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <!--Body-->
-      <div class="modal-body">
+		
+			<!-- Modal: modalCart -->
+			<div class="modal fade" id="couponModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<!--Header-->
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel">내 쿠폰</h4>
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-label="Close">
+								<span aria-bs-hidden="true">×</span>
+							</button>
+						</div>
+						<!--Body-->
+						<div class="modal-body">
 
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>쿠폰</th>
-              <th>할인율</th>
-              <th>만료기한</th>
-            </tr>
-          </thead>
-          <tbody>
-          	<c:forEach var="coupon" items="${coupons }">
-          		<tr onclick="selectCoupon('${coupon.key.couponName}')" id="${coupon.key.couponName }" class="couponLst">
-              		<td>${coupon.key.couponName }</td>
-              		<td><fmt:formatNumber value="${coupon.key.couponDiscount}" type="percent" /> </td>
-              		<td><fmt:formatDate value="${coupon.value.expirationDate }" pattern="yyyy-MM-dd a hh:mm" /></td>
-            	</tr>
-          	</c:forEach>
-          </tbody>
-        </table>
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>쿠폰</th>
+										<th>할인율</th>
+										<th>만료기한</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="coupon" items="${coupons }">
+										<tr onclick="selectCoupon('${coupon.key.couponName}')"
+											id="${coupon.key.couponName }" class="couponLst">
+											<td>${coupon.key.couponName }</td>
+											<td><fmt:formatNumber
+													value="${coupon.key.couponDiscount}" type="percent" /></td>
+											<td><fmt:formatDate
+													value="${coupon.value.expirationDate }"
+													pattern="yyyy-MM-dd a hh:mm" /></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
 
-      </div>
-      <!--Footer-->
-      <div class="modal-footer">
-        <button type="button" class="site-btn" data-dismiss="modal" style="background-color: orange;" onclick="selectCoupon()">Close</button>
-        <button class="site-btn" onclick="couponCheck()" data-dismiss="modal" >Checkout</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal: modalCart -->
+						</div>
+						<!--Footer-->
+						<div class="modal-footer">
+							<button type="button" class="site-btn" data-bs-dismiss="modal"
+								style="background-color: orange;" onclick="selectCoupon()">닫기</button>
+							<button class="site-btn" onclick="couponCheck()"
+								data-bs-dismiss="modal">결정</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Modal: modalCart -->
+		
+			<!-- Modal: modalCart -->
+			<div class="modal fade" id="addressModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<!--Header-->
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel">내 주소</h4>
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-bs-label="Close">
+								<span aria-bs-hidden="true">×</span>
+							</button>
+						</div>
+						<!--Body-->
+						<div class="modal-body">
 
-<!-- Modal: modalCart -->
-<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <!--Header-->
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Your cart</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <!--Body-->
-      <div class="modal-body">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>주소</th>
+										<th>상세주소</th>
+										<th>수령자</th>
+										<th>수령자 전화번호</th>
+										<th>우편번호</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="addr" items="${addrs }">
+										<tr onclick="selectAddr(${addr.deliveryInfo })"
+											id="addr${addr.deliveryInfo }" class="addrLst">
+											<td>${addr.address }</td>
+											<td>${addr.detailAddress }</td>
+											<td>${addr.recipient }</td>
+											<td>${addr.recipientPhoneNumber }</td>
+											<td>${addr.postCode }</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
 
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>주소</th>
-              <th>상세주소</th>
-              <th>수령자</th>
-              <th>수령자 전화번호</th>
-              <th>우편번호</th>
-            </tr>
-          </thead>
-          <tbody>
-          	<c:forEach var="addr" items="${addrs }">
-          		<tr onclick="selectAddr(${addr.deliveryInfo })" id="addr${addr.deliveryInfo }" class="addrLst">
-              		<td>${addr.address }</td>
-              		<td>${addr.detailAddress }</td>
-              		<td>${addr.recipient }</td>
-              		<td>${addr.recipientPhoneNumber }</td>
-              		<td>${addr.postCode }</td>
-            	</tr>
-          	</c:forEach>
-          </tbody>
-        </table>
+						</div>
+						<!--Footer-->
+						<div class="modal-footer">
+							<button type="button" class="site-btn" data-bs-dismiss="modal"
+								style="background-color: orange;" onclick="selectAddr();">Close</button>
+							<button class="site-btn" data-bs-dismiss="modal"
+								onclick="addrCheck()">Checkout</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Modal: modalCart -->
+		
 
-      </div>
-      <!--Footer-->
-      <div class="modal-footer">
-        <button type="button" class="site-btn" data-dismiss="modal" style="background-color: orange;" onclick="selectAddr();">Close</button>
-        <button class="site-btn" data-dismiss="modal" onclick="addrCheck()">Checkout</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal: modalCart -->
 	</section>
 	<!-- Checkout Section End -->
 	<jsp:include page="../footer.jsp"></jsp:include>

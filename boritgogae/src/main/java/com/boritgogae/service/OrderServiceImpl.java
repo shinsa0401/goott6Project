@@ -23,7 +23,7 @@ import com.boritgogae.domain.OrderProductDTO;
 import com.boritgogae.domain.OrderSheetDTO;
 import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.PointHistoryDTO;
-import com.boritgogae.domain.ProductVO;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.persistence.MemberDAO;
 import com.boritgogae.persistence.OrderDAO;
 import com.boritgogae.persistence.ProductDAO;
@@ -75,19 +75,36 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 	expensive.add("거제시");
 
 	String addr = order.getAddress();
-	String detailAddr = order.getDetailAddress();
 	DeliveryFeeVo result = new DeliveryFeeVo();
+	System.out.println(addr);
+	
+	MemberVo member = memDao.getMemInfo(order.getMemberId());
+	
 	
 	//orders에 isMember세팅해서 오기
 	//ismember이 y일때 - isAdmin이 y일때 - 무료
 	//ismember가 y일때 - prodTotalPrice가 50000이상일 때 -무료 - 도서산간이면서 5만원 이상일 때 무료
 	//address가 도서산간일 때 - 8000원
 	//도서산간이 아닐 때 - 3000원
-	if(memDao.getMemInfo(order.getMemberId()).getIsAdmin().equals("Y") || order.getProdTotalPrice() > 50000) {
-		result = orderDao.getdeliFee("무료");
-	}else {
+	if (member != null) {
+		if(memDao.getMemInfo(order.getMemberId()).getIsAdmin().equals("Y")) {
+			result = orderDao.getdeliFee("관리");
+		}else if (order.getProdTotalPrice() > 50000) {
+			result = orderDao.getdeliFee("무료");
+		}else {
+			for(String s : expensive) {
+				if(addr.contains(s)) {
+					result = orderDao.getdeliFee("도서");
+					break;
+				}else {
+					result =orderDao.getdeliFee("기본");
+				}
+			}
+		}
+	}
+	else {
 		for(String s : expensive) {
-			if(order.getAddress().contains(s)) {
+			if(addr.contains(s)) {
 				result = orderDao.getdeliFee("도서");
 				break;
 			}else {
@@ -95,13 +112,16 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 			}
 		}
 	}
+	
+	
+	
 	return result;
 }
 
-//	@Transactional
+	@Transactional
 	@Override
 	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet) {
-		if(order.getMemberId() != null) {
+		if(order.getIsMember() != null) {
 			order.setIsMember("Y");
 		}else {
 			order.setIsMember("N");
@@ -150,7 +170,7 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		
 		//회원 테이블의 포인트 업데이트
 		int pointrow = memDao.updateMemberPoint(currentOrder.getMemberId());
-		System.out.println(pointrow);
+
 		
 		return currentOrder;
 	}

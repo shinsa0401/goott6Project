@@ -2,9 +2,11 @@ package com.boritgogae.service;
 
 import java.util.List;
 
+
 import com.boritgogae.domain.OrderSheetDTO;
-import com.boritgogae.domain.ProdImgVO;
-import com.boritgogae.domain.ProductVO;
+import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductVo;
 import java.util.Map;
 
 import com.boritgogae.domain.ProductDTO;
@@ -18,7 +20,7 @@ public interface ProductService {
 	 * @입력 param : 상품번호 prodNo
 	 * @returnType : ProductVO
 	 **/
-	public ProductVO getProd(String prodNo);
+	public ProductVo getProd(String prodNo) throws Exception;
 	
 
 	/**
@@ -28,7 +30,7 @@ public interface ProductService {
 	 * @입력 param : 상품번호 prodNo
 	 * @returnType : List<ProdImgVO>
 	 **/
-	public List<ProdImgVO> getProdImg(String prodNo);
+	public List<ProdImgVo> getProdImg(String prodNo) throws Exception;
 	
 	/**
 	 * @methodName : getProducts
@@ -37,12 +39,14 @@ public interface ProductService {
 	 * @입력 param : orderSheetDTO(orderProductDTO의 리스트)
 	 * @returnType : List<ProductVO>
 	 **/
-	public List<ProductVO> getProducts(OrderSheetDTO orderSheet);
+	public List<ProductVo> getProducts(OrderSheetDTO orderSheet) throws Exception;
 
 	public ProductDTO getPopularProd(String prodNo) throws Exception;
 
 	public List<ProductDTO> getLastProduct() throws Exception;
 	
 	public Map<String, Object> getProductAll(int pageNo) throws Exception;
+	
+	public ProductContentVo getProdContent(String prodNo) throws Exception;
 
 }
