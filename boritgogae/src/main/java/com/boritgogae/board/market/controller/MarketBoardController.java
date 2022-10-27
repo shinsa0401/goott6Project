@@ -32,7 +32,7 @@ import com.boritgogae.board.market.etc.MarketUploadFileProcess;
 import com.boritgogae.board.market.service.MarketBoardService;
 
 @Controller
-@RequestMapping("/boardMarket/*")
+@RequestMapping("/board/market/*")
 public class MarketBoardController {
 	
 	@Inject 
@@ -54,7 +54,7 @@ public class MarketBoardController {
 		System.out.println("컨트롤러 글 썼엉");
 		service.write(board, this.uploadFileLst);
 		this.uploadFileLst.clear();
-		return "redirect:/boardMarket/listAll";
+		return "redirect:/board/market/listAll";
 	}
 	
 	
@@ -69,7 +69,7 @@ public class MarketBoardController {
 	@RequestMapping(value = "/write", method = RequestMethod.GET) 
 	public String goWriteBoard() {
 		System.out.println("컨트롤러단 글 쓰러가기");
-		return "boardMarket/writeBoard";
+		return "/boardMarket/writeBoard";
 	}
 	
 	
@@ -203,7 +203,7 @@ public class MarketBoardController {
 		
 		service.modify(board);
 		
-		return "redirect:/boardMarket/listAll";
+		return "redirect:/board/market/listAll";
 		
 	}
 	
@@ -220,7 +220,7 @@ public class MarketBoardController {
 		
 		service.delete(no);
 		
-		return "redirect:/boardMarket/listAll";
+		return "redirect:/board/market/listAll";
 	}
 	
 	/**

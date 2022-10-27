@@ -245,7 +245,7 @@
 								<p>상품 관리</p> <i class="right fas fa-angle-left"></i>
 						</a>
 							<ul class="nav nav-treeview">
-								<li class="nav-item"><a href="/admin/product"
+								<li class="nav-item"><a href="pages/layout/top-nav.html"
 									class="nav-link"> <i class="far fa-circle nav-icon"></i>
 										<p>상품 리스트</p> <!-- 상품 리스트, 상품 수정, 상품 삭제, 재고 관리 -->
 								</a></li>
@@ -254,14 +254,19 @@
 										<i class="far fa-circle nav-icon"></i>
 										<p>상품 등록</p>
 								</a></li>
-								<li class="nav-item"><a href="${contextPath }/admin/orders"
+								<li class="nav-item"><a href="pages/layout/boxed.html"
 									class="nav-link"> <i class="far fa-circle nav-icon"></i>
 										<p>주문 조회</p> <!-- 주문 조회, 주문 수정 -->
 								</a></li>
 								<li class="nav-item"><a
 									href="pages/layout/fixed-sidebar.html" class="nav-link"> <i
 										class="far fa-circle nav-icon"></i>
-										<p>배송 조회</p> <!-- 배송 등록 -->
+										<p>배송 등록</p> <!-- 배송 등록 -->
+								</a></li>
+								<li class="nav-item"><a
+									href="pages/layout/fixed-sidebar-custom.html" class="nav-link">
+										<i class="far fa-circle nav-icon"></i>
+										<p>배송 조회</p> <!-- 배송 중인 상품 조회, 수정-->
 								</a></li>
 							</ul></li>
 						<li class="nav-item"><a href="#" class="nav-link"> <i
