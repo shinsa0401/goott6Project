@@ -214,4 +214,24 @@ public class AdminServiceImpl implements AdminService {
 		return dao.getProdContent();
 	}
 
+	@Override
+	public boolean updateProd(ProductVo product) throws Exception {
+		boolean result = false;
+		if (dao.updateProd(product) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean deleteProd(String prodName) throws Exception {
+		boolean result = false;
+		if (dao.deleteProd(prodName) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
 }

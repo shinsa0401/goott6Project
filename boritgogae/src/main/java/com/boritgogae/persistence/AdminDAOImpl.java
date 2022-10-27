@@ -154,6 +154,16 @@ public class AdminDAOImpl implements AdminDAO {
 		return ses.selectList(ns + ".getProductContent");
 	}
 
+	@Override
+	public int updateProd(ProductVo product) throws Exception {
+		return ses.update(ns + ".updateProduct", product);
+	}
+
+	@Override
+	public int deleteProd(String prodName) throws Exception {
+		return ses.delete(ns + ".deleteProduct", prodName);
+	}
+
 	
     
 

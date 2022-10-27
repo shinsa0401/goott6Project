@@ -27,6 +27,10 @@
 			}
 		}
 		
+		$(".closeModal").click(function() {
+			$("#statusModal").hide(100);
+			$("#deleteProdModal").hide(100);
+		});
 	});
 	
 	
@@ -38,11 +42,11 @@
 		if (brand.indexOf("]") != -1) {
 			brand = prodName.split(" ")[0].split("]")[1];
 		}
-		let prodQuantity = Number(product[3].split("=")[1]).toLocaleString();
-		let prodPrice = Number(product[4].split("=")[1]).toLocaleString();
-		let readCount = product[5].split("=")[1];
-		let likeCount = product[6].split("=")[1];
-		let prodPutDate = product[7].split("=")[1];
+		let prodQuantity = Number(product[2].split("=")[1]).toLocaleString();
+		let prodPrice = Number(product[3].split("=")[1]).toLocaleString();
+		let readCount = product[4].split("=")[1];
+		let likeCount = product[5].split("=")[1];
+		let prodPutDate = product[6].split("=")[1];
 		
 		let prodContent = [];
 		
@@ -50,7 +54,6 @@
 		
 		<c:forEach var="productContents" items="${prodContentList}" >
 			if(prodNo == '${productContents.prodNo}') {
-				console.log("${productContents.prodContent}");
 				prodContent.push("${productContents.prodContent}");
 			}
 		</c:forEach>
@@ -69,25 +72,126 @@
 		output += '<div class="modal-body row" >';
 		output += '<div class="col-6"><img src="' + prodImg + '" style="max-height: 400px; max-width: 400px;"/></div>';
 		output += '<div class="col-6"><ul class="list-group list-group-flush"><li class="list-group-item">';
-		output += '<div class="productDetail prodTitle">상품 코드</div><div class="productDetail dataTag">' + prodNo + '</div></li>';
-		output += '<li class="list-group-item""><div class="productDetail prodTitle">브 랜 드</div><div class="productDetail dataTag">' + brand + '</div></li>';
-		output += '<li class="list-group-item" onclick="return modify(this);"><div class="productDetail prodTitle">상품 이름</div><div class="productDetail"><span class="dataTag"> ' + prodName + '</span></div></li>';
-		output += '<li class="list-group-item" onclick="return modify(this);"><div class="productDetail prodTitle">상품 가격</div><div class="productDetail"><span class="dataTag">' + prodPrice + ' </span><span>원</span></div></li>';
-		output += '<li class="list-group-item" onclick="return modify(this);"><div class="productDetail prodTitle">현재 재고</div><div class="productDetail"><span class="dataTag">' + prodQuantity + ' </span><span>개</span></div></li>';
+		output += '<div class="productDetail prodTitle">상품 코드</div><div class="productDetail dataTag" id="prodNo">' + prodNo + '</div></li>';
+		output += '<li class="list-group-item"><div class="productDetail prodTitle">브 랜 드</div>';
+		output += '<div class="productDetail dataTag">' + brand + '</div></li>';
+		output += '<li class="list-group-item"><div class="productDetail prodTitle">상품 이름</div><div class="productDetail">';
+		output += '<span class="dataTag" id="prodName" onclick="return changedTag(this);"> ' + prodName + '</span></div></li>';
+		output += '<li class="list-group-item"><div class="productDetail prodTitle">상품 가격</div><div class="productDetail">';
+		output += '<span class="dataTag" id="prodPrice" onclick="return changedTagFromNo(this);">' + prodPrice + ' </span><span>원</span></div></li>';
+		output += '<li class="list-group-item"><div class="productDetail prodTitle">현재 재고</div><div class="productDetail">';
+		output += '<span class="dataTag" id="prodQuantity" onclick="return changedTagFromNo(this);">' + prodQuantity + ' </span><span>개</span></div></li>';
 		output += '</ul></div><div class="col-12" id="prodContent">';
 		for(let prodCont in prodContent) {
 			output += '<img src="' + prodContent[prodCont] + '" style="max-width: 600px;"/>';
 		}
-		output += '</div></div><div class="modal-footer justify-content-between">';
-		output += '<button type="button" class="btn btn-default" onclick="modalClose();">닫기</button>';
-		output += '<button type="button" class="btn btn-primary">수정</button>';
+		output += '</div></div><div class="modal-footer">';
+		output += '<button type="button" class="btn btn-danger" onclick="showDeleteProdModal();">삭제</button>';
+		output += '<button type="button" class="btn btn-warning" onclick="modalClose();">닫기</button>';
+		output += '<button type="button" class="btn btn-success" onclick="modifyProd();">수정</button>';
 		output += '</div></div></div></div>';
 		
 		$("#modalDiv").html(output);
 		modalShow();
 		
+	}
+	
+	function showDeleteProdModal() {
+		$("#deleteModalStatus").html("상품을 삭제하시겠습니까?");
+		$("#deleteProdModal").show(200);
+	}
+	
+	function deleteProd() {
 		
-	  
+		let prodNo = $("#prodNo").html().trim();
+		
+		let url = "/admin/product/delete";
+		
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			data : {"prodNo" : prodNo},
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				if (data == "success") {
+					$("#status").html("상품이 삭제 되었습니다.");
+					$("#deleteProdModal").hide(100);
+					$("#statusModal").show(200);
+				} else if (data == "fail") {
+					$("#status").html("상품 삭제가 실패되었습니다.");
+					$("#deleteProdModal").hide(100);
+					$("#statusModal").show(200);
+				}
+
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+	
+	function modifyProd() {
+		let prodQuantity = 0;
+		let prodPrice = 0;
+		let prodName = "";
+		let prodNo = $("#prodNo").html().trim();
+		if($("#prodQuantity").val() != "") {
+			prodQuantity = $("#prodQuantity").val().trim();
+		} else {
+			prodQuantity = $("#prodQuantity").html().trim();
+		}
+		
+		if($("#prodPrice").val() != "") {
+			prodPrice = $("#prodPrice").val().trim().replace(",","");
+		} else {
+			prodPrice = $("#prodPrice").html().trim().replace(",","");
+		}
+		
+		if($("#prodName").val() != "") {
+			prodName = $("#prodName").val().trim();
+		} else {
+			prodName = $("#prodName").html().trim();
+		}
+		
+		let sendData = JSON.stringify({
+			"prodQuantity" : prodQuantity,
+			"prodPrice" : prodPrice,
+			"prodName" : prodName,
+			"prodNo" : prodNo
+		});
+
+		let url = "/admin/product/modify";
+		
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "post", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			data : sendData,
+			headers : {
+				"content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+				"X-HTTP-Method-Override" : "POST" // 구 버전의 웹 브라우저에서 (PUT / DELETE) 방식이 호환이 안되는 버전에서 호환 되도록
+			},
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				if (data == "success") {
+					$("#status").html("상품 수정이 완료되었습니다.");
+					$("#statusModal").show(200);
+				} else if (data == "fail") {
+					$("#status").html("상품 수정에 실패하였습니다.");
+					$("#statusModal").show(200);
+				}
+
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+		
+	}
+	
+	function ModalStatusOk() {
+		location.reload();
 	}
 	
 	function modalShow() {
@@ -98,10 +202,16 @@
 		$("#modal-xl").hide(100);
 	}
 	
-	function modify(tags) {
-		console.log(tags);
-		let prevData = $(tags).children(".productDetail").children(".dataTag").html();
-		$(tags).children(".productDetail").children(".dataTag").contents().unwrap().wrap( '<input type="text" class="form-control" value="' + prevData + '">' );
+	function changedTag(tags) {
+		let prevData = $(tags).html();
+		let dataId = $(tags).attr("id");
+		$(tags).contents().unwrap().wrap( '<input type="text" class="form-control" id="' + dataId + '" value="'+ prevData +'">' );
+	}
+	
+	function changedTagFromNo(tags) {
+		let prevData = $(tags).html().trim().replace(",","");
+		let dataId = $(tags).attr("id");
+		$(tags).contents().unwrap().wrap( '<input type="number" class="form-control" id="' + dataId + '" value="'+ prevData +'">' );
 	}
 
 </script>
@@ -257,5 +367,49 @@
 	<jsp:include page="footer.jsp"></jsp:include>
 
 	<div id="modalDiv"></div>
+	
+	<div class="modal" id="statusModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title" id="status"></h4>
+						<button type="button" class="btn-close close closeModal"
+							data-bs-dismiss="modal">X</button>
+					</div>
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success"
+							data-bs-dismiss="modal" onclick="ModalStatusOk();">확인</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal" id="deleteProdModal">
+			<div class="modal-dialog"> 
+				<div class="modal-content">
+
+					<!-- Modal Header -->
+					<div class="modal-header">
+						<h4 class="modal-title" id="deleteModalStatus"></h4>
+						<button type="button" class="btn-close close closeModal"
+							data-bs-dismiss="modal">X</button>
+					</div>
+
+					<!-- Modal footer -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success"
+							data-bs-dismiss="modal" onclick="deleteProd();">확인</button>
+						<button type="button" class="btn btn-danger closeModal"
+							data-bs-dismiss="modal">취소</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
 </body>
 </html>

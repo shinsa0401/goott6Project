@@ -93,5 +93,12 @@ public interface AdminService {
 	
 	// 상품의 컨텐츠를 가져오는 메서드
 	public List<ProductContentVo> getProductContent() throws Exception;
-
+	
+	// 상품의 정보를 수정 하는 메서드
+	public boolean updateProd(ProductVo product) throws Exception;
+	
+    // 상품을 삭제하는 메서드
+    public boolean deleteProd(String prodName) throws Exception;
+    
+    
 }

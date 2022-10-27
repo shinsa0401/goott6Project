@@ -130,6 +130,48 @@ public class AdminController {
 		model.addAttribute("deleteMember", deleteMember);
 		return "/admin/delMember";
 	}
+	
+	
+	@RequestMapping(value = "/member/detail")
+	public String viewMemberProfile(@RequestParam("memberId") String memberId, Model model) throws Exception {
+		
+		MemberVo member = service.getMemberProfile(memberId);
+		List<CouponUsedVo> memberCoupon = service.getCouponFromMember(memberId);
+		List<DeliveryInfoVo> memberAddressList = service.getMemberAddress(memberId);
+		
+		model.addAttribute("memberAddressList", memberAddressList);
+		model.addAttribute("memberCoupon", memberCoupon);
+		model.addAttribute("member", member);
+		
+		return "/admin/memberProfile";
+	}
+	
+	@RequestMapping(value = "/member/modify", method = RequestMethod.POST)
+	public @ResponseBody String modifyMember(@RequestBody MemberVo member) throws Exception {
+		String result = ""; 
+		
+		if(service.modifyMemberForAdmin(member)) {
+			result = "success";
+		}else {
+			result = "fail";
+		}
+		
+		
+		return result;
+	}
+	
+	@RequestMapping(value = "/member/delete", method = RequestMethod.POST)
+	public @ResponseBody String deleteMember(@RequestParam("memberId") String memberId) throws Exception {
+		String result = ""; 
+		
+		if(service.deleteMember(memberId)) {
+			result = "success";
+		}else {
+			result = "fail";
+		}
+		
+		return result;
+	}
 
 	@RequestMapping(value = "/coupon")
 	public String getCoupon(Model model) throws Exception {
@@ -224,44 +266,27 @@ public class AdminController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/member/detail")
-	public String viewMemberProfile(@RequestParam("memberId") String memberId, Model model) throws Exception {
-		
-		MemberVo member = service.getMemberProfile(memberId);
-		List<CouponUsedVo> memberCoupon = service.getCouponFromMember(memberId);
-		List<DeliveryInfoVo> memberAddressList = service.getMemberAddress(memberId);
-		
-		model.addAttribute("memberAddressList", memberAddressList);
-		model.addAttribute("memberCoupon", memberCoupon);
-		model.addAttribute("member", member);
-		
-		return "/admin/memberProfile";
-	}
-	
-	@RequestMapping(value = "/member/modify", method = RequestMethod.POST)
-	public @ResponseBody String modifyMember(@RequestBody MemberVo member) throws Exception {
+	@RequestMapping(value = "product/modify", method = RequestMethod.POST)
+	public @ResponseBody String modifyProd(@RequestBody ProductVo product) throws Exception {
 		String result = ""; 
-		
-		if(service.modifyMemberForAdmin(member)) {
+		System.out.println(product);
+		if(service.updateProd(product)) {
 			result = "success";
 		}else {
 			result = "fail";
 		}
-		
 		
 		return result;
 	}
 	
-	@RequestMapping(value = "/member/delete", method = RequestMethod.POST)
-	public @ResponseBody String deleteMember(@RequestParam("memberId") String memberId) throws Exception {
+	@RequestMapping(value = "product/delete", method = RequestMethod.POST)
+	public @ResponseBody String deleteProd(@RequestParam("prodNo") String prodNo) throws Exception {
 		String result = ""; 
-		
-		if(service.deleteMember(memberId)) {
+		if(service.deleteProd(prodNo)) {
 			result = "success";
 		}else {
 			result = "fail";
 		}
-		
 		
 		return result;
 	}

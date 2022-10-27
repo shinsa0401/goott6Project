@@ -50,10 +50,7 @@
 	function searchMemberOutput(data) {
 		let output = "";
 
-		$
-				.each(
-						data,
-						function(i, item) {
+		$.each(data,function(i, item) {
 							let memberJoinDate = new Date(item.joinDate);
 
 							output += '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">';
