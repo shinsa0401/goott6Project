@@ -43,7 +43,6 @@ public interface OrderService {
 	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet);
 
 
-
 	//장바구니 추가 
 	public boolean addCart(CartDTO cart)throws Exception;
 	//장바구니 조회
@@ -52,5 +51,16 @@ public interface OrderService {
 	
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
 	public OrdersVo guestOrderInfo(GuestOrderDTO gdto) throws Exception;
+	
+	/**
+	 * @methodName : getorders(멤버가 있을 때 멤버아이디로 주문이력 불러오는 메서드)
+	 * @author : kjy
+	 * @date : 2022. 10. 27.
+	 * @입력 param : 
+	 * @returnType : List<OrderVo>
+	 */
+	public List<OrderVo> getordersByMemberId(String memberId) throws Exception;
+	
+	public OrderVo getorderByOrderNo(int orderNo) throws Exception;
 
 }

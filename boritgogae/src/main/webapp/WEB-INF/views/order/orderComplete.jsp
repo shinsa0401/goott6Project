@@ -15,7 +15,7 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 		<div class="container">
-			<h1>주문해주셔서 감사합니다!</h1>
+			<h4>주문해주셔서 감사합니다!</h4>
 		</div>
 	
 	

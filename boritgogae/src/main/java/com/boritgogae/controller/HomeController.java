@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +26,7 @@ import com.boritgogae.board.tip.domain.TipBoardVo;
 import com.boritgogae.board.tip.domain.TipReplyVo;
 import com.boritgogae.board.tip.service.TipBoardService;
 import com.boritgogae.domain.DetailOrderVo;
+import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.service.OrderService;
 import com.boritgogae.service.ProductService;
@@ -55,7 +57,7 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public ModelAndView home(Locale locale ) throws Exception {
+	public ModelAndView home(Locale locale, @RequestParam(value="orderNo", required = false, defaultValue = "0") int  orderNo) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -82,6 +84,7 @@ public class HomeController {
 		
 		List<ProductDTO> lastProduct = prodService.getLastProduct();
 		mav.setViewName("index");
+		mav.addObject("orderNo", orderNo);
 		mav.addObject("prodLst",productLst);
 		mav.addObject("noticeLst",noticeLst);
 		mav.addObject("lastProd",lastProduct);

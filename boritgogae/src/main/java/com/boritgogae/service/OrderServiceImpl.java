@@ -121,13 +121,6 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 	@Transactional
 	@Override
 	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet) {
-		if(order.getIsMember() != null) {
-			order.setIsMember("Y");
-		}else {
-			order.setIsMember("N");
-		}
-		System.out.println(order.toString());
-		
 		//트랜잭션 처리 해보기
 		//order에 넣기
 		int orderRow = orderDao.insertOrder(order);
@@ -159,6 +152,7 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		}
 		
 		// 포인트 사용, 적립 내역 업데이트(pointWhy불러와서)
+		
 		int usePointNo = orderDao.getPointNo("구매사용");
 		PointHistoryDTO usedPoint = new PointHistoryDTO(order.getMemberId(), usePointNo, -order.getUsedPoint(), orderNo);
 		
@@ -171,7 +165,6 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		//회원 테이블의 포인트 업데이트
 		int pointrow = memDao.updateMemberPoint(currentOrder.getMemberId());
 
-		
 		return currentOrder;
 	}
 
@@ -210,6 +203,19 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 	@Override
 	public OrdersVo guestOrderInfo(GuestOrderDTO gdto) throws Exception {
 		return dao.selectGuestOrderInfo(gdto);
+	}
+
+
+	@Override
+	public List<OrderVo> getordersByMemberId(String memberId) throws Exception {
+		
+		return orderDao.getOrdersByMemberId(memberId);
+	}
+
+
+	@Override
+	public OrderVo getorderByOrderNo(int orderNo) throws Exception {
+		return orderDao.getOrderByOrderNo(orderNo);
 	}
 
 }

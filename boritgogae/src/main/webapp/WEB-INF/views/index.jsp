@@ -7,10 +7,23 @@
 <html>
 <head>
 <title>index</title>
+<!-- Js Plugins -->
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery-3.3.1.min.js"></script>
 <script>
 $(document).ready(function() {
 	let keyword = $(".current").val();
 	miniBoard(keyword);
+
+	console.log('${param.orderNo}');
+
+	if('${orderNo}' != 0){
+		$("#orderComplete").attr("class","modal fade show");
+		$("#orderComplete").attr("aria-hidden","");
+		$("#orderComplete").css("display","block");
+		$("#orderComplete").attr("aria-model","true");
+		$("#orderComplete").attr("role","dialog");
+	}
 });
 
 	function miniBoard(keyword){
@@ -279,6 +292,43 @@ $(document).ready(function() {
 				</div>
 			</div>
 		</div>
+		
+		<!-- Modal: modalCart -->
+			<div class="modal fade" id="orderComplete" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<!--Header-->
+						<div class="modal-header">
+							<h4 class="modal-title" id="myModalLabel">주문완료!</h4>
+							<button type="button" class="close" data-bs-dismiss="modal"
+								aria-bs-label="Close">
+								<span aria-bs-hidden="true">×</span>
+							</button>
+						</div>
+						<!--Body-->
+						<div class="modal-body">
+
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>주문해주셔서 감사합니다!</th>
+									</tr>
+								</thead>
+								
+							</table>
+
+						</div>
+						<!--Footer-->
+						<div class="modal-footer">
+							<button type="button" class="site-btn" data-bs-dismiss="modal"
+								style="background-color: orange;">Close</button>
+							<button class="site-btn" data-bs-dismiss="modal" onclick="location.href='order/detailOrder?orderNo=${orderNo}';" >주문 보러가기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Modal: modalCart -->
 	</section>
 	<!-- Product Section End -->
 

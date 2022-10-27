@@ -128,4 +128,10 @@ public class OrderDAOImpl implements OrderDAO {
 		System.out.println("DAO : 비회원 주문내역 조회");
 		return ses.selectOne(ns + ".selectGuestOrderInfo", gdto);
 	}
+
+	@Override
+	public List<OrderVo> getOrdersByMemberId(String memberId) throws Exception {
+		
+		return ses.selectList(ns+".getOrdersByMemberId", memberId);
+	}
 }

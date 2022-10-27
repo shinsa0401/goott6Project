@@ -15,7 +15,7 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 		<div class="container">
-			<h1>index.jsp</h1>
+			<h1>${orders }</h1>
 		</div>
 	
 	

@@ -513,13 +513,13 @@ $(function() {
 									<ul>
 										<li>사용가능 포인트 &nbsp; : &nbsp; <span>${member.memberPoint }</span>
 										</li>
-										<li><input type="number" value=""
+										<li><input type="number" value="0"
 											style="width: 100px; height: 30px; color: '#6f6f6f';"
 											id="usePoint" name="usedPoint" min="0"
 											max="${logInMember.memberPoint }" onchange="calSubtotal();" />
 											&nbsp;&nbsp;사용하기</li>
 										<li>적립 예정 포인트 &nbsp; : &nbsp; <span id="accum"></span> <input
-											type="hidden" value="" min="0" name="accumPoint"
+											type="hidden" value="0" min="0" name="accumPoint"
 											id="accumPoint" />
 											<input type="hidden" id="reservePercent" value="${grade.reservePoint}" />
 										</li>
@@ -566,7 +566,6 @@ $(function() {
 						</div>
 						<!--Body-->
 						<div class="modal-body">
-
 							<table class="table table-hover">
 								<thead>
 									<tr>
