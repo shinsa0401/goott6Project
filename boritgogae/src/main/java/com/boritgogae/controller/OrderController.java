@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,10 @@ public class OrderController {
 	@Inject
 	private ProductService prodService;
 	
+	@Inject
+	private OrderService service;
+	
+	
 	
 	/**
 	 * @methodName : orderSheet(주문페이지)
@@ -124,42 +129,6 @@ public class OrderController {
 		
 		return "order/orderComplete";
 	}
-
-	@Inject
-	private OrderService service;
-	
-	/**
-	 * @methodName : orderSheet(주문페이지)
-	 * @author : kjy
-	 * @throws Exception 
-	 * @date : 2022. 10. 19.
-	 * @입력 param : OrderSheetDTO, Model, request
-	 * @returnType : String
-	 **/
-	@RequestMapping(value = "/orderSheet", method = RequestMethod.POST)
-	public void orderSheet(OrderSheetDTO orderSheet, Model model, HttpServletRequest request) throws Exception {
-		
-		MemberVo member = (MemberVo) request.getSession().getAttribute("logInMember");
-		
-		List<OrderProductDTO> orders = orderSheet.getOrderProducts();
-
-		//가져올 데이터
-		if(member != null) {
-			List<DeliveryInfoVo> addrs = memService.getMemAddrs(member.getMemberId());
-			Map<CouponVo, CouponUsedVo> coupon = orderService.getAvailableCoupon(member.getMemberId());
-			GradeVo grade = memService.getGrade(member.getMemberId());
-			model.addAttribute("coupons", coupon);
-			model.addAttribute("addrs", addrs);
-			model.addAttribute("grade", grade);
-			model.addAttribute("member", member);
-		}
-
-		List<ProductVo> products = prodService.getProducts(orderSheet);
-		
-		model.addAttribute("receivedProducts", orders);
-		model.addAttribute("orders", products);
-	}
-	
 
 	
 	@RequestMapping(value = "/jusoPopup")
@@ -167,39 +136,6 @@ public class OrderController {
 		return "/order/jusoPopup";
 	}
 	
-	/**
-	 * @methodName : getDeliveryOption 배송비 옵션 가져오기
-	 * @author : kjy
-	 * @date : 2022. 10. 22.
-	 * @입력 param : OrderDTO
-	 * @returnType : JSONObject
-	 **/
-	@RequestMapping(value = "/getDeliveryOption", method = RequestMethod.POST)
-	public @ResponseBody DeliveryFeeVo getDeliveryOption(@RequestBody OrderDTO order, HttpServletRequest request){
-		MemberVo member = (MemberVo) request.getSession().getAttribute("logInMember");
-		System.out.println(order.getMemberId());
-		if(order.getMemberId() != null) {
-			order.setIsMember("Y");
-			order.setMemberId(member.getMemberId());
-		}else {
-			order.setIsMember("N");
-		}
-		
-		return orderService.getDeliveryOption(order);
-	}
-	
-	@RequestMapping(value = "/placeOrder", method = RequestMethod.POST)
-	public String placeOrder(OrderDTO order, @RequestParam(value="coupon", required = false) String coupon, OrderSheetDTO orderSheet, Model model) {
-		System.out.println("order"+order.toString());
-		System.out.println("orderSheet"+orderSheet.toString());
-		
-		OrderVo currentOrder = orderService.placeOrder(order, coupon, orderSheet);
-
-		
-		model.addAttribute("order", currentOrder);
-		
-		return "order/orderComplete";
-	}
 
 	/**
 	 * @methodName : addCart

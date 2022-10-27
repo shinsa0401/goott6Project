@@ -5,117 +5,6 @@
   
   <mapper namespace="com.boritgogae.memberMapper">
    	
-   	<insert id="memberjoin">
-   		insert into members(memberId,memberName,memberPwd,nickName,phoneNumber,memberEmail)
-values(#{memberId},#{memberName},sha1(md5(#{memberPwd})),#{nickName},#{phoneNumber},#{memberEmail})
-   	
-   	</insert>
-   	
-   	
-   	<insert id="joindelivery">
-   	
-   	insert into deliveryInfo(memberId,address,detailAddress,postCode,recipient,recipientPhoneNumber)
-values(#{memberId},#{address},#{detailAddress},#{postCode},#{recipient},#{recipientPhoneNumber})
-   	
-   	</insert>
-   	
-   	
- 
-   	  
-   	  <select id="checkid" resultType="int">
-   	  	select count(*) from members where memberId= #{memberId}
-   	  </select>
-   	  
-   	   <select id="checkname" resultType="int">
-   	  	select count(*) from members where memberName= #{memberName}
-   	  </select>
-   	  
-   	   <select id="checkemail" resultType="int">
-   	  	select count(*) from members where memberEmail = #{memberEmail}
-   	  </select>
-   	  
-   	  
-   	  
-   	  
-   	  
-   	  <select id="selectLike" resultType="com.boritgogae.domain.ProductVo">
-  select *from likes where memberId=#{memberId}
-  </select>
-  
-  
-  <select id="likeProduct" resultType="com.boritgogae.domain.ProductVo">
-   select *from product where prodNo=#{prodNo}
-  </select>
- 
- 
- 
- 
- 
- <insert id="snedDm">
- 	insert into dm(receiverId,senderId,noteContent)values(#{receiverId},#{senderId},#{noteContent});
- </insert>
- 
- 
-
- <select id="detaildm" resultType="com.boritgogae.domain.DM">
-  select *from dm where no = #{no};
- </select>
- 
- 
- <insert id="insertWriter">
- 	insert into dm(receiverId,noteContent) values(#{receiverId},#{noteContent})
- </insert>
- 
- 
- 
-    <select id="searchSelectPage" resultType="com.boritgogae.domain.DM">
-        SELECT *
-        FROM  dm
-        WHERE sendNoteDel='N'
-        <choose>
-            <when test='option=="T"'>
-                AND noteContent LIKE concat('%', #{keyword}, '%')
-            </when>
-            <when test='option=="W"'>
-                AND senderId LIKE concat('%', #{keyword}, '%')
-            </when>
-            <otherwise>
-                AND (noteContent   LIKE concat('%', #{keyword}, '%')
-                OR   senderId LIKE concat('%', #{keyword}, '%'))
-            </otherwise>
-        </choose>
-        ORDER BY sendDate DESC
-         LIMIT #{offset}, #{pageSize}
-       
-    </select>
-
-    <select id="searchResultCnt" resultType="int">
-        SELECT count(*)
-        FROM  dm
-        WHERE sendNoteDel='N'
-       <choose>
-            <when test='option=="T"'>
-                AND noteContent LIKE concat('%', #{keyword}, '%')
-            </when>
-             <when test='option=="W"'>
-                AND senderId LIKE concat('%', #{keyword}, '%')
-            </when>
-           
-            <otherwise>
-                AND (noteContent   LIKE concat('%', #{keyword}, '%')
-                OR   senderId LIKE concat('%', #{keyword}, '%'))
-            </otherwise>
-        </choose>
-    </select>
-    
-    
-    
-    
-    <update id="sendDel">
-    	update dm set sendNoteDel='Y' where no=#{no}
-    </update>
-  
-  </mapper>
 	<!-- 로그인하기위해 id와 pwd로 회원정보를 검색 -->
   	<select id="logIn" resultType="MemberVo">
   		select * from members where memberId = #{memberId} and memberPwd = sha1(md5(#{memberPwd})) and delStatus = 'N'
@@ -344,4 +233,116 @@ values(#{memberId},#{address},#{detailAddress},#{postCode},#{recipient},#{recipi
 	</update>	
 	
 
+
+	<insert id="memberjoin">
+   		insert into members(memberId,memberName,memberPwd,nickName,phoneNumber,memberEmail)
+values(#{memberId},#{memberName},sha1(md5(#{memberPwd})),#{nickName},#{phoneNumber},#{memberEmail})
+   	
+   	</insert>
+   	
+   	
+   	<insert id="joindelivery">
+   	
+   	insert into deliveryInfo(memberId,address,detailAddress,postCode,recipient,recipientPhoneNumber)
+values(#{memberId},#{address},#{detailAddress},#{postCode},#{recipient},#{recipientPhoneNumber})
+   	
+   	</insert>
+   	
+   	
+ 
+   	  
+   	  <select id="checkid" resultType="int">
+   	  	select count(*) from members where memberId= #{memberId}
+   	  </select>
+   	  
+   	   <select id="checkname" resultType="int">
+   	  	select count(*) from members where memberName= #{memberName}
+   	  </select>
+   	  
+   	   <select id="checkemail" resultType="int">
+   	  	select count(*) from members where memberEmail = #{memberEmail}
+   	  </select>
+   	  
+   	  
+   	  
+   	  
+   	  
+   	  <select id="selectLike" resultType="com.boritgogae.domain.ProductVo">
+  select *from likes where memberId=#{memberId}
+  </select>
+  
+  
+  <select id="likeProduct" resultType="com.boritgogae.domain.ProductVo">
+   select *from product where prodNo=#{prodNo}
+  </select>
+ 
+ 
+ 
+ 
+ 
+ <insert id="snedDm">
+ 	insert into dm(receiverId,senderId,noteContent)values(#{receiverId},#{senderId},#{noteContent});
+ </insert>
+ 
+ 
+
+ <select id="detaildm" resultType="com.boritgogae.domain.DM">
+  select *from dm where no = #{no};
+ </select>
+ 
+ 
+ <insert id="insertWriter">
+ 	insert into dm(receiverId,noteContent) values(#{receiverId},#{noteContent})
+ </insert>
+ 
+ 
+ 
+    <select id="searchSelectPage" resultType="com.boritgogae.domain.DM">
+        SELECT *
+        FROM  dm
+        WHERE sendNoteDel='N'
+        <choose>
+            <when test='option=="T"'>
+                AND noteContent LIKE concat('%', #{keyword}, '%')
+            </when>
+            <when test='option=="W"'>
+                AND senderId LIKE concat('%', #{keyword}, '%')
+            </when>
+            <otherwise>
+                AND (noteContent   LIKE concat('%', #{keyword}, '%')
+                OR   senderId LIKE concat('%', #{keyword}, '%'))
+            </otherwise>
+        </choose>
+        ORDER BY sendDate DESC
+         LIMIT #{offset}, #{pageSize}
+       
+    </select>
+
+    <select id="searchResultCnt" resultType="int">
+        SELECT count(*)
+        FROM  dm
+        WHERE sendNoteDel='N'
+       <choose>
+            <when test='option=="T"'>
+                AND noteContent LIKE concat('%', #{keyword}, '%')
+            </when>
+             <when test='option=="W"'>
+                AND senderId LIKE concat('%', #{keyword}, '%')
+            </when>
+           
+            <otherwise>
+                AND (noteContent   LIKE concat('%', #{keyword}, '%')
+                OR   senderId LIKE concat('%', #{keyword}, '%'))
+            </otherwise>
+        </choose>
+    </select>
+    
+    
+    
+    
+    <update id="sendDel">
+    	update dm set sendNoteDel='Y' where no=#{no}
+    </update>
+    
+    
 </mapper>

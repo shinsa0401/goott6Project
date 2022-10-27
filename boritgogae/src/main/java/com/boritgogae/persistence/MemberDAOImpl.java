@@ -1,5 +1,6 @@
 package com.boritgogae.persistence;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,16 +15,17 @@ import com.boritgogae.domain.DM;
 
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.GradeVo;
+import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.LogInDTO;
-import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.PointHistoryVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
-import com.boritgogae.domain.DeliveryInfoVo;
-import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVo;
+import com.boritgogae.domain.UserBoardVo;
+import com.boritgogae.domain.UserReplyVo;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO {
@@ -45,6 +47,7 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int updateMemberSession(String memberId, String sessionId, Timestamp sessionLimit) throws Exception {
 		System.out.println("DAO : 자동로그인 체크 회원 세션 업데이트");
+		return ses.selectOne(ns + ".selectAutoLogIn", sessionId);
 	}
 
 	// 기존 로그인시 로그인시간 업데이트하는 메서드
@@ -328,5 +331,35 @@ public class MemberDAOImpl implements MemberDAO {
 	public int insertWriter(DM dm) throws Exception {
 		// TODO Auto-generated method stub
 		return ses.insert(ns+".insertWriter", dm);
+	}
+
+	@Override
+	public MemberVo getMemInfo(String memberId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DeliveryInfoVo> getMemAddrs(String memberId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GradeVo getGrade(String memberId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int updateMemberPoint(String memberId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public MemberVo selectAutoLogIn(String sessionId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

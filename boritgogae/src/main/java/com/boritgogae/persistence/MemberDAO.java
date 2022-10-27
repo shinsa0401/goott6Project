@@ -4,17 +4,27 @@ import java.util.List;
 
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.GradeVo;
+import com.boritgogae.domain.GradesVo;
+import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.PointHistoryVo;
+
 import java.sql.Timestamp;
 
 import java.util.List;
 import java.util.Map;
 
 import com.boritgogae.board.free.domain.FreeSearchCondition;
+import com.boritgogae.board.prodReply.domain.ReviewVO;
+import com.boritgogae.domain.CouponUsedVo;
+import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DM;
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVo;
+import com.boritgogae.domain.UserBoardVo;
+import com.boritgogae.domain.UserReplyVo;
 
 public interface MemberDAO {
 	/**
@@ -137,11 +147,6 @@ public interface MemberDAO {
 
 	public int likeProduct (String prodNo)throws Exception;
 	
-	
-	
-	
-	
-	
 	public int memberjoin(MemberVo vo) throws Exception;
 	
 	public void joindelivery(DeliveryInfoVo dv)throws Exception;
@@ -150,7 +155,6 @@ public interface MemberDAO {
 	
 	public int checkname(String memberName)throws Exception;
 
-
 	public int checkemail(String memberEmail)throws Exception;
 
 	public int searchResultCnt(FreeSearchCondition sc) throws Exception;
@@ -158,6 +162,7 @@ public interface MemberDAO {
 	public List<DM> searchSelectPage(FreeSearchCondition sc) throws Exception;
 
 	public int sendDel(String no) throws Exception;
+	
 	public DM detaildm(int no)throws Exception;
 	
 	public int insertWriter(DM dm)throws Exception;

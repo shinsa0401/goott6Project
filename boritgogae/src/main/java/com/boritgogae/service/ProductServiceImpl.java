@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public Map<String, Object> getProductAll(int pageNo) throws Exception {
+	public Map<String, Object> getProductAll(int pageNo, String category) throws Exception {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		TipPagingInfo pi = pagingProcess(pageNo);
@@ -107,34 +107,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ProductContentVo getProdContent(String prodNo) throws Exception {
-		
-		return prodDao.getProdContent(prodNo);
+	public Map<String, Object> getSearchProduct(int pageNo, String searchWord) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-
-	@Override
-	public Map<String,Object> getProductAll(String category,int pageNo) throws Exception {
-		TipPagingInfo pi = pagingProcess(pageNo,category);
-		List<ProductDTO> prodLst = dao.getProductAll(category,pi); 
-		
-		return prodDao.getProdContent(prodNo);
-	}
-
-
-	@Override
-	public Map<String, Object> getSearchProduct(int pageNo, String searchWord) throws Exception {
-		Map<String, Object> map = new HashMap<>();
-		TipPagingInfo pi = pagingSearchProcess(pageNo, searchWord);
-		List<ProductDTO> prodLst = dao.getSearchProductAll(searchWord,pi);
-		
-		map.put("pi", pi);
-		map.put("prodLst", prodLst);
-		System.out.println(searchWord+"검색상품");
-		System.out.println(prodLst+"결과상품");
-		return map;
-		
-	}
 
 
 }

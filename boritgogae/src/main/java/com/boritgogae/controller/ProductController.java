@@ -107,7 +107,7 @@ public class ProductController {
          pageNo = 1;
       }
       
-      Map<String, Object> map = prodService.getProductAll(category, pageNo);
+      Map<String, Object> map = prodService.getProductAll(pageNo, category);
       List<ProductDTO> prodLst = null;
 
       ModelAndView mav = new ModelAndView();
