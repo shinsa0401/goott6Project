@@ -37,23 +37,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.etc.AskUploadFileProcess;
-import com.boritgogae.board.free.domain.FreePageHandler;
-import com.boritgogae.board.free.domain.FreeSearchCondition;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
-import com.boritgogae.domain.DM;
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.GuestOrderDTO;
 import com.boritgogae.domain.PointHistoryVo;
-import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
 import com.boritgogae.service.MemberService;
@@ -743,7 +738,7 @@ public class MemberController {
 		try {
 			service.memberjoin(vo, response,dv);
 		} catch (Exception e) {
-			
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -751,9 +746,8 @@ public class MemberController {
 		
 	 System.out.println("확인!!!!!!!!!!!!!!!!!!!!!!!!"+vo);
 	 System.out.println("확인!!!!!!!!!!!!!!!!!!!!!!!!"+dv);
-		return "/member/join";
+		return"/member/join";
 	}
-	
 	 @RequestMapping(value = "/ex")
 		public String test() throws Exception {
 			
@@ -781,6 +775,45 @@ public class MemberController {
 		
 	}
 	
+	@RequestMapping(value = "/jusoPopup")
+	public String juso() {
+		return "/member/jusoPopup";
+	}
+	
+	@RequestMapping (value="/mailCheck")
+	@ResponseBody
+	public String mailCheck(String email) throws Exception{
+		System.out.println("이메일 데이터 전송확인");
+		System.out.println("인증 메일 : " + email);
+		
+		Random random = new Random();
+		int checkNum = random.nextInt(888888)+111111; // 111111 - 999999
+		System.out.println("인증번호 : " + checkNum);
+		
+		//이메일 보내기
+		String setFrom = "goott6@naver.com"; // 네이버 아이디
+		String toEmail = email;
+		String title = "test";
+		String content = "가입해주셔서 감사합니다."+ "<br/><br/>"+"인증 번호는 "+checkNum+" 입니다.<br/>"+
+							"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+            helper.setFrom(setFrom);
+            helper.setTo(toEmail);
+            helper.setSubject(title);
+            helper.setText(content,true);
+            mailSender.send(message);
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+        String num = Integer.toString(checkNum);
+        return num;
+	}
+	
+	
 	
 	@RequestMapping(value = "/like")
 	public ModelAndView like(Model m, ProductVo pv ) throws Exception {
@@ -795,6 +828,12 @@ public class MemberController {
 	
         m.addAttribute("list", list);
         
+        
+
+   
+       
+        
+		
 		System.out.println("확인!!!!!!!");
 		
 		return mav;

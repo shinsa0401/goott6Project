@@ -69,6 +69,56 @@
   		select * from cart where memberId='haha' or sessionId =''
   	</select>
   	
+  	<!-- 쿠폰이름으로 쿠폰vo얻어옴 -->
+  	<select id="getCouponByCouponName" resultType="com.boritgogae.domain.CouponVo">
+  		select * from coupon where couponName = #{couponName}
+  	</select>
+  	
+  	<!-- 배송비정보 얻어옴 -->
+  	<select id="getDeliveryFeeVo" resultType="com.boritgogae.domain.DeliveryFeeVo">
+  		select * from deliveryFee where deliveryOption = #{deliveryOption}
+  	</select>
+  	
+  	<!-- 주문 인서트 -->
+  	<insert id="insertOrder">
+  	insert into orders (memberId, prodTotalPrice, deliveryOption, totalPrice, isMember, phoneNumber, guestEmail, guestPwd, name, memo, usedPoint, address, detailAddress, postCode, accumPoint) values (#{memberId}, #{prodTotalPrice}, #{deliveryOption}, #{totalPrice}, #{isMember}, #{phoneNumber}, #{guestEmail}, #{guestPwd}, #{name},#{memo}, #{usedPoint}, #{address}, #{detailAddress}, #{postCode}, #{accumPoint})
+  	</insert>
+  	
+  	<!-- 마지막 주문번호 불러오기 -->
+  	<select id="getLastOrderNo" resultType="int">
+  		select max(orderNo) from orders
+  	</select>
+  	
+  	<!-- 주문상세 인서트 -->
+  	<insert id="insertDetailOrder">
+  		insert into detailOrder (orderNo, prodNo, qty, prodSubTotalPrice, memberId) values(#{orderNo}, #{prodNo}, #{qty}, #{prodSubTotalPrice}, #{memberId})
+  	</insert>
+  	
+  	<!-- 마지막 주문상세 번호 불러오기 -->
+  	<select id="getLastDetailNo" resultType="int">
+  		select max(orderDetailNo) from detailOrder
+  	</select>
+  	
+  	<!-- 주문상세 최초상세번호 업데이트 -->
+  	<update id="updateDetailInit">
+  		update detailOrder set initialOrderDetailNo = orderDetailNo where orderDetailNo = #{lastDetailNo}
+  	</update>
+  	
+  	<select id="getPointNo" resultType="int">
+  		select pointNo from pointWhy where pointWhy = #{pointWhy}
+  	</select>
+  	
+  	<insert id="insertPointHistory">
+  		insert into pointHistory (memberId, pointNo, pointHistory, orderNo) values(#{memberId}, #{pointNo}, #{pointHistory}, #{orderNo})
+  	</insert>
+  	
+  	<update id="updateCouponUsed">
+  		update couponUsed set orderNo = #{orderNo}, useDate = #{useDate} where memberId = #{memberId} and couponName =#{couponName}
+  	</update>
+  	
+  	<select id="getOrderByOrderNo" resultType="com.boritgogae.domain.OrderVo">
+  		select * from orders where orderNo = #{orderNo}
+  	</select>
 
 	<!-- 장바구니 -->
   	 

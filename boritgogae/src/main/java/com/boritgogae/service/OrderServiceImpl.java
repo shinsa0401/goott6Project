@@ -238,6 +238,4 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		return dao.selectGuestOrderInfo(gdto);
 	}
 
-
-
 }

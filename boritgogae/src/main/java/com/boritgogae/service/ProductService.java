@@ -45,10 +45,16 @@ public interface ProductService {
 
 	public List<ProductDTO> getLastProduct() throws Exception;
 	
-	public Map<String,Object> getProductAll(int pageNo, String category) throws Exception;
 
-	public Map<String, Object> getSearchProduct(int pageNo, String searchWord);
+	
 
+
+	
+	public ProductContentVo getProdContent(String prodNo) throws Exception;
+
+	public Map<String,Object> getProductAll(String category, int pageNo) throws Exception;
+
+	public Map<String, Object> getSearchProduct(int pageNo, String searchWord) throws Exception;
 
 
 }
