@@ -64,6 +64,8 @@ public interface OrderDAO {
 	
 	public OrderVo getOrderByOrderNo(int orderNo);
 	
+
+
 	//장바구니 추가 메서드
 	public void addCartMem(CartDTO cart)throws Exception;
 	public void addCartGuest(CartDTO cart)throws Exception;

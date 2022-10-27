@@ -3,6 +3,7 @@ package com.boritgogae.persistence;
 import java.util.List;
 
 
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -67,11 +68,6 @@ public class ProductDAOImpl implements ProductDAO {
 		return ses.selectList(ns+".prodList",pi);
 	}
 
-	@Override
-	public int getProdCnt() throws Exception {
-		return ses.selectOne(ns+".prodCnt");
-	}
-
 
 
 	 /**
@@ -87,4 +83,13 @@ public class ProductDAOImpl implements ProductDAO {
 		return ses.selectOne(ns+".getProdContent", prodNo);
 	}
 
+
+	@Override
+	public int getProdCnt() throws Exception {
+		return ses.selectOne(ns+".prodCnt");
+	}
+
+
+
+	
 }

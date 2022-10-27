@@ -42,6 +42,25 @@ public interface OrderService {
 	
 	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet);
 
+
+
+	//장바구니 추가 
+	public boolean addCart(CartDTO cart)throws Exception;
+	//장바구니 조회
+	public List<CartDTO> getCartList(String memberId)throws Exception;
+
+	
+	/**
+	 * @methodName : getDeliveryOption
+	 * @author : kjy
+	 * @date : 2022. 10. 21.
+	 * @입력 param : DeliveryInfoVo(memberId, addr, detailAddress)
+	 * @returnType : DeliveryFeeVo
+	 **/
+	public DeliveryFeeVo getDeliveryOption(OrderDTO order);
+	
+	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet);
+
 	//장바구니 추가 
 	public void addCartMem(CartDTO cart)throws Exception;
 	public void addCartGuest(CartDTO cart)throws Exception;

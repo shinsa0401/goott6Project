@@ -20,6 +20,9 @@ import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.persistence.ReviewDAO;
 import com.boritgogae.persistence.ProductDAO;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
+
 
 @Service
 public class ReviewServiceImpl implements ReviewService {

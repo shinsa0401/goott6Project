@@ -38,8 +38,9 @@ import com.boritgogae.service.MemberService;
 @RequestMapping("/member/*")
 public class MemberController {
 	
-	
-	
+	@Inject
+	private MemberService memService;
+
 	@Autowired
 	private JavaMailSender mailSender;
 
