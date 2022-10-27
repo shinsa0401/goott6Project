@@ -21,7 +21,6 @@ import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDTO;
 import com.boritgogae.domain.OrderProductDTO;
 import com.boritgogae.domain.OrderSheetDTO;
-import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.PointHistoryDTO;
 import com.boritgogae.domain.ProductVo;
 import com.boritgogae.persistence.MemberDAO;
@@ -31,7 +30,6 @@ import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
 import com.boritgogae.domain.OrdersVo;
-import com.boritgogae.persistence.OrderDAO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -120,7 +118,7 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 
 	@Transactional
 	@Override
-	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet) {
+	public OrdersVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet) {
 		if(order.getIsMember() != null) {
 			order.setIsMember("Y");
 		}else {
@@ -135,7 +133,7 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		//마지막으로 insert된 order의 no 불러오기
 		int orderNo = orderDao.lastOrderNo();
 		
-		OrderVo currentOrder = orderDao.getOrderByOrderNo(orderNo);
+		OrdersVo currentOrder = orderDao.getOrderByOrderNo(orderNo);
 		
 		//detailorder에 넣기, initialOrderDetailNo 업데이트
 		List<OrderProductDTO> orderProds = ordersheet.getOrderProducts();

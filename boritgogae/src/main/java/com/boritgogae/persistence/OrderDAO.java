@@ -1,7 +1,5 @@
 package com.boritgogae.persistence;
 
-import java.sql.Timestamp;
-
 import java.util.List;
 
 import com.boritgogae.domain.CouponUsedVo;
@@ -9,10 +7,7 @@ import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryFeeVo;
 import com.boritgogae.domain.DetailOrderDTO;
 import com.boritgogae.domain.OrderDTO;
-import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.PointHistoryDTO;
-import com.boritgogae.domain.ProductVo;
-import java.util.List;
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
@@ -62,7 +57,7 @@ public interface OrderDAO {
 	
 	public int updateCouponUsed(CouponUsedVo couponUsedVo);
 	
-	public OrderVo getOrderByOrderNo(int orderNo);
+	public OrdersVo getOrderByOrderNo(int orderNo);
 	
 
 

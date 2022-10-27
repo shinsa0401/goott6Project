@@ -3,18 +3,24 @@ package com.boritgogae.persistence;
 import java.util.List;
 
 import com.boritgogae.domain.DeliveryInfoVo;
-import com.boritgogae.domain.GradeVo;
+import com.boritgogae.domain.GradesVo;
+import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.PointHistoryVo;
+
 import java.sql.Timestamp;
 
-import java.util.List;
 import java.util.Map;
 
 import com.boritgogae.board.free.domain.FreeSearchCondition;
+import com.boritgogae.board.prodReply.domain.ReviewVO;
+import com.boritgogae.domain.CouponUsedVo;
+import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DM;
-import com.boritgogae.domain.DeliveryInfoVo;
-import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVo;
+import com.boritgogae.domain.UserBoardVo;
+import com.boritgogae.domain.UserReplyVo;
 
 public interface MemberDAO {
 	/**
@@ -42,7 +48,7 @@ public interface MemberDAO {
 	 * @입력 param : memberId
 	 * @returnType : GradeVo
 	 **/
-	public GradeVo getGrade(String memberId);
+	public GradesVo getGrade(String memberId);
 	
 	public int updateMemberPoint(String memberId);
 

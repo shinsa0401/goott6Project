@@ -57,4 +57,5 @@ public interface ProductService {
 	public Map<String, Object> getSearchProduct(int pageNo, String searchWord) throws Exception;
 
 
+
 }

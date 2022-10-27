@@ -4,19 +4,27 @@ import java.util.List;
 import java.util.Map;
 
 import com.boritgogae.domain.DeliveryInfoVo;
-import com.boritgogae.domain.GradeVo;
+import com.boritgogae.domain.GradesVo;
+import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.PointHistoryVo;
+
 import java.sql.Timestamp;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
 
 import com.boritgogae.board.free.domain.FreeSearchCondition;
+import com.boritgogae.board.prodReply.domain.ReviewVO;
+import com.boritgogae.domain.CouponUsedVo;
+import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DM;
-import com.boritgogae.domain.DeliveryInfoVo;
-import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.ProductVo;
+import com.boritgogae.domain.UserBoardVo;
+import com.boritgogae.domain.UserReplyVo;
 
 @Service
 public interface MemberService {
@@ -46,7 +54,7 @@ public interface MemberService {
 	 * @입력 param : memberId
 	 * @returnType : GradeVo
 	 **/
-	public GradeVo getGrade(String memberId);
+	public GradesVo getGrade(String memberId);
 
 
 
@@ -55,7 +63,10 @@ public interface MemberService {
 
 	// 자동로그인을 체크했을 경우 로그인 유지를 위한 세션정보 업데이트하는 메서드
 	public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit) throws Exception;
-
+	
+	// 자동 로그인을 체크한 회원인지 검색하는 메서드
+	public MemberVo checkAutoLogIn(String sessionId) throws Exception;
+	
 	// 회원 로그아웃시 로그아웃시간 업데이트하는 메서드
 	public int updateLogOutDate(String memberId) throws Exception;
 	
@@ -68,6 +79,21 @@ public interface MemberService {
 	// 회원 비밀번호 업데이트하는 메서드
 	public int updatePwd(String memberId, String memberPwd) throws Exception;
 
+	// 등급혜택을 가져오는 메서드
+	public List<GradesVo> showGradeBenefit() throws Exception;
+	
+	// 쿠폰혜택을 가져오는 메서드
+	public List<CouponVo> showCouponBenefit() throws Exception;
+
+	// 유저가 보유한 포인트를 가져오는 메서드
+	public int pointNow(String memberId) throws Exception;
+	
+	// 유저의 포인트 내역을 가져오는 메서드
+	public List<PointHistoryVo> showPointHistory(String memberId) throws Exception;
+
+	// 유저의 쿠폰 보유 내역을 가져오는 메서드
+	public List<CouponUsedVo> showCouponHaveList(String memberId) throws Exception;
+	
 	// 유저의 쿠폰 사용 내역을 가져오는 메서드
 	public List<CouponUsedVo> showCouponUsedList(String memberId) throws Exception;
 

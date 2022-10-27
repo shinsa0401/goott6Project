@@ -1,10 +1,14 @@
 package com.boritgogae.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
 
@@ -12,13 +16,14 @@ import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.board.free.domain.FreeSearchCondition;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
+import com.boritgogae.domain.DM;
 import com.boritgogae.domain.GradesVo;
-import com.boritgogae.domain.MemberVo;
-import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.PointHistoryVo;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
 import com.boritgogae.persistence.MemberDAO;
@@ -242,7 +247,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public GradeVo getGrade(String memberId) {
+	public GradesVo getGrade(String memberId) {
 		
 		return memDao.getGrade(memberId);
 	}

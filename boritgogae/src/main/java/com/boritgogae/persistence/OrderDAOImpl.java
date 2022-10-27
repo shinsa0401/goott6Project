@@ -1,7 +1,5 @@
 package com.boritgogae.persistence;
 
-import java.sql.Timestamp;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +13,7 @@ import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryFeeVo;
 import com.boritgogae.domain.DetailOrderDTO;
 import com.boritgogae.domain.OrderDTO;
-import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.PointHistoryDTO;
-import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
@@ -98,7 +94,7 @@ public class OrderDAOImpl implements OrderDAO {
    }
 
    @Override
-   public OrderVo getOrderByOrderNo(int orderNo) {
+   public OrdersVo getOrderByOrderNo(int orderNo) {
 	   
 	   return ses.selectOne(ns+".getOrderByOrderNo", orderNo);
    }

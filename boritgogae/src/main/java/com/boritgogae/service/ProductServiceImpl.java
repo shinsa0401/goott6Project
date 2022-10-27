@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import java.util.List;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -18,11 +17,8 @@ import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.domain.ProductVo;
 import com.boritgogae.persistence.ProductDAO;
-import com.boritgogae.domain.ProductVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
-import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductDTO;
-import com.boritgogae.persistence.ProductDAO;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -73,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public Map<String, Object> getProductAll(int pageNo) throws Exception {
+	public Map<String, Object> getProductAll(String category, int pageNo) throws Exception {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		TipPagingInfo pi = pagingProcess(pageNo);
@@ -112,29 +108,14 @@ public class ProductServiceImpl implements ProductService {
 		return prodDao.getProdContent(prodNo);
 	}
 
-
-	@Override
-	public Map<String,Object> getProductAll(String category,int pageNo) throws Exception {
-		TipPagingInfo pi = pagingProcess(pageNo,category);
-		List<ProductDTO> prodLst = dao.getProductAll(category,pi); 
-		
-		return prodDao.getProdContent(prodNo);
-	}
-
-
 	@Override
 	public Map<String, Object> getSearchProduct(int pageNo, String searchWord) throws Exception {
-		Map<String, Object> map = new HashMap<>();
-		TipPagingInfo pi = pagingSearchProcess(pageNo, searchWord);
-		List<ProductDTO> prodLst = dao.getSearchProductAll(searchWord,pi);
-		
-		map.put("pi", pi);
-		map.put("prodLst", prodLst);
-		System.out.println(searchWord+"검색상품");
-		System.out.println(prodLst+"결과상품");
-		return map;
-		
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+
+	
 
 
 }

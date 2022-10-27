@@ -13,7 +13,6 @@ import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
-import com.boritgogae.domain.ProductVo;
 
 @Repository
 public class ProductDAOImpl implements ProductDAO {
@@ -87,6 +86,22 @@ public class ProductDAOImpl implements ProductDAO {
 	@Override
 	public int getProdCnt() throws Exception {
 		return ses.selectOne(ns+".prodCnt");
+	}
+
+
+
+	@Override
+	public List<ProductDTO> getProductAll(String category, TipPagingInfo pi) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public List<ProductDTO> getSearchProductAll(String searchWord, TipPagingInfo pi) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

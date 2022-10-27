@@ -50,7 +50,6 @@ public interface ProductDAO {
 
 	public int getProdCnt() throws Exception;
 	
-	
 	/**
 	 * @methodName : getProdContent
 	 * @author : kjy
@@ -60,16 +59,9 @@ public interface ProductDAO {
 	 */
 	public ProductContentVo getProdContent(String prodNo) throws Exception;
 
-	public int getProdCnt() throws Exception;
-	
-	
-	/**
-	 * @methodName : getProdContent
-	 * @author : kjy
-	 * @date : 2022. 10. 25.
-	 * @입력 param : prodNo
-	 * @returnType : ProductContentVo
-	 */
-	public ProductContentVo getProdContent(String prodNo) throws Exception;
+	public List<ProductDTO> getProductAll(String category, TipPagingInfo pi);
+
+	public List<ProductDTO> getSearchProductAll(String searchWord, TipPagingInfo pi);
+
 
 }
