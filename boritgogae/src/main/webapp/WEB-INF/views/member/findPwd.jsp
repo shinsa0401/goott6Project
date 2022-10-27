@@ -197,7 +197,7 @@
 					<div class="checkout__input input-group">
 						<input type="text" class="inputBox form-control" id="authNumber" placeholder="인증번호 입력" />
 						<span class="input-group-btn">
-							<button id="getAuthNumber" class="btn btn-secondary" type="button">인증번호 받기</button>
+							<button id="getAuthNumber" class="btn btn-secondary" type="button">인증번호 전송</button>
 			      		</span>
 					</div>
 				</div>

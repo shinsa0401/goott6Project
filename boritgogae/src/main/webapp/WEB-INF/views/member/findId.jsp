@@ -15,6 +15,11 @@
 		
 		$(".authForm").show();
 		
+		
+		$("#alert-success-email").hide();
+	    $("#alert-danger-email").hide();
+
+		
 	});
 	
 	
@@ -60,6 +65,52 @@
 	        }
 	    });
 	}
+	
+	
+	//인증번호 이메일 전송
+    $("#mail_check_button").on("click",function(e){
+       e.preventDefault();
+       let email = $("#memberEmail1").val();
+       let checkBox = $(".mail_check_input");
+       
+       console.log(email);
+       console.log(checkBox);
+       
+       $.ajax({
+          type:"GET",
+          url : "/member/mailCheck",
+          data : {email : email},
+          contentType :"text/plain;charset=UTF-8",
+          success : function(data){ //인증번호를 가져옴
+        	 alert("성공");
+             checkBox.attr("disabled",false); //인증번호 입력 가능
+             checkBox.val(''); // 기존에 값이 있었으면 지워줌
+             $("#alert-success-email").hide();
+             $("#alert-danger-email").hide();
+             checkCode = false;
+             code = data; // 인증번호를 변수에 저장
+          }
+       });
+    });
+          
+    //인증코드 입력 시 동일성 확인
+    $(".mail_check_input").keyup(function() {
+       var inputCode = $(".mail_check_input").val();
+       if (inputCode != "" || code != "") {
+          if (inputCode == code) {
+             $("#alert-success-email").show();
+             $("#alert-danger-email").hide();
+             $(".mail_check_input").attr("disabled",true); //인증번호 입력 멈춤
+             checkCode = true;
+          } else {
+             $("#alert-success-email").hide();
+             $("#alert-danger-email").show();
+             checkCode = false;
+          }
+       }
+    });
+
+	
 	
 	
 	
@@ -132,7 +183,7 @@
 				<div class="checkout__input input-group">
 					<input type="text" class="inputBox form-control" id="authNumber" placeholder="인증번호 입력" />
 					<span class="input-group-btn">
-						<button id="getAuthNumber" class="btn btn-secondary" type="button">인증번호 받기</button>
+						<button id="getAuthNumber" class="btn btn-secondary" type="button">인증번호 전송</button>
 		      		</span>
 				</div>
 			</div>
@@ -159,6 +210,27 @@
 	
 		
     </div>
+    
+    
+    <!-- 이메일인증 -->
+         <div class="form-group">
+            <label for="memberEmail1">이메일 인증</label> <input type="text"
+               name="memberEmail1" id="memberEmail1" class="form-control"
+               placeholder="Enter email">
+         </div>
+         <div class="form-inline mb-3">
+            <div class="mail_check_input_box" id="mail_check_input_box_false">
+               <input type="text" class="mail_check_input form-control col-8"
+                  disabled="disabled">
+               <button id="mail_check_button"
+                  class="btn btn-outline-primary btn-sm">인증번호 전송</button>
+            </div>
+         </div>
+         <!-- 인증번호 확인 -->
+         <div class="alert alert-success" id="alert-success-email">인증번호가
+            일치합니다.</div>
+         <div class="alert alert-danger" id="alert-danger-email">인증번호가
+            일치하지 않습니다.</div>
     
 	
 	<!--

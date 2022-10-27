@@ -513,14 +513,14 @@ public class MemberController {
 	@ResponseBody
 	public String mailCheck(String email) throws Exception{
 		System.out.println("이메일 데이터 전송확인");
-		System.out.println("인증 메일 : "+email);
+		System.out.println("인증 메일 : " + email);
 		
 		Random random = new Random();
 		int checkNum = random.nextInt(888888)+111111; 
-		System.out.println("인증번호 : "+checkNum);
+		System.out.println("인증번호 : " + checkNum);
 		
 		//이메일 보내기
-		String setFrom = "eliaqua@naver.com"; // 네이버 아이디
+		String setFrom = "goott6@naver.com"; // 네이버 아이디
 		String toEmail = email;
 		String title = "test";
 		String content = "가입해주셔서 감사합니다."+ "<br/><br/>"+"인증 번호는 "+checkNum+" 입니다.<br/>"+
@@ -534,7 +534,7 @@ public class MemberController {
             helper.setText(content,true);
             mailSender.send(message);
             
-        }catch(Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
         }
         
