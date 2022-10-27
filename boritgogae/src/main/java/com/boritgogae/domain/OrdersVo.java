@@ -180,6 +180,10 @@ public class OrdersVo {
 	public void setAccumPoint(int accumPoint) {
 		this.accumPoint = accumPoint;
 	}
+	
+	public OrdersVo() {
+		super();
+	}
 
 	@Override
 	public String toString() {

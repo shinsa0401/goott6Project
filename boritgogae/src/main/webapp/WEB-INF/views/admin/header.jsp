@@ -254,19 +254,14 @@
 										<i class="far fa-circle nav-icon"></i>
 										<p>상품 등록</p>
 								</a></li>
-								<li class="nav-item"><a href="pages/layout/boxed.html"
+								<li class="nav-item"><a href="${contextPath }/admin/orders"
 									class="nav-link"> <i class="far fa-circle nav-icon"></i>
 										<p>주문 조회</p> <!-- 주문 조회, 주문 수정 -->
 								</a></li>
 								<li class="nav-item"><a
 									href="pages/layout/fixed-sidebar.html" class="nav-link"> <i
 										class="far fa-circle nav-icon"></i>
-										<p>배송 등록</p> <!-- 배송 등록 -->
-								</a></li>
-								<li class="nav-item"><a
-									href="pages/layout/fixed-sidebar-custom.html" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>배송 조회</p> <!-- 배송 중인 상품 조회, 수정-->
+										<p>배송 조회</p> <!-- 배송 등록 -->
 								</a></li>
 							</ul></li>
 						<li class="nav-item"><a href="#" class="nav-link"> <i

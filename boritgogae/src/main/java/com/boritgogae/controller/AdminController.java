@@ -35,6 +35,12 @@ public class AdminController {
 	@Inject
 	private AdminService service;
 
+	@RequestMapping(value = "/orders")
+	public String adminOrderInfo(Model model) throws Exception {
+		
+		return "/admin/orderInfo"; 
+	}
+	
 	@RequestMapping(value = "/main")
 	public String adminMainPage(Model model) throws Exception {
 		System.out.println("관리자 페이지로 이동");
