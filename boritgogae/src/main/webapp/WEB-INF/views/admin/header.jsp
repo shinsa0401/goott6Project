@@ -245,7 +245,7 @@
 								<p>상품 관리</p> <i class="right fas fa-angle-left"></i>
 						</a>
 							<ul class="nav nav-treeview">
-								<li class="nav-item"><a href="pages/layout/top-nav.html"
+								<li class="nav-item"><a href="/admin/product"
 									class="nav-link"> <i class="far fa-circle nav-icon"></i>
 										<p>상품 리스트</p> <!-- 상품 리스트, 상품 수정, 상품 삭제, 재고 관리 -->
 								</a></li>
