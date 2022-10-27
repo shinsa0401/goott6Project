@@ -1,21 +1,53 @@
 package com.boritgogae.persistence;
 
 import java.util.List;
+
+import com.boritgogae.domain.DeliveryInfoVo;
+import com.boritgogae.domain.GradeVo;
+import com.boritgogae.domain.MemberVo;
 import java.sql.Timestamp;
 
-import com.boritgogae.domain.LogInDTO;
-import com.boritgogae.board.prodReply.domain.ReviewVO;
-import com.boritgogae.domain.CouponUsedVo;
-import com.boritgogae.domain.CouponVo;
+import java.util.List;
+import java.util.Map;
+
+import com.boritgogae.board.free.domain.FreeSearchCondition;
+import com.boritgogae.domain.DM;
 import com.boritgogae.domain.DeliveryInfoVo;
-import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.MemberVo;
-import com.boritgogae.domain.OrderDetailVo;
-import com.boritgogae.domain.PointHistoryVo;
-import com.boritgogae.domain.UserBoardVo;
-import com.boritgogae.domain.UserReplyVo;
+import com.boritgogae.domain.ProductVo;
 
 public interface MemberDAO {
+	/**
+	 * @methodName : getMemInfo
+	 * @author : kjy
+	 * @date : 2022. 10. 19.
+	 * @입력 param : memberId
+	 * @returnType : MemberVo
+	 **/
+	public MemberVo getMemInfo(String memberId);
+	
+	/**
+	 * @methodName : getMemAddrs
+	 * @author : kjy
+	 * @date : 2022. 10. 21.
+	 * @입력 param : memberId
+	 * @returnType : List<DeliveryInfoVo>
+	 **/
+	public List<DeliveryInfoVo> getMemAddrs(String memberId);
+	
+	/**
+	 * @methodName : getGrade
+	 * @author : kjy
+	 * @date : 2022. 10. 23.
+	 * @입력 param : memberId
+	 * @returnType : GradeVo
+	 **/
+	public GradeVo getGrade(String memberId);
+	
+	public int updateMemberPoint(String memberId);
+
+
+
 
 	// 로그인하기 위해 회원정보를 얻어오는 메서드
 	public MemberVo logIn(LogInDTO dto) throws Exception;
@@ -101,6 +133,34 @@ public interface MemberDAO {
 
 	
 
+	public List<ProductVo> selectLike (String memberId)throws Exception;
+
+	public int likeProduct (String prodNo)throws Exception;
+	
+	
+	
+	
+	
+	
+	public int memberjoin(MemberVo vo) throws Exception;
+	
+	public void joindelivery(DeliveryInfoVo dv)throws Exception;
+	
+	public int checkid(String memberId)throws Exception;
+	
+	public int checkname(String memberName)throws Exception;
+
+
+	public int checkemail(String memberEmail)throws Exception;
+
+	public int searchResultCnt(FreeSearchCondition sc) throws Exception;
+
+	public List<DM> searchSelectPage(FreeSearchCondition sc) throws Exception;
+
+	public int sendDel(String no) throws Exception;
+	public DM detaildm(int no)throws Exception;
+	
+	public int insertWriter(DM dm)throws Exception;
 	
 
 }

@@ -29,6 +29,10 @@ public class MemberServiceImpl implements MemberService {
 	@Inject 
 	private MemberDAO dao;
 
+	@Inject
+	private MemberDAO memDao;
+
+
 	// 로그인 처리하는 메서드
 	@Override
 	public MemberVo logIn(LogInDTO dto, HttpServletRequest request) throws Exception {
@@ -222,6 +226,133 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println("서비스단 : 회원 이메일 변경");
 		return dao.changeMemberEmail(memberId, memberEmail);
 	}
+
+
+
+	@Override
+	public MemberVo getMemberInfo(String memberId) {
+		
+		return memDao.getMemInfo(memberId);
+	}
+
+	@Override
+	public List<DeliveryInfoVo> getMemAddrs(String memberId) {
+		
+		return memDao.getMemAddrs(memberId);
+	}
+
+	@Override
+	public GradeVo getGrade(String memberId) {
+		
+		return memDao.getGrade(memberId);
+	}
+
+
+	@Override
+	public int memberjoin(MemberVo vo,HttpServletResponse response,DeliveryInfoVo dv) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		dv.setMemberId(vo.getMemberId());
+		dv.setRecipient(vo.getMemberName());
+		dv.setRecipientPhoneNumber(vo.getPhoneNumber());
+		
+		
+		
+		if (dao.checkid(vo.getMemberId()) == 1) {
+			out.println("<script>");
+			out.println("alert('동일한 아이디가 있습니다.');");
+			out.println("history.go(-1);");
+			out.println("</script>");
+			out.close();
+			return 0;
+		} else {
+			dao.memberjoin(vo);
+			dao.joindelivery(dv);
+			return 1;
+		}
+	
+		
+	}
+
+	@Override
+	public void checkid(String memberId, HttpServletResponse response) throws Exception {
+		PrintWriter out = response.getWriter();
+		out.println(dao.checkid(memberId));
+		out.close();
+		
+	}
+
+	@Override
+	public void checkname(String memberName,HttpServletResponse response) throws Exception {
+		PrintWriter out = response.getWriter();
+		out.println(dao.checkname(memberName));
+		out.close();
+		
+	}
+
+	@Override
+	public void checkemail(String memberEmail,HttpServletResponse response) throws Exception {
+		PrintWriter out = response.getWriter();
+		out.println(dao.checkemail(memberEmail));
+		out.close();
+		
+	}
+
+	@Override
+	public List<ProductVo> selectLike(String memberId) throws Exception {
+	 
+		
+		return dao.selectLike(memberId);
+	}
+
+
+
+	@Override
+	public int likeProduct(String prodNo) throws Exception {
+		
+		return dao.likeProduct(prodNo);
+	}
+
+	@Override
+    public int getSearchResultCnt(FreeSearchCondition sc) throws Exception {
+        return dao.searchResultCnt(sc);
+    }
+
+    @Override
+    public List<DM> getSearchResultPage(FreeSearchCondition sc) throws Exception {
+        return dao.searchSelectPage(sc);
+    }
+	
+    @Override
+    public int sendDel(String no)throws Exception{
+    	
+    	
+    	return dao.sendDel(no);
+    }
+
+
+
+	@Override
+	public Map<String, Object> detaildm(int no) throws Exception {
+		
+		DM dm = dao.detaildm(no);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("dm", dm);
+
+		return map;
+	}
+
+
+
+	@Override
+	public int insertWriter(DM dm) throws Exception {
+		
+		return dao.insertWriter(dm);
+	}
+
+	
+
 
 
 }

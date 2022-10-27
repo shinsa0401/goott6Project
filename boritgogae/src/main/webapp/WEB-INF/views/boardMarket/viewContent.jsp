@@ -59,10 +59,7 @@
 			data : sendData,
 			type : "post",
 			dataType : "text",
-			headers : {
-				"content-type" : "application/json",  // 송신되는 데이터의 타입이 json임을 알림
-				"X-HTTP-Method-Override" : "POST"  
-			},
+			
 			success : function (data) {
 				console.log(data);
 				
@@ -172,10 +169,7 @@
 				data : sendData,
 				type : "post",
 				dataType : "text",
-				headers : {
-					"content-type" : "application/json",  // 송신되는 데이터의 타입이 json임을 알림
-					"X-HTTP-Method-Override" : "POST"  
-				},
+				
 				success : function (data) {
 					console.log(data);
 					
@@ -210,10 +204,7 @@
 				data : sendData,
 				type : "post",
 				dataType : "text",
-				headers : {
-					"content-type" : "application/json",  // 송신되는 데이터의 타입이 json임을 알림
-					"X-HTTP-Method-Override" : "POST"  
-				},
+				
 				success : function (data) {
 					console.log(data);
 					
@@ -307,12 +298,12 @@
 			
 			
 			
-			<a href="/board/Market/modifyContent?no=${board.no }" role="button" class="site-btn">수정</a>
+			<a href="/board/market/modifyContent?no=${board.no }" role="button" class="site-btn">수정</a>
 			<!-- <button type="button" class="btn btn-success"><a href="/boardMarket/modifyContent?no=${board.no }">수정</a></button>
 			 	 <button type="button" class="btn btn-success"><a href="/boardMarket/delContent?no=${board.no }">삭제</a></button>
 			 -->
-			<button type="button" class="site-btn" onclick="location.href='/boardMarket/listAll';">목록</button>
-			<a href="/boardMarket/delContent?no=${board.no }" role="button" class="site-btn">삭제</a>
+			<button type="button" class="site-btn" onclick="location.href='/board/market/listAll';">목록</button>
+			<a href="/board/market/delContent?no=${board.no }" role="button" class="site-btn">삭제</a>
 			<button type="button" class="site-btn" onclick="showReply();">댓글달기</button>
 			
 		
@@ -320,7 +311,7 @@
 		<!-- 댓글 -->
 		<div id="replyDiv" style="display: none">
 			<label for="replyContent" class="form-label">댓글 작성</label> <input
-				type="text" class="form-control" placeholder="여기는 작성자 아이디 들어옵니다">
+				type="text" class="form-control" id="" value="${sessionScope.loginMember.userId }">
 			<input
 				type="text" rows="5" class="form-control" id="replyContent" >
 			

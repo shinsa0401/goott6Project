@@ -36,149 +36,149 @@ import com.boritgogae.service.ProductService;
 @RestController
 public class ProductController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+   private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-	@Inject
-	private ReviewService reviewService;
+   @Inject
+   private ReviewService reviewService;
 
-	@Inject
-	private ProductService prodService;
+   @Inject
+   private ProductService prodService;
 
-	@Inject
-	private OrderService orderService;
+   @Inject
+   private OrderService orderService;
 
-	//검색
-	@RequestMapping(value = "/{searchWord}", method = RequestMethod.GET)
-	public ModelAndView SearchProduct(@RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo,
-			@PathVariable(value="searchWord") String searchWord) throws Exception {
-		
-		ModelAndView mav = new ModelAndView();
-		
-		if (pageNo < 1) {
-			pageNo = 1;
-		}
-		
-		Map<String, Object> map = prodService.getSearchProduct(pageNo,searchWord);
-		List<ProductDTO> prodLst = (List<ProductDTO>) map.get("prodLst");
-		TipPagingInfo pi = (TipPagingInfo) map.get("pi");
-		
-		if (pageNo > pi.getTotalPage()) {
-			pageNo = pi.getTotalPage();
-		}
-		
-		List<ProductDTO> productLst = new ArrayList<ProductDTO>();
-		List<DetailOrderVo> PopularProdLst = orderService.popularProd();
-		
-		for (DetailOrderVo i : PopularProdLst) {
-			String prodNo = i.getProdNo();
+   //검색
+   @RequestMapping(value = "/{searchWord}", method = RequestMethod.GET)
+   public ModelAndView SearchProduct(@RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo,
+         @PathVariable(value="searchWord") String searchWord) throws Exception {
+      
+      ModelAndView mav = new ModelAndView();
+      
+      if (pageNo < 1) {
+         pageNo = 1;
+      }
+      
+      Map<String, Object> map = prodService.getSearchProduct(pageNo,searchWord);
+      List<ProductDTO> prodLst = (List<ProductDTO>) map.get("prodLst");
+      TipPagingInfo pi = (TipPagingInfo) map.get("pi");
+      
+      if (pageNo > pi.getTotalPage()) {
+         pageNo = pi.getTotalPage();
+      }
+      
+      List<ProductDTO> productLst = new ArrayList<ProductDTO>();
+      List<DetailOrderVo> PopularProdLst = orderService.popularProd();
+      
+      for (DetailOrderVo i : PopularProdLst) {
+         String prodNo = i.getProdNo();
 
-			if (prodNo == null) {
-				break;
-			} else {
-				ProductDTO product = prodService.getPopularProd(prodNo);
-				productLst.add(product);
-			}
+         if (prodNo == null) {
+            break;
+         } else {
+            ProductDTO product = prodService.getPopularProd(prodNo);
+            productLst.add(product);
+         }
 
-		}
+      }
 
-		List<ProductDTO> lastProduct = prodService.getLastProduct();
-		
-		
-		mav.setViewName("/product/prodList");
-		mav.addObject("pi", pi);
-		mav.addObject("prodLst", prodLst);
-		mav.addObject("popular",productLst);
-		mav.addObject("lastProd",lastProduct);
-		mav.addObject("category", searchWord);
-		mav.addObject("pageNo", pageNo);
-		
-		
-		return mav;
-		
-	}
-	
-	// 상품리스트페이지
-	@RequestMapping(value = "/productCategory/{category}")
-	public ModelAndView prodList(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
-			@PathVariable(value = "category") String category) throws Exception {
-
-
-		if (pageNo < 1) {
-			pageNo = 1;
-		}
-		
-		Map<String, Object> map = prodService.getProductAll(category, pageNo);
-		List<ProductDTO> prodLst = null;
-
-		ModelAndView mav = new ModelAndView();
-
-		prodLst = (List<ProductDTO>) map.get("prodLst");
-		TipPagingInfo pi = (TipPagingInfo) map.get("pi");
-
-		
-
-		if (pageNo > pi.getTotalPage()) {
-			pageNo = pi.getTotalPage();
-		}
+      List<ProductDTO> lastProduct = prodService.getLastProduct();
+      
+      
+      mav.setViewName("/product/prodList");
+      mav.addObject("pi", pi);
+      mav.addObject("prodLst", prodLst);
+      mav.addObject("popular",productLst);
+      mav.addObject("lastProd",lastProduct);
+      mav.addObject("category", searchWord);
+      mav.addObject("pageNo", pageNo);
+      
+      
+      return mav;
+      
+   }
+   
+   // 상품리스트페이지
+   @RequestMapping(value = "/productCategory/{category}")
+   public ModelAndView prodList(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
+         @PathVariable(value = "category") String category) throws Exception {
 
 
-		List<ProductDTO> productLst = new ArrayList<ProductDTO>();
-		List<DetailOrderVo> PopularProdLst = orderService.popularProd();
-		
-		for (DetailOrderVo i : PopularProdLst) {
-			String prodNo = i.getProdNo();
+      if (pageNo < 1) {
+         pageNo = 1;
+      }
+      
+      Map<String, Object> map = prodService.getProductAll(category, pageNo);
+      List<ProductDTO> prodLst = null;
 
-			if (prodNo == null) {
-				break;
-			} else {
-				ProductDTO product = prodService.getPopularProd(prodNo);
-				productLst.add(product);
-			}
+      ModelAndView mav = new ModelAndView();
 
-		}
+      prodLst = (List<ProductDTO>) map.get("prodLst");
+      TipPagingInfo pi = (TipPagingInfo) map.get("pi");
 
-		List<ProductDTO> lastProduct = prodService.getLastProduct();
-		
-		
-		mav.setViewName("/product/prodList");
-		mav.addObject("prodLst", prodLst);
-		mav.addObject("pi", pi);
-		mav.addObject("popular",productLst);
-		mav.addObject("lastProd",lastProduct);
-		mav.addObject("category",category);
-		mav.addObject("pageNo", pageNo);
-		
-		return mav;
+      
 
-	}
+      if (pageNo > pi.getTotalPage()) {
+         pageNo = pi.getTotalPage();
+      }
 
-	// 상세페이지
-	@RequestMapping(value = "/category/detail")
-	public String prodDetail(@RequestParam("prodNo") String prodNo,
-			@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo, Model model)
-			throws Exception {
 
-		Map<String, Object> reviewMap = reviewService.getReviews(prodNo, pageNo);
-		List<UploadImg> imgLst = new ArrayList<>();
+      List<ProductDTO> productLst = new ArrayList<ProductDTO>();
+      List<DetailOrderVo> PopularProdLst = orderService.popularProd();
+      
+      for (DetailOrderVo i : PopularProdLst) {
+         String prodNo = i.getProdNo();
 
-		List<ReviewVO> reviews = (List<ReviewVO>) reviewMap.get("reviews");
-		Paging page = (Paging) reviewMap.get("page");
+         if (prodNo == null) {
+            break;
+         } else {
+            ProductDTO product = prodService.getPopularProd(prodNo);
+            productLst.add(product);
+         }
 
-		for (ReviewVO vo : reviews) {
-			List<UploadImg> imgs = reviewService.getReviewImgs(vo.getReviewNo());
-			for (UploadImg img : imgs) {
-				imgLst.add(img);
-			}
-		}
+      }
 
-		List<ProdReplyVo> replies = reviewService.getReplies(prodNo);
+      List<ProductDTO> lastProduct = prodService.getLastProduct();
+      
+      
+      mav.setViewName("/product/prodList");
+      mav.addObject("prodLst", prodLst);
+      mav.addObject("pi", pi);
+      mav.addObject("popular",productLst);
+      mav.addObject("lastProd",lastProduct);
+      mav.addObject("category",category);
+      mav.addObject("pageNo", pageNo);
+      
+      return mav;
 
-		model.addAttribute("reviews", reviews);
-		model.addAttribute("reviewImg", imgLst);
-		model.addAttribute("page", page);
-		model.addAttribute("replies", replies);
+   }
 
-		return "/product/prodDetail";
-	}
+   // 상세페이지
+   @RequestMapping(value = "/category/detail")
+   public String prodDetail(@RequestParam("prodNo") String prodNo,
+         @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo, Model model)
+         throws Exception {
+
+      Map<String, Object> reviewMap = reviewService.getReviews(prodNo, pageNo);
+      List<UploadImg> imgLst = new ArrayList<>();
+
+      List<ReviewVO> reviews = (List<ReviewVO>) reviewMap.get("reviews");
+      Paging page = (Paging) reviewMap.get("page");
+
+      for (ReviewVO vo : reviews) {
+         List<UploadImg> imgs = reviewService.getReviewImgs(vo.getReviewNo());
+         for (UploadImg img : imgs) {
+            imgLst.add(img);
+         }
+      }
+
+      List<ProdReplyVo> replies = reviewService.getReplies(prodNo);
+
+      model.addAttribute("reviews", reviews);
+      model.addAttribute("reviewImg", imgLst);
+      model.addAttribute("page", page);
+      model.addAttribute("replies", replies);
+
+      return "/product/prodDetail";
+   }
 
 }

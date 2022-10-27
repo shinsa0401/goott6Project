@@ -75,4 +75,7 @@ public interface ReviewDAO {
 	
 	//대댓글의 ref업데이트하는 메서드
 	public int updateReRef(int rno, int parentRef) throws Exception;
+	
+	//포인트이력 테이블에 인서트하는 메서드
+	public int insertPoint(int point, String userId);
 }

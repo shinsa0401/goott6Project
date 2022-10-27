@@ -5,16 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>boritgogae</title>
-<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<title>index</title>
 <script>
-
-
-$(document).ready(function(){
-	//let keyword = $(".current").val();
-	//miniBoard(keyword);
-	
-	
+$(document).ready(function() {
+	let keyword = $(".current").val();
+	miniBoard(keyword);
 });
 
 	function miniBoard(keyword){
@@ -73,8 +68,6 @@ $(document).ready(function(){
 #headTr {
 	background-color: #7FAD39;
 }
-
-
 </style>
 </head>
 <body>
@@ -95,7 +88,7 @@ $(document).ready(function(){
 										게시판</a></li>
 								<li><a href="">상품 후기</a></li>
 								<li><a href="/boardTip/listAll">고개팁</a></li>
-								<li><a href="${contextPath}/boardMarket/listAll">장터 게시판</a></li>
+								<li><a href="${contextPath}/board/market/listAll">장터 게시판</a></li>
 								<li><a href="#">병원리뷰</a></li>
 							</ul>
 						</div>
@@ -202,28 +195,19 @@ $(document).ready(function(){
 								<c:forEach var="prod" items="${prodLst}">
 									<div class="col-lg-4">
 										<div class="product__discount__item">
-											<c:if test="${prod.prodQuantity != 0}">
-												<div class="product__discount__item__pic set-bg"
-													data-setbg="${prod.originalFile }"
-													onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';">
-													<div class="product__discount__percent">-20%</div>
-													<ul class="product__item__pic__hover">
-														<li><a href="#"><i class="fa fa-heart"></i></a></li>
-														<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-														<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-													</ul>
-												</div>
-											</c:if>
-											<c:if test="${prod.prodQuantity == 0}">
-												<img src="../resources/img/soldout.jpg"
-													style="height: 270px"
-													onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';" />
-											</c:if>
-
+											<div class="product__discount__item__pic set-bg"
+												data-setbg="${prod.originalFile }">
+												<div class="product__discount__percent">-20%</div>
+												<ul class="product__item__pic__hover">
+													<li><a href="#"><i class="fa fa-heart"></i></a></li>
+													<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+													<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+												</ul>
+											</div>
 											<div class="product__discount__item__text">
 												<span>[${prod.brand }]</span>
 												<h5>
-													<a href="/product/category/detail?prodNo=${prod.prodNo }">${prod.prodName }</a>
+													<a href="#">${prod.prodName }</a>
 												</h5>
 												<div class="product__item__price">
 													${prod.prodPrice } <span></span>
@@ -241,6 +225,10 @@ $(document).ready(function(){
 								<div class="filter__sort">
 									<span>Show View</span> <select>
 										<option value="0" selected>공지사항</option>
+										<option value="0">질문게시판</option>
+										<option value="0">고개팁</option>
+										<option value="0">자유게시판</option>
+										<option value="0">장터게시판</option>
 									</select>
 								</div>
 							</div>
@@ -292,6 +280,8 @@ $(document).ready(function(){
 		</div>
 	</section>
 	<!-- Product Section End -->
+
+
 
 
 	<jsp:include page="footer.jsp"></jsp:include>
