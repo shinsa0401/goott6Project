@@ -5,19 +5,37 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>boritgogae</title>
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-	$(document).ready(function() {
-		//viewAllProdImg();
-	});
-	
-	
+	$(document)
+			.ready(
+					function() {
+						//viewAllProdImg();
+						let pageNo = ${pageNo};
+						let pageNoTotal = ${param.pageNo};
+						let pageGo = ${pi.totalPage};
+
+						if (pageNoTotal > pageGo) {
+							console.log(pageNo);
+							console.log(pageNoTotal);
+							location.href = "/product/productCategory/${category }?pageNo="
+									+ pageGo;
+						} else if (pageNoTotal < 1) {
+							location.href = "/product/productCategory/${category }?pageNo=1";
+						} else {
+							console.log(pageNo);
+							console.log(pageNoTotal);
+							console.log(pageGo);
+						}
+					});
 </script>
 </head>
 
 <body>
 
 	<jsp:include page="../header.jsp"></jsp:include>
+
 	<!-- Product Section Begin -->
 	<section class="product spad">
 		<div class="container">
@@ -25,18 +43,30 @@
 				<div class="col-lg-3 col-md-5">
 					<div class="sidebar">
 						<div class="sidebar__item">
-							<h4>Department</h4>
+							<h4>category</h4>
 							<ul>
-								<li><a href="#">Fresh Meat</a></li>
-								<li><a href="#">Vegetables</a></li>
-								<li><a href="#">Fruit & Nut Gifts</a></li>
-								<li><a href="#">Fresh Berries</a></li>
-								<li><a href="#">Ocean Foods</a></li>
-								<li><a href="#">Butter & Eggs</a></li>
-								<li><a href="#">Fastfood</a></li>
-								<li><a href="#">Fresh Onion</a></li>
-								<li><a href="#">Papayaya & Crisps</a></li>
-								<li><a href="#">Oatmeal</a></li>
+								<li><a href="/product/productCategory/CF?pageNo=1">고양이
+										FOOD</a></li>
+								<li><a href="/product/productCategory/CC?pageNo=1">고양이
+										LITTER</a></li>
+								<li><a href="/product/productCategory/CL?pageNo=1">고양이
+										LIFE</a></li>
+								<li><a href="/product/productCategory/CB?pageNo=1">고양이
+										HEALTHY</a></li>
+								<li><a href="/product/productCategory/CT?pageNo=1">고양이
+										PLAY</a></li>
+								<li><a href="/product/productCategory/DF?pageNo=1">강아지
+										FOOD</a></li>
+								<li><a href="/product/productCategory/DC?pageNo=1">강아지
+										TOILET</a></li>
+								<li><a href="/product/productCategory/DL?pageNo=1">강아지
+										LIFE</a></li>
+								<li><a href="/product/productCategory/DB?pageNo=1">강아지
+										BEAUTY</a></li>
+								<li><a href="/product/productCategory/DT?pageNo=1">강아지
+										PLAY</a></li>
+								<li><a href="/product/productCategory/All?pageNo=1">강아지,
+										고양이</a></li>
 							</ul>
 						</div>
 						<div class="sidebar__item">
@@ -108,62 +138,25 @@
 						</div>
 						<div class="sidebar__item">
 							<div class="latest-product__text">
-								<h4>최신 상품</h4>
+								<h4>최근 등록 상품</h4>
 								<div class="latest-product__slider owl-carousel">
-									<div class="latest-prdouct__slider__item">
-										<a href="#" class="latest-product__item">
-											<div class="latest-product__item__pic">
-												<img src="img/latest-product/lp-1.jpg" alt="">
-											</div>
-											<div class="latest-product__item__text">
-												<h6>Crab Pool Security</h6>
-												<span>$30.00</span>
-											</div>
-										</a> <a href="#" class="latest-product__item">
-											<div class="latest-product__item__pic">
-												<img src="img/latest-product/lp-2.jpg" alt="">
-											</div>
-											<div class="latest-product__item__text">
-												<h6>Crab Pool Security</h6>
-												<span>$30.00</span>
-											</div>
-										</a> <a href="#" class="latest-product__item">
-											<div class="latest-product__item__pic">
-												<img src="img/latest-product/lp-3.jpg" alt="">
-											</div>
-											<div class="latest-product__item__text">
-												<h6>Crab Pool Security</h6>
-												<span>$30.00</span>
-											</div>
-										</a>
-									</div>
-									<div class="latest-prdouct__slider__item">
-										<a href="#" class="latest-product__item">
-											<div class="latest-product__item__pic">
-												<img src="img/latest-product/lp-1.jpg" alt="">
-											</div>
-											<div class="latest-product__item__text">
-												<h6>Crab Pool Security</h6>
-												<span>$30.00</span>
-											</div>
-										</a> <a href="#" class="latest-product__item">
-											<div class="latest-product__item__pic">
-												<img src="img/latest-product/lp-2.jpg" alt="">
-											</div>
-											<div class="latest-product__item__text">
-												<h6>Crab Pool Security</h6>
-												<span>$30.00</span>
-											</div>
-										</a> <a href="#" class="latest-product__item">
-											<div class="latest-product__item__pic">
-												<img src="img/latest-product/lp-3.jpg" alt="">
-											</div>
-											<div class="latest-product__item__text">
-												<h6>Crab Pool Security</h6>
-												<span>$30.00</span>
-											</div>
-										</a>
-									</div>
+									<c:forEach var="last" items="${lastProd }">
+										<div class="latest-prdouct__slider__item">
+											<a href="product/category/detail?prodNo=${last.prodNo }"
+												class="latest-product__item">
+												<div class="latest-product__item__pic">
+													<img src="${last.originalFile }">
+												</div>
+												<div class="latest-product__item__text">
+													<h6>
+														[<b>${last.brand }</b>]
+													</h6>
+													<h6>${last.prodName }</h6>
+													<span>${last.prodPrice }원</span>
+												</div>
+											</a>
+										</div>
+									</c:forEach>
 								</div>
 							</div>
 						</div>
@@ -176,138 +169,39 @@
 						</div>
 						<div class="row">
 							<div class="product__discount__slider owl-carousel">
-								<div class="col-lg-4">
-									<div class="product__discount__item">
-										<div class="product__discount__item__pic set-bg"
-											data-setbg="img/product/discount/pd-1.jpg">
-											<div class="product__discount__percent">-20%</div>
-											<ul class="product__item__pic__hover">
-												<li><i class="fa fa-heart"></i></li>
-												<li><i class="fa fa-retweet"></i></li>
-												<li><i class="fa fa-shopping-cart"></i></li>
-											</ul>
-										</div>
-										<div class="product__discount__item__text">
-											<span>Dried Fruit</span>
-											<h5>
-												<a href="#">Raisin’n’nuts</a>
-											</h5>
-											<div class="product__item__price">
-												$30.00 <span>$36.00</span>
+								<c:forEach var="prod" items="${popular}">
+									<div class="col-lg-4">
+										<div class="product__discount__item">
+											<c:if test="${prod.prodQuantity != 0}">
+												<div class="product__discount__item__pic set-bg"
+													data-setbg="${prod.originalFile }"
+													onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';">
+													<div class="product__discount__percent">-20%</div>
+													<ul class="product__item__pic__hover">
+														<li><a href="#"><i class="fa fa-heart"></i></a></li>
+														<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+														<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+													</ul>
+												</div>
+											</c:if>
+											<c:if test="${prod.prodQuantity == 0}">
+												<img src="../resources/img/soldout.jpg"
+													style="height: 270px"
+													onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';" />
+											</c:if>
+
+											<div class="product__discount__item__text">
+												<span>[${prod.brand }]</span>
+												<h5>
+													<a href="/product/category/detail?prodNo=${prod.prodNo }">${prod.prodName }</a>
+												</h5>
+												<div class="product__item__price">
+													${prod.prodPrice } <span></span>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="product__discount__item">
-										<div class="product__discount__item__pic set-bg"
-											data-setbg="img/product/discount/pd-2.jpg">
-											<div class="product__discount__percent">-20%</div>
-											<ul class="product__item__pic__hover">
-												<li><a href="#"><i class="fa fa-heart"></i></a></li>
-												<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-												<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-											</ul>
-										</div>
-										<div class="product__discount__item__text">
-											<span>Vegetables</span>
-											<h5>
-												<a href="#">Vegetables’package</a>
-											</h5>
-											<div class="product__item__price">
-												$30.00 <span>$36.00</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="product__discount__item">
-										<div class="product__discount__item__pic set-bg"
-											data-setbg="img/product/discount/pd-3.jpg">
-											<div class="product__discount__percent">-20%</div>
-											<ul class="product__item__pic__hover">
-												<li><a href="#"><i class="fa fa-heart"></i></a></li>
-												<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-												<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-											</ul>
-										</div>
-										<div class="product__discount__item__text">
-											<span>Dried Fruit</span>
-											<h5>
-												<a href="#">Mixed Fruitss</a>
-											</h5>
-											<div class="product__item__price">
-												$30.00 <span>$36.00</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="product__discount__item">
-										<div class="product__discount__item__pic set-bg"
-											data-setbg="img/product/discount/pd-4.jpg">
-											<div class="product__discount__percent">-20%</div>
-											<ul class="product__item__pic__hover">
-												<li><a href="#"><i class="fa fa-heart"></i></a></li>
-												<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-												<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-											</ul>
-										</div>
-										<div class="product__discount__item__text">
-											<span>Dried Fruit</span>
-											<h5>
-												<a href="#">Raisin’n’nuts</a>
-											</h5>
-											<div class="product__item__price">
-												$30.00 <span>$36.00</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="product__discount__item">
-										<div class="product__discount__item__pic set-bg"
-											data-setbg="img/product/discount/pd-5.jpg">
-											<div class="product__discount__percent">-20%</div>
-											<ul class="product__item__pic__hover">
-												<li><a href="#"><i class="fa fa-heart"></i></a></li>
-												<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-												<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-											</ul>
-										</div>
-										<div class="product__discount__item__text">
-											<span>Dried Fruit</span>
-											<h5>
-												<a href="#">Raisin’n’nuts</a>
-											</h5>
-											<div class="product__item__price">
-												$30.00 <span>$36.00</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="product__discount__item">
-										<div class="product__discount__item__pic set-bg"
-											data-setbg="img/product/discount/pd-6.jpg">
-											<div class="product__discount__percent">-20%</div>
-											<ul class="product__item__pic__hover">
-												<li><a href="#"><i class="fa fa-heart"></i></a></li>
-												<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-												<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-											</ul>
-										</div>
-										<div class="product__discount__item__text">
-											<span>Dried Fruit</span>
-											<h5>
-												<a href="#">Raisin’n’nuts</a>
-											</h5>
-											<div class="product__item__price">
-												$30.00 <span>$36.00</span>
-											</div>
-										</div>
-									</div>
-								</div>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
@@ -324,7 +218,7 @@
 							<div class="col-lg-4 col-md-4">
 								<div class="filter__found">
 									<h6>
-										<span>${total }</span> Products found
+										<span>${pi.totalPostCnt }</span> Products found
 									</h6>
 								</div>
 							</div>
@@ -336,11 +230,20 @@
 						</div>
 					</div>
 					<div class="row">
+
 						<c:forEach var="prod" items="${prodLst }">
-							<div class="col-lg-4 col-md-6 col-sm-6">
+							<div class="col-lg-4 col-md-6 col-sm-6 allProduct">
 								<div class="product__item">
-									<div class="product__item__pic set-bg" >
-										<img src="${prod.originalFile }" onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';"/>
+									<div class="product__item__pic set-bg">
+										<c:if test="${prod.prodQuantity != 0}">
+											<img src="${prod.originalFile }"
+												onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';" />
+										</c:if>
+										<c:if test="${prod.prodQuantity == 0}">
+											<img src="../resources/img/soldout.jpg"
+												onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';" />
+										</c:if>
+
 										<ul class="product__item__pic__hover">
 											<li><i class="fa fa-heart"></i></li>
 											<li><i class="fa fa-retweet"></i></li>
@@ -348,6 +251,9 @@
 										</ul>
 									</div>
 									<div class="product__item__text">
+										<h6>
+											[<b>${prod.brand }</b>]
+										</h6>
 										<h6>
 											<a href="/product/category/detail?prodNo=${prod.prodNo }">${prod.prodName }</a>
 										</h6>
@@ -358,10 +264,58 @@
 							</div>
 						</c:forEach>
 
+
 					</div>
 					<div class="product__pagination" style="">
-						<a href="#">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#"><i
-							class="fa fa-long-arrow-right"></i></a>
+						<!-- dd -->
+						<c:choose>
+							<c:when
+								test="${category == 'CF' || category == 'CC'|| category == 'CL'||category == 'CB'||category == 'CT'||category == 'DF'||category == 'DC'||category == 'DL'||category == 'DB'||category == 'DT'||category == 'All' }">
+								<c:if test="${param.pageNo > 1 }">
+									<a
+										href="/product/productCategory/${category }?pageNo=${param.pageNo - 1 }">
+										<i class="fa fa-long-arrow-left"> </i>
+									</a>
+								</c:if>
+
+								<c:forEach var="i" begin="${pi.startNumOfCurPagingBlock}"
+									end="${pi.endNumOfCurPagingBlock }" step="1">
+									<c:if test="${i < pi.totalPage+1 }">
+										<a href="/product/productCategory/${category }?pageNo=${i}">${i}</a>
+									</c:if>
+
+								</c:forEach>
+								<c:if
+									test="${param.pageNo < pi.totalPage or param.pageNo==null}">
+									<a
+										href="/product/productCategory/${category }?pageNo=${param.pageNo + 1 }">
+										<i class="fa fa-long-arrow-right"> </i>
+									</a>
+								</c:if>
+							</c:when>
+							<c:otherwise>
+								<c:if test="${param.pageNo > 1 }">
+									<a href="/product/${category }?pageNo=${param.pageNo - 1 }">
+										<i class="fa fa-long-arrow-left"> </i>
+									</a>
+								</c:if>
+
+								<c:forEach var="i" begin="${pi.startNumOfCurPagingBlock}"
+									end="${pi.endNumOfCurPagingBlock }" step="1">
+									<c:if test="${i < pi.totalPage+1 }">
+										<a href="/product/${category }?pageNo=${i}">${i}</a>
+									</c:if>
+
+								</c:forEach>
+								<c:if
+									test="${param.pageNo < pi.totalPage or param.pageNo==null}">
+									<a href="/product/${category }?pageNo=${param.pageNo + 1 }">
+										<i class="fa fa-long-arrow-right"> </i>
+									</a>
+								</c:if>
+							</c:otherwise>
+						</c:choose>
+
 					</div>
 				</div>
 			</div>

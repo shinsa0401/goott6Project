@@ -2,21 +2,140 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.boritgogae.productMapper">
-  	<select id="popularProduct" resultType="com.boritgogae.domain.ProductDTO">
-  		select substring_index(prodName,' ',1) as brand,a.*, b.originalFile from product as a , prodImg as b where a.prodNo= #{prodNo} and b.prodNo = #{prodNo} limit 0,1 
-  	</select>
-  	
-  	<select id="LastProduct" resultType="com.boritgogae.domain.ProductDTO">
-  		select substring_index(prodName,' ',1) as brand,a.*, b.originalFile from product as a , prodImg as b where a.prodNo=b.prodNo order by a.prodPutDate desc limit 0,6 
-  	</select>
-  	
-  	<select id="prodList" resultType="ProductDTO">
-  		select b.*,a.originalFile from prodImg as a, product as b where a.prodNo = b.prodNo order by prodNo desc limit #{startNum},#{postPerPage}
-  	</select>
-  	
-  	<select id="prodCnt" resultType="int">
-  		select count(*) from product
-  	</select>
-  </mapper>
+
+<mapper namespace="com.boritgogae.productMapper">
+	<select id="popularProduct"
+		resultType="com.boritgogae.domain.ProductDTO">
+		select substring_index(prodName,' ',1) as brand,a.*, b.originalFile from
+		product as a , prodImg as b where a.prodNo= #{prodNo} and b.prodNo =
+		#{prodNo} limit 0,1
+	</select>
+
+	<select id="LastProduct"
+		resultType="com.boritgogae.domain.ProductDTO">
+		select substring_index(prodName,' ',1) as brand,a.*, b.originalFile from
+		product as a , prodImg as b where a.prodNo=b.prodNo order by
+		a.prodPutDate desc limit 0,6
+	</select>
+
+	<select id="productSearchCnt" resultType="int">
+		select count(*) from product where prodName like concat('%',#{category},'%')
+	</select>
+	
+	<select id="prodCnt" resultType="int">
+		select count(*) from product
+		<if test="category == 'All'">
+
+		</if>
+
+		<if test="category == 'CF'">
+			where prodNo like concat('CF','%')
+		</if>
+
+		<if test="category == 'CC'">
+			where prodNo like concat('CC','%')
+		</if>
+
+		<if test="category == 'CL'">
+			where prodNo like concat('CL','%')
+		</if>
+
+		<if test="category == 'CB'">
+			where prodNo like concat('CB','%')
+		</if>
+
+		<if test="category == 'CT'">
+			where prodNo like concat('CT','%')
+		</if>
+
+		<if test="category == 'DF'">
+			where prodNo like concat('DF','%')
+		</if>
+
+		<if test="category == 'DC'">
+			where prodNo like concat('DC','%')
+		</if>
+
+		<if test="category == 'DL'">
+			where prodNo like concat('DL','%')
+		</if>
+
+		<if test="category == 'DB'">
+			where prodNo like concat('DB','%')
+		</if>
+
+		<if test="category == 'DT'">
+			where prodNo like concat('DT','%')
+		</if>
+
+	</select>
+
+	<select id="productSearchList" resultType="ProductDTO">
+	
+		select substring_index(b.prodName,' ',1) as brand, b.*,a.originalFile 
+		from prodImg as a, product as b where a.prodNo = b.prodNo 
+		and b.prodName like concat('%',#{category},'%') order by a.prodNo desc limit #{StartNum},#{PostPerPage}
+		 		
+	</select>
+
+	<select id="ProductAll" resultType="ProductDTO">
+		select substring_index(prodName,' ',1) as brand, b.*,a.originalFile
+		from prodImg as a, product as b where a.prodNo = b.prodNo
+
+		<if test="category == 'All'">
+			order by prodNo desc limit #{StartNum},#{PostPerPage}
+		</if>
+
+		<if test="category == 'CF'">
+			and a.prodNo like concat('CF','%') order by prodNo desc limit
+			#{StartNum},#{PostPerPage}
+		</if>
+
+		<if test="category == 'CC'">
+			and a.prodNo like concat('CC','%') order by prodNo desc limit
+			#{StartNum},#{PostPerPage}
+		</if>
+
+		<if test="category == 'CL'">
+			and a.prodNo like concat('CL','%') order by prodNo desc limit
+			#{StartNum},#{PostPerPage}
+		</if>
+
+		<if test="category == 'CB'">
+			and a.prodNo like concat('CB','%') order by prodNo desc limit
+			#{StartNum},#{PostPerPage}
+		</if>
+
+		<if test="category == 'CT'">
+			and a.prodNo like concat('CT','%') order by prodNo desc limit
+			#{StartNum},#{PostPerPage}
+		</if>
+
+		<if test="category == 'DF'">
+			and a.prodNo like concat('DF','%') order by prodNo desc limit
+			#{StartNum},#{PostPerPage}
+		</if>
+
+		<if test="category == 'DC'">
+			and a.prodNo like concat('DC','%') order by prodNo desc limit
+			#{StartNum},#{PostPerPage}
+		</if>
+
+		<if test="category == 'DL'">
+			and a.prodNo like concat('DL','%') order by prodNo desc limit
+			#{StartNum},#{PostPerPage}
+		</if>
+
+		<if test="category == 'DB'">
+			and a.prodNo like concat('DB','%') order by prodNo desc limit
+			#{StartNum},#{PostPerPage}
+		</if>
+
+		<if test="category == 'DT'">
+			and a.prodNo like concat('DT','%') order by prodNo desc limit
+			#{StartNum},#{PostPerPage}
+		</if>
+
+	</select>
+
+</mapper>
