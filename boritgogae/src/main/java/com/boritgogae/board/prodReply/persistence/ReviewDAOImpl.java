@@ -9,8 +9,6 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.boritgogae.domain.OrdersVo;
-import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
@@ -18,6 +16,8 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.PageAndProdNo;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
 
 @Repository
 public class ReviewDAOImpl implements ReviewDAO {

@@ -12,9 +12,9 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
 <title>공지사항 글 작성</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-		<link
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<link
 		href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
 		rel="stylesheet">
 	<script
@@ -122,7 +122,6 @@
 
 	<link rel="stylesheet"
 		href="${pageContext.request.contextPath}/resources/summernote/css/summernote-lite.css">
-
 
 
 	<div class="container">

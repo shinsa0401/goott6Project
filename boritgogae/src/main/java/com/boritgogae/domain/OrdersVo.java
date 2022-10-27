@@ -27,6 +27,7 @@ public class OrdersVo {
 
 	public OrdersVo(int orderNo, String memberId, int prodTotalPrice, String deliveryOption, int totalPrice,
 			Timestamp orderDate, String isMember, String phoneNumber, String guestEmail, String guestPwd, String name,
+
 			String memo, int usedPoint, String address, String detailAddress, int postCode, int accumPoint) {
 		super();
 		this.orderNo = orderNo;
@@ -182,6 +183,10 @@ public class OrdersVo {
 
 	public void setAccumPoint(int accumPoint) {
 		this.accumPoint = accumPoint;
+	}
+	
+	public OrdersVo() {
+		super();
 	}
 
 	@Override

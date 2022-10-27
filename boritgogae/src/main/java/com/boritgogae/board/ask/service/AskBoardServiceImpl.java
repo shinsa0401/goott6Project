@@ -148,7 +148,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 		int result2 = dao.answerCreate(board);
 
 		// 만약 AnswerStatus에 A를 주어서 답변완료 체크를 했다면,
-		if(board.getAnswerStatus() == "A") {
+		if (board.getAnswerStatus() == "A") {
 			// 타겟보드의 answerStatus를 Y로 만들어준다.
 			// 아닐경우엔 그냥 현상유지 하면 된다.
 			dao.answerStatusOk(targetBoard.getAskBno());
@@ -262,23 +262,22 @@ public class AskBoardServiceImpl implements AskBoardService {
 		System.out.println("글 수정등록중");
 
 		board.setContents(board.getContents().replace("\r\n", "<br />")); // 게시글 내용.. 줄바꿈 처리
-		
-		
+
 		// 1) 넘어온 board를 insert
 		int row = dao.updateAskBoard(board);
 		int row2 = 0;
 
 		if (row == 1) {
-				// 3) 업로드된 파일이 있다면 업로드된 파일의 갯수만큼 반복하여 uploadfile 테이블에 insert
-				if (addTempFileLst.size() > 0) {
-					for (UploadAskFile up : addTempFileLst) {
-						if (up.isImage()) {
-							dao.imageInsert(board.getAskBno(), up.getSavedOriginImageFileName(), up.getThumbnailFileName());
-						} else {
-							dao.fileInsert(board.getAskBno(), up.getSavedOriginImageFileName());
-						}
+			// 3) 업로드된 파일이 있다면 업로드된 파일의 갯수만큼 반복하여 uploadfile 테이블에 insert
+			if (addTempFileLst.size() > 0) {
+				for (UploadAskFile up : addTempFileLst) {
+					if (up.isImage()) {
+						dao.imageInsert(board.getAskBno(), up.getSavedOriginImageFileName(), up.getThumbnailFileName());
+					} else {
+						dao.fileInsert(board.getAskBno(), up.getSavedOriginImageFileName());
 					}
 				}
+			}
 		}
 
 		if (row == 1 && row2 == 1) {
@@ -287,7 +286,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 
 		return result;
 	}
-	
+
 	// DB에서 파일명을 가지고 있는 컬럼 삭제
 	@Override
 	public int deleteFileDB(String savedOriginImageFileName) throws Exception {
@@ -299,7 +298,7 @@ public class AskBoardServiceImpl implements AskBoardService {
 	public int getLikeCount(int askBno) throws Exception {
 		return dao.getLikeCount(askBno);
 	}
-	
+
 	// 특정 글의 조회수 갯수를 파악한다.
 	@Override
 	public int getReadCount(int askBno) throws Exception {
@@ -311,13 +310,13 @@ public class AskBoardServiceImpl implements AskBoardService {
 	public int likeCheck(int no, String clientIp) throws Exception {
 		return dao.likeCheck(no, clientIp);
 	}
-	
+
 	// 특정 아이피의 특정 글 추천을 삭제
 	@Override
 	public int deleteLike(int no, String clientIp) throws Exception {
 		return dao.deleteLike(no, clientIp);
 	}
-	
+
 	// 특정 아이피의 특정 글 추천을 등록
 	@Override
 	public int insertLike(int no, String clientIp) throws Exception {

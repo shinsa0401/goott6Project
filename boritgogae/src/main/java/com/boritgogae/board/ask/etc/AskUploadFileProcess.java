@@ -22,9 +22,14 @@ public class AskUploadFileProcess {
 		String saveFileName = uuid.toString() + "_" + originalFileName; // 중복되지 않는 파일 이름
 		String savePath = calcSavePath(upPath); // 파일이 저장될 경로 계산하여 얻어옴 (최종 저장될 경로 = upPath + savePath)
 		
-		UploadAskFile upFile = new UploadAskFile(null, null, null, false);
 		
+		
+		
+		
+		
+		UploadAskFile upFile = new UploadAskFile(null, null, null, false);
 		upFile.setSavedOriginImageFileName(savePath + File.separator + saveFileName);
+		
 
 		File originTarget = new File(upPath + savePath, saveFileName);
 		FileCopyUtils.copy(file, originTarget); // 원본 파일 저장
@@ -66,6 +71,8 @@ public class AskUploadFileProcess {
 		return upFile; 
 		
 	}
+	
+	
 
 
 	public static String calcSavePath(String upPath) {
@@ -99,8 +106,6 @@ public class AskUploadFileProcess {
 				dirPath.mkdir(); // 실제 디렉토리(폴더) 생성
 			}
 		}
-		
-		
 	}
 }
 

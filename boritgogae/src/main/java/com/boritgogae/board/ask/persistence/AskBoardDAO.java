@@ -4,8 +4,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
-
 import com.boritgogae.board.ask.domain.AskBoardVo;
 import com.boritgogae.board.ask.domain.AskCodeVo;
 import com.boritgogae.board.ask.domain.AskPagingInfo;
@@ -13,7 +11,6 @@ import com.boritgogae.board.ask.domain.AskSearchCriteria;
 import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
 
-@Repository
 public interface AskBoardDAO {
 	// 게시판 전체 목록 가져오기
 	public List<AskBoardVo> selectAllBoard(AskPagingInfo pi) throws Exception;

@@ -10,8 +10,6 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.domain.OrderDetailVo;
-import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
@@ -20,6 +18,9 @@ import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.persistence.ReviewDAO;
 import com.boritgogae.persistence.ProductDAO;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
+
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
