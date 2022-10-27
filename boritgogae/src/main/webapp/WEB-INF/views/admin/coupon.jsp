@@ -92,13 +92,18 @@
 		let couponDiscount = $("#modiCouponDiscount").val();
 		let couponUseDate = $("#modiCouponUseDate").val();
 		let modiCouponName = beforeCouponName;
-		
+
 		let url = "/admin/coupon/modify";
 		$.ajax({
 			url : url, // 데이터 송수신될 주소 
 			type : "post", // 전송 방식
 			dataType : "text", // 수신할 데이터
-			data : {"couponName" : couponName, "couponDiscount" : couponDiscount, "couponUseDate" : couponUseDate, "modiCouponName" : modiCouponName},
+			data : {
+				"couponName" : couponName,
+				"couponDiscount" : couponDiscount,
+				"couponUseDate" : couponUseDate,
+				"modiCouponName" : modiCouponName
+			},
 			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
 				console.log(data);
 				if (data == "success") {
@@ -126,22 +131,22 @@
 		$("#modiCouponDiscount").val(beforeDiscount);
 		$("#modiCouponUseDate").val(beforeUseDate);
 	}
-	
+
 	function sendCoupon() {
 		let sendMemberId = $("#who").val();
 		let sendCouponName = $("#what").val();
 		let sendCouponWhy = $("#couponWhy").val();
-		
-		if(sendMemberId == "회원 전체") {
+
+		if (sendMemberId == "회원 전체") {
 			sendMemberId = "all";
 		}
-		
+
 		let sendData = JSON.stringify({
 			"couponName" : sendCouponName,
 			"memberId" : sendMemberId,
 			"couponWhy" : sendCouponWhy
 		});
-		
+
 		let url = "/admin/coupon/sendCoupon";
 		$.ajax({
 			url : url, // 데이터 송수신될 주소 
@@ -167,7 +172,7 @@
 				console.log(e);
 			}
 		});
-		
+
 	}
 </script>
 <style type="text/css">
@@ -228,8 +233,7 @@
 								<label for="couponDiscount">쿠폰 할인율</label>
 								<div class="mb-3 row">
 									<input type="number" class="form-control col-sm-4"
-										name="couponDiscount" id="couponDiscount"
-										placeholder="쿠폰 할인율">
+										name="couponDiscount" id="couponDiscount" placeholder="쿠폰 할인율">
 									<div class="col-sm-6">
 										<span class="coupon">%</span>
 									</div>
@@ -239,8 +243,7 @@
 								<label for="couponUseDate">사용 기한</label>
 								<div class="mb-3 row">
 									<input type="number" class="form-control col-sm-4"
-										name="couponUseDate" id="couponUseDate"
-										placeholder="쿠폰 사용 기한">
+										name="couponUseDate" id="couponUseDate" placeholder="쿠폰 사용 기한">
 									<div class="col-sm-6">
 										<span class="coupon">일</span>
 									</div>
@@ -263,28 +266,29 @@
 						</div>
 						<!-- /.card-header -->
 						<div class="card-body">
-							<span>전송할 회원</span> 
+							<span>전송할 회원</span>
 							<div class="mb-3 row">
-							<select id="who" class="form-select form-select-sm col-sm-4">
-								<option id="all">회원 전체</option>
-								<c:forEach items="${members }" var="member">
-									<option id="${member.memberId }">${member.memberId }</option>
-								</c:forEach>
-							</select>
+								<select id="who" class="form-select form-select-sm col-sm-4">
+									<option id="all">회원 전체</option>
+									<c:forEach items="${members }" var="member">
+										<option id="${member.memberId }">${member.memberId }</option>
+									</c:forEach>
+								</select>
 							</div>
-							
-							<span>전송할 쿠폰</span> 
+
+							<span>전송할 쿠폰</span>
 							<div class="mb-3 row">
-							<select id="what" class="form-select form-select-sm col-sm-4">
-								<c:forEach items="${couponList }" var="coupon">
-									<option id="${coupon.couponName }">${coupon.couponName }</option>
-								</c:forEach>
-							</select>
+								<select id="what" class="form-select form-select-sm col-sm-4">
+									<c:forEach items="${couponList }" var="coupon">
+										<option id="${coupon.couponName }">${coupon.couponName }</option>
+									</c:forEach>
+								</select>
 							</div>
-							
-							<span>전송 사유</span> 
+
+							<span>전송 사유</span>
 							<div class="mb-3 row">
-								<input type="text" class="form-control col-sm-4" name="couponWhy" id="couponWhy">
+								<input type="text" class="form-control col-sm-4"
+									name="couponWhy" id="couponWhy">
 							</div>
 						</div>
 						<!-- /.card-body -->
@@ -314,7 +318,8 @@
 								</thead>
 								<tbody>
 									<c:forEach items="${couponList }" var="coupon">
-										<tr id="coupons" onclick="modiModal('${coupon.couponName }', '${coupon.couponDiscount * 100 }', '${coupon.couponUseDate }');">
+										<tr id="coupons"
+											onclick="modiModal('${coupon.couponName }', '${coupon.couponDiscount * 100 }', '${coupon.couponUseDate }');">
 											<td>${coupon.couponName }</td>
 											<td>${coupon.couponDiscount * 100 }%</td>
 											<td>${coupon.couponUseDate }일</td>
@@ -374,8 +379,8 @@
 				<div class="modal-body">
 					<div class="form-group">
 						<label for="modiCouponName">쿠폰명</label> <input type="text"
-							class="form-control col-sm-8" id="modiCouponName" name="modiCouponName"
-							placeholder="수정할 쿠폰 이름을 입력해주세요">
+							class="form-control col-sm-8" id="modiCouponName"
+							name="modiCouponName" placeholder="수정할 쿠폰 이름을 입력해주세요">
 					</div>
 					<div class="form-group">
 						<label for="modiCouponDiscount">쿠폰 할인율</label>

@@ -2,6 +2,7 @@ package com.boritgogae.controller;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.board.notice.domain.NoticeVo;
+import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -66,6 +72,31 @@ public class AdminController {
 
 		return "/admin/member";
 	}
+	
+	@RequestMapping(value = "/product")
+	public String productList(Model model, @RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo, RedirectAttributes rttr) throws Exception {
+		
+		if(pageNo < 1) {
+			pageNo = 1;
+		}
+		
+		Map<String, Object> map = service.getProdList(pageNo);
+		
+		List<ProductVo> prodList = (List<ProductVo>)map.get("prodList");
+		List<ProdImgVo> prodImgList = service.getProdImg();
+		NoticePagingInfo pi = (NoticePagingInfo)map.get("pagingInfo");
+		int prodCnt = service.getProdCnt();
+		List<ProductContentVo> prodContentList = service.getProductContent();
+		
+		model.addAttribute("prodContentList", prodContentList);
+		model.addAttribute("prodImgList", prodImgList);
+		model.addAttribute("prodList", prodList);
+		model.addAttribute("pagingInfo", pi);
+		model.addAttribute("prodCnt", prodCnt);
+		rttr.addFlashAttribute("pageNo", pageNo);
+		
+		return "/admin/product";
+	}
 
 	@RequestMapping(value = "/member/new")
 	public String newMemberManagememt(Model model) throws Exception {
@@ -98,6 +129,48 @@ public class AdminController {
 		model.addAttribute("deleteReasons", deleteReasons);
 		model.addAttribute("deleteMember", deleteMember);
 		return "/admin/delMember";
+	}
+	
+	
+	@RequestMapping(value = "/member/detail")
+	public String viewMemberProfile(@RequestParam("memberId") String memberId, Model model) throws Exception {
+		
+		MemberVo member = service.getMemberProfile(memberId);
+		List<CouponUsedVo> memberCoupon = service.getCouponFromMember(memberId);
+		List<DeliveryInfoVo> memberAddressList = service.getMemberAddress(memberId);
+		
+		model.addAttribute("memberAddressList", memberAddressList);
+		model.addAttribute("memberCoupon", memberCoupon);
+		model.addAttribute("member", member);
+		
+		return "/admin/memberProfile";
+	}
+	
+	@RequestMapping(value = "/member/modify", method = RequestMethod.POST)
+	public @ResponseBody String modifyMember(@RequestBody MemberVo member) throws Exception {
+		String result = ""; 
+		
+		if(service.modifyMemberForAdmin(member)) {
+			result = "success";
+		}else {
+			result = "fail";
+		}
+		
+		
+		return result;
+	}
+	
+	@RequestMapping(value = "/member/delete", method = RequestMethod.POST)
+	public @ResponseBody String deleteMember(@RequestParam("memberId") String memberId) throws Exception {
+		String result = ""; 
+		
+		if(service.deleteMember(memberId)) {
+			result = "success";
+		}else {
+			result = "fail";
+		}
+		
+		return result;
 	}
 
 	@RequestMapping(value = "/coupon")
@@ -193,44 +266,27 @@ public class AdminController {
 		return result;
 	}
 	
-	@RequestMapping(value = "/member/detail")
-	public String viewMemberProfile(@RequestParam("memberId") String memberId, Model model) throws Exception {
-		
-		MemberVo member = service.getMemberProfile(memberId);
-		List<CouponUsedVo> memberCoupon = service.getCouponFromMember(memberId);
-		List<DeliveryInfoVo> memberAddressList = service.getMemberAddress(memberId);
-		
-		model.addAttribute("memberAddressList", memberAddressList);
-		model.addAttribute("memberCoupon", memberCoupon);
-		model.addAttribute("member", member);
-		
-		return "/admin/memberProfile";
-	}
-	
-	@RequestMapping(value = "/member/modify", method = RequestMethod.POST)
-	public @ResponseBody String modifyMember(@RequestBody MemberVo member) throws Exception {
+	@RequestMapping(value = "product/modify", method = RequestMethod.POST)
+	public @ResponseBody String modifyProd(@RequestBody ProductVo product) throws Exception {
 		String result = ""; 
-		
-		if(service.modifyMemberForAdmin(member)) {
+		System.out.println(product);
+		if(service.updateProd(product)) {
 			result = "success";
 		}else {
 			result = "fail";
 		}
-		
 		
 		return result;
 	}
 	
-	@RequestMapping(value = "/member/delete", method = RequestMethod.POST)
-	public @ResponseBody String deleteMember(@RequestParam("memberId") String memberId) throws Exception {
+	@RequestMapping(value = "product/delete", method = RequestMethod.POST)
+	public @ResponseBody String deleteProd(@RequestParam("prodNo") String prodNo) throws Exception {
 		String result = ""; 
-		
-		if(service.deleteMember(memberId)) {
+		if(service.deleteProd(prodNo)) {
 			result = "success";
 		}else {
 			result = "fail";
 		}
-		
 		
 		return result;
 	}
