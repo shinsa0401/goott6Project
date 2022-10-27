@@ -40,7 +40,7 @@ public class MemberDAOImpl implements MemberDAO {
 		return ses.selectOne(ns + ".logIn", dto);
 	}
 
-	// 자동로그인 체크한 회원 세션의 정보를 업데이트
+	// 자동로그인 체크한 회원 세션의 정보를 업데이트하는 메서드
 	@Override
 	public int updateMemberSession(String memberId, String sessionId, Timestamp sessionLimit) throws Exception {
 		System.out.println("DAO : 자동로그인 체크 회원 세션 업데이트");
@@ -60,14 +60,14 @@ public class MemberDAOImpl implements MemberDAO {
 		return ses.selectOne(ns + ".selectAutoLogIn", sessionId);
 	}
 	
-	// 기존 로그인시 로그인시간 업데이트
+	// 기존 로그인시 로그인시간 업데이트하는 메서드
 	@Override
 	public int updateLogInDate(String memberId) throws Exception {
 		System.out.println("DAO : 로그인 시간 업데이트");
 		return ses.update(ns + ".updateLogInDate", memberId);
 	}
 	
-	// 기존 회원 로그아웃시 로그아웃시간 업데이트
+	// 기존 회원 로그아웃시 로그아웃시간 업데이트하는 메서드
 	@Override
 	public int updateLogOutDate(String memberId) throws Exception {
 		System.out.println("DAO : 로그아웃시간 업데이트");
@@ -79,6 +79,23 @@ public class MemberDAOImpl implements MemberDAO {
 	public MemberVo selectMemberId(String memberEmail) throws Exception {
 		System.out.println("DAO : 이메일로 회원 아이디 검색");
 		return ses.selectOne(ns + ".selectMemberId", memberEmail);
+	}
+	
+	// 회원 아이디가 맞는지 체크하는 메서드
+	@Override
+	public int checkMemberId(String memberId) throws Exception {
+		System.out.println("DAO : 회원의 아이디가 맞는지 체크");
+		return ses.selectOne(ns + ".checkMemberId", memberId);
+	}
+	
+	// 회원 비밀번호 업데이트하는 메서드
+	@Override
+	public int updatePwd(String memberId, String memberPwd) throws Exception {
+		System.out.println("DAO : 회원 비밀번호 재설정");
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("memberPwd", memberPwd);
+		return ses.update(ns + ".updatePwd", map);
 	}
 
 	// 등급혜택을 가져오는 메서드
@@ -250,6 +267,7 @@ public class MemberDAOImpl implements MemberDAO {
 
 		return ses.update(ns + ".changeMemberEmail", map);
 	}
+
 
 	
 }

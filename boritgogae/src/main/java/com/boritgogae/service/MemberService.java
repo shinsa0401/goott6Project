@@ -24,7 +24,7 @@ public interface MemberService {
 	// 로그인을 처리하는 메서드
 	public MemberVo logIn(LogInDTO dto, HttpServletRequest request) throws Exception;
 
-	// 자동로그인을 체크했을 경우 로그인 유지를 위한 sessionId, sessionLimit 업데이트하는 메서드
+	// 자동로그인을 체크했을 경우 로그인 유지를 위한 세션정보 업데이트하는 메서드
 	public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit) throws Exception;
 	
 	// 자동 로그인을 체크한 회원인지 검색하는 메서드
@@ -33,8 +33,14 @@ public interface MemberService {
 	// 회원 로그아웃시 로그아웃시간 업데이트하는 메서드
 	public int updateLogOutDate(String memberId) throws Exception;
 	
-	// 이메일로 회원 아이디 검색
+	// 이메일로 회원 아이디 검색하는 메서드
 	public MemberVo selectMemberId(String memberEmail) throws Exception;
+	
+	// 비밀번호 재설정 전 회원 아이디 확인하는 메서드
+	public int checkMemberId(String memberId) throws Exception;
+	
+	// 회원 비밀번호 업데이트하는 메서드
+	public int updatePwd(String memberId, String memberPwd) throws Exception;
 
 	// 등급혜택을 가져오는 메서드
 	public List<GradesVo> showGradeBenefit() throws Exception;
@@ -85,18 +91,13 @@ public interface MemberService {
 	public int deleteAddr(String memberId, String deliveryInfo) throws Exception;
 
 	// 회원이 주소지를 추가할 때의 메서드
-	public int addAddr(String memberId, String address, String detailAddress, String postCode, String recipient,
-			String recipientPhoneNumber) throws Exception;
+	public int addAddr(String memberId, String address, String detailAddress, String postCode, String recipient, String recipientPhoneNumber) throws Exception;
 
 	// 회원이미지를 추가하는 메서드
 	public int addMemberImg(String memberId, String memberImg) throws Exception;
 
 	// 회원 이메일 변경 메서드
 	public int changeMemberEmail(String memberId, String memberEmail) throws Exception;
-
-	
-
-	
 
 	
 

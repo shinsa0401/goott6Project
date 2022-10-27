@@ -17,6 +17,7 @@
 		
 	});
 	
+	
 	function emailAuthCheck() {
 		// 아이디 찾기
 		let url = "/member/emailAuthCheck";
@@ -25,9 +26,6 @@
 		let sendData = JSON.stringify({
 			memberName : memberName, memberEmail : memberEmail
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
-		
-		console.log(memberName);
-		console.log(memberEmail);
 		
 		$.ajax({
 	        url: url, // 데이터 송수신될 주소
@@ -67,8 +65,9 @@
 	
 </script>
 <style>
+
 	#container div {
-		width: 80%;
+		width: 90%;
 		margin: auto;
 	}
 	
@@ -104,7 +103,7 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div id="container">
-	
+		
 		<div class="heading">아이디 찾기</div>
 		
 		<!-- 1차 인증 -->
@@ -157,6 +156,7 @@
 				<button class="btn btn-primary" onclick="location.href='${contextPath}/member/findPwd';">비밀번호 재설정</button>
 			</div>
 		</div>
+	
 		
     </div>
     

@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
 		return logInMember;
 	}
 
-	// 자동로그인을 체크했을 경우 로그인 유지를 위한 sessionId, sessionLimit 업데이트 
+	// 자동로그인을 체크했을 경우 로그인 유지를 위한 세션정보 업데이트하는 메서드
 	@Override
 	public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit) throws Exception {
 		
@@ -61,21 +61,33 @@ public class MemberServiceImpl implements MemberService {
 		return dao.selectAutoLogIn(sessionId);
 	}
 	
-	// 기존 회원 로그아웃 시간 업데이트
+	// 기존 회원 로그아웃 시간 업데이트하는 메서드
 	@Override
 	public int updateLogOutDate(String memberId) throws Exception {
 		
 		return dao.updateLogOutDate(memberId);
 	}
 	
-	// 이메일로 회원 아이디 검색
+	// 이메일로 회원 아이디 검색하는 메서드
 	@Override
 	public MemberVo selectMemberId(String memberEmail) throws Exception {
 		
 		return dao.selectMemberId(memberEmail);
 	}
 	
+	// 비밀번호 재설정 전 회원 아이디 확인하는 메서드
+	@Override
+	public int checkMemberId(String memberId) throws Exception {
+		
+		return dao.checkMemberId(memberId);
+	}
 	
+	// 회원 비밀번호 업데이트하는 메서드
+	@Override
+	public int updatePwd(String memberId, String memberPwd) throws Exception {
+		
+		return dao.updatePwd(memberId, memberPwd);
+	}
 	
 	// 등급혜택을 가져오는 메서드
 	@Override
@@ -211,6 +223,5 @@ public class MemberServiceImpl implements MemberService {
 		return dao.changeMemberEmail(memberId, memberEmail);
 	}
 
-	
 
 }

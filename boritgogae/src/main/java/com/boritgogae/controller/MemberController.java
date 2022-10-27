@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.io.IOException;
@@ -665,7 +667,6 @@ public class MemberController {
 			result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		
 		return result;
 		
 	}
@@ -682,6 +683,46 @@ public class MemberController {
 	public String findPwd() throws Exception {
 		System.out.println("컨트롤러 : 비밀번호 재설정 페이지로 이동");
 		return "member/findPwd";
+	}
+	
+	/**
+	 * @methodName : findPwd
+	 * @author : 신태호
+	 * @date : 2022. 10. 27.
+	 * @입력 param :
+	 * @returnType : String
+	 */
+	@RequestMapping(value = "/idCheck")
+	public ResponseEntity<String> idCheck(@RequestParam("memberId")String memberId) throws Exception {
+		ResponseEntity<String> result = null;
+		
+		if (service.checkMemberId(memberId) == 1) { // 회원 아이디가 맞다면
+			result = new ResponseEntity<String>("success", HttpStatus.OK);
+		} else { // 검색되는 아이디가 없다면
+			result = new ResponseEntity<String>("fail", HttpStatus.OK);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * @methodName : idCheck
+	 * @author : 
+	 * @date : 2022. 10. 27.
+	 * @입력 param :
+	 * @returnType : ResponseEntity<String>
+	 */
+	@RequestMapping(value = "/pwdUpdate")
+	public ResponseEntity<String> pwdUpdate(@RequestParam("memberId")String memberId, @RequestParam("memberPwd")String memberPwd) throws Exception {
+		ResponseEntity<String> result = null;
+		
+		if (service.updatePwd(memberId, memberPwd) == 1) {
+			result = new ResponseEntity<String>("success", HttpStatus.OK);
+		} else {
+			result = new ResponseEntity<String>("fail", HttpStatus.OK);
+		}
+		
+		return result;
 	}
 	
 	

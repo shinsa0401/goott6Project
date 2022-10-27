@@ -20,20 +20,26 @@ public interface MemberDAO {
 	// 로그인하기 위해 회원정보를 얻어오는 메서드
 	public MemberVo logIn(LogInDTO dto) throws Exception;
 
-	// 자동로그인을 체크한 회원의 세션의 정보를 업데이트
+	// 자동로그인을 체크한 회원의 세션의 정보를 업데이트하는 메서드
 	public int updateMemberSession(String memberId, String sessionId, Timestamp sessionLimit) throws Exception;
 
-	// 자동로그인 체크한 회원인지 검색
+	// 자동로그인 체크한 회원인지 검색하는 메서드
 	public MemberVo selectAutoLogIn(String sessionId) throws Exception;
 
-	// 로그인시 로그인시간 업데이트
+	// 로그인시 로그인시간 업데이트하는 메서드
 	public int updateLogInDate(String memberId) throws Exception;
 	
-	// 로그아웃시 로그아웃시간 업데이트
+	// 로그아웃시 로그아웃시간 업데이트하는 메서드
 	public int updateLogOutDate(String memberId) throws Exception;
 	
 	// 이메일로 회원 아이디 검색하는 메서드
 	public MemberVo selectMemberId(String memberEmail) throws Exception;
+	
+	// 회원 아이디가 맞는지 체크하는 메서드
+	public int checkMemberId(String memberId) throws Exception;
+	
+	// 회원 비밀번호 업데이트하는 메서드
+	public int updatePwd(String memberId, String memberPwd) throws Exception;
 	
 	// 등급혜택을 가져오는 메서드
 	public List<GradesVo> showGradeBenefit() throws Exception;
@@ -65,7 +71,6 @@ public interface MemberDAO {
 	// 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드
 	public List<OrderDetailVo> userAbleReviewList(String memberId) throws Exception;
 
-
 	// 상품코드에 맞는 상품명을 반환해준다.
 	public String convertProdNoToProdName(String prodCode) throws Exception;
 	
@@ -94,8 +99,6 @@ public interface MemberDAO {
 	// 회원 이메일 변경 메서드
 	public int changeMemberEmail(String memberId, String memberEmail) throws Exception;
 
-	
-	
 	
 
 	

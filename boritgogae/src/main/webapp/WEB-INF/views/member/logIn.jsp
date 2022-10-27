@@ -135,21 +135,17 @@
 	.logInArea {
 		height: 650px;
 	}
-	
 	.row {
 		justify-content: center;
 	}
-	
 	#memberSelect {
 		margin-top: 30px;
 		text-align: center;
 	}
-	
 	.btns {
 		float: right;
 		margin-top: 5px;
 	}
-	
 	.addLink {
 		width: 400px;
 		margin-top: 120px;
@@ -158,23 +154,19 @@
     	left: 50%;
     	transform: translate(-50%, -100%);
     }
-    
     .failMsg {
     	text-align: left;
     	font-size: 15px;
     }
-    
     #memberFailMsg1 {
     	color: blue;
     }
     #memberFailMsg2 {
     	color: red;
     }
-    
     .guestForm {
     	display: none;
     }
-    
     .guestFailMsg {
     	color: red;
     }
