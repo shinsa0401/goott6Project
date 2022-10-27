@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 public class ProductVo {
 	private String prodNo;
 	private String prodName;
-	private String prodContent;
 	private int prodQuantity;
 	private int prodPrice;
 	private int readCount;
@@ -14,12 +13,11 @@ public class ProductVo {
 	private int reviewCount;
 	
 	
-	public ProductVo(String prodNo, String prodName, String prodContent, int prodQuantity, int prodPrice, int readCount,
+	public ProductVo(String prodNo, String prodName, int prodQuantity, int prodPrice, int readCount,
 			int likeCount, Timestamp prodPutDate, int reviewCount) {
 		super();
 		this.prodNo = prodNo;
 		this.prodName = prodName;
-		this.prodContent = prodContent;
 		this.prodQuantity = prodQuantity;
 		this.prodPrice = prodPrice;
 		this.readCount = readCount;
@@ -51,16 +49,6 @@ public class ProductVo {
 
 	public void setProdName(String prodName) {
 		this.prodName = prodName;
-	}
-
-
-	public String getProdContent() {
-		return prodContent;
-	}
-
-
-	public void setProdContent(String prodContent) {
-		this.prodContent = prodContent;
 	}
 
 
@@ -126,8 +114,7 @@ public class ProductVo {
 
 	@Override
 	public String toString() {
-		return "ProductVo [prodNo=" + prodNo + ", prodName=" + prodName + ", prodContent=" + prodContent
-				+ ", prodQuantity=" + prodQuantity + ", prodPrice=" + prodPrice + ", readCount=" + readCount
+		return "ProductVo [prodNo=" + prodNo + ", prodName=" + prodName + ", prodQuantity=" + prodQuantity + ", prodPrice=" + prodPrice + ", readCount=" + readCount
 				+ ", likeCount=" + likeCount + ", prodPutDate=" + prodPutDate + ", reviewCount=" + reviewCount + "]";
 	}
 }
