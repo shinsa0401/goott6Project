@@ -238,7 +238,7 @@
                     	<div class="addLink">
                     		<a class="find" href="${contextPath }/member/findId">아이디찾기</a> │ 
                     		<a class="find" href="${contextPath }/member/findPwd">비밀번호 재설정</a> │ 
-                    		<a class="signUp" href="#">회원가입</a>
+                    		<a class="signUp" href="${contextPath }/member/join">회원가입</a>
                     	</div>
                     </div>
                     

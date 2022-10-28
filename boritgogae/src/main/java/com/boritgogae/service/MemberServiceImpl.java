@@ -80,8 +80,9 @@ public class MemberServiceImpl implements MemberService {
 	// 이메일로 회원 아이디 검색하는 메서드
 	@Override
 	public MemberVo selectMemberId(String memberEmail) throws Exception {
-		
+		System.out.println("서비스 : 이메일로 회원 아이디 검색");
 		return dao.selectMemberId(memberEmail);
+		
 	}
 	
 	// 비밀번호 재설정 전 회원 아이디 확인하는 메서드

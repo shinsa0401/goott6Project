@@ -152,16 +152,16 @@
 	</select>
 
 	  <!-- 멤버vo를 id로 가져오는 메서드 -->
-  	<select id="getMemberInfo" resultType="com.boritgogae.domain.MemberVo">
+  	<select id="getMemberInfo" resultType="MemberVo">
   		select * from members where memberId = #{memberId}
   	</select>
   	
   	<!-- 유저 주소를 list로 가져오는 메서드 -->
-  	<select id="getMemAddrs" resultType="com.boritgogae.domain.DeliveryInfoVo">
+  	<select id="getMemAddrs" resultType="DeliveryInfoVo">
   		select * from deliveryInfo where memberId = #{memberId}
   	</select>
   	
-  	<select id="getGrade" resultType="com.boritgogae.domain.GradesVo">
+  	<select id="getGrade" resultType="GradesVo">
   		select * from grades where grade = (select grade from members where memberId = #{memberId})
   	</select>
   	
@@ -199,8 +199,7 @@
 	</update>
 
 	<!-- 회원의 주소지 정보들을 불러오는 메서드 -->
-	<select id="showDeliveryInfo"
-		resultType="com.boritgogae.domain.DeliveryInfoVo">
+	<select id="showDeliveryInfo" resultType="DeliveryInfoVo">
 		select * from deliveryInfo where memberId = #{memberId}
 	</select>
 
@@ -266,12 +265,12 @@ values(#{memberId},#{address},#{detailAddress},#{postCode},#{recipient},#{recipi
    	  
    	  
    	  
-   	  <select id="selectLike" resultType="com.boritgogae.domain.ProductVo">
+   	  <select id="selectLike" resultType="ProductVo">
   select *from likes where memberId=#{memberId}
   </select>
   
   
-  <select id="likeProduct" resultType="com.boritgogae.domain.ProductVo">
+  <select id="likeProduct" resultType="ProductVo">
    select *from product where prodNo=#{prodNo}
   </select>
  
@@ -285,7 +284,7 @@ values(#{memberId},#{address},#{detailAddress},#{postCode},#{recipient},#{recipi
  
  
 
- <select id="detaildm" resultType="com.boritgogae.domain.DM">
+ <select id="detaildm" resultType="DM">
   select *from dm where no = #{no};
  </select>
  
@@ -296,7 +295,7 @@ values(#{memberId},#{address},#{detailAddress},#{postCode},#{recipient},#{recipi
  
  
  
-    <select id="searchSelectPage" resultType="com.boritgogae.domain.DM">
+    <select id="searchSelectPage" resultType="DM">
         SELECT *
         FROM  dm
         WHERE sendNoteDel='N'

@@ -10,10 +10,74 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <title>비밀번호 재설정</title>
 <script>
-
+	
+	let authCheck = false;
+	
+	
 	$(function () {
 		
+		
+		// 페이지 로딩시 아이디확인 폼 출력
 		$(".idCheckForm").show();
+		
+		// 인증번호 동일성
+		$("#alert-success-email").hide();
+	    $("#alert-danger-email").hide();
+
+	    
+	  	// 인증번호 이메일 전송
+	    $("#getAuthNumber").on("click",function(e){
+			e.preventDefault();
+			
+			let memberName = $("#memberName").val();
+			let memberEmail = $("#memberEmail").val();
+			
+			if (memberName != "" && memberEmail != "") {
+			
+				let email = $("#memberEmail").val();
+				let checkBox = $(".mailInputBox");
+	
+				$.ajax({
+					type:"GET",
+					url : "/member/mailCheck",
+					data : {email : email},
+					contentType :"text/plain;charset=UTF-8",
+					success : function(data){ // 인증번호를 가져옴
+	
+						alert("인증번호 발송 요청이 완료되었습니다. 인증번호가 오지 않는 경우, 입력한 이름/이메일주소를 확인 후 다시 요청해주세요.");
+						
+						checkBox.attr("disabled",false); // 인증번호 입력 가능
+						checkBox.val(''); // 기존에 값이 있었으면 지워줌
+						$("#alert-success-email").hide();
+						$("#alert-danger-email").hide();
+						checkCode = false;
+						code = data; // 인증번호를 변수에 저장
+						authCheck = true; // 인증여부
+					}
+				});
+			} else if (memberName == "") {
+		  		alert("이름 입력");
+		  	} else if (memberEmail == "") {
+		  		alert("이메일 입력");
+		  	}
+		});
+	          
+	    // 인증코드 입력 시 동일성 확인
+		$(".mailInputBox").keyup(function() {
+			var inputCode = $(".mailInputBox").val();
+			if (inputCode != "" || code != "") {
+				if (inputCode == code) {
+					$("#alert-success-email").show();
+					$("#alert-danger-email").hide();
+					$(".mailInputBox").attr("disabled",true); // 인증번호 입력 멈춤
+					checkCode = true;
+				} else {
+					$("#alert-success-email").hide();
+					$("#alert-danger-email").show();
+					checkCode = false;
+				}
+			}
+		});
 		
 	});
 	
@@ -45,7 +109,7 @@
 		
 	// 인증번호 확인
 	function emailAuthCheck() {
-		// 아이디 찾기
+		
 		let url = "/member/emailAuthCheck";
 		let memberName = $("#memberName").val();
 		let memberEmail = $("#memberEmail").val();
@@ -54,25 +118,37 @@
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
 		
 		
-		$.ajax({
-	        url: url, // 데이터 송수신될 주소
-	        type: "post", // 통신 방식(get, post)
-			data: sendData,
-	        dataType: "json", // 수신 받을 데이터 타입
-	        headers : { "content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
-    			"X-HTTP-Method-Override" : "POST" }, // 구 버전의 웹 브라우저에서 (PUT/ DELETE)방식이 호환이 안되는 버전에서 호환 되도록
-	        success: function (data) { // 통신이 성공했을 때 호출되는 callback함수
-	            // data : 성공했을 때 전달되는 데이터
-	            console.log(data);
-    			if (data != null) {
-					
-    	        	$(".authForm").hide();
-    	        	$(".pwdUpdate").show();
-        			
-    			}
-    			
-	        }
-	    });
+		if (memberName != "" & memberEmail != "" && authCheck == true) {
+			
+			$.ajax({
+		        url: url, // 데이터 송수신될 주소
+		        type: "post", // 통신 방식(get, post)
+				data: sendData,
+		        dataType: "json", // 수신 받을 데이터 타입
+		        headers : { "content-type" : "application/json", // 송신되는 데이터의 타입이 json임을 알림
+	    			"X-HTTP-Method-Override" : "POST" }, // 구 버전의 웹 브라우저에서 (PUT/ DELETE)방식이 호환이 안되는 버전에서 호환 되도록
+		        success: function (data) { // 통신이 성공했을 때 호출되는 callback함수
+		            // data : 성공했을 때 전달되는 데이터
+		            console.log(data);
+	    			if (data != null) {
+	    				
+	    	        	$(".authForm").hide();
+	    	        	$(".pwdUpdate").show();
+	        			
+	    			}
+	    			
+		        }
+		    });
+			
+		} else if (memberName == "") {
+			alert("이름 입력");
+		} else if (memberEmail == "") {
+			alert("이메일 입력");
+		} else if (authCheck == false) {
+			alert("인증 여부");
+		}
+		
+		
 	}
 	
 	
@@ -80,29 +156,39 @@
 	function pwdUpdate() {
 		let memberId = $("#memberId").val();
 		let memberPwd = $("#newPwd").val();
+		let memberPwdCheck = $("#newPwdCheck").val(); 
 		let url = "/member/pwdUpdate";
 		
-		console.log(memberId);
-		console.log(memberPwd);
+		if (memberPwd != "" && memberPwdCheck != "" && memberPwd == memberPwdCheck) {
+			
+			$.ajax({
+		        url: url, // 데이터 송수신될 주소
+		        type: "post", // 통신 방식(get, post)
+				data: { "memberId" :memberId,
+						"memberPwd" :memberPwd},
+		        dataType: "text", // 수신 받을 데이터 타입
+		        success: function (data) { // 통신이 성공했을 때 호출되는 callback함수
+		            // data : 성공했을 때 전달되는 데이터
+		            console.log(data);
+	    			if (data == "success") {
+	    				$(".pwdUpdate").hide();
+	    				$(".resultForm").show();
+	    				
+	    			} else if (data == "fail") {
+	    				alert("실패");
+	    			}
+	    		}
+		    });	
+			
+		} else if (memberPwd == "") {
+			alert("비밀번호 없음");
+		} else if (memberPwdCheck == "") {
+			alert("비밀번호확인 없음");
+		} else if (memberPwd != memberPwdCheck) {
+			alert("비밀번호와 비밀번호확인이 다름");
+		}
 		
-		$.ajax({
-	        url: url, // 데이터 송수신될 주소
-	        type: "post", // 통신 방식(get, post)
-			data: { "memberId" :memberId,
-					"memberPwd" :memberPwd},
-	        dataType: "text", // 수신 받을 데이터 타입
-	        success: function (data) { // 통신이 성공했을 때 호출되는 callback함수
-	            // data : 성공했을 때 전달되는 데이터
-	            console.log(data);
-    			if (data == "success") {
-    				$(".pwdUpdate").hide();
-    				$(".resultForm").show();
-    				
-    			} else if (data == "fail") {
-    				alert("실패");
-    			}
-    		}
-	    });
+		
 	}
 		
 	
@@ -142,6 +228,11 @@
 	.btns {
 		padding: 50px;
 	}
+	
+	.label {
+		padding-top: 20px;
+		padding-bottom: 10px;
+	}
 </style>
 </head>
 <body>
@@ -172,40 +263,46 @@
 		
 		<!-- 2차 인증 -->
 		<div class="authForm" style="display: none">
-			<div class="authForm">
-				<div class="col-lg-6">
-					<div class="checkout__input">
-						<p>이름<span>*</span></p>
-						<input type="text" class="inputBox form-control" id="memberName" placeholder="이름을 입력하세요" />
-						<div class="valid-feedback">Valid.</div>
-	    				<div class="invalid-feedback">Please fill out this field.</div>
-					</div>
+			<div class="col-lg-6">
+				<div class="label">이름</div>
+				<div class="checkout__input">
+					<input type="text" class="inputBox form-control" id="memberName" placeholder="이름을 입력하세요" style="color:black" />
+					<div class="valid-feedback">Valid.</div>
+    				<div class="invalid-feedback">Please fill out this field.</div>
 				</div>
-				
-				<div class="col-lg-6">
-					<div class="checkout__input">
-						<p>이메일<span>*</span></p>
-						<input type="email" class="inputBox form-control" id="memberEmail" placeholder="이메일을 입력하세요" />
-						<div class="valid-feedback">Valid.</div>
-	    				<div class="invalid-feedback">Please fill out this field.</div>
-					</div>
+			</div>
+			
+			<div class="col-lg-6">
+				<div class="label">이메일</div>
+				<div class="checkout__input">
+					<input type="email" class="inputBox form-control" id="memberEmail" placeholder="이메일을 입력하세요" style="color:black" />
+					<div class="valid-feedback">Valid.</div>
+    				<div class="invalid-feedback">Please fill out this field.</div>
 				</div>
-				
-				<!-- 캡챠자리 -->
-				
-				<div class="col-lg-6">
-					<div class="checkout__input input-group">
-						<input type="text" class="inputBox form-control" id="authNumber" placeholder="인증번호 입력" />
-						<span class="input-group-btn">
-							<button id="getAuthNumber" class="btn btn-secondary" type="button">인증번호 전송</button>
-			      		</span>
-					</div>
+			</div>
+			
+			<!-- 캡챠자리 -->
+			
+			<div class="col-lg-6">
+				<div class="label">이메일 인증</div>
+				<div class="checkout__input input-group">
+					<input type="text" class="mailInputBox form-control" id="authNumber" placeholder="인증번호 입력" disabled="disabled" />
+					<span class="input-group-btn">
+						<button id="getAuthNumber" class="btn btn-secondary" type="button">인증번호 전송</button>
+		      		</span>
 				</div>
-				
-				<div class="col-lg-6">
-					<div class="checkout__input d-grid">
-						<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthCheck();">비밀번호 재설정</button>
-					</div>
+				<!-- 인증번호 확인 -->
+         		<div class="alert alert-success" id="alert-success-email">
+         			인증번호가 일치합니다.
+         		</div>
+         		<div class="alert alert-danger" id="alert-danger-email">
+         			인증번호가 일치하지 않습니다.
+         		</div>
+			</div>
+			
+			<div class="col-lg-6">
+				<div class="checkout__input d-grid">
+					<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthCheck();">비밀번호 재설정</button>
 				</div>
 			</div>
 		</div>

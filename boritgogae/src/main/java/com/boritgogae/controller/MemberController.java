@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -513,7 +514,7 @@ public class MemberController {
 	// 무진씨 이메일 관련
 	@RequestMapping (value="/mailCheck")
 	@ResponseBody
-	public String mailCheck(String email) throws Exception{
+	public String mailCheck(String email, HttpServletRequest request) throws Exception{
 		System.out.println("이메일 데이터 전송확인");
 		System.out.println("인증 메일 : " + email);
 		
@@ -524,6 +525,17 @@ public class MemberController {
 		//이메일 보내기
 		String setFrom = "goott6@naver.com"; // 네이버 아이디
 		String toEmail = email;
+		
+		// 요청한 URI를 판단해서 제목과 내용 달라짐
+		String uri = request.getRequestURI();
+		System.out.println(uri);
+		if (uri.contains("/logIn")) {
+			System.out.println("logIn 포함");
+		} else {
+			System.out.println("logIn 미포함");
+		}
+		
+		
 		String title = "test";
 		String content = "가입해주셔서 감사합니다."+ "<br/><br/>"+"인증 번호는 "+checkNum+" 입니다.<br/>"+
 							"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
@@ -534,6 +546,7 @@ public class MemberController {
             helper.setTo(toEmail);
             helper.setSubject(title);
             helper.setText(content,true);
+            
             mailSender.send(message);
             
         } catch(Exception e) {
@@ -657,16 +670,20 @@ public class MemberController {
 	public ResponseEntity<MemberVo> emailAuthCheck(@RequestBody MemberVo findMember) throws Exception {
 		ResponseEntity<MemberVo> result = null;
 		
-		String memberName = findMember.getMemberName();
+		System.out.println("컨트롤러 이메일 : " + findMember.getMemberEmail());
 		String memberEmail = findMember.getMemberEmail();
 		
 		MemberVo member = service.selectMemberId(memberEmail);
-		
+		System.out.println(member.toString());
 		// 입력받은 이메일로 아이디 검색
 		if (member != null) {
+			System.out.println("통신성공");
 			result = new ResponseEntity<>(member, HttpStatus.OK);
+			
 		} else {
+			System.out.println("통신실패");
 			result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			
 		}
 		
 		return result;
@@ -682,9 +699,21 @@ public class MemberController {
 	 * 비밀번호 재설정 페이지 호출
 	 */
 	@RequestMapping(value = "/findPwd")
-	public String findPwd() throws Exception {
+	public void findPwd(HttpSession ses, Model model) throws Exception {
 		System.out.println("컨트롤러 : 비밀번호 재설정 페이지로 이동");
-		return "member/findPwd";
+		
+		String memberId = (String) ses.getAttribute("memberId");
+		System.out.println("세션에저장된 아이디 : " + memberId);
+		
+//		if (ses.getAttribute("memberId") != null) {
+//			model.addAttribute("memberId", memberId);
+//			ses.removeAttribute("memberId");
+//			ses.invalidate(); // 세션 만료
+//			
+//			// return "member/findPwd?auth=ok";
+//		}
+		// return "member/findPwd";
+		
 	}
 	
 	/**
