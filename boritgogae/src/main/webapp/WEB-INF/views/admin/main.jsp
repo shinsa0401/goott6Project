@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ page session="false"%>
 
 <!DOCTYPE html>
 <html>
@@ -69,9 +68,10 @@
 </script>
 
 </head>
-<jsp:include page="header.jsp">
-	<jsp:param name="member" value="${members }" />
-</jsp:include>
+<c:if test="${sessionScope.logInMember.isAdmin == 'N'}">
+		<c:redirect url="/"></c:redirect>
+	</c:if>
+<jsp:include page="header.jsp"/>
 
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="wrapper">
@@ -83,6 +83,7 @@
 					<div class="row mb-2">
 						<div class="col-sm-6">
 							<h1 class="m-0">대시보드</h1>
+							${sessionScope.logInMember}
 						</div>
 						<!-- /.col -->
 						<div class="col-sm-6">

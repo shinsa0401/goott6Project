@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ page session="false"%>
 
 <html>
 <head>
@@ -434,12 +433,14 @@
 				<button type="button" class="btn btn-success"
 					style="background-color: #7fad39; color: white; border-color: #7fad39;"
 					onclick="location.href='/board/notice/list'">목록으로</button>
+				<c:if test="${sessionScope.logInMember.isAdmin == 'Y' }">
 				<button type="button" class="btn btn-success"
 					style="background-color: #7fad39; color: white; border-color: #7fad39;"
 					onclick="showDelModal();">글 삭제</button>
 				<button type="button" class="btn btn-success"
 					style="background-color: #7fad39; color: white; border-color: #7fad39;"
 					onclick="modify();">글 수정</button>
+					</c:if>
 			</div>
 			
 		</div>
@@ -463,7 +464,7 @@
 		<!-- 댓글 -->
 		<div id="replys">
 			<div>
-				<input type="text" id="memberId" name="memberId">
+				<input type="hidden" id="memberId" name="memberId" value="${sessionScope.logInMember.memberId}">
 			</div>
 			<!-- 댓글 작성 부분 -->
 			<textarea id="summernote" class="content" name="content"></textarea>
