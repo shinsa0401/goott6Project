@@ -70,7 +70,7 @@
 		output += '<span aria-hidden="true">&times;</span></button></div>';
 		output += '<div class="mx-auto prodInfo">각 정보를 클릭 시 수정할 수 있습니다. (상품코드, 브랜드 제외)</div>';
 		output += '<div class="modal-body row" >';
-		output += '<div class="col-6"><img src="' + prodImg + '" style="max-height: 400px; max-width: 400px;"/></div>';
+		output += '<div class="col-6"><img src="' + prodImg + '" style="max-height: 400px; max-width: 350px;"/></div>';
 		output += '<div class="col-6"><ul class="list-group list-group-flush"><li class="list-group-item">';
 		output += '<div class="productDetail prodTitle">상품 코드</div><div class="productDetail dataTag" id="prodNo">' + prodNo + '</div></li>';
 		output += '<li class="list-group-item"><div class="productDetail prodTitle">브 랜 드</div>';

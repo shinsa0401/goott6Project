@@ -44,11 +44,10 @@ public class NoticeUploadFile {
 		this.isImage = isImage;
 	}
 
-
 	@Override
 	public String toString() {
-		return "UploadAskFile [savedOriginImageFileName=" + savedOriginImageFileName + ","
-				+ " notImageFileName=" + notImageFileName + ", isImage=" + isImage + "]";
+		return "NoticeUploadFile [savedOriginImageFileName=" + savedOriginImageFileName + ", notImageFileName="
+				+ notImageFileName + ", isImage=" + isImage + "]";
 	}
 
 	

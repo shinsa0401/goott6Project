@@ -36,7 +36,7 @@
 	let prodNo = "";
 	let savedProdCont = "";
 
-	let file = null;
+	let prodImgFiles = null;
 
 	$(function() {
 		
@@ -174,9 +174,9 @@
 						'change',
 						function() {
 							ext = $(this).val().split('.').pop().toLowerCase(); //확장자
-							file = $('#prodImg').prop("files")[0];
-							console.log(file);
-							let prodImgFile = URL.createObjectURL(file);
+							prodImgFiles = $('#prodImg').prop("files")[0];
+							console.log(prodImgFiles);
+							let prodImgFile = URL.createObjectURL(prodImgFiles);
 							$('#prodImgPreviewDiv')
 									.html(
 											"<img id='prodImgPreview' style='max-width:300px;max-height:170px;'>");
@@ -232,11 +232,16 @@
 		let prodName = $("#prodName").val();
 		let prodQuantity = $("#prodQuantity").val();
 		let prodPrice = $("#prodPrice").val();
-		let prodImg = file;
+		let prodImg = prodImgFiles;
 		let prodBrandName = brandName;
 		let prodContent = form.prodContent.value;
 		prodContent = prodContent.replace(/<(\/?)p>/gi,"");
 		form.prodContent.value = prodContent;
+		
+		let sendImgdata = new FormData();
+		sendImgdata.append("prodImg", prodImg);
+		sendImgdata.append("prodNo", prodNo);
+		sendImgdata.append("savedProdCont", savedProdCont);
 		
 		console.log(prodNo + ", " + prodName + ", " + prodQuantity + ", " + prodPrice + ", " + prodImg + ", " + prodBrandName + ", " + prodContent);
 		
@@ -245,7 +250,7 @@
 			"prodName" : prodName,
 			"prodQuantity" : prodQuantity,
 			"prodPrice" : prodPrice,
-			"prodBrandName" : prodBrandName,
+			"brand" : prodBrandName,
 		});
 		
 		let url = "/admin/product/register/insert";
@@ -262,7 +267,7 @@
 			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
 				console.log(data);
 				if (data == "success") {
-					registerProdImg(prodImg, prodNo);
+					registerProdImg(sendImgdata);
 				}
 
 			},
@@ -272,14 +277,17 @@
 		});
 	}
 	
-	function registerProdImg(prodImg, prodNo) {
+	function registerProdImg(sendImgdata) {
 		let url = "/admin/product/register/prodImg";
 
 		$.ajax({
 			url : url, // 데이터 송수신될 주소
 			type : "post", // 전송 방식
 			dataType : "text", // 수신할 데이터
-			data : {"prodImg" : prodImg , "prodNo" : prodNo, "savedProdCont" : savedProdCont},
+			data : sendImgdata,
+			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+			processData: false,
+			//contentType: false,
 			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
 				console.log(data);
 				if (data == "success") {

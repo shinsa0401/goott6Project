@@ -1,10 +1,7 @@
 package com.boritgogae.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +11,10 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +27,6 @@ import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.domain.ProductDTO;
-import com.boritgogae.board.notice.domain.NoticeVo;
 import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.board.notice.etc.NoticeUploadFile;
 import com.boritgogae.board.notice.etc.NoticeUploadFileProcess;
@@ -325,7 +319,7 @@ public class AdminController {
 	@RequestMapping(value = "/product/register/insert", method = RequestMethod.POST)
 	public @ResponseBody String registerProduct(@RequestBody ProductDTO product) throws Exception {
 		System.out.println(product);
-
+		product.setProdName(product.getBrand() + " " + product.getProdName());
 		String result = "";
 		if (service.registerProduct(product)) {
 			result = "success";
@@ -353,9 +347,10 @@ public class AdminController {
 		try {
 			System.out.println("업로드 성공");
 			FileCopyUtils.copy(prodImg.getBytes(), originProdImgTarget);
-			System.out.println("이미지 저장값 =  " + savePath + saveProdImgFileName);
-			service.registerProdImg(savePath + File.separator + saveProdImgFileName, prodNo);
-			service.registerProdContent(savedProdCont, prodNo);
+			System.out.println("이미지 저장값 =  " + savePath + File.separator + File.separator + saveProdImgFileName);
+			String savedProdImgFileName =  "/resources/uploads" + File.separator + File.separator + savePath + File.separator + File.separator + saveProdImgFileName;
+			service.registerProdImg(savedProdImgFileName, prodNo);
+			service.registerProdContent("/resources/uploads" + File.separator + File.separator + savedProdCont, prodNo);
 			return "success";
 		} catch (Exception e) {
 			System.out.println("업로드 실패");

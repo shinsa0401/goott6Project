@@ -175,7 +175,7 @@ public class AdminDAOImpl implements AdminDAO {
 	public int registerProdImg(String prodImg, String prodNo) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("prodNo", prodNo);
-		map.put("prodImg", prodImg);
+		map.put("originalFile", prodImg);
 		return ses.insert(ns + ".registerProdImg", map);
 	}
 	
