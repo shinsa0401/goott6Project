@@ -220,7 +220,8 @@
 							class="img-circle elevation-2" alt="User Image">
 					</div>
 					<div class="info">
-						<a href="#" class="d-block">님, 환영합니다!</a>
+						<a href="#" class="d-block">${sessionScope.logInMember.nickName}님, 환영합니다!</a>
+						
 					</div>
 				</div>
 

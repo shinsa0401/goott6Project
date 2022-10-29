@@ -285,9 +285,8 @@
 			type : "post", // 전송 방식
 			dataType : "text", // 수신할 데이터
 			data : sendImgdata,
-			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			processData: false,
-			//contentType: false,
+			contentType: false,
 			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
 				console.log(data);
 				if (data == "success") {
