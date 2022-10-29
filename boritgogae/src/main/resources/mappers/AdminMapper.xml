@@ -96,6 +96,18 @@
 		delete from product where prodNo = #{prodNo}
 	</delete>
 	
+	<insert id="registerProduct">
+		insert product(prodNo, prodName, prodQuantity, prodPrice) values(#{prodNo}, #{prodName}, #{prodQuantity}, #{prodPrice})
+	</insert>
+	
+	<insert id="registerProdImg">
+		insert prodImg(prodNo, originalFile) values(#{prodNo}, #{originalFile})
+	</insert>
+	
+	<insert id="registerProdContent">
+		insert productContent(prodNo, prodContent) values(#{prodNo}, #{prodContent})
+	</insert>
+	
 	<!-- 관리자 페이지 상품 관련 쿼리문 끝 -->
 	
 

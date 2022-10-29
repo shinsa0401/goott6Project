@@ -7,10 +7,12 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
@@ -228,6 +230,39 @@ public class AdminServiceImpl implements AdminService {
 	public boolean deleteProd(String prodName) throws Exception {
 		boolean result = false;
 		if (dao.deleteProd(prodName) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean registerProduct(ProductDTO product) throws Exception {
+		boolean result = false;;
+		
+		if(dao.registerProduct(product) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean registerProdImg(String prodImg, String prodNo) throws Exception {
+		boolean result = false;
+		
+		if(dao.registerProdImg(prodImg,prodNo) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean registerProdContent(String prodContent, String prodNo) throws Exception {
+		boolean result = false;
+		
+		if(dao.registerProdContent(prodContent,prodNo) == 1) {
 			result = true;
 		}
 		

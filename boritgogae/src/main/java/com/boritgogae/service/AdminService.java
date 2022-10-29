@@ -3,9 +3,12 @@ package com.boritgogae.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
@@ -100,5 +103,12 @@ public interface AdminService {
     // 상품을 삭제하는 메서드
     public boolean deleteProd(String prodName) throws Exception;
     
+    // 상품을 등록하는 메서드
+    public boolean registerProduct(ProductDTO product) throws Exception;
     
+    // 상품의 이미지를 등록하는 메서드
+    public boolean registerProdImg(String prodImg, String prodNo) throws Exception;
+    
+    // 상품의 상세설명을 등록하는 메서드
+    public boolean registerProdContent(String prodContent, String prodNo) throws Exception;
 }

@@ -19,7 +19,7 @@
 			$("#statusModal").hide(100);
 		});
 	});
-
+	
 	function createCoupon() {
 		let couponName = $("#couponName").val();
 		let couponDiscount = $("#couponDiscount").val();

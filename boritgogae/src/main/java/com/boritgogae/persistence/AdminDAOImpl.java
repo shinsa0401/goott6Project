@@ -8,10 +8,12 @@ import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
@@ -162,6 +164,28 @@ public class AdminDAOImpl implements AdminDAO {
 	@Override
 	public int deleteProd(String prodName) throws Exception {
 		return ses.delete(ns + ".deleteProduct", prodName);
+	}
+
+	@Override
+	public int registerProduct(ProductDTO product) throws Exception {
+		return ses.insert(ns + ".registerProduct", product);
+	}
+
+	@Override
+	public int registerProdImg(String prodImg, String prodNo) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("prodNo", prodNo);
+		map.put("prodImg", prodImg);
+		return ses.insert(ns + ".registerProdImg", map);
+	}
+	
+	@Override
+	public int registerProdContent(String prodContent, String prodNo) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("prodNo", prodNo);
+		map.put("prodContent", prodContent);
+		System.out.println(map);
+		return ses.insert(ns + ".registerProdContent", map);
 	}
 
 	

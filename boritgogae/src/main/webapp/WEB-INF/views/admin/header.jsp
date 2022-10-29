@@ -89,6 +89,14 @@
 						<li class="nav-item d-none d-sm-inline-block"><a
 							href="/admin/coupon" class="nav-link">쿠폰관리</a></li>
 					</c:when>
+					
+					<c:when
+						test="${pageContext.request.servletPath == '/WEB-INF/views/admin/lowestProduct.jsp' }">
+						<li class="nav-item d-none d-sm-inline-block"><a
+							href="/admin/product/lowest" class="nav-link">재고 관리</a></li>
+					</c:when>
+					
+					
 				</c:choose>
 			</ul>
 
@@ -250,7 +258,7 @@
 										<p>상품 리스트</p> <!-- 상품 리스트, 상품 수정, 상품 삭제, 재고 관리 -->
 								</a></li>
 								<li class="nav-item"><a
-									href="pages/layout/top-nav-sidebar.html" class="nav-link">
+									href="/admin/product/register" class="nav-link">
 										<i class="far fa-circle nav-icon"></i>
 										<p>상품 등록</p>
 								</a></li>

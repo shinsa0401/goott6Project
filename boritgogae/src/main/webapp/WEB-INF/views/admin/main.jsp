@@ -181,7 +181,7 @@
 								<div class="icon">
 									<i class="ion ion-pie-graph"></i>
 								</div>
-								<a href="#" class="small-box-footer">More info <i
+								<a href="/admin/product/lowest" class="small-box-footer">상세 보기 <i
 									class="fas fa-arrow-circle-right"></i></a>
 							</div>
 						</div>

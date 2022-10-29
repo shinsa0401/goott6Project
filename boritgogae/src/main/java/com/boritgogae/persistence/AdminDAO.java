@@ -2,9 +2,12 @@ package com.boritgogae.persistence;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.board.notice.etc.NoticePagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
@@ -99,4 +102,13 @@ public interface AdminDAO {
     
     // 상품을 삭제하는 메서드
     public int deleteProd(String prodName) throws Exception;
+    
+    // 상품을 등록하는 메서드
+    public int registerProduct(ProductDTO product) throws Exception;
+    
+    // 상품의 이미지를 등록하는 메서드
+    public int registerProdImg(String prodImg, String prodNo) throws Exception;
+    
+    // 상품의 상세설명을 등록하는 메서드
+    public int registerProdContent(String prodContent, String prodNo) throws Exception;
 }
