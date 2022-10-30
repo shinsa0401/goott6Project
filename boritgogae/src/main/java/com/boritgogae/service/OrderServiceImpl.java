@@ -236,4 +236,17 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		return dao.selectGuestOrderInfo(gdto);
 	}
 
+	// 주문비밀번호 찾기위해 주문건 검색하는 메서드
+	@Override
+	public OrdersVo findGuestPwdSelectOrder(OrdersVo order) throws Exception {
+		return dao.findGuestPwdSelectOrder(order);
+	}
+
+	// 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트
+	@Override
+	public int updateGuestPwd(int orderNo, String tempPwd) throws Exception {
+		System.out.println("서비스 임시비밀번호 업데이트" + orderNo + ", " + tempPwd);
+		return dao.updateGuestPwd(orderNo, tempPwd);
+	}
+
 }

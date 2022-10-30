@@ -10,7 +10,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <title>아이디 찾기</title>
 <script>
-
+	let checkCode = false;
 	let authCheck = false;
 
 	$(function () {
@@ -50,13 +50,16 @@
 						checkCode = false;
 						code = data; // 인증번호를 변수에 저장
 						authCheck = true; // 인증여부
+						$("#authNumber").focus();
 					}
 				});
 				
 			} else if (memberName == "") {
 		  		alert("이름 입력");
+		  		$("#memberName").focus();
 		  	} else if (memberEmail == "") {
 		  		alert("이메일 입력");
+		  		$("#memberEmail").focus();
 		  	}
 		});
 	    
@@ -81,7 +84,7 @@
 	    
 	});
 	
-	// 인증번호 확인
+	// 인증번호 확인이후 아이디찾기
 	function emailAuthCheck() {
 		
 		let url = "/member/emailAuthCheck";
@@ -91,7 +94,7 @@
 			memberName : memberName, memberEmail : memberEmail
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
 		
-		if (memberName != "" & memberEmail != "" && authCheck == true) {
+		if (memberName != "" & memberEmail != "" && authCheck == true && checkCode == true) {
 			
 			$.ajax({
 		        url: url, // 데이터 송수신될 주소
@@ -116,11 +119,11 @@
 	    				
 	    				// JSON 데이터는 Object 형식이라 String으로 변환
 	    				let memberId = JSON.stringify(data.memberId);
-	    				let output = "";
-	    				output += "<button class='btn btn-success' onclick='location.href='${contextPath}/member/logIn';'>로그인 하러가기</button>&nbsp;";
-	    				output += "<button class='btn btn-primary' onclick='pwdUpdate(" + memberId + ");'>비밀번호 재설정</button>";
-	    				$(".btns").html(output);
 	    				
+	    				let output = "";
+	    				output += "<button class='btn btn-success' onclick='logIn();'>로그인 하러가기</button>&nbsp;";
+	    				output += "<button class='btn btn-primary' onclick='pwdUpdate();'>비밀번호 재설정</button>";
+	    				$(".btns").html(output);
 	    				
 	    	        	$(".authForm").hide();
 	        			$(".resultForm").show();
@@ -136,21 +139,26 @@
 			
 		} else if (memberName == "") {
 			alert("이름 입력");
+			$("#memberName").focus();
 		} else if (memberEmail == "") {
 			alert("이메일 입력");
+			$("#memberEmail").focus();
 		} else if (authCheck == false) {
 			alert("인증 여부");
+		} else if (checkCode == false) {
+			alert("인증번호 틀림");
 		}
 		
 	}
 	
+	// 로그인 하러가기 버튼
+	function logIn() {
+		location.href='${contextPath}/member/logIn';
+	}
 	
 	
-	function pwdUpdate(memberId) { // 미완
-		
-		// 넘어온 memberId를 "memberId" 이름으로 세션에 저장
-		// sessionStorage.setItem("memberId", memberId);
-		
+	// 비밀번호 재설정 버튼
+	function pwdUpdate() {
 		// 비밀번호재설정 페이지 이동
 		location.href='${contextPath}/member/findPwd';
 	}

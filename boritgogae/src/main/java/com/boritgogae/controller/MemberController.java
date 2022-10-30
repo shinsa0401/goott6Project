@@ -511,7 +511,14 @@ public class MemberController {
 		return result;
 	}
 	
-	// 무진씨 이메일 관련
+	/**
+	 * @methodName : mailCheck
+	 * @author : 강무진 - 수정 신태호
+	 * @date : 2022. 10. 31.
+	 * @입력 param : 
+	 * @returnType : String
+	 * 6자리의 임의의 인증번호 이메일 전송 - 호출한 페이지에 따라 제목과 내용을 다르게 설정 
+	 */
 	@RequestMapping (value="/mailCheck")
 	@ResponseBody
 	public String mailCheck(String email, HttpServletRequest request) throws Exception{
@@ -525,20 +532,27 @@ public class MemberController {
 		//이메일 보내기
 		String setFrom = "goott6@naver.com"; // 네이버 아이디
 		String toEmail = email;
+		String title = "";
+		String content = "";
+		// 요청한 이전페이지를 판단해서 제목과 내용 달라짐
+		String referer = request.getHeader("referer");
+		System.out.println(referer);
 		
-		// 요청한 URI를 판단해서 제목과 내용 달라짐
-		String uri = request.getRequestURI();
-		System.out.println(uri);
-		if (uri.contains("/logIn")) {
-			System.out.println("logIn 포함");
-		} else {
-			System.out.println("logIn 미포함");
+		if (referer.contains("/join")) { // 회원가입 일 때
+			System.out.println("join 포함");
+			
+			title = "test";
+			content = "가입해주셔서 감사합니다."+ "<br/><br/>"+"인증 번호는 "+checkNum+" 입니다.<br/>"+
+								"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+			
+			
+		} else if (referer.contains("/find")) { // 아이디찾기, 비밀번호 재설정 일 때
+			System.out.println("find 포함");
+			
+			title = "보릿고개 이메일 인증";
+			content = "이용해주셔서 감사합니다." + "<br/><br/>" + "인증 번호는 " + checkNum + " 입니다.<br/>" + "해당 인증번호를 인증번호 입력란에 기입하여 주세요.";
 		}
 		
-		
-		String title = "test";
-		String content = "가입해주셔서 감사합니다."+ "<br/><br/>"+"인증 번호는 "+checkNum+" 입니다.<br/>"+
-							"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
@@ -567,18 +581,29 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/logIn")
 	public String logIn(HttpServletRequest request, HttpSession ses) {
+		System.out.println("로그인 페이지");
+		
+		String memberId = (String) ses.getAttribute("memberId");
+		System.out.println(memberId);
+		
+		// 아이디찾기에서 세션에 저장된 memberId 삭제
+		if (ses.getAttribute("memberId") != null) {
+			ses.removeAttribute("memberId");
+			ses.invalidate();
+		}
+		
 		
 		// 현재 페이지로 오기전 URL 정보를 referer에 저장
 		String referer = request.getHeader("Referer");
 		
 		// 이전페이지로 돌아가기 위한 Referer 헤더값을 세션의 destination에 저장
 		// (로그인 여러회 실패시 이전페이지로 제대로 돌아가기 위함)
-	    if (referer != null && !referer.contains("logIn")) {
-	        request.getSession().setAttribute("destination", referer);
+	    if (referer != null && !referer.contains("logIn")) { // 로그인페이지 제외
+	    	if (!referer.contains("find")) { // + 찾기페이지 제외
+	    		ses.setAttribute("destination", referer);
+	    	}
 	    }
 		
-		System.out.println("로그인 하기");
-
 		return "member/logIn";
 	}
 	 
@@ -664,27 +689,26 @@ public class MemberController {
 	 * @date : 2022. 10. 26.
 	 * @입력 param :
 	 * @returnType : String
-	 * 이메일 인증하기
+	 * 이메일 인증이 확인되고 나서 이후 단계
 	 */
 	@RequestMapping(value = "/emailAuthCheck", method = RequestMethod.POST)
-	public ResponseEntity<MemberVo> emailAuthCheck(@RequestBody MemberVo findMember) throws Exception {
+	public ResponseEntity<MemberVo> emailAuthCheck(HttpSession ses, @RequestBody MemberVo findMember) throws Exception {
 		ResponseEntity<MemberVo> result = null;
 		
 		System.out.println("컨트롤러 이메일 : " + findMember.getMemberEmail());
 		String memberEmail = findMember.getMemberEmail();
 		
+		// 입력받은 이메일로 아이디 검색
 		MemberVo member = service.selectMemberId(memberEmail);
 		System.out.println(member.toString());
-		// 입력받은 이메일로 아이디 검색
+		
+		// 검색결과가 있다면
 		if (member != null) {
-			System.out.println("통신성공");
+			// 찾은 아이디 세션에 저장(비밀번호재설정 인증없이 바로 넘기기위함)
+			ses.setAttribute("memberId", member.getMemberId());
+			System.out.println("아이디 찾기 성공");
 			result = new ResponseEntity<>(member, HttpStatus.OK);
-			
-		} else {
-			System.out.println("통신실패");
-			result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			
-		}
+		} 
 		
 		return result;
 		
@@ -699,20 +723,18 @@ public class MemberController {
 	 * 비밀번호 재설정 페이지 호출
 	 */
 	@RequestMapping(value = "/findPwd")
-	public void findPwd(HttpSession ses, Model model) throws Exception {
+	public String findPwd(HttpSession ses, Model model) throws Exception {
 		System.out.println("컨트롤러 : 비밀번호 재설정 페이지로 이동");
 		
 		String memberId = (String) ses.getAttribute("memberId");
 		System.out.println("세션에저장된 아이디 : " + memberId);
 		
-//		if (ses.getAttribute("memberId") != null) {
-//			model.addAttribute("memberId", memberId);
-//			ses.removeAttribute("memberId");
-//			ses.invalidate(); // 세션 만료
-//			
-//			// return "member/findPwd?auth=ok";
-//		}
-		// return "member/findPwd";
+		if (ses.getAttribute("memberId") != null) {
+			System.out.println("세션에 저장된 아이디가 있다");
+			model.addAttribute("memberId", memberId); // 뷰단으로 바인딩
+		}
+		
+		return "member/findPwd";
 		
 	}
 	

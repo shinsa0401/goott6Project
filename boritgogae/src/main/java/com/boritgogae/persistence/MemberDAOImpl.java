@@ -99,6 +99,15 @@ public class MemberDAOImpl implements MemberDAO {
 		map.put("memberPwd", memberPwd);
 		return ses.update(ns + ".updatePwd", map);
 	}
+	
+	// 회원 비밀번호 업데이트 이후 lastPwdUpdate 컬럼 업데이트
+	@Override
+	public int updateLastPwdUpdate(String memberId) throws Exception {
+		System.out.println("DAO : lastPwdUpdate 컬럼 업데이트");
+		return ses.update(ns + ".updateLastPwdUpdate", memberId);
+	}
+	
+	
 
 	// 등급혜택을 가져오는 메서드
 	@Override
@@ -368,4 +377,6 @@ public class MemberDAOImpl implements MemberDAO {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	
 }

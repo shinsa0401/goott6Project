@@ -54,4 +54,10 @@ public interface OrderService {
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
 	public OrdersVo guestOrderInfo(GuestOrderDTO gdto) throws Exception;
 
+	// 주문비밀번호 찾기위해 주문건 검색하는 메서드
+	public OrdersVo findGuestPwdSelectOrder(OrdersVo order) throws Exception;
+
+	// 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트
+	public int updateGuestPwd(int orderNo, String tempPwd) throws Exception;
+
 }

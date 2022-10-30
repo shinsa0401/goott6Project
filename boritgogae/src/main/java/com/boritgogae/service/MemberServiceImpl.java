@@ -95,8 +95,14 @@ public class MemberServiceImpl implements MemberService {
 	// 회원 비밀번호 업데이트하는 메서드
 	@Override
 	public int updatePwd(String memberId, String memberPwd) throws Exception {
+		int result = 0;
 		
-		return dao.updatePwd(memberId, memberPwd);
+		// 비밀번호 업데이트하고나서 lastPwdUpdate 컬럼 현재시간으로 업데이트
+		if (dao.updatePwd(memberId, memberPwd) == 1) {
+			result = dao.updateLastPwdUpdate(memberId);
+		}
+		
+		return result;
 	}
 	
 	// 등급혜택을 가져오는 메서드

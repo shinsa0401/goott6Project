@@ -10,74 +10,87 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <title>비밀번호 재설정</title>
 <script>
-	
+	let checkCode = false;
 	let authCheck = false;
+	let hiddenSessionId = "";
+	let memberId = "";
 	
 	
 	$(function () {
+		hiddenSessionId = "${memberId }";
 		
+		if (hiddenSessionId != "") {
+			// 아이디찾기 완료 후 세션에 아이디 저장되었을 때(인증없이 바로 비밀번호재설정)
+			$(".pwdUpdate").show();
+			$("#memberPwd").focus();
+			
+		} else {
+			// 페이지 로딩시 아이디확인 폼 출력
+			$(".idCheckForm").show();
+			$("#memberId").focus();
 		
-		// 페이지 로딩시 아이디확인 폼 출력
-		$(".idCheckForm").show();
-		
-		// 인증번호 동일성
-		$("#alert-success-email").hide();
-	    $("#alert-danger-email").hide();
-
-	    
-	  	// 인증번호 이메일 전송
-	    $("#getAuthNumber").on("click",function(e){
-			e.preventDefault();
 			
-			let memberName = $("#memberName").val();
-			let memberEmail = $("#memberEmail").val();
-			
-			if (memberName != "" && memberEmail != "") {
-			
-				let email = $("#memberEmail").val();
-				let checkBox = $(".mailInputBox");
+			// 인증번호 동일성
+			$("#alert-success-email").hide();
+		    $("#alert-danger-email").hide();
 	
-				$.ajax({
-					type:"GET",
-					url : "/member/mailCheck",
-					data : {email : email},
-					contentType :"text/plain;charset=UTF-8",
-					success : function(data){ // 인증번호를 가져옴
-	
-						alert("인증번호 발송 요청이 완료되었습니다. 인증번호가 오지 않는 경우, 입력한 이름/이메일주소를 확인 후 다시 요청해주세요.");
-						
-						checkBox.attr("disabled",false); // 인증번호 입력 가능
-						checkBox.val(''); // 기존에 값이 있었으면 지워줌
-						$("#alert-success-email").hide();
+		    
+		  	// 인증번호 이메일 전송
+		    $("#getAuthNumber").on("click",function(e){
+				e.preventDefault();
+				
+				let memberName = $("#memberName").val();
+				let memberEmail = $("#memberEmail").val();
+				
+				if (memberName != "" && memberEmail != "") {
+				
+					let email = $("#memberEmail").val();
+					let checkBox = $(".mailInputBox");
+		
+					$.ajax({
+						type:"GET",
+						url : "/member/mailCheck",
+						data : {email : email},
+						contentType :"text/plain;charset=UTF-8",
+						success : function(data){ // 인증번호를 가져옴
+		
+							alert("인증번호 발송 요청이 완료되었습니다. 인증번호가 오지 않는 경우, 입력한 이름/이메일주소를 확인 후 다시 요청해주세요.");
+							
+							checkBox.attr("disabled",false); // 인증번호 입력 가능
+							checkBox.val(''); // 기존에 값이 있었으면 지워줌
+							$("#alert-success-email").hide();
+							$("#alert-danger-email").hide();
+							checkCode = false;
+							code = data; // 인증번호를 변수에 저장
+							authCheck = true; // 인증여부
+						}
+					});
+				} else if (memberName == "") {
+			  		alert("이름 입력");
+			  		$("#memberName").focus();
+			  	} else if (memberEmail == "") {
+			  		alert("이메일 입력");
+			  		$("#memberEmail").focus();
+			  	}
+			});
+		          
+		    // 인증코드 입력 시 동일성 확인
+			$(".mailInputBox").keyup(function() {
+				var inputCode = $(".mailInputBox").val();
+				if (inputCode != "" || code != "") {
+					if (inputCode == code) {
+						$("#alert-success-email").show();
 						$("#alert-danger-email").hide();
+						$(".mailInputBox").attr("disabled",true); // 인증번호 입력 멈춤
+						checkCode = true;
+					} else {
+						$("#alert-success-email").hide();
+						$("#alert-danger-email").show();
 						checkCode = false;
-						code = data; // 인증번호를 변수에 저장
-						authCheck = true; // 인증여부
 					}
-				});
-			} else if (memberName == "") {
-		  		alert("이름 입력");
-		  	} else if (memberEmail == "") {
-		  		alert("이메일 입력");
-		  	}
-		});
-	          
-	    // 인증코드 입력 시 동일성 확인
-		$(".mailInputBox").keyup(function() {
-			var inputCode = $(".mailInputBox").val();
-			if (inputCode != "" || code != "") {
-				if (inputCode == code) {
-					$("#alert-success-email").show();
-					$("#alert-danger-email").hide();
-					$(".mailInputBox").attr("disabled",true); // 인증번호 입력 멈춤
-					checkCode = true;
-				} else {
-					$("#alert-success-email").hide();
-					$("#alert-danger-email").show();
-					checkCode = false;
 				}
-			}
-		});
+			});
+		}
 		
 	});
 	
@@ -101,13 +114,14 @@
     				
     			} else if (data == "fail") {
     				alert("아이디없음");
+    				$("#memberId").focus();
     			}
     		}
 	    });
 	}
 		
 		
-	// 인증번호 확인
+	// 인증번호 확인 이후 비밀번호 재설정
 	function emailAuthCheck() {
 		
 		let url = "/member/emailAuthCheck";
@@ -118,7 +132,7 @@
 		}); // JSON문자 형식(JSON문자열)으로 바꿔줌
 		
 		
-		if (memberName != "" & memberEmail != "" && authCheck == true) {
+		if (memberName != "" & memberEmail != "" && authCheck == true && checkCode == true) {
 			
 			$.ajax({
 		        url: url, // 데이터 송수신될 주소
@@ -142,19 +156,33 @@
 			
 		} else if (memberName == "") {
 			alert("이름 입력");
+			$("#memberName").focus();
 		} else if (memberEmail == "") {
 			alert("이메일 입력");
+			$("#memberEmail").focus();
 		} else if (authCheck == false) {
 			alert("인증 여부");
+		} else if (checkCode == false) {
+			alert("인증번호 틀림");
 		}
-		
 		
 	}
 	
-	
 	// 비밀번호 재설정
 	function pwdUpdate() {
-		let memberId = $("#memberId").val();
+		// 아이디찾기에서 세션에 저장한 아이디
+		hiddenSessionId = "${memberId }";
+		console.log(hiddenSessionId);
+		
+		// 세션아이디가 저장되어있다면
+		if (hiddenSessionId != "") {
+			memberId = hiddenSessionId;
+		} else if (hiddenSessionId == "") { // 저장되어있지 않다면
+			memberId = $("#memberId").val();	
+		}
+		
+		console.log(memberId);
+		
 		let memberPwd = $("#newPwd").val();
 		let memberPwdCheck = $("#newPwdCheck").val(); 
 		let url = "/member/pwdUpdate";
@@ -182,15 +210,17 @@
 			
 		} else if (memberPwd == "") {
 			alert("비밀번호 없음");
+			$("#memberPwd").focus();
 		} else if (memberPwdCheck == "") {
 			alert("비밀번호확인 없음");
+			$("#memberPwdCheck").focus();
 		} else if (memberPwd != memberPwdCheck) {
 			alert("비밀번호와 비밀번호확인이 다름");
+			$("#memberPwdCheck").focus();
 		}
 		
 		
 	}
-		
 	
 	
 </script>
@@ -239,7 +269,8 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div id="container">
-	
+		<input type="hidden" id="hiddenSessionId" value="${memberId }" />
+		
 		<div class="heading">비밀번호 재설정</div>
 		
 		<!-- 1차 아이디확인 -->

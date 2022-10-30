@@ -2,13 +2,21 @@ package com.boritgogae.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +45,9 @@ import com.boritgogae.service.ProductService;
 @RequestMapping(value = "/order/*")
 @Controller
 public class OrderController {
+	
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	@Inject
 	private MemberService memService;
@@ -291,8 +302,74 @@ public class OrderController {
 		}
 		
 		model.addAttribute("guestOrderInfo", guestOrderInfo); // 비회원주문정보 바인딩
-		
-//		response.sendRedirect(destination);
+
 		return "/order/detailGuest";
+	}
+	
+	/**
+	 * @methodName : findOrderPwd
+	 * @author : 신태호
+	 * @date : 2022. 10. 30.
+	 * @입력 param :
+	 * @returnType : String
+	 */
+	@RequestMapping(value = "/findOrderPwd", method = RequestMethod.POST)
+	public ResponseEntity<String> findOrderPwd(String email, @RequestBody OrdersVo order) throws Exception {
+		ResponseEntity<String> result = null;
+		
+		System.out.println("컨트롤러 비회원 주문비밀번호찾기 : " + order.toString());
+		
+		String guestEmail = order.getGuestEmail(); // 보낼 이메일
+		int orderNo = order.getOrderNo(); // 주문번호
+		
+		if (service.findGuestPwdSelectOrder(order) != null) { // 검색된 주문건이 있다면
+			
+			// 임시비밀번호 이메일 발송
+			String tempPwd = UUID.randomUUID().toString().replace("-", ""); // -를 제거
+			tempPwd = tempPwd.substring(0,10); // tempPwd 를 앞에서부터 10자리 잘라줌
+			
+			System.out.println("tempPwd : " + tempPwd);
+			System.out.println("인증 메일 : " + guestEmail);
+			
+			//이메일 보내기
+			String setFrom = "goott6@naver.com"; // 보낸이 (네이버 아이디)
+			String toEmail = guestEmail; // 받는이
+			String title = "보릿고개 주문비밀번호 찾기";
+			String content = "이용해주셔서 감사합니다." + "<br/><br/>" + "임시 비밀번호는 " + tempPwd + " 입니다.<br/>";
+			
+	        // 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트
+	        if (service.updateGuestPwd(orderNo, tempPwd) == 1) {
+	        	System.out.println("컨트롤러 비회원 임시비밀번호 업데이트 완료");
+	        	try {
+		            MimeMessage message = mailSender.createMimeMessage();
+		            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+		            helper.setFrom(setFrom);
+		            helper.setTo(toEmail);
+		            helper.setSubject(title);
+		            helper.setText(content,true);
+		            
+		            mailSender.send(message);
+		            
+		            result = new ResponseEntity<String>("success", HttpStatus.OK);
+					System.out.println("임시비밀번호 이메일 발송 성공");
+		            
+		        } catch(Exception e) {
+		            e.printStackTrace();
+		            result = new ResponseEntity<String>("fail", HttpStatus.OK);
+		            System.out.println("임시비밀번호 이메일 발송 실패");
+		        }
+		        
+	        } else { // 비밀번호 업데이트 실패
+	        	result = new ResponseEntity<String>("fail", HttpStatus.OK);
+	        	System.out.println("임시비밀번호 이메일 발송 실패");
+	        }
+			
+		} else { // 주문건이 없다
+			result = new ResponseEntity<String>("fail", HttpStatus.OK);
+			System.out.println("임시비밀번호 이메일 발송 실패");
+		}
+		
+		return result;
+		
 	}
 }

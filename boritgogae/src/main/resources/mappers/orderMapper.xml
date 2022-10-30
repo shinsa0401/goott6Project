@@ -101,7 +101,7 @@
   	</update>
   	
   	<select id="popularList" resultType="DetailOrderVo">
-  		select count(*) as orderCnt, prodNo from detailOrder group by prodNo order by orderCnt desc limit 0,6
+  		select count(prodNo) as orderCnt, prodNo from detailOrder group by prodNo order by orderCnt desc limit 0,6
   	</select>
   	
   	
@@ -110,7 +110,15 @@
   		select * from orders where name = #{name} and phoneNumber = #{phoneNumber} and guestPwd = sha1(md5(#{guestPwd}))
   	</select>
 
+  	<!-- 주문비밀번호 찾기위해 주문건 검색 -->
+  	<select id="findGuestPwdSelectOrder" resultType="OrdersVo">
+  		select * from orders where name = #{name} and guestEmail = #{guestEmail} and orderNo = #{orderNo}
+  	</select>
   	
+  	<!-- 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트 -->
+  	<update id="updateGuestPwd">
+  		update orders set guestPwd = sha1(md5(#{tempPwd})) where orderNo = #{orderNo}
+  	</update>
 
   	
 

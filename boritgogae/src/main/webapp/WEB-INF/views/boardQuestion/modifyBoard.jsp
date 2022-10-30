@@ -13,7 +13,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <!-- 서머노트부분 -->
-<script src="${pageContext.request.contextPath}/resources/summernote/summernote-lite.js"></script>
+<script src="${pageContext.request.contextPath}/resources/summernote/summernote-lite2.js"></script>
 <script src="${pageContext.request.contextPath}/resources/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/summernote/summernote-lite.css">
 <!--  -->
@@ -90,11 +90,6 @@
 		// $(function(){ }); 영역
 		
 		
-		
-		// $(function(){ }); 영역
-		
-		
-		
 	});
 	
 	
@@ -160,6 +155,9 @@
 		$(".upFileList").append(output);
 	}
 	
+	
+	
+	
 	let beforeFileList = new Array();
 	// 기존에 업로드되었던 파일 삭제 ------- 미완
 	function deleteBeforeFile(obj) {
@@ -175,6 +173,33 @@
 		
 		// console.log(beforeFile);
 		
+	}
+	
+	function modifySave() {
+		let result = false;
+		deleteBeforeFile = beforeFileList;
+		console.log(beforeFileList);
+	
+	
+		// 수정 확정시 기존업로드파일 삭제
+		let url = "/board/question/deleteBeforeFile";
+		
+		$.ajax({
+	         url : url, // 데이터 송수신될 주소 
+	         type : "post", // 통신 방식(get, post)
+			 data : { "deleteBeforeFile" : deleteBeforeFile }, // 전송할 데이터
+			 dataType : "text", // 수신받을 데이터 타입
+			 success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+	            console.log(data);
+	            if (data == "success") {
+	            	
+	            	result = true;	
+	            }
+	         	
+	         }
+	    });
+		
+		return result;
 	}
 	
 	
@@ -217,8 +242,8 @@
 	
 	.minusBtn {
 		position: absolute;
-		right: 10px;
-		bottom: 50px;
+		right: 40px;
+		bottom: 70px;
 	}
 
 </style>
@@ -293,7 +318,7 @@
 				</div>
 				
 				<div class="btns" style="text-align: center;">
-						<button type="submit" class="btn text-white" style="background-color: #7FAD39;">수정</button>
+						<button type="submit" class="btn text-white" style="background-color: #7FAD39;" onclick="return modifySave();">수정</button>
 						<button type="reset" class="btn btn-secondary"
 							onclick="writeCancel(${board.no});">취소</button>
 				</div>

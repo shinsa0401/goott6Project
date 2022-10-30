@@ -79,6 +79,10 @@ public interface MemberDAO {
 	// 회원 비밀번호 업데이트하는 메서드
 	public int updatePwd(String memberId, String memberPwd) throws Exception;
 	
+	// 회원 비밀번호 업데이트 이후 lastPwdUpdate 컬럼 업데이트
+	public int updateLastPwdUpdate(String memberId) throws Exception;
+	
+	
 	// 등급혜택을 가져오는 메서드
 	public List<GradesVo> showGradeBenefit() throws Exception;
 
@@ -167,6 +171,8 @@ public interface MemberDAO {
 	public DM detaildm(int no)throws Exception;
 	
 	public int insertWriter(DM dm)throws Exception;
+
+	
 	
 
 }

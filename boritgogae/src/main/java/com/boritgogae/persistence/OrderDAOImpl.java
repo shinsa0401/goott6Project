@@ -128,6 +128,27 @@ public class OrderDAOImpl implements OrderDAO {
 		System.out.println("DAO : 비회원 주문내역 조회");
 		return ses.selectOne(ns + ".selectGuestOrderInfo", gdto);
 	}
+	
+	// 주문비밀번호 찾기위해 주문건 검색하는 메서드
+	@Override
+	public OrdersVo findGuestPwdSelectOrder(OrdersVo order) throws Exception {
+		System.out.println("DAO : 비회원 주문비밀번호찾기");
+		return ses.selectOne(ns + ".findGuestPwdSelectOrder", order);
+	}
+	
+	// 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트
+	@Override
+	public int updateGuestPwd(int orderNo, String tempPwd) throws Exception {
+		System.out.println("DAO : 비회원 임시비밀번호 업데이트");
+		System.out.println("DAO : " + orderNo + ", " + tempPwd);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("orderNo", orderNo);
+		map.put("tempPwd", tempPwd);
+		return ses.update(ns + ".updateGuestPwd", map);
+	}
+	
+	
+	
 	@Override
 	public void delCart(int cartNo) throws Exception {
 		System.out.println("다오"+cartNo);
@@ -151,6 +172,10 @@ public class OrderDAOImpl implements OrderDAO {
 	
 		return ses.selectList(ns+".popularList");
 	}
+
+	
+
+	
 
 
 }

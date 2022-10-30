@@ -42,7 +42,12 @@
 	
 	<!-- 회원 비밀번호 업데이트 -->
 	<update id="updatePwd">
-		update members set memberPwd = #{memberPwd} where memberId = #{memberId}
+		update members set memberPwd = sha1(md5(#{memberPwd})) where memberId = #{memberId}
+	</update>
+	
+	<!-- 회원 비밀번호 업데이트 이후 lastPwdUpdate 컬럼 업데이트 -->
+	<update id="updateLastPwdUpdate">
+		update members set lastPwdUpdate = now() where memberId = #{memberId}
 	</update>
 	
 
