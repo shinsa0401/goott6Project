@@ -111,7 +111,7 @@
 }
 </style>
 </head>
-<c:if test="${sessionScope.logInMember.isAdmin == 'N'}">
+<c:if test="${sessionScope.logInMember.isAdmin == 'N' || sessionScope.logInMember == null}">
 	<c:redirect url="/"></c:redirect>
 </c:if>
 <jsp:include page="header.jsp" />
