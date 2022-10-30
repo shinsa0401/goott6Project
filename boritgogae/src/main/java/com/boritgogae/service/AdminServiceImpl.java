@@ -269,4 +269,9 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 	}
 
+	@Override
+	public int totalSales() throws Exception {
+		return dao.totalSales();
+	}
+
 }

@@ -111,4 +111,7 @@ public interface AdminService {
     
     // 상품의 상세설명을 등록하는 메서드
     public boolean registerProdContent(String prodContent, String prodNo) throws Exception;
+    
+ // 구매 확정된 상품들의 누적 금액을 가져오는 메서드
+    public int totalSales() throws Exception;
 }

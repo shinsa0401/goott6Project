@@ -18,60 +18,103 @@
 	src="${pageContext.request.contextPath}/resources/admin/plugins/chart.js/Chart.min.js"></script>
 <script>
 	$(document).ready(function() {
-		let likeDonutChartCanvas = $('#likeDonutChart').get(0).getContext('2d');
-		let likeDonutData = {		
-			labels : [ 
-				<c:forEach items="${topLikeCountList }" var="topLikeCount">
-					'${topLikeCount.prodName}',
-				</c:forEach> ],
-			datasets : [ {
-				data : [ 
-					<c:forEach items="${topLikeCountList }" var="topLikeCount">
-						'${topLikeCount.likeCount}',
-					</c:forEach> ],
-				backgroundColor : [ '#f56954', '#00a65a', '#f39c12', '#00c0ef',
-						'#3c8dbc' ],
-			} ]
-		};
-		let readDonutChartCanvas = $('#readDonutChart').get(0).getContext('2d');
-		let readDonutData = {		
-			labels : [ 
-				<c:forEach items="${topReadCountList }" var="topReadCount">
-					'${topReadCount.prodName}',
-				</c:forEach> ],
-			datasets : [ {
-				data : [ 
-					<c:forEach items="${topReadCountList }" var="topReadCount">
-						'${topReadCount.readCount}',
-					</c:forEach> ],
-				backgroundColor : [ '#f56954', '#00a65a', '#f39c12', '#00c0ef',
-						'#3c8dbc' ],
-			} ]
-		};
-		let donutOptions = {
-			maintainAspectRatio : false,
-			responsive : true,
-		};
 		
-		new Chart(likeDonutChartCanvas, {
-		      type: 'doughnut',
-		      data: likeDonutData,
-		      options: donutOptions
-		    });
-		new Chart(readDonutChartCanvas, {
-		      type: 'doughnut',
-		      data: readDonutData,
-		      options: donutOptions
-		    });
+		
+		let likeChartData = {
+			      labels  : [
+			    	<c:forEach items="${topLikeCountList }" var="topLikeCount">
+						'${topLikeCount.prodName}',
+					</c:forEach>],
+			      datasets: [
+			        {
+			          label               : '찜수 많은 상품',
+			          backgroundColor     : 'rgba(60,141,188,0.9)',
+			          borderColor         : 'rgba(60,141,188,0.8)',
+			          pointRadius          : false,
+			          pointColor          : '#3b8bba',
+			          pointStrokeColor    : 'rgba(60,141,188,1)',
+			          pointHighlightFill  : '#fff',
+			          pointHighlightStroke: 'rgba(60,141,188,1)',
+			          data                : [<c:forEach items="${topLikeCountList }" var="topLikeCount">
+							'${topLikeCount.likeCount}',
+						</c:forEach>]
+			        },
+			      ]
+			    };
+		
+		let readChartData = {
+			      labels  : [
+			    	  <c:forEach items="${topReadCountList }" var="topReadCount">
+						'${topReadCount.prodName}',
+					</c:forEach>],
+			      datasets: [
+			        {
+			        	label               : '조회수 많은 상품',
+			            backgroundColor     : 'rgba(210, 214, 222, 1)',
+			            borderColor         : 'rgba(210, 214, 222, 1)',
+			            pointRadius         : false,
+			            pointColor          : 'rgba(210, 214, 222, 1)',
+			            pointStrokeColor    : '#c1c7d1',
+			            pointHighlightFill  : '#fff',
+			            pointHighlightStroke: 'rgba(220,220,220,1)',
+			          data                : [<c:forEach items="${topReadCountList }" var="topReadCount">
+						'${topReadCount.readCount}',
+						</c:forEach>]
+			        },
+			      ]
+			    };
+		
+		
+		let readBarChartCanvas = $('#readBarChart').get(0).getContext('2d');
+	    let readBarChartData = $.extend(true, {}, readChartData);
+	    let temp0 = readChartData.datasets[0];
+	    readBarChartData.datasets[0] = temp0;
+	    
+	    let likeBarChartCanvas = $('#likeBarChart').get(0).getContext('2d');
+	    let likeBarChartData = $.extend(true, {}, likeChartData);
+	    let temp1 = likeChartData.datasets[0];
+	    likeBarChartData.datasets[0] = temp1;
+	    
+	    let barChartOptions = {
+	      responsive              : true,
+	      maintainAspectRatio     : false,
+	      datasetFill             : false,
+          scales: {
+              xAxes: [{
+                  ticks: {
+                      display: false
+                  }
+              }]
+          }
+	    };
+		
+
+	    new Chart(likeBarChartCanvas, {
+	      	type: 'bar',
+	      	data: likeChartData,
+	     	options: barChartOptions
+	    });
+		
+		new Chart(readBarChartCanvas, {
+		      type: 'bar',
+		      data: readChartData,
+		      options: barChartOptions
+		});
 	});
 	
 </script>
-
+<style type="text/css">
+#readBarChart {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+</style>
 </head>
 <c:if test="${sessionScope.logInMember.isAdmin == 'N'}">
-		<c:redirect url="/"></c:redirect>
-	</c:if>
-<jsp:include page="header.jsp"/>
+	<c:redirect url="/"></c:redirect>
+</c:if>
+<jsp:include page="header.jsp" />
 
 <body class="hold-transition sidebar-mini layout-fixed">
 	<div class="wrapper">
@@ -83,7 +126,6 @@
 					<div class="row mb-2">
 						<div class="col-sm-6">
 							<h1 class="m-0">대시보드</h1>
-							${sessionScope.logInMember}
 						</div>
 						<!-- /.col -->
 						<div class="col-sm-6">
@@ -104,12 +146,12 @@
 				<div class="container-fluid">
 					<!-- Small boxes (Stat box) -->
 					<div class="row">
-						<div class="col-lg-12 col-12">
+						<div class="col-lg-6 col-6">
 							<!-- small box -->
 							<div class="small-box bg-secondary">
 								<div class="inner">
-									<h3>${logInMemberCount } 명</h3>
-									<p>일일 접속자 수</p> 
+									<h3>${logInMemberCount }명</h3>
+									<p>일일 접속자 수</p>
 								</div>
 								<div class="icon">
 									<i class="ion ion-stats-bars"></i>
@@ -117,7 +159,22 @@
 							</div>
 						</div>
 
-						
+						<div class="col-lg-6 col-6">
+							<!-- small box -->
+							<div class="small-box bg-purple">
+								<div class="inner">
+									<h3>
+										<fmt:formatNumber type="number" maxFractionDigits="3"
+											value="${totalSales }" /> 원
+									</h3>
+									<p>총 판매액</p>
+								</div>
+								<div class="icon">
+									<i class="ion ion-stats-bars"></i>
+								</div>
+							</div>
+						</div>
+
 						<!-- ./col -->
 						<div class="col-lg-3 col-6">
 							<!-- small box -->
@@ -147,7 +204,7 @@
 							<div class="small-box bg-success">
 								<div class="inner">
 									<h3>${fn:length(newMembers)}</h3>
-									<p style="font-size: 14 px;">최근 30일간 가입한 회원</p>
+									<p style="font-size: 14 px;">최근 가입한 회원</p>
 								</div>
 								<div class="icon">
 									<i class="ion ion-person-add"></i>
@@ -182,8 +239,9 @@
 								<div class="icon">
 									<i class="ion ion-pie-graph"></i>
 								</div>
-								<a href="/admin/product/lowest" class="small-box-footer">상세 보기 <i
-									class="fas fa-arrow-circle-right"></i></a>
+								<a href="/admin/product/lowest" class="small-box-footer">상세
+									보기 <i class="fas fa-arrow-circle-right"></i>
+								</a>
 							</div>
 						</div>
 						<!-- ./col -->
@@ -194,11 +252,10 @@
 					<div class="row">
 						<!-- Left col -->
 						<section class="col-lg-6 connectedSortable">
-							<!-- Custom tabs (Charts with tabs)-->
-							<!-- DONUT CHART -->
 							<div class="card card-danger">
+
 								<div class="card-header">
-									<h3 class="card-title">조회수가 많은 상품 (상위 5개)</h3>
+									<h3 class="card-title">조회수 많은 순</h3>
 
 									<div class="card-tools">
 										<button type="button" class="btn btn-tool"
@@ -212,20 +269,20 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<canvas id="readDonutChart"
-										style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+									<div class="chart">
+										<canvas id="readBarChart"
+											style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+									</div>
 								</div>
 								<!-- /.card-body -->
 							</div>
-							<!-- /.card -->
-
 						</section>
-						<!-- /.Left col -->
-						<!-- right col (We are only adding the ID to make the widgets sortable)-->
 						<section class="col-lg-6 connectedSortable">
 							<div class="card card-danger">
+
 								<div class="card-header">
-									<h3 class="card-title">좋아요가 많은 상품 (상위 5개)</h3>
+									<h3 class="card-title">찜수 많은 순</h3>
+
 									<div class="card-tools">
 										<button type="button" class="btn btn-tool"
 											data-card-widget="collapse">
@@ -238,14 +295,41 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<canvas id="likeDonutChart"
-										style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+									<div class="chart">
+										<canvas id="likeBarChart"
+											style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+									</div>
 								</div>
 								<!-- /.card-body -->
 							</div>
-							<!-- /.card -->
 						</section>
-						<!-- right col -->
+
+						<div class="col-12">
+							<div class="card card-info">
+								<div class="card-header">
+									<h3 class="card-title">매출</h3>
+
+									<div class="card-tools">
+										<button type="button" class="btn btn-tool"
+											data-card-widget="collapse">
+											<i class="fas fa-minus"></i>
+										</button>
+										<button type="button" class="btn btn-tool"
+											data-card-widget="remove">
+											<i class="fas fa-times"></i>
+										</button>
+									</div>
+								</div>
+								<div class="card-body">
+									<div class="chart">
+										<canvas id="likeBarChart"
+											style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+									</div>
+								</div>
+								<!-- /.card-body -->
+							</div>
+
+						</div>
 					</div>
 					<!-- /.row (main row) -->
 				</div>

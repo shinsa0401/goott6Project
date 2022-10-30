@@ -56,7 +56,9 @@ public class AdminController {
 		List<OrdersVo> getNewOrders = service.getNewOrder();
 		List<ProductVo> topReadCountList = service.getTopReadCount();
 		int getLogInMemberCount = service.getLogInMemberCount();
+		int totalSales = service.totalSales();
 
+		model.addAttribute("totalSales", totalSales);
 		model.addAttribute("logInMemberCount", getLogInMemberCount);
 		model.addAttribute("topReadCountList", topReadCountList);
 		model.addAttribute("getNewOrders", getNewOrders);

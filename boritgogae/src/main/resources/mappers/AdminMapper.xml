@@ -108,6 +108,10 @@
 		insert into productContent(prodNo, prodContent) values(#{prodNo}, #{prodContent})
 	</insert>
 	
+	<select id="totalSales" resultType="int">
+		select sum(prodSubTotalPrice) from detailOrder where purchaseConfirm = 'Y'
+	</select>
+	
 	<!-- 관리자 페이지 상품 관련 쿼리문 끝 -->
 	
 

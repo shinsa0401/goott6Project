@@ -188,6 +188,11 @@ public class AdminDAOImpl implements AdminDAO {
 		return ses.insert(ns + ".registerProdContent", map);
 	}
 
+	@Override
+	public int totalSales() throws Exception {
+		return ses.selectOne(ns + ".totalSales");
+	}
+
 	
     
 
