@@ -577,10 +577,13 @@
 		
 		    <!-- Modal footer -->
 		    <div class="modal-footer">
-		    	주문 시 입력한 이메일 주소로 임시 비밀번호를 보내 드립니다.
-		    	<div id="guestTransBtn">
-		    	<button type="button" class="site-btn" data-bs-dismiss="modal" onclick="guestPwdAuth();">전송받기</button>
+		    	<div>
+		    		주문번호는 주문시 이메일로 발송됩니다. <br />
+		    		이메일 주소로 임시 비밀번호를 보내 드립니다.
 		    	</div>
+		    	<div id="guestTransBtn">
+			    	<button type="button" class="site-btn" data-bs-dismiss="modal" onclick="guestPwdAuth();">전송받기</button>
+			    </div>
 		    </div>
 		
 		    </div>
