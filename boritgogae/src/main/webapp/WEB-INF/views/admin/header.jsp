@@ -60,7 +60,6 @@
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link" data-widget="pushmenu"
 					href="#" role="button"><i class="fas fa-bars"></i></a></li>
-				${pageContext.request.servletPath}
 				<li class="nav-item d-none d-sm-inline-block"><a
 					href="/admin/main" class="nav-link">Home</a></li>
 				<c:choose>
@@ -86,7 +85,7 @@
 					<c:when
 						test="${pageContext.request.servletPath == '/WEB-INF/views/admin/coupon.jsp' }">
 						<li class="nav-item d-none d-sm-inline-block"><a
-							href="/admin/coupon" class="nav-link">쿠폰관리</a></li>
+							href="/admin/coupon" class="nav-link">쿠폰 관리</a></li>
 					</c:when>
 					
 					<c:when
@@ -95,6 +94,19 @@
 							href="/admin/product/lowest" class="nav-link">재고 관리</a></li>
 					</c:when>
 					
+					<c:when
+						test="${pageContext.request.servletPath == '/WEB-INF/views/admin/product.jsp' }">
+						<li class="nav-item d-none d-sm-inline-block"><a
+							href="/admin/product" class="nav-link">상품 리스트</a></li>
+					</c:when>
+					
+					<c:when
+						test="${pageContext.request.servletPath == '/WEB-INF/views/admin/registProduct.jsp' }">
+						<li class="nav-item d-none d-sm-inline-block"><a
+							href="/admin/product" class="nav-link">상품 리스트</a></li>
+						<li class="nav-item d-none d-sm-inline-block"><a
+							href="/admin/product/register" class="nav-link">상품 등록</a></li>
+					</c:when>
 					
 				</c:choose>
 			</ul>
