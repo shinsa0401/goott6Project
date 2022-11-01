@@ -1,269 +1,227 @@
 package com.boritgogae.controller;
 
+import java.util.HashMap;
 import java.util.List;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.Timestamp;
+import java.util.Map;
+import java.util.Random;
 
 import javax.inject.Inject;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.json.simple.JSONObject;
+
+import org.junit.runner.Request;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.boritgogae.board.prodReply.domain.ReviewVO;
-import com.boritgogae.domain.OrderDetailVo;
-import com.boritgogae.domain.CouponUsedVo;
-import com.boritgogae.domain.CouponVo;
-import com.boritgogae.domain.GradesVo;
-import com.boritgogae.domain.GuestOrderDTO;
-import com.boritgogae.domain.PointHistoryVo;
-import com.boritgogae.domain.UserBoardVo;
-import com.boritgogae.domain.UserReplyVo;
-import com.boritgogae.service.MemberService;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.boritgogae.board.free.domain.FreePageHandler;
+import com.boritgogae.board.free.domain.FreeSearchCondition;
+import com.boritgogae.board.free.etc.FreeUploadFile;
 
-
-import com.boritgogae.domain.LogInDTO;
+import com.boritgogae.board.free.service.FreeBoardService;
+import com.boritgogae.domain.DM;
+import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
-import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.service.MemberService;
 
 @Controller
-@RequestMapping(value="/member/*") // member 요청들 매핑
+@RequestMapping("/member/*")
 public class MemberController {
 	
 	@Inject
 	private MemberService memService;
 
+	@Autowired
+	private JavaMailSender mailSender;
+
+	
 	@Inject
-	private MemberService service;
+	MemberService service;
 	
-	@RequestMapping(value = "/myPage")
-	public String myPage(Model model, HttpServletRequest request) throws Exception {
-		return "member/myPage";
-	}
-	
-	// 회원혜택 (포인트, 쿠폰)을 불러오는 메서드
-	@ResponseBody
-	@RequestMapping(value = "/myPage/benefit")
-	public JSONObject showUserBenefit(Model model) throws Exception{
-		System.out.println("컨트롤러 : 회원혜택불러오기 ");
-		List<GradesVo> gradeList =  service.showGradeBenefit();
-		List<CouponVo> couponList = service.showCouponBenefit();
-		System.out.println(gradeList.toString());
-		System.out.println(couponList.toString());
-		JSONObject json = new JSONObject();
-		json.put("couponList", couponList);
-		json.put("gradeList", gradeList);
-		return json;
-	}
-	
-	// 회원의 포인트 히스토리를 불러오는 메서드
-	@ResponseBody
-	@RequestMapping(value = "/myPage/userPoint")
-	public JSONObject showPointHistory(Model model, HttpSession ses) throws Exception{
-		System.out.println("컨트롤러 : 포인트 불러오기 ");
-		
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
-		
-		int pointNow =  service.pointNow(memberId);
-		List<PointHistoryVo> pointList =  service.showPointHistory(memberId);
-		System.out.println("보유포인트" + pointNow);
-		System.out.println(pointList.toString());
-		JSONObject json = new JSONObject();
-		json.put("pointNow", pointNow);
-		json.put("pointList", pointList);
-		return json;
-	}
-	
-	// 회원의 보유 쿠폰갯수, 쿠폰 히스토리를 불러오는 메서드
-	@ResponseBody
-	@RequestMapping(value = "/myPage/userCoupon")
-	public JSONObject showCouponUsed(Model model, HttpSession ses) throws Exception{
-		System.out.println("컨트롤러 : 쿠폰 불러오기 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
-		
-		List<CouponUsedVo> couponHaveList =  service.showCouponHaveList(memberId);
-		List<CouponUsedVo> couponUsedList =  service.showCouponUsedList(memberId);
 
-		System.out.println(couponHaveList.toString());
-		System.out.println(couponUsedList.toString());
+	
+	
+	@RequestMapping(value = "/joinOk", method = RequestMethod.POST)
+	public String joinOk(DeliveryInfoVo dv, MemberVo vo, HttpServletResponse response)  {
 		
-		JSONObject json = new JSONObject();
-		json.put("couponHaveList", couponHaveList);
-		json.put("couponUsedList", couponUsedList);
-		return json;
-	}
 	
-	
-	
-	// 회원이 쓴 글 목록을 가져오는 메서드
-	@ResponseBody
-	@RequestMapping(value = "/myPage/userBoard")
-	public JSONObject showUserBoard(Model model, HttpSession ses) throws Exception{
-		System.out.println("컨트롤러 : 유저 작성글 불러오기 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
 		
-		List<UserBoardVo> userBoardList =  service.showUserBoardList(memberId);
-
-		System.out.println(userBoardList.toString());
-		
-		JSONObject json = new JSONObject();
-		json.put("userBoardList", userBoardList);
-		return json;
-	}
-	
-	
-	// 회원이 쓴 댓글 목록을 가져오는 메서드
-	@ResponseBody
-	@RequestMapping(value = "/myPage/userReply")
-	public JSONObject showUserReply(Model model, HttpSession ses) throws Exception{
-		System.out.println("컨트롤러 : 유저 댓글 불러오기 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
-		
-		List<UserReplyVo> userReplyList =  service.showUserReplyList(memberId);
-
-		System.out.println(userReplyList.toString());
-		
-		JSONObject json = new JSONObject();
-		json.put("userReplyList", userReplyList);
-		return json;
-	}
-	
-	
-	// 회원이 쓸 수 있는 후기와 쓴 후기 내역을 보여주는 메서드.
-	@ResponseBody
-	@RequestMapping(value = "/myPage/userReview")
-	public JSONObject showUserReview(Model model, HttpSession ses) throws Exception{
-		System.out.println("컨트롤러 : 유저 후기 관련 정보들 불러오기 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
-
-		List<ReviewVO> userReviewList =  service.showUserReviewList(memberId);
-		
-		System.out.println(userReviewList.toString());		
-		// 상품코드를 통해 상품명을 찾고 콘텐츠에 상품명을 넣어놓는다.
-		for (ReviewVO review : userReviewList) {
-			review.setContent(convertProdNoToProdName(review.getProdNo()));
+		try {
+			service.memberjoin(vo, response,dv);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		JSONObject json = new JSONObject();
-		json.put("userReviewList", userReviewList);
-		return json;
+		
+		
+	 System.out.println("확인!!!!!!!!!!!!!!!!!!!!!!!!"+vo);
+	 System.out.println("확인!!!!!!!!!!!!!!!!!!!!!!!!"+dv);
+		return"/member/join";
+	}
+	 @RequestMapping(value = "/ex")
+		public String test() throws Exception {
+			
+			
+			
+			 return "/member/ex";
+			
+		}
+	 
+	 
+	 @RequestMapping(value = "/send")
+
+		public void sendtest(DM dm, @RequestParam("noteContent")String noteContent,@RequestParam("receiverId")String receiverId) throws Exception {
+			
+				service.insertWriter(dm);
+			
+			
+		}
+	
+	
+	 @RequestMapping(value = "/join")
+	public String join( ) {
+		 
+		 return "/member/join";
+		
 	}
 	
-	public String convertProdNoToProdName(String prodCode) throws Exception {
-		String result = "";
-		result = service.convertProdNoToProdName(prodCode);
-		return result;
+	@RequestMapping(value = "/jusoPopup")
+	public String juso() {
+		return "/member/jusoPopup";
 	}
 	
-	/**
-	 * @methodName : logIn
-	 * @author : 신태호
-	 * @date : 2022. 10. 20.
-	 * @입력 param : request, session
-	 * @returnType : String
-	 * 로그인 정보를 입력하기 위한 로그인 페이지 호출
-	 */
-	@RequestMapping(value = "/logIn")
-	public String logIn(HttpServletRequest request, HttpSession ses) {
+	@RequestMapping (value="/mailCheck")
+	@ResponseBody
+	public String mailCheck(String email) throws Exception{
+		System.out.println("이메일 데이터 전송확인");
+		System.out.println("인증 메일 : "+email);
 		
-		// 현재 페이지로 오기전 URL 정보를 referer에 저장
-		String referer = request.getHeader("Referer");
+		Random random = new Random();
+		int checkNum = random.nextInt(888888)+111111; // 111111 - 999999
+		System.out.println("인증번호 : "+checkNum);
 		
-		// 이전페이지로 돌아가기 위한 Referer 헤더값을 세션의 destination에 저장
-		// (로그인 여러회 실패시 이전페이지로 제대로 돌아가기 위함)
-	    if (referer != null && !referer.contains("logIn")) {
-	        request.getSession().setAttribute("destination", referer);
+		//이메일 보내기
+		String setFrom = "anwls6650@naver.com";
+		String toEmail = email;
+		String title = "test";
+		String content = "가입해주셔서 감사합니다."+ "<br/><br/>"+"인증 번호는 "+checkNum+" 입니다.<br/>"+
+							"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+            helper.setFrom(setFrom);
+            helper.setTo(toEmail);
+            helper.setSubject(title);
+            helper.setText(content,true);
+            mailSender.send(message);
+            
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+        String num = Integer.toString(checkNum);
+        return num;
+	}
+	
+	
+	
+	@RequestMapping(value = "/like")
+	public ModelAndView like(Model m, ProductVo pv ) throws Exception {
+		
+		 ModelAndView mav = new ModelAndView();
+		 
+		 mav.setViewName("member/like");
+		 
+		
+		String memberId = "haha";
+		List<ProductVo> list = service.selectLike(memberId);
+	
+        m.addAttribute("list", list);
+        
+        
+
+   
+       
+        
+		
+		System.out.println("확인!!!!!!!");
+		
+		return mav;
+	}
+	
+	
+	
+	 @RequestMapping(value = "/DM")
+	    public ModelAndView list(Model m, FreeSearchCondition sc, HttpServletRequest request) throws Exception {
+		 ModelAndView mav = new ModelAndView();
+			
+				mav.setViewName("member/DM");
+
+	            int totalCnt = service.getSearchResultCnt(sc);
+	            m.addAttribute("totalCnt", totalCnt);
+
+	            FreePageHandler pageHandler = new FreePageHandler(totalCnt, sc);
+
+	            List<DM> list = service.getSearchResultPage(sc);
+	            m.addAttribute("list", list);
+	            m.addAttribute("ph", pageHandler);
+	            System.out.println("list"+list);
+	           
+
+	        return mav; // 로그인을 한 상태이면, 게시판 화면으로 이동
+	           
+
+			
 	    }
+	
+	 //@RequestParam("tdArr")List[] tdArr
+	 @RequestMapping(value = "/delDM")
+		public ModelAndView delBoard(@RequestParam("tdArr[]")List<String> tdArr)throws Exception{
+		 ModelAndView mav = new ModelAndView();
+		 mav.setViewName("member/DM");
+		System.out.println(tdArr);
 		
-		System.out.println("로그인 하기");
+	
 		
-		return "member/logIn";
-	}
+		 for(String no : tdArr) {
+			 service.sendDel(no);
+		 }
+		 
+		
+			return mav;
+		}
+		
 	
 	 
-	/**
-	 * @methodName : logInPost
-	 * @author : 신태호
-	 * @throws Exception 
-	 * @date : 2022. 10. 20.
-	 * @입력 param : dto, model, request, response
-	 * @returnType : void
-	 * 로그인 정보를 입력하고 난 후 인터셉터핸들러에 의해 로그인 처리
-	 */
-	@RequestMapping(value = "/logInPost", method = RequestMethod.POST)
-	public void logInPost(LogInDTO dto, Model model, HttpSession ses, HttpServletRequest request) throws Exception {
-		// 인터셉터 preHandle 수행하고 옴
-		
-		MemberVo logInMember = service.logIn(dto, request);
-		
-		if (logInMember == null) { // 로그인 실패 유저
-			return;
-		}
-		
-		if (dto.isRemember()) { // 자동 로그인을 체크 했을경우 DB에 세션 정보 저장
-			int ms = 1000 * 60 * 60 * 24 * 7;
-			long now = System.currentTimeMillis();
-			
-			String memberId = dto.getMemberId();
-			String sessionId = ses.getId();
-			Timestamp sessionLimit = new Timestamp(now + ms);
-			System.out.println("자동로그인 체크 온");
-			service.keepLogIn(memberId, sessionId, sessionLimit);
-		}
-		
-		model.addAttribute("dto", dto);
-		model.addAttribute("logInMember", logInMember); // model 객체에 바인딩
-		
-		// 인터셉터 postHandle에 의해 나머지 과정 수행
-	}
-	
-	/**
-	 * @methodName : logOut
-	 * @author : 신태호
-	 * @throws Exception 
-	 * @date : 2022. 10. 21.
-	 * @입력 param : session, response
-	 * @returnType : void
-	 */
-	@RequestMapping(value = "/logOut")
-	public void logOut(HttpSession ses, HttpServletResponse response) throws Exception {
-		MemberVo logInMember = (MemberVo) ses.getAttribute("logInMember");
-		
-		if (ses.getAttribute("logInMember") != null) { // 회원 정보가 있다면
-			// DB 로그아웃시간 업데이트
-			service.updateLogOutDate(logInMember.getMemberId());
-			
-			ses.removeAttribute("logInMember"); // 로그인 정보 삭제
-			ses.invalidate(); // 세션 만료
-			
-		}
-		
-		System.out.println("로그아웃");
-		
-		response.sendRedirect("/");
-	}
+	 @RequestMapping(value = "/dmdetail")
+		public ModelAndView boardDetail( Model model,@RequestParam("no") String no)throws Exception{
+		 int bno = Integer.parseInt(no);
+		 
+		 ModelAndView mav = new ModelAndView();
+			mav.setViewName("member/dmdetail");
+		 
+		 Map<String,Object> map = service.detaildm(bno);
+		 
+		 DM dm = (DM)map.get("dm");
+		 
+		 model.addAttribute("dm", dm);
+		 
+		 return mav;
+		 
+		 
+	 }
 	
 	
-	
-	
+
 }

@@ -171,32 +171,58 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 	public OrderDAO dao;
 	
 	@Override
-	public boolean addCart(CartDTO cart) throws Exception {
-		boolean result = false;
+	public void addCartMem(CartDTO cart) throws Exception {
 		
-		if(dao.addCart(cart)==1) {
-			result = true;
-		}
+		dao.addCartMem(cart);
 		
-		return result;
+	}
+	@Override
+	public void addCartGuest(CartDTO cart) throws Exception {
+		
+		dao.addCartGuest(cart);
+		
+		System.out.println("서비스 상품담김"+cart.toString());
+		
 	}
 
 	@Override
-	public List<CartDTO> getCartList(String memberId)throws Exception {
+	public List<CartDTO> selectCartListMem(String memberId)throws Exception {
 	
-		List<CartDTO> cart = dao.getCartList(memberId);
+//		List<CartDTO> cart = dao.getCartList(memberId);
+		System.out.println("제발 걸려바"+dao.selectCartListMem(memberId).toString());
 		
-		//cartDTO에는 가격정보 없는데,, 가격정보 있는 DTO사용?
-		
-		return cart;
+		return dao.selectCartListMem(memberId);
 	
-	} 
+	}
+	@Override
+	public List<CartDTO> selectCartListGuest(String sessionId)throws Exception {
+	
+//		List<CartDTO> cart = dao.getCartList(sessionId);
+		System.out.println("제발 걸려바 게스트"+dao.selectCartListGuest(sessionId).toString());
+		
+		return dao.selectCartListGuest(sessionId);
+	
+	}
+
+	@Override
+	public void delCart(int cartNo) throws Exception {
+		System.out.println("서비스"+cartNo);
+		dao.delCart(cartNo);
+		
+	}
+
+	@Override
+	public void qtyCartUpdate(int cartNo, int qty) throws Exception {
+		System.out.println(cartNo+ qty);
+		dao.qtyCartUpdate(cartNo, qty);
+		
+	}
 	
 	@Override
 	public List<DetailOrderVo> popularProd() throws Exception {
 		List<DetailOrderVo> lst = dao.getPopular();
 		return lst;
-	} 
+	}
 	
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
 	@Override

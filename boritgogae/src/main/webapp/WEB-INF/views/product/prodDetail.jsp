@@ -64,6 +64,29 @@
 <title>제품 상세페이지</title>
 <script>
 
+function addCart(cart) {
+	let qty =$(".pro-qty");
+	let prodNo =${param.prodNo};
+	let url = "/order/cart/add";
+	
+	$.ajax({
+		url : url,
+		data : { "prodNo" : prodNo ,"qty" : qty},
+		type : "post",
+		dataType : "json",
+		
+		success : function (data) {
+			console.log(data);
+			if(data == "success"){
+				location.reload();
+			}else if (data !="success"){
+				alert(" 실패")
+			}
+		}
+	 });
+}
+
+
 function delReview(reviewNo) {
 	let url = "/prodReply/deleteReview";
 	
@@ -251,7 +274,7 @@ function getParameter(param) {
 							amet dui. Sed porttitor lectus nibh. Vestibulum ac diam sit amet
 							quam vehicula elementum sed sit amet dui. Proin eget tortor
 							risus.</p>
-						<form action="${pageContext.request.contextPath}/order/orderSheet" method="post">
+						<form action="${pageContext.request.contextPath}/order/cart/add" method="post">
 							<div class="product__details__quantity">
 							<input type="hidden" value="${param.prodNo }" name="orderProducts[0].prodNo" />
 								<div class="quantity">
@@ -260,7 +283,7 @@ function getParameter(param) {
 									</div>
 								</div>
 							</div>
-							<button type="submit" class="primary-btn" style="border:0; outline:0;"> TO CART</button> 
+							<button onclick="addcart();"  class="primary-btn"  style="border:0; outline:0;">TO CART</button> 
 							<a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
 						</form>
 						

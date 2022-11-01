@@ -5,13 +5,13 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.boritgogae.domain.OrderDetailVo;
-import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.UploadImg;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
 
 
 public interface ReviewService {
@@ -20,7 +20,7 @@ public interface ReviewService {
 	public boolean addReview(ReviewDTO dto) throws Exception;
 
 	//주문자와 상품번호로 주문 가져오는 메서드
-//	List<OrdersVO> getOrder(String userId, String prodNo);
+//	List<OrdersVo> getOrder(String userId, String prodNo);
 	
 	//리뷰 이미지 저장하는 메서드
 	public boolean saveReviewImg(int reviewNo, List<UploadImg> imgLst) throws Exception;

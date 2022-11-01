@@ -16,7 +16,7 @@
 	//글 작성 중 취소했을 경우
 	function writeCancle() {
 		
-		let url = "/boardMarket/writeCancle";
+		let url = "/board/market/writeCancle";
 		
 		$.ajax({
 			url : url,
@@ -25,7 +25,7 @@
 			success : function (data) {
 				console.log(data);
 				if(data=="success"){
-					location.href="/boardMarket/listAll";
+					location.href="/board/market/listAll";
 				}	
 			}
 			
@@ -47,7 +47,7 @@
 		      let formData = new FormData(); // form 태그 객체
 		      formData.append("upfile", files[0]); // form객체에 파일 첨부
 		      
-		      let url = "/boardMarket/uploadFile";
+		      let url = "/board/market/uploadFile";
 		      
 		      $.ajax({
 		         url : url, 
@@ -89,7 +89,7 @@
 	function delFile(obj) {
 		let deleteFileName = $(obj).attr("id");
 		
-		let url = "/boardMarket/delFile";
+		let url = "/board/market/delFile";
 		$.ajax({
             url : url, 
             type : "post",
@@ -137,11 +137,11 @@
 	<h3 style="font: bold; text-align: center; text-decoration: underline;" >장터 게시판</h3>
 	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 	
-	<form action="/boardMarket/write" method="post" class="writeForm">
+	<form action="/board/market/write" method="post" class="writeForm">
 	
 		<div class="mb-3 mt-3">
 			<label for="writer">작성자 :</label> 
-				<input type="text"  class="form-control" id="writer"  name="writer" > 
+				<input type="text"  class="form-control" id="writer"  name="writer" value="${sessionScope.loginMember.userId }" > 
 		</div>
 		
 		<div class="mb-3 mt-3">

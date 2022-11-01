@@ -102,7 +102,7 @@ $(document).ready(function() {
 										게시판</a></li>
 								<li><a href="">상품 후기</a></li>
 								<li><a href="/boardTip/listAll">고개팁</a></li>
-								<li><a href="${contextPath}/boardMarket/listAll">장터 게시판</a></li>
+								<li><a href="${contextPath}/board/market/listAll">장터 게시판</a></li>
 								<li><a href="#">병원리뷰</a></li>
 							</ul>
 						</div>

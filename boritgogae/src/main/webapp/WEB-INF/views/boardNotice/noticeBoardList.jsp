@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <html>
@@ -14,7 +15,8 @@
 <title>공지사항</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/notice/js/commonJS.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/notice/js/commonJS.js"></script>
 <script>
 	
 	let pageNo = getParameter("pageNo");
@@ -29,7 +31,6 @@
 	
 	$(function() {
 		for(let i = ${pagingInfo.startNumOfCurPagingBlock }; i <= ${pagingInfo.endNumOfCurPagingBlock }; i++) {
-			console.log(document.getElementById(i).innerHTML);
 			if(pageNo == document.getElementById(i).innerHTML) {
 				$("#" + i).parent('li').addClass("active");
 			}
@@ -83,8 +84,10 @@ tr {
 		</div>
 
 		<div id="boardBtn">
-			<button class="btn btn-success"
-				onclick="location.href='/board/notice/writeBoard'">글 등록</button>
+			<c:if test="${sessionScope.logInMember.isAdmin == 'Y' }">
+				<button class="btn btn-success"
+					onclick="location.href='/board/notice/writeBoard'">글 등록</button>
+			</c:if>
 		</div>
 
 	</div>

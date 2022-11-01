@@ -129,14 +129,19 @@ public interface OrderDAO {
 	
 
 
-
 	//장바구니 추가 메서드
-	public int addCart(CartDTO cart)throws Exception;
+	public void addCartMem(CartDTO cart)throws Exception;
+	public void addCartGuest(CartDTO cart)throws Exception;
 	//장바구니 조회 메서드
-	public List<CartDTO> getCartList(String memberId)throws Exception;
+	public List<CartDTO> selectCartListMem(String memberId)throws Exception;
+	public List<CartDTO> selectCartListGuest(String sessionId)throws Exception;
+	//장바구니 삭제 메서드
+	public void delCart(int cartNo)throws Exception;
+	//장바구니 수량 업데이트 메서드
+	public void qtyCartUpdate(int cartNo, int qty)throws Exception;
 	
 	public List<DetailOrderVo> getPopular() throws Exception;
-	
+
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
 	public OrdersVo selectGuestOrderInfo(GuestOrderDTO gdto) throws Exception;
 	

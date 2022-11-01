@@ -2,10 +2,9 @@ package com.boritgogae.board.ask.persistence;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
 import com.boritgogae.board.ask.domain.AskReplyVo;
 
-@Repository
+
 public interface AskReplyDAO {
 
 	// 댓글 등록 메서드

@@ -24,6 +24,9 @@ import com.boritgogae.board.prodReply.persistence.ReviewDAO;
 import com.boritgogae.persistence.MemberDAO;
 import com.boritgogae.persistence.OrderDAO;
 import com.boritgogae.persistence.ProductDAO;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
+
 
 @Service
 public class ReviewServiceImpl implements ReviewService {

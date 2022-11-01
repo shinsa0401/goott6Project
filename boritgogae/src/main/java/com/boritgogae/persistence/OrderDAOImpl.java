@@ -102,26 +102,30 @@ public class OrderDAOImpl implements OrderDAO {
 	   
 	   return ses.selectOne(ns+".getOrderByOrderNo", orderNo);
    }
-
-	
-	@Override
-	public int addCart(CartDTO cart) throws Exception {
+   //장바구니
+   @Override
+	public void addCartMem(CartDTO cart) throws Exception {
 		
-		return ses.insert(ns+".addCart");
+		 ses.insert(ns+".addCartMem");
+	}
+	@Override
+	public void addCartGuest(CartDTO cart) throws Exception {
+		
+		 ses.insert(ns+".addCartGuest");
 	}
 
 	@Override
-	public List<CartDTO> getCartList(String memberId) throws Exception {
-		
-		return ses.selectList(ns+".selectCartList");
+	public List<CartDTO> selectCartListMem(String memberId) throws Exception {
+//		System.out.println(memberId);
+		return ses.selectList(ns+".selectCartListMem", memberId);
 	}
 	
 	@Override
-	public List<DetailOrderVo> getPopular() throws Exception {
-	
-		return ses.selectList(ns+".popularList");
+	public List<CartDTO> selectCartListGuest(String sessionId) throws Exception {
+//		System.out.println(memberId);
+		return ses.selectList(ns+".selectCartListGuest", sessionId);
 	}
-	
+   
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
 	@Override
 	public OrdersVo selectGuestOrderInfo(GuestOrderDTO gdto) throws Exception {
@@ -140,4 +144,30 @@ public class OrderDAOImpl implements OrderDAO {
 		// TODO Auto-generated method stub
 		return ses.selectList(ns+".getDetailOrderByMemberId", memberId);
 	}
+
+	@Override
+	public void delCart(int cartNo) throws Exception {
+		System.out.println("다오"+cartNo);
+		 ses.delete(ns+".delCartProd",cartNo);
+		
+	}
+
+	@Override
+	public void qtyCartUpdate(int cartNo, int qty) throws Exception {
+		System.out.println("걸렸니???????????/");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("cartNo", cartNo);
+		map.put("qty", qty);
+		
+		ses.update(ns+".qtyCartUpdate",map );
+		
+	}
+	@Override
+	public List<DetailOrderVo> getPopular() throws Exception {
+	
+		return ses.selectList(ns+".popularList");
+	}
+
+
 }

@@ -1,8 +1,6 @@
 package com.boritgogae.controller;
 
 import java.util.ArrayList;
-
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
@@ -35,49 +34,19 @@ import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.domain.ProductVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
+import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.ProductDTO;
+import com.boritgogae.service.OrderService;
 import com.boritgogae.service.ProductService;
 
-
-
-@RequestMapping(value="/product/*")
-@Controller
+@RequestMapping(value = "/product")
+@RestController
 public class ProductController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
-	
-	
-	@Inject
-	private ReviewService reviewService;
-	
-	@Inject
-	private ProductService prodService;
-	
-	// 상품리스트페이지
-		@RequestMapping(value = "/category")
-		public String prodList(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
-				Model model) throws Exception {
 
-			Map<String, Object> productList = prodService.getProductAll(pageNo);
-			List<ProductDTO> prodLst = (List<ProductDTO>) productList.get("prodLst");
-			int total = (int) productList.get("cnt");
-			
-			TipPagingInfo pi = (TipPagingInfo) productList.get("pi");
-			
-			if (pageNo < 1) {
-				pageNo = 1;
-			} else if (pageNo > pi.getTotalPage()) {
-				pageNo = pi.getTotalPage();
-			}
+   private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-			model.addAttribute("prodLst", prodLst);
-			model.addAttribute("total", total);
-			model.addAttribute("pi", pi);
-			model.addAttribute("pageNo", pageNo);
-			
-			return "/product/prodList";
-
-		}
+   @Inject
+   private ReviewService reviewService;
 		
 	//상세페이지
 	/**
@@ -130,4 +99,118 @@ public class ProductController {
 	}
 	
 	
+   @Inject
+   private ProductService prodService;
+
+   @Inject
+   private OrderService orderService;
+
+   //검색
+   @RequestMapping(value = "/{searchWord}", method = RequestMethod.GET)
+   public ModelAndView SearchProduct(@RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo,
+         @PathVariable(value="searchWord") String searchWord) throws Exception {
+      
+      ModelAndView mav = new ModelAndView();
+      
+      if (pageNo < 1) {
+         pageNo = 1;
+      }
+      
+      Map<String, Object> map = prodService.getSearchProduct(pageNo,searchWord);
+      List<ProductDTO> prodLst = (List<ProductDTO>) map.get("prodLst");
+      TipPagingInfo pi = (TipPagingInfo) map.get("pi");
+      
+      if (pageNo > pi.getTotalPage()) {
+         pageNo = pi.getTotalPage();
+      }
+      
+      List<ProductDTO> productLst = new ArrayList<ProductDTO>();
+      List<DetailOrderVo> PopularProdLst = orderService.popularProd();
+      
+      for (DetailOrderVo i : PopularProdLst) {
+         String prodNo = i.getProdNo();
+
+         if (prodNo == null) {
+            break;
+         } else {
+            ProductDTO product = prodService.getPopularProd(prodNo);
+            productLst.add(product);
+         }
+
+      }
+
+      List<ProductDTO> lastProduct = prodService.getLastProduct();
+      
+      
+      mav.setViewName("/product/prodList");
+      mav.addObject("pi", pi);
+      mav.addObject("prodLst", prodLst);
+      mav.addObject("popular",productLst);
+      mav.addObject("lastProd",lastProduct);
+      mav.addObject("category", searchWord);
+      mav.addObject("pageNo", pageNo);
+      
+      
+      return mav;
+      
+   }
+   
+   // 상품리스트페이지
+   @RequestMapping(value = "/productCategory/{category}")
+   public ModelAndView prodList(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
+         @PathVariable(value = "category") String category) throws Exception {
+
+
+      if (pageNo < 1) {
+         pageNo = 1;
+      }
+      
+      Map<String, Object> map = prodService.getProductAll(category, pageNo);
+      List<ProductDTO> prodLst = null;
+
+      ModelAndView mav = new ModelAndView();
+
+      prodLst = (List<ProductDTO>) map.get("prodLst");
+      TipPagingInfo pi = (TipPagingInfo) map.get("pi");
+
+      
+
+      if (pageNo > pi.getTotalPage()) {
+         pageNo = pi.getTotalPage();
+      }
+
+
+      List<ProductDTO> productLst = new ArrayList<ProductDTO>();
+      List<DetailOrderVo> PopularProdLst = orderService.popularProd();
+      
+      for (DetailOrderVo i : PopularProdLst) {
+         String prodNo = i.getProdNo();
+
+         if (prodNo == null) {
+            break;
+         } else {
+            ProductDTO product = prodService.getPopularProd(prodNo);
+            productLst.add(product);
+         }
+
+      }
+
+      List<ProductDTO> lastProduct = prodService.getLastProduct();
+      
+      
+      mav.setViewName("/product/prodList");
+      mav.addObject("prodLst", prodLst);
+      mav.addObject("pi", pi);
+      mav.addObject("popular",productLst);
+      mav.addObject("lastProd",lastProduct);
+      mav.addObject("category",category);
+      mav.addObject("pageNo", pageNo);
+      
+      return mav;
+
+   }
+
+
+
 }
+

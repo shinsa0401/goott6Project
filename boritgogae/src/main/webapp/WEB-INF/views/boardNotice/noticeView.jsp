@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ page session="false"%>
 
 <html>
 <head>
@@ -15,11 +14,11 @@
 <title>공지사항 상세</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-		<link
-		href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
-		rel="stylesheet">
-	<script
-		src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
 <script type="text/javascript">
 	let sendByRno = 0;
@@ -125,12 +124,14 @@
 			} else {
 				output += "<p class='replyIcon'>";
 			}
+			if('${sessionScope.logInMember.memberId }' == item.memberId) {
+				output += "<span id='deleteIcon' style='text-decoration: underline;' onclick='delReply(" + item.rno + ")';>";
+				output += "삭제<img src='../../resources/notice/icon/delete_icon.png' class='icon' /></span>&nbsp;&nbsp;&nbsp;";
+				output += "<span id='modifyIcon' style='text-decoration: underline;'";
+				output += " onclick='modiReply(" + item.rno + ",\"" + item.content.trim() + "\",\"" + item.memberId + "\")';>";
+				output += "수정<img src='../../resources/notice/icon/modify_icon.png' class='icon' /></span>&nbsp;&nbsp;&nbsp;";
+			}
 			
-			output += "<span id='deleteIcon' style='text-decoration: underline;' onclick='delReply(" + item.rno + ")';>";
-			output += "삭제<img src='../../resources/notice/icon/delete_icon.png' class='icon' /></span>&nbsp;&nbsp;&nbsp;";
-			output += "<span id='modifyIcon' style='text-decoration: underline;'";
-			output += " onclick='modiReply(" + item.rno + ",\"" + item.content.trim() + "\",\"" + item.memberId + "\")';>";
-			output += "수정<img src='../../resources/notice/icon/modify_icon.png' class='icon' /></span>&nbsp;&nbsp;&nbsp;";
 			output += "<span id='replyRepl' style='text-decoration: underline;' onclick='replyRepl(" + item.rno + ", \"" + item.ref + "\", \"" + item.step + "\", \"" + item.refOrder + "\")';>";
 			output += "답글달기</span>";
 			output += "</p>";
@@ -347,7 +348,7 @@
 }
 
 #replys {
-	margin-top : 80px;
+	margin-top: 80px;
 	overflow: auto;
 }
 
@@ -355,8 +356,8 @@
 	position: relative;
 	float: right;
 	bottom: 26px;
-	
 }
+
 #deleteIcon {
 	cursor: pointer;
 }
@@ -371,23 +372,22 @@
 
 .replyContents {
 	position: relative;
-	left:30px;
-	max-width:60%;
-	white-space:normal;
+	left: 30px;
+	max-width: 60%;
+	white-space: normal;
 	word-break: break-all;
 	word-wrap: break-word;
 }
 
 .reply-list-group {
-	max-width:80%;
+	max-width: 80%;
 }
 
 .likeBtn {
-	width : 50px;
+	width: 50px;
 	margin-bottom: 10px;
 	position: absolute;
 	left: 50%;
-
 }
 
 .container {
@@ -398,7 +398,7 @@
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
-	
+
 	<!-- summer note -->
 
 	<script
@@ -434,36 +434,45 @@
 				<button type="button" class="btn btn-success"
 					style="background-color: #7fad39; color: white; border-color: #7fad39;"
 					onclick="location.href='/board/notice/list'">목록으로</button>
-				<button type="button" class="btn btn-success"
-					style="background-color: #7fad39; color: white; border-color: #7fad39;"
-					onclick="showDelModal();">글 삭제</button>
-				<button type="button" class="btn btn-success"
-					style="background-color: #7fad39; color: white; border-color: #7fad39;"
-					onclick="modify();">글 수정</button>
+				<c:if test="${sessionScope.logInMember.isAdmin == 'Y' }">
+					<button type="button" class="btn btn-success"
+						style="background-color: #7fad39; color: white; border-color: #7fad39;"
+						onclick="showDelModal();">글 삭제</button>
+					<button type="button" class="btn btn-success"
+						style="background-color: #7fad39; color: white; border-color: #7fad39;"
+						onclick="modify();">글 수정</button>
+				</c:if>
 			</div>
-			
+
 		</div>
 		<div class="likeBtnDiv">
 			<c:choose>
 				<c:when test="">
 					<button type="button" class="btn btn-success likeBtn"
-					style="background-color: #7fad39; color: white; border-color: #7fad39;"
-					onclick=""><img src="${pageContext.request.contextPath}/resources/notice/icon/full_like_icon.png"></button>
+						style="background-color: #7fad39; color: white; border-color: #7fad39;"
+						onclick="">
+						<img
+							src="${pageContext.request.contextPath}/resources/notice/icon/full_like_icon.png">
+					</button>
 				</c:when>
 				<c:otherwise>
 					<button type="button" class="btn btn-success likeBtn"
 						style="background-color: #7fad39; color: white; border-color: #7fad39;"
-						onclick=""><img src="${pageContext.request.contextPath}/resources/notice/icon/empty_like_icon.png"></button>
+						onclick="">
+						<img
+							src="${pageContext.request.contextPath}/resources/notice/icon/empty_like_icon.png">
+					</button>
 				</c:otherwise>
-			
+
 			</c:choose>
 		</div>
-		
-		
+
+
 		<!-- 댓글 -->
 		<div id="replys">
 			<div>
-				<input type="text" id="memberId" name="memberId">
+				<input type="hidden" id="memberId" name="memberId"
+					value="${sessionScope.logInMember.memberId}">
 			</div>
 			<!-- 댓글 작성 부분 -->
 			<textarea id="summernote" class="content" name="content"></textarea>
@@ -474,9 +483,9 @@
 					onclick="addReply();">댓글 등록</button>
 			</div>
 		</div>
-		
+
 		<!-- 댓글 목록 -->
-			<div id="replyList"></div>
+		<div id="replyList"></div>
 	</div>
 
 
@@ -500,7 +509,7 @@
 					<button type="button" class="btn btn-danger closeModal"
 						data-bs-dismiss="modal">취소</button>
 					<button type="button" class="btn btn-success"
-						data-bs-dismiss="modal"  onclick="deleteBoard();">확인</button>
+						data-bs-dismiss="modal" onclick="deleteBoard();">확인</button>
 				</div>
 
 			</div>
@@ -527,7 +536,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- The Modal -->
 	<div class="modal" id="deleteReplyModal">
 		<div class="modal-dialog">
@@ -545,7 +554,7 @@
 					<button type="button" class="btn btn-danger closeModal"
 						data-bs-dismiss="modal">취소</button>
 					<button type="button" class="btn btn-success"
-						data-bs-dismiss="modal"  onclick="deleteReplyBoard();">확인</button>
+						data-bs-dismiss="modal" onclick="deleteReplyBoard();">확인</button>
 				</div>
 
 			</div>
@@ -565,8 +574,7 @@
 				<!-- Modal footer -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-success"
-						data-bs-dismiss="modal"
-						onclick="location.reload();">확인</button>
+						data-bs-dismiss="modal" onclick="location.reload();">확인</button>
 				</div>
 
 			</div>
