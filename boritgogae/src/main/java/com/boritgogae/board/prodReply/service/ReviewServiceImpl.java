@@ -10,7 +10,9 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;
@@ -19,6 +21,8 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.persistence.ReviewDAO;
+import com.boritgogae.persistence.MemberDAO;
+import com.boritgogae.persistence.OrderDAO;
 import com.boritgogae.persistence.ProductDAO;
 
 @Service
@@ -29,6 +33,12 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	@Inject
 	private ProductDAO prodDao;
+	
+	@Inject
+	private OrderDAO orderDao;
+	
+	@Inject
+	private MemberDAO memDao;
 
 	//리뷰쓰는 메서드
 	@Override
@@ -48,7 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
 			
 			//상품의 reviewCount 업데이트
 			System.out.println(dto.getProdNo());
-			prodDao.updateProdReview(dto.getProdNo());
+			prodDao.updateProdReviewCnt(dto.getProdNo());
 			result = true;
 		}
 		return result;
@@ -112,9 +122,12 @@ public class ReviewServiceImpl implements ReviewService {
 	public boolean deleteReview(int reviewNo) throws Exception {
 		boolean result = false;
 		
+		ReviewVO review = dao.getReviewByRno(reviewNo);
+		
 		int row = dao.deleteReview(reviewNo);
 		
 		if (row == 1) {
+			prodDao.updateProdReviewCnt(review.getProdNo());
 			result = true;
 		}
 		
@@ -209,6 +222,25 @@ public class ReviewServiceImpl implements ReviewService {
 			return true;
 		}else {
 			return false;
+		}
+	}
+
+	//리뷰를 쓸 수 있는지 판단하는 메서드
+	@Override
+	public String canReview(String memberId, String prodNo) throws Exception {
+		List<DetailOrderVo> detailorders = orderDao.getDetailOrderByMemberId(memberId);
+		List<ReviewVO> reviews = memDao.showUserReviewList(memberId);
+		
+		if(detailorders.size()<1) { //로그인한 회원의 상품에 대한 주문내역 리스트
+			return "N";
+		}
+		else{
+			for(ReviewVO review : reviews) { //로그인한 회원이 쓴 리뷰의 리스트
+				if(review.getProdNo().equals(prodNo)) { // 리뷰의 상품번호와 해당 상품번호가 같다면
+					return "N";
+				}
+			}
+			return "Y"; //반복문을 다 돌면서 n을 리턴하지 않았다면 y를 리턴하게 됨
 		}
 	}
 

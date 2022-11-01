@@ -121,7 +121,6 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 	@Transactional
 	@Override
 	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet) {
-		//트랜잭션 처리 해보기
 		//order에 넣기
 		int orderRow = orderDao.insertOrder(order);
 		System.out.println("주문인서트"+orderRow);

@@ -78,4 +78,7 @@ public interface ReviewDAO {
 	
 	//포인트이력 테이블에 인서트하는 메서드
 	public int insertPoint(int point, String userId);
+	
+	//제품번호에 따른 리뷰들 가져오는 메서드
+	public List<ReviewVO> getReviews(String prodNo) throws Exception;
 }

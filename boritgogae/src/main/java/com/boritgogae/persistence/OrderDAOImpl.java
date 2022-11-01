@@ -134,4 +134,10 @@ public class OrderDAOImpl implements OrderDAO {
 		
 		return ses.selectList(ns+".getOrdersByMemberId", memberId);
 	}
+
+	@Override
+	public List<DetailOrderVo> getDetailOrderByMemberId(String memberId) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.selectList(ns+".getDetailOrderByMemberId", memberId);
+	}
 }

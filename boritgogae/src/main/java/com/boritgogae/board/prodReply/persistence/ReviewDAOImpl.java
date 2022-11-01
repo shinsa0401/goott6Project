@@ -164,6 +164,12 @@ public class ReviewDAOImpl implements ReviewDAO {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public List<ReviewVO> getReviews(String prodNo) throws Exception {
+		
+		return ses.selectList(ns+".getReviews", prodNo);
+	}
 	
 	
 	

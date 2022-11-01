@@ -29,14 +29,7 @@ public interface ProductDAO {
 	 **/
 	public List<ProdImgVo> getProdImg(String prodNo);
 	
-	/**
-	 * @methodName : updateProdReview
-	 * @author : kjy
-	 * @date : 2022. 10. 18.
-	 * @입력 param : 상품번호
-	 * @returnType : int
-	 **/
-	public int updateProdReview(String prodNo);
+
 
 
 
@@ -59,5 +52,14 @@ public interface ProductDAO {
 	 * @returnType : ProductContentVo
 	 */
 	public ProductContentVo getProdContent(String prodNo) throws Exception;
+	
+	/**
+	 * @methodName : updateProdReviewCnt
+	 * @author : kjy
+	 * @date : 2022. 10. 30.
+	 * @입력 param : prodNo
+	 * @returnType : int
+	 */
+	public int updateProdReviewCnt(String prodNo) throws Exception;
 
 }

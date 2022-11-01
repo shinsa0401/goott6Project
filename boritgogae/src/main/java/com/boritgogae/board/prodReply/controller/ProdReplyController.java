@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
@@ -53,8 +55,11 @@ public class ProdReplyController {
 //	}
 
 	@RequestMapping(value = "/writeReview")
-	public String writeReview(@RequestParam("prodNo") String prodNo) throws Exception{
-		//리뷰쓰기 페이지로 이동
+	public String writeReview(@RequestParam("prodNo") String prodNo, HttpServletRequest request, Model model) throws Exception{
+		MemberVo member = (MemberVo) request.getSession().getAttribute("logInMember");
+		
+		model.addAttribute("member", member);
+		
 		return "boardProdReply/writeReview";
 	}
 	
@@ -65,7 +70,10 @@ public class ProdReplyController {
 		boolean result = service.addReview(dto);
 		int reviewNo = service.getLastReviewNo();
 
+		//리뷰 이미지 저장하기
 		boolean imgResult = rest.saveReviewImg(reviewNo);
+		
+		//리뷰와 이미지가 잘 저장됐다면
 		if(result&&imgResult) {
 			rttr.addFlashAttribute("status", "success");
 		}else {

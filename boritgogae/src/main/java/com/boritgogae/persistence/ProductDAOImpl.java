@@ -39,13 +39,6 @@ public class ProductDAOImpl implements ProductDAO {
 
 
 
-	@Override
-	public int updateProdReview(String prodNo) {
-		
-		return ses.update(ns+".updateProdReview", prodNo);
-
-
-	}
 	
 
 	@Override
@@ -85,6 +78,14 @@ public class ProductDAOImpl implements ProductDAO {
 	public ProductContentVo getProdContent(String prodNo) throws Exception {
 		
 		return ses.selectOne(ns+".getProdContent", prodNo);
+	}
+
+
+
+	@Override
+	public int updateProdReviewCnt(String prodNo) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.update(ns+".updateReviewCnt", prodNo);
 	}
 
 }

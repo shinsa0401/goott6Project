@@ -133,7 +133,7 @@ public class OrderController {
 
 		OrderVo currentOrder = orderService.placeOrder(order, coupon, orderSheet);
 		
-		response.sendRedirect("redirect:/?orderNo=" + currentOrder.getOrderNo(), false);
+		response.sendRedirect("redirect:/?orderNo=" + currentOrder.getOrderNo());
 	}
 
 	@Inject

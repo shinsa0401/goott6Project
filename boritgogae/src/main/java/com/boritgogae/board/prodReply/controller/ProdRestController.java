@@ -28,6 +28,7 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.etc.UploadImgProcess;
 import com.boritgogae.board.prodReply.service.ReviewService;
+import com.boritgogae.domain.MemberVo;
 
 
 @RequestMapping(value="/prodReply2/*")
@@ -45,7 +46,7 @@ public class ProdRestController {
 	@RequestMapping(value = "/addReviewImg/{prodNo}", method = RequestMethod.POST)
 	public ResponseEntity<UploadImg> addReviewImg(MultipartFile file, HttpServletRequest req, @PathVariable("prodNo") String prodNo){
 		
-		String upPath = req.getSession().getServletContext().getRealPath("resources/uploads/reviewImg");
+		String upPath = req.getSession().getServletContext().getRealPath("resources/reviewImgs");
 		
 		ResponseEntity<UploadImg> result = null;
 		
@@ -59,7 +60,7 @@ public class ProdRestController {
 				
 			} catch (IOException e) {
 				result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-				System.out.println("오류발생?!");
+				System.out.println("오류발생?!"+ e.toString());
 			}
 		}
 		return result;
@@ -168,24 +169,33 @@ public class ProdRestController {
 	//리뷰 수정하는 페이지로 가기
 	@RequestMapping(value = "/editeReview/{reviewNo}/{prodNo}")
 	public ModelAndView editReview(@PathVariable("reviewNo") String reviewNo, @PathVariable("prodNo") String prodNo, HttpSession ses) throws Exception {
+		
+		MemberVo member = (MemberVo) ses.getAttribute("logInMember");
+		
+		
 		int rno = Integer.parseInt(reviewNo);
 		
 		ModelAndView mav = new ModelAndView();
 		
 		Map<String, Object> map = service.getReviewByRno(rno);
-		
-		mav.setViewName("boardProdReply/editReview");
-		
 		ReviewVO review = (ReviewVO)map.get("review");
-		List<UploadImg> imgs = (List<UploadImg>)map.get("reviewImgs");
 		
-		mav.addObject("review", review);
-		
-		if(imgs.size()>0) {
-			for(UploadImg img : imgs) {
-				this.uploadFileLst.add(img);
+		if(member == null || !member.getMemberId().equals(review.getWriter())) {
+			mav.setViewName("product/category/detail?prodNo"+prodNo);
+		}else {
+			mav.setViewName("boardProdReply/editReview");
+			
+			
+			List<UploadImg> imgs = (List<UploadImg>)map.get("reviewImgs");
+			
+			mav.addObject("review", review);
+			
+			if(imgs.size()>0) {
+				for(UploadImg img : imgs) {
+					this.uploadFileLst.add(img);
+				}
+				mav.addObject("imgs", imgs);
 			}
-			mav.addObject("imgs", imgs);
 		}
 		
 		return mav;

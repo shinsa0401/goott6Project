@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.service.ReviewService;
+import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OptionVo;
 import com.boritgogae.domain.OrderSheetDTO;
 import com.boritgogae.domain.ProdImgVo;
@@ -86,7 +88,7 @@ public class ProductController {
 	 * @returnType : String
 	 **/
 	@RequestMapping(value = "/category/detail")
-	public String prodDetail(@RequestParam(value="prodNo", required=true) String prodNo, @RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, Model model) throws Exception {
+	public String prodDetail(@RequestParam(value="prodNo", required=true) String prodNo, @RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, Model model, HttpServletRequest request) throws Exception {
 		
 		ProductVo prod = prodService.getProd(prodNo);
 		List<ProdImgVo> prodImgLst = prodService.getProdImg(prodNo);
@@ -107,6 +109,14 @@ public class ProductController {
 		}
 		
 		List<ProdReplyVo> replies = reviewService.getReplies(prodNo);
+		
+		MemberVo member = (MemberVo) request.getSession().getAttribute("logInMember");
+		
+		if(member != null) {
+			String canReview = reviewService.canReview(member.getMemberId(), prodNo);
+			System.out.println(canReview);
+			model.addAttribute("canReview", canReview);
+		}
 		
 		model.addAttribute("reviews",reviews);
 		model.addAttribute("reviewImg", imgLst);

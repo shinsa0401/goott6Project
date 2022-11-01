@@ -74,7 +74,7 @@
 	//사진 파싱하여 보여주기
 	function showImg(data) {
 		let output = "";
-		output += "<img src='/resources/uploads/reviewImg"+data.thumbnailName + "' />";
+		output += "<img src='/resources/reviewImgs"+data.thumbnailName + "' />";
 		output += "<img src='/resources/img/delete.png' id='"+data.imgName+"' width=15px; onclick='delImg(this);'>";
 		
 		$("#reviewImg").append(output);
@@ -166,15 +166,15 @@
                                 <div class="col-lg-12">
                                     <div class="checkout__input">
                                         <p>닉네임<span>*</span></p>
-                                        <input type="text" name="nickName"> <!-- value에 ajax로 데이터 가져와서 넣기 -->
-                                        <input type="text" name="userId" id="userId">아이디 <!-- value에 세션의 유저아이디넣기 -->
+                                        <input type="text" name="nickName" value="${member.nickName }" readonly="readonly">
+                                        <input type="hidden" name="userId" id="userId" value="${member.memberId }" readonly="readonly">
                                     </div>
                                 </div>
                             </div>
                             <div class="checkout__input">
-                                <p>구매상품<span>*</span></p>
+                                <p>구매상품<span></span></p>
                                 <input type="text" name="prodName"> <!-- value에 ajax로 데이터 가져와서 넣기 -->
-                                구매상품번호<input type="hidden" name="prodNo" value="${param.prodNo }" id = "prodNo"> <!-- 쿼리스트링에서가져오기? -->
+                                <input type="hidden" name="prodNo" value="${param.prodNo }" id = "prodNo"> <!-- 쿼리스트링에서가져오기? -->
                             </div>
                             <div class="checkout__input">
                                 <p>제목<span>*</span></p>

@@ -148,4 +148,6 @@ public interface OrderDAO {
 	 * @returnType : List<OrderVo>
 	 */
 	public List<OrderVo> getOrdersByMemberId(String memberId) throws Exception;
+	
+	public List<DetailOrderVo> getDetailOrderByMemberId(String memberId) throws Exception;
 }

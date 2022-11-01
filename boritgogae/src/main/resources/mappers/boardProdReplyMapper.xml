@@ -76,4 +76,8 @@
  	<update id="updateReRef">
  		update reviewReply set ref = #{parentRef} where rno = #{rno}
  	</update>
+ 	
+ 	<select id="getReviews" resultType="com.boritgogae.board.prodReply.domain.ReviewVO">
+		select * from review where prodNo = #{prodNo}
+ 	</select>
   </mapper>

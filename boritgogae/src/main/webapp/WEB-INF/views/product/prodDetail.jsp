@@ -288,9 +288,9 @@ function getParameter(param) {
 					<div class="product__details__tab">
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item"><a class="nav-link active"
-								id="Description" data-toggle="tab" href="#tabs-1" role="tab"
+								id="Description" data-bs-toggle="tab" href="#tabs-1" role="tab"
 								aria-selected="true">Description</a></li>
-							<li class="nav-item"><a class="nav-link" data-toggle="tab"
+							<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
 								id="Reviews" href="#review" role="tab" aria-selected="false">Reviews
 									<span>(${product.reviewCount })</span>
 							</a></li>
@@ -308,8 +308,11 @@ function getParameter(param) {
 											<div class="col-lg-4 col-md-5 order-md-1 order-2">
 												<div class="blog__sidebar">
 													<div class="blog__sidebar__search">
+													<c:if test="${canReview == 'Y' }">
 														<a href="/prodReply/writeReview?prodNo=${param.prodNo }"
 															class="primary-btn">add review</a>
+													</c:if>
+														
 													</div>
 													<div class="blog__sidebar__item">
 														<h4>stars</h4>
@@ -370,7 +373,7 @@ function getParameter(param) {
 																	1 &nbsp; <i class="fa fa-star"></i> <c:set var="cnt" value="0" />
 																		<c:forEach var="i" items="${reviews}">
 																			<c:if test="${i.assess == 1 }">
-																				<c:set var="cnt" value="${cnt+1 }" />
+																				<c:set var="cnt" value="${cnt+1}" />
 																			</c:if>							
 																		</c:forEach> 
 																		<span>(${cnt } reviews)</span>
@@ -378,51 +381,7 @@ function getParameter(param) {
 															</li>
 														</ul>
 													</div>
-													<div class="blog__sidebar__item">
-														<h4>Recent News</h4>
-														<div class="blog__sidebar__recent">
-															<a href="#" class="blog__sidebar__recent__item">
-																<div class="blog__sidebar__recent__item__pic">
-																	<img src="img/blog/sidebar/sr-1.jpg" alt="">
-																</div>
-																<div class="blog__sidebar__recent__item__text">
-																	<h6>
-																		09 Kinds Of Vegetables<br /> Protect The Liver
-																	</h6>
-																	<span>MAR 05, 2019</span>
-																</div>
-															</a> <a href="#" class="blog__sidebar__recent__item">
-																<div class="blog__sidebar__recent__item__pic">
-																	<img src="img/blog/sidebar/sr-2.jpg" alt="">
-																</div>
-																<div class="blog__sidebar__recent__item__text">
-																	<h6>
-																		Tips You To Balance<br /> Nutrition Meal Day
-																	</h6>
-																	<span>MAR 05, 2019</span>
-																</div>
-															</a> <a href="#" class="blog__sidebar__recent__item">
-																<div class="blog__sidebar__recent__item__pic">
-																	<img src="img/blog/sidebar/sr-3.jpg" alt="">
-																</div>
-																<div class="blog__sidebar__recent__item__text">
-																	<h6>
-																		4 Principles Help You Lose <br />Weight With
-																		Vegetables
-																	</h6>
-																	<span>MAR 05, 2019</span>
-																</div>
-															</a>
-														</div>
-													</div>
-													<div class="blog__sidebar__item">
-														<h4>Search By</h4>
-														<div class="blog__sidebar__item__tags">
-															<a href="#">Apple</a> <a href="#">Beauty</a> <a href="#">Vegetables</a>
-															<a href="#">Fruit</a> <a href="#">Healthy Food</a> <a
-																href="#">Lifestyle</a>
-														</div>
-													</div>
+													
 												</div>
 											</div>
 											<div class="col-lg-8 col-md-7 order-md-1 order-1">
@@ -438,7 +397,7 @@ function getParameter(param) {
 																	<c:set var="cnt" value="${cnt+1}" />
 																	<c:forEach var="i" begin="1" end="${cnt }">
 																		<img
-																			src="/resources/uploads/reviewImg/${reviewImg.imgName }"
+																			src="/resources/reviewImgs/${reviewImg.imgName }"
 																			alt="">
 																	</c:forEach>
 																</c:if>
@@ -464,7 +423,7 @@ function getParameter(param) {
 																	<div class="blog__details__author">
 																		<div class="blog__details__author__pic">
 																			<!--리뷰작성자 사진-->
-																			<img src="img/blog/details/details-author.jpg" alt="">
+																			<!-- <img src="img/blog/details/details-author.jpg" alt=""> -->
 																		</div>
 																		<div class="blog__details__author__text">
 																			<h6>${review.writer }</h6>
@@ -474,13 +433,17 @@ function getParameter(param) {
 																<div class="col-lg-6">
 																	<div class="blog__details__widget">
 																		<div class="blog__details__social">
-																			<i class="fa fa-envelope"></i> <img alt=""
+																			<i class="fa fa-envelope"></i> 
+																			<c:if test="${logInMember.memberId == review.writer }">
+																				<img alt=""
 																				src="/resources/img/deleteReview.png"
 																				onclick="delReview(${review.reviewNo});"
 																				style="height: 20px; margin: auto;" /> <img alt=""
 																				src="/resources/img/edit.png"
 																				onclick="location.href='/prodReply2/editeReview/${review.reviewNo}/${param.prodNo }';"
-																				style="height: 20px; margin: auto;" /> <img
+																				style="height: 20px; margin: auto;" />
+																			</c:if>
+																			 <img
 																				src="/resources/img/reply.png"
 																				onclick="openReply(${review.reviewNo})"
 																				style="height: 20px; margin: auto;" /> <img
@@ -525,9 +488,12 @@ function getParameter(param) {
 																							pattern="yyyy-MM-dd a hh:mm" />
 																					</div>
 																					<div class="blog__details__social text-right">
-																						<img alt="" src="/resources/img/deleteReview.png"
+																					<c:if test="${logInMember.memberId == reply.replyWriter }">
+																					<img alt="" src="/resources/img/deleteReview.png"
 																							onclick="delReply(${reply.rno});"
-																							style="height: 20px; margin: auto;" /> <img
+																							style="height: 20px; margin: auto;" />
+																					</c:if>
+																						 <img
 																							src="/resources/img/pencil.png"
 																							onclick="writeReReply(${reply.rno}, ${review.reviewNo });"
 																							style="height: 20px; margin: auto;" />
