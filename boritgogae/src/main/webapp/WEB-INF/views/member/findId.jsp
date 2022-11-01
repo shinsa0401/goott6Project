@@ -55,10 +55,10 @@
 				});
 				
 			} else if (memberName == "") {
-		  		alert("이름 입력");
+		  		alert("이름을 입력하세요");
 		  		$("#memberName").focus();
 		  	} else if (memberEmail == "") {
-		  		alert("이메일 입력");
+		  		alert("이메일을 입력하세요");
 		  		$("#memberEmail").focus();
 		  	}
 		});
@@ -138,15 +138,15 @@
 		    });
 			
 		} else if (memberName == "") {
-			alert("이름 입력");
+			alert("이름을 입력하세요");
 			$("#memberName").focus();
 		} else if (memberEmail == "") {
-			alert("이메일 입력");
+			alert("이메일을 입력하세요");
 			$("#memberEmail").focus();
 		} else if (authCheck == false) {
-			alert("인증 여부");
+			alert("이메일 인증을 해주세요");
 		} else if (checkCode == false) {
-			alert("인증번호 틀림");
+			alert("인증번호가 틀렸습니다");
 		}
 		
 	}
@@ -167,8 +167,8 @@
 </script>
 <style>
 
-	#container div {
-		width: 90%;
+	#outer {
+		width: 100%;
 		margin: auto;
 	}
 	
@@ -203,18 +203,27 @@
 		padding-top: 20px;
 		padding-bottom: 10px;
 	}
+	
+	.authForm {
+		width: 457px;
+		margin:0 auto;
+	}
+	
+	.alert {
+		top: -22px;
+	}
 </style>
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div id="container">
-		
+		<div id="outer">
 		<div class="heading">아이디 찾기</div>
 		
 		<!-- 1차 인증 -->
 		<div class="authForm" style="display: none">
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="label">이름</div>
 				<div class="checkout__input">
 					<input type="text" class="inputBox form-control" id="memberName" placeholder="이름을 입력하세요" style="color:black" />
@@ -223,7 +232,7 @@
 				</div>
 			</div>
 			
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="label">이메일</div>
 				<div class="checkout__input">
 					<input type="email" class="inputBox form-control" id="memberEmail" placeholder="이메일을 입력하세요" style="color:black" />
@@ -234,7 +243,7 @@
 			
 			<!-- 캡챠자리 -->
 			
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="label">이메일 인증</div>
 				<div class="checkout__input input-group">
 					<input type="text" class="mailInputBox form-control" id="authNumber" placeholder="인증번호 입력" disabled="disabled" />
@@ -249,7 +258,7 @@
          		</div>
 			</div>
 			
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="checkout__input d-grid">
 					<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthCheck();">아이디 찾기</button>
 				</div>
@@ -268,37 +277,9 @@
 			</div>
 		</div>
 	
-		
+		</div>
     </div>
     
-         
-    
-	
-	<!--
-    
-    <hidden 인증번호 적는 곳>
-
-    <button1>인증번호 받기</button>
-
-    <button>1이후 아이디찾기</button>
-
-    <에러> 받기버튼 ajax 로 회원정보 select
-    입력한 정보와 일치하는 회원정보가 없습니다. 
-    이름/이메일 주소를 확인해주세요.
-
-    <받기되면>
-    인증번호 발송 요청이 완료되었습니다.
-    인증번호가 오지 않는 경우, 입력한 이름/이메일주소를 
-    확인 후 다시 요청해주세요.
-    
-    <아이디찾기 버튼누른후>
-    신태호님의 정보와 일치하는 아이디 목록입니다.
-    shinsa0402
-    2009.8.12 가입
-
-    로그인하러가기 버튼(logIn 호출) | 비밀번호 재설정 버튼
--->
-	
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

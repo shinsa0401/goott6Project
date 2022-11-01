@@ -66,10 +66,10 @@
 						}
 					});
 				} else if (memberName == "") {
-			  		alert("이름 입력");
+			  		alert("이름을 입력하세요");
 			  		$("#memberName").focus();
 			  	} else if (memberEmail == "") {
-			  		alert("이메일 입력");
+			  		alert("이메일을 입력하세요");
 			  		$("#memberEmail").focus();
 			  	}
 			});
@@ -155,15 +155,15 @@
 		    });
 			
 		} else if (memberName == "") {
-			alert("이름 입력");
+			alert("이름을 입력하세요");
 			$("#memberName").focus();
 		} else if (memberEmail == "") {
-			alert("이메일 입력");
+			alert("이메일을 입력하세요");
 			$("#memberEmail").focus();
 		} else if (authCheck == false) {
-			alert("인증 여부");
+			alert("이메일 인증을 해주세요");
 		} else if (checkCode == false) {
-			alert("인증번호 틀림");
+			alert("인증번호가 틀렸습니다");
 		}
 		
 	}
@@ -209,13 +209,13 @@
 		    });	
 			
 		} else if (memberPwd == "") {
-			alert("비밀번호 없음");
+			alert("비밀번호를 입력해주세요");
 			$("#memberPwd").focus();
 		} else if (memberPwdCheck == "") {
-			alert("비밀번호확인 없음");
+			alert("비밀번호확인을 입력해주세요");
 			$("#memberPwdCheck").focus();
 		} else if (memberPwd != memberPwdCheck) {
-			alert("비밀번호와 비밀번호확인이 다름");
+			alert("비밀번호와 비밀번호확인이 서로 다릅니다");
 			$("#memberPwdCheck").focus();
 		}
 		
@@ -226,8 +226,8 @@
 </script>
 <style>
 
-	#container div {
-		width: 90%;
+	#outer {
+		width: 100%;
 		margin: auto;
 	}
 	
@@ -263,19 +263,29 @@
 		padding-top: 20px;
 		padding-bottom: 10px;
 	}
+	
+	.idCheckForm, .authForm, .pwdUpdate {
+		width: 457px;
+		margin:0 auto;
+	}
+	
+	.alert {
+		top: -22px;
+	}
 </style>
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 	
 	<div id="container">
+		<div id="outer">
 		<input type="hidden" id="hiddenSessionId" value="${memberId }" />
 		
 		<div class="heading">비밀번호 재설정</div>
 		
 		<!-- 1차 아이디확인 -->
 		<div class="idCheckForm" style="display: none">
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="checkout__input">
 					<input type="text" class="inputBox form-control" id="memberId" placeholder="아이디를 입력하세요" />
 					<div class="valid-feedback">Valid.</div>
@@ -283,7 +293,7 @@
 				</div>
 			</div>
 			
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="checkout__input d-grid">
 					<button id="idCheck" class="btn btn-primary btn-block" onclick="idCheck();">아이디 확인</button>
 				</div>
@@ -294,7 +304,7 @@
 		
 		<!-- 2차 인증 -->
 		<div class="authForm" style="display: none">
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="label">이름</div>
 				<div class="checkout__input">
 					<input type="text" class="inputBox form-control" id="memberName" placeholder="이름을 입력하세요" style="color:black" />
@@ -303,7 +313,7 @@
 				</div>
 			</div>
 			
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="label">이메일</div>
 				<div class="checkout__input">
 					<input type="email" class="inputBox form-control" id="memberEmail" placeholder="이메일을 입력하세요" style="color:black" />
@@ -314,7 +324,7 @@
 			
 			<!-- 캡챠자리 -->
 			
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="label">이메일 인증</div>
 				<div class="checkout__input input-group">
 					<input type="text" class="mailInputBox form-control" id="authNumber" placeholder="인증번호 입력" disabled="disabled" />
@@ -331,7 +341,7 @@
          		</div>
 			</div>
 			
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="checkout__input d-grid">
 					<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthCheck();">비밀번호 재설정</button>
 				</div>
@@ -341,7 +351,7 @@
 	
 		<!-- 3차 비밀번호 재설정 -->
 		<div class="pwdUpdate" style="display: none">
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="checkout__input">
 					<input type="password" class="inputBox form-control" id="newPwd" placeholder="새 비밀번호를 입력하세요 (8~16)" />
 					<div class="valid-feedback">Valid.</div>
@@ -354,7 +364,7 @@
 				</div>
 			</div>
 			
-			<div class="col-lg-6">
+			<div class="col-lg">
 				<div class="comment">
 					<p>8~16자의 영문자, 숫자, 특수문자 조합</p>
 					<p>아이디, 생일, 전화번호 등 개인정보 사용불가</p>
@@ -377,7 +387,7 @@
 	    		<button class="btn btn-success" onclick="location.href='${contextPath}/member/logIn';">로그인 하러가기</button>
 			</div>
 		</div>
-			
+		</div>
 	</div>
 	
 	

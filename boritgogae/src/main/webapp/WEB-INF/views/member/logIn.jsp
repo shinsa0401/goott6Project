@@ -344,13 +344,13 @@
 		    });
 			
 		} else if (name == "") {
-			alert("주문자 명 입력하세요");
+			alert("주문자 명을 입력하세요");
 			$("#orderName").focus();
 		} else if (guestEmail == "") {
-			alert("이메일 주소 입력하세요");
+			alert("이메일 주소를 입력하세요");
 			$("#guestEmail").focus();
 		} else if (orderNo == "") {
-			alert("주문 번호 입력하세요");
+			alert("주문 번호를 입력하세요");
 			$("#orderNo").focus();
 		}
 		
@@ -581,8 +581,9 @@
 		    		주문번호는 주문시 이메일로 발송됩니다. <br />
 		    		이메일 주소로 임시 비밀번호를 보내 드립니다.
 		    	</div>
+		    	
 		    	<div id="guestTransBtn">
-			    	<button type="button" class="site-btn" data-bs-dismiss="modal" onclick="guestPwdAuth();">전송받기</button>
+			    	<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="guestPwdAuth();">전송받기</button>
 			    </div>
 		    </div>
 		
