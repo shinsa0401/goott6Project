@@ -88,5 +88,12 @@ public class ProductDAOImpl implements ProductDAO {
 	public int getProdCnt() throws Exception {
 		return ses.selectOne(ns+".prodCnt");
 	}
+	
+	@Override
+	public List<ProductDTO> getSearchProductAll(String searchWord, TipPagingInfo pi) {
+	   // TODO Auto-generated method stub
+	   return null;
+	}
+
 
 }

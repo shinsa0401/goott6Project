@@ -57,10 +57,11 @@ public class ProductController {
 	 * @returnType : String
 	 **/
 	@RequestMapping(value = "/category/detail")
-	public String prodDetail(@RequestParam(value="prodNo", required=true) String prodNo, @RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, Model model, HttpServletRequest request) throws Exception {
-		
+	public ModelAndView prodDetail(@RequestParam(value="prodNo", required=true) String prodNo, @RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, HttpServletRequest request, ModelAndView mav) throws Exception {
 		ProductVo prod = prodService.getProd(prodNo);
 		List<ProdImgVo> prodImgLst = prodService.getProdImg(prodNo);
+		
+		mav.setViewName("/product/prodDetail");
 		
 		Map<String, Object> reviewMap = reviewService.getReviews(prodNo, pageNo);
 		List<UploadImg> imgLst = new ArrayList<>();
@@ -84,18 +85,18 @@ public class ProductController {
 		if(member != null) {
 			String canReview = reviewService.canReview(member.getMemberId(), prodNo);
 			System.out.println(canReview);
-			model.addAttribute("canReview", canReview);
+			mav.addObject("canReview", canReview);
 		}
 		
-		model.addAttribute("reviews",reviews);
-		model.addAttribute("reviewImg", imgLst);
-		model.addAttribute("page", page);
-		model.addAttribute("replies", replies);
-		model.addAttribute("product", prod);
-		model.addAttribute("prodImg", prodImgLst);
-		model.addAttribute("prodContent", prodContent);
+		mav.addObject("reviews",reviews);
+		mav.addObject("reviewImg", imgLst);
+		mav.addObject("page", page);
+		mav.addObject("replies", replies);
+		mav.addObject("product", prod);
+		mav.addObject("prodImg", prodImgLst);
+		mav.addObject("prodContent", prodContent);
 		
-		return "/product/prodDetail";
+		return mav;
 	}
 	
 	
@@ -155,7 +156,7 @@ public class ProductController {
       
    }
    
-   // 상품리스트페이지
+// 상품리스트페이지
    @RequestMapping(value = "/productCategory/{category}")
    public ModelAndView prodList(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
          @PathVariable(value = "category") String category) throws Exception {
@@ -209,6 +210,7 @@ public class ProductController {
       return mav;
 
    }
+
 
 
 

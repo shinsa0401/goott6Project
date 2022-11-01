@@ -1,6 +1,7 @@
 package com.boritgogae.controller;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -26,7 +27,6 @@ import com.boritgogae.board.tip.domain.TipBoardVo;
 import com.boritgogae.board.tip.domain.TipReplyVo;
 import com.boritgogae.board.tip.service.TipBoardService;
 import com.boritgogae.domain.DetailOrderVo;
-import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.service.OrderService;
 import com.boritgogae.service.ProductService;

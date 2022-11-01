@@ -72,20 +72,6 @@ public class ProductServiceImpl implements ProductService {
 		return dao.LastProduct();
 	}
 	
-	@Override
-	public Map<String, Object> getProductAll(int pageNo) throws Exception {
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		TipPagingInfo pi = pagingProcess(pageNo);
-		
-		
-		int total = dao.getProdCnt();
-		List<ProductDTO> prodLst = dao.getProdInfo(pi);
-		map.put("prodLst", prodLst);
-		map.put("cnt", total);
-		map.put("pi", pi);
-		return map;
-	}
 
 	private TipPagingInfo pagingProcess(int pageNo) throws Exception {
 		TipPagingInfo result = new TipPagingInfo();
@@ -112,29 +98,27 @@ public class ProductServiceImpl implements ProductService {
 		return prodDao.getProdContent(prodNo);
 	}
 
-
-	@Override
-	public Map<String,Object> getProductAll(String category,int pageNo) throws Exception {
-		TipPagingInfo pi = pagingProcess(pageNo,category);
-		List<ProductDTO> prodLst = dao.getProductAll(category,pi); 
-		
-		return prodDao.getProdContent(prodNo);
-	}
-
-
 	@Override
 	public Map<String, Object> getSearchProduct(int pageNo, String searchWord) throws Exception {
-		Map<String, Object> map = new HashMap<>();
-		TipPagingInfo pi = pagingSearchProcess(pageNo, searchWord);
-		List<ProductDTO> prodLst = dao.getSearchProductAll(searchWord,pi);
-		
-		map.put("pi", pi);
-		map.put("prodLst", prodLst);
-		System.out.println(searchWord+"검색상품");
-		System.out.println(prodLst+"결과상품");
-		return map;
-		
+	   // TODO Auto-generated method stub
+	   return null;
 	}
+	
+	@Override
+	   public Map<String, Object> getProductAll(String category, int pageNo) throws Exception {
 
+	      Map<String, Object> map = new HashMap<String, Object>();
+	      TipPagingInfo pi = pagingProcess(pageNo);
+	      
+	      
+	      int total = dao.getProdCnt();
+	      List<ProductDTO> prodLst = dao.getProdInfo(pi);
+	      map.put("prodLst", prodLst);
+	      map.put("cnt", total);
+	      map.put("pi", pi);
+	      return map;
+	   }
+	
+	
 
 }

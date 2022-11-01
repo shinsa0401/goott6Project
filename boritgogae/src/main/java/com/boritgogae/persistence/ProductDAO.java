@@ -11,22 +11,10 @@ import com.boritgogae.domain.ProductDTO;
 
 public interface ProductDAO {
 	
-	/**
-	 * @methodName : getProd
-	 * @author : kjy
-	 * @date : 2022. 10. 17.
-	 * @입력 param : 상품번호 prodNo
-	 * @returnType : ProductVO
-	 **/
+	//상품번호로 상품 가져옴
 	public ProductVo getProd(String prodNo);
 	
-	/**
-	 * @methodName : getProdImg
-	 * @author : kjy
-	 * @date : 2022. 10. 17.
-	 * @입력 param : 상품번호
-	 * @returnType : List<ProdImgVO>
-	 **/
+	//상품번호로 상품이미지 가져옴
 	public List<ProdImgVo> getProdImg(String prodNo);
 	
 
@@ -44,34 +32,14 @@ public interface ProductDAO {
 	public int getProdCnt() throws Exception;
 	
 	
-	/**
-	 * @methodName : getProdContent
-	 * @author : kjy
-	 * @date : 2022. 10. 25.
-	 * @입력 param : prodNo
-	 * @returnType : ProductContentVo
-	 */
+	//상품상세 가져옴
 	public ProductContentVo getProdContent(String prodNo) throws Exception;
 	
-	/**
-	 * @methodName : updateProdReviewCnt
-	 * @author : kjy
-	 * @date : 2022. 10. 30.
-	 * @입력 param : prodNo
-	 * @returnType : int
-	 */
+	//리뷰 수 업데이트
 	public int updateProdReviewCnt(String prodNo) throws Exception;
 
-	public int getProdCnt() throws Exception;
+	public List<ProductDTO> getSearchProductAll(String searchWord, TipPagingInfo pi);
 	
-	
-	/**
-	 * @methodName : getProdContent
-	 * @author : kjy
-	 * @date : 2022. 10. 25.
-	 * @입력 param : prodNo
-	 * @returnType : ProductContentVo
-	 */
-	public ProductContentVo getProdContent(String prodNo) throws Exception;
+
 
 }

@@ -2,6 +2,7 @@ package com.boritgogae.persistence;
 
 import java.sql.Timestamp;
 
+
 import java.util.List;
 
 import com.boritgogae.domain.CouponUsedVo;
@@ -9,7 +10,6 @@ import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryFeeVo;
 import com.boritgogae.domain.DetailOrderDTO;
 import com.boritgogae.domain.OrderDTO;
-import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.PointHistoryDTO;
 import com.boritgogae.domain.ProductVo;
 import java.util.List;
@@ -125,7 +125,7 @@ public interface OrderDAO {
 	 * @입력 param : 
 	 * @returnType : OrderVo
 	 */
-	public OrderVo getOrderByOrderNo(int orderNo);
+	public OrdersVo getOrderByOrderNo(int orderNo);
 	
 
 
@@ -145,14 +145,10 @@ public interface OrderDAO {
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
 	public OrdersVo selectGuestOrderInfo(GuestOrderDTO gdto) throws Exception;
 	
-	/**
-	 * @methodName : getOrdersByMemberId 멤버아이디로 주문내역 가져옴
-	 * @author : kjy
-	 * @date : 2022. 10. 27.
-	 * @입력 param : 
-	 * @returnType : List<OrderVo>
-	 */
-	public List<OrderVo> getOrdersByMemberId(String memberId) throws Exception;
+
+	//멤버아이디로 주문내역 가져옴
+	public List<OrdersVo> getOrdersByMemberId(String memberId) throws Exception;
 	
+	//멤버아이디로 주문상세내역 가져옴
 	public List<DetailOrderVo> getDetailOrderByMemberId(String memberId) throws Exception;
 }
