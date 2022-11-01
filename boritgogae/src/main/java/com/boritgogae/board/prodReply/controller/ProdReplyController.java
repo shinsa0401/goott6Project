@@ -37,7 +37,7 @@ import com.boritgogae.domain.OrdersVo;
 
 @Controller
 @RequestMapping(value = "/prodReply/*")
-public class prodReplyController {
+public class ProdReplyController {
 	
 	@Inject
 	private ReviewService service; 
@@ -76,14 +76,15 @@ public class prodReplyController {
 		
 		return "redirect:/product/category/detail?prodNo=" + prodNo;
 	}
-	
+
 	//리뷰 삭제
 	@RequestMapping(value = "/deleteReview")
 	public @ResponseBody String deleteReview(@RequestParam("reviewNo") String reviewNo, HttpServletRequest req) throws Exception {
 		String upPath = req.getSession().getServletContext().getRealPath("resources/uploads/reviewImg");
 		int rno = Integer.parseInt(reviewNo);
 		
-		if(service.deleteReview(rno) && service.deleteReviewImg(rno)) {
+		if(service.deleteReview(rno)) {
+			service.deleteReviewImg(rno);
 			rest.deleteImg(rno, req);
 			return "delSuccess";
 		}else {

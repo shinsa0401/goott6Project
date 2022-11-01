@@ -33,9 +33,10 @@
 html,
 body {
 	height: 100%;
-	font-family: "Cairo", sans-serif;
+	font-family: "Cairo", sans-serif, "Malgun Gothic", serif;
 	-webkit-font-smoothing: antialiased;
 	font-smoothing: antialiased;
+	
 }
 
 h1,
@@ -47,7 +48,7 @@ h6 {
 	margin: 0;
 	color: #111111;
 	font-weight: 400;
-	font-family: "Cairo", sans-serif;
+	font-family: "Cairo", sans-serif
 }
 
 h1 {

@@ -1,7 +1,6 @@
 package com.boritgogae.domain;
 
 public class DeliveryInfoVo {
-
 	private int deliveryInfo;
 	private String memberId;
 	private String address;
@@ -84,9 +83,8 @@ public class DeliveryInfoVo {
 
 	@Override
 	public String toString() {
-		return "DeliveryInfoVo [deliveryInfo=" + deliveryInfo + ", memberId=" + memberId + ", address=" + address
+		return "DeliveryInfo [deliveryInfo=" + deliveryInfo + ", memberId=" + memberId + ", address=" + address
 				+ ", detailAddress=" + detailAddress + ", recipient=" + recipient + ", recipientPhoneNumber="
 				+ recipientPhoneNumber + ", postCode=" + postCode + "]";
 	}
-
 }

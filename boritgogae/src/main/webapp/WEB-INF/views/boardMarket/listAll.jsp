@@ -10,7 +10,7 @@
 
 	//글 상세 보기
 	function viewContent(no) {
-		location.href="/boardMarket/viewContent?no="+no;
+		location.href="/board/market/viewContent?no="+no;
 	}
 	
 	//검색어
@@ -43,7 +43,7 @@
 		
 		<!-- 검색 버튼 -->		
 		<div id="search">
-			<form action="/boardMarket/listAll" method="get">
+			<form action="/board/market/listAll" method="get">
 				<select name="searchType" id="searchType">
 					<option value="">검색</option>
 					<option value="writer">글쓴이</option>
@@ -82,7 +82,7 @@
 			</div>
 			
 			<div class="button" style="text-align: center; ">
-			 	<button type="submit" class="site-btn" onclick="location.href='/boardMarket/write';">글쓰기</button>
+			 	<button type="submit" class="site-btn" onclick="location.href='/board/market/write';">글쓰기</button>
 			
 			</div>
 			
@@ -91,15 +91,15 @@
 				 <ul class="pagination justify-content-center" style="margin:20px 0;  ">
 				 
 				 	<c:if test="${param.pageNo > 1 }">
-				    	<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=1"><<</a></li>
+				    	<li class="page-item"><a class="page-link" href="/board/market/listAll?pageNo=1"><<</a></li>
 				    	
 				    	<c:choose>
 				    		
 				    		<c:when test="${param.searchType=='' and param.searchWord=='' }">
-				    			<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=${param.pageNo-1 }">Previous</a></li>
+				    			<li class="page-item"><a class="page-link" href="/board/market/listAll?pageNo=${param.pageNo-1 }">Previous</a></li>
 				    		</c:when>
 				    		<c:otherwise>
-				    			<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=${param.pageNo-1 }&searchType=${param.searchType}&searchWord=${param.searchWord}">Previous</a></li>
+				    			<li class="page-item"><a class="page-link" href="/board/market/listAll?pageNo=${param.pageNo-1 }&searchType=${param.searchType}&searchWord=${param.searchWord}">Previous</a></li>
 				    		</c:otherwise>
 				    		
 				    	</c:choose>
@@ -110,10 +110,10 @@
 				    	<c:choose>
 	
 				    		<c:when test="${param.searchType=='' and param.searchWord=='' }">
-				    			<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=${i }">${i }</a></li>
+				    			<li class="page-item"><a class="page-link" href="/board/market/listAll?pageNo=${i }">${i }</a></li>
 				    		</c:when>
 				    		<c:otherwise>
-				    			<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=${i }&searchType=${param.searchType}&searchWord=${param.searchWord}">${i }</a></li>
+				    			<li class="page-item"><a class="page-link" href="/board/market/listAll?pageNo=${i }&searchType=${param.searchType}&searchWord=${param.searchWord}">${i }</a></li>
 				    		</c:otherwise>
 				    		
 				    	</c:choose>
@@ -123,12 +123,12 @@
 				    	<c:choose>
 				    		
 				    		<c:when test="${param.searchType=='' and param.searchWord=='' }">
-				    			<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=${param.pageNo+1 }">next</a></li>
-				    			<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=${paging.totalPage }">>></a></li>
+				    			<li class="page-item"><a class="page-link" href="/board/market/listAll?pageNo=${param.pageNo+1 }">next</a></li>
+				    			<li class="page-item"><a class="page-link" href="/board/market/listAll?pageNo=${paging.totalPage }">>></a></li>
 				    		</c:when>
 				    		<c:otherwise>
-				    			<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=${param.pageNo+1 }&searchType=${param.searchType}&searchWord=${param.searchWord}">next</a></li>
-				    			<li class="page-item"><a class="page-link" href="/boardMarket/listAll?pageNo=${paging.totalPage }&searchType=${param.searchType}&searchWord=${param.searchWord}">>></a></li>
+				    			<li class="page-item"><a class="page-link" href="/board/market/listAll?pageNo=${param.pageNo+1 }&searchType=${param.searchType}&searchWord=${param.searchWord}">next</a></li>
+				    			<li class="page-item"><a class="page-link" href="/board/market/listAll?pageNo=${paging.totalPage }&searchType=${param.searchType}&searchWord=${param.searchWord}">>></a></li>
 				    		
 				    		</c:otherwise>
 				    	</c:choose>

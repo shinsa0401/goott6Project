@@ -1,8 +1,6 @@
 package com.boritgogae.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -163,78 +161,8 @@ public class AdminServiceImpl implements AdminService {
 	public int getLogInMemberCount() throws Exception {
 		return dao.getLogInMemberCount();
 	}
+	
 
-	@Override
-	public int getProdCnt() throws Exception {
-		return dao.getProdCnt();
-	}
-
-	@Override
-	public Map<String, Object> getProdList(int pageNo) throws Exception {
-		
-		NoticePagingInfo pi = pagingProcess(pageNo);
-		
-		List<ProductVo> lst = null;
-		
-		lst = dao.getProdList(pi);
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("prodList", lst);
-		resultMap.put("pagingInfo", pi);
-		
-		return resultMap;
-	}
-
-	private NoticePagingInfo pagingProcess(int pageNo) throws Exception {
-		NoticePagingInfo result = new NoticePagingInfo();
-
-		result.setTotalPostCnt(dao.getProdCnt()); // 전체 글의 갯수 setting
-
-		// ------------------------------ 페이징 구현 ------------------------------
-
-		result.setTotalPage(result.getTotalPostCnt()); // 전체 페이지 수 setting
-		result.setStartNum(pageNo); // 현재 페이지에서 출력을 시작할 글 번호(index)
-
-		// ------------------------------ 페이징 블럭을 위한 부분 ------------------------------
-		result.setTotalPagingBlock(result.getTotalPage()); // 전체 페이징 블럭 수 setting
-		result.setCurrentPagingBlock(pageNo); // 현재 페이지가 속한 페이징 블럭 setting
-		result.setStartNumOfCurPagingBlock(result.getCurrentPagingBlock()); // 현재 페이징 블럭의 출력 시작 번호 setting
-		result.setEndNumOfCurPagingBlock(result.getStartNumOfCurPagingBlock()); // 현재 페이징 블럭의 출력 끝 번호 setting
-
-		System.out.println(result.toString());
-
-		return result;
-	}
-
-	@Override
-	public List<ProdImgVo> getProdImg() throws Exception {
-		return dao.getProdImg();
-	}
-
-	@Override
-	public List<ProductContentVo> getProductContent() throws Exception {
-		return dao.getProdContent();
-	}
-
-	@Override
-	public boolean updateProd(ProductVo product) throws Exception {
-		boolean result = false;
-		if (dao.updateProd(product) == 1) {
-			result = true;
-		}
-		
-		return result;
-	}
-
-	@Override
-	public boolean deleteProd(String prodName) throws Exception {
-		boolean result = false;
-		if (dao.deleteProd(prodName) == 1) {
-			result = true;
-		}
-		
-		return result;
-	}
 
 	@Override
 	public boolean registerProduct(ProductDTO product) throws Exception {

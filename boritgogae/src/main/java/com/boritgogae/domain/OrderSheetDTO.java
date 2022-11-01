@@ -2,13 +2,13 @@ package com.boritgogae.domain;
 
 import java.util.List;
 
-public class OrderSheetDTO {
+public class OrderSheetDTO extends OrderProductDTO{
+	
 	private List<OrderProductDTO> orderProducts;
 	
 
 	public OrderSheetDTO(List<OrderProductDTO> orderProducts) {
-		super();
-		this.orderProducts = orderProducts;
+		this.orderProducts = (List<OrderProductDTO>)orderProducts;
 	}
 	
 	
@@ -20,7 +20,7 @@ public class OrderSheetDTO {
 
 
 	public List<OrderProductDTO> getOrderProducts() {
-		return orderProducts;
+		return (List<OrderProductDTO>)orderProducts;
 	}
 
 	public void setOrderProducts(List<OrderProductDTO> orderProducts) {

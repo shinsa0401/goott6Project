@@ -11,56 +11,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>보릿고개 | 회원관리</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script type="text/javascript">
-let delMemberId = "";
 
-$(document).ready(function() {
-	$(".closeModal").click(function() {
-		$("#statusModal").hide(100);
-		$("#deleteMemberModal").hide(100);
-	});
-});
-
-function showDeleteModal(memberId) {
-	$("#deleteModalStatus").html(memberId + " 회원을 삭제하시겠습니까?");
-	delMemberId = memberId;
-	$("#deleteMemberModal").show(200);
-}
-
-function ModalStatusOk() {
-	location.reload();
-	
-}
-
-function deleteMember() {
-	$("#deleteMemberModal").hide(100);
-	let url = "/admin/member/delete";
-	
-	$.ajax({
-		url : url, // 데이터 송수신될 주소 
-		type : "post", // 전송 방식
-		dataType : "text", // 수신할 데이터
-		data : {"memberId" : delMemberId},
-		success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
-			console.log(data);
-			if (data == "success") {
-				$("#status").html("회원을 삭제하였습니다.");
-				delMemberId = "";
-				$("#statusModal").show(200);
-			} else if (data == "fail") {
-				$("#status").html("회원 삭제에 실패하였습니다.");
-				$("#statusModal").show(200);
-			}
-
-		},
-		error : function(e) {
-			console.log(e);
-		}
-	});
-}
-</script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -110,7 +61,7 @@ function deleteMember() {
 											</thead>
 											<tbody>
 											<c:forEach items="${deleteMember }" var="member">
-												<tr onclick="showDeleteModal('${member.memberId }');">
+												<tr>
 													<td>${member.memberId }</td>
 													<td>${member.deleteWhyMemo }</td>
 													<td>${member.deleteDate }</td>
@@ -167,50 +118,5 @@ function deleteMember() {
 
 
 	<jsp:include page="footer.jsp"></jsp:include>
-	
-	
-	<div class="modal" id="statusModal">
-			<div class="modal-dialog">
-				<div class="modal-content">
-
-					<!-- Modal Header -->
-					<div class="modal-header">
-						<h4 class="modal-title" id="status"></h4>
-						<button type="button" class="btn-close close closeModal"
-							data-bs-dismiss="modal">X</button>
-					</div>
-
-					<!-- Modal footer -->
-					<div class="modal-footer">
-						<button type="button" class="btn btn-success"
-							data-bs-dismiss="modal" onclick="ModalStatusOk();">확인</button>
-					</div>
-
-				</div>
-			</div>
-		</div>
-		
-		<div class="modal" id="deleteMemberModal">
-			<div class="modal-dialog"> 
-				<div class="modal-content">
-
-					<!-- Modal Header -->
-					<div class="modal-header">
-						<h4 class="modal-title" id="deleteModalStatus"></h4>
-						<button type="button" class="btn-close close closeModal"
-							data-bs-dismiss="modal">X</button>
-					</div>
-
-					<!-- Modal footer -->
-					<div class="modal-footer">
-						<button type="button" class="btn btn-success"
-							data-bs-dismiss="modal" onclick="deleteMember();">확인</button>
-						<button type="button" class="btn btn-danger closeModal"
-							data-bs-dismiss="modal">취소</button>
-					</div>
-
-				</div>
-			</div>
-		</div>
 </body>
 </html>

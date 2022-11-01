@@ -4,8 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.boritgogae.AdminMapper">
-
-	
 	<!-- 관리자 페이지 회원 관련 쿼리문 시작  -->
 	<select id="getMembers" resultType="MemberVo">
 		select * from members where delStatus = 'N' order by joinDate desc
@@ -59,7 +57,7 @@
 	
 	<select id="getLowestProductQTY" resultType="ProductVo">
   	<![CDATA[
-  		select * from product where prodQuantity < 50 
+  		select * from product where prodQuantity < 100 
   	]]>
 	</select>
 	
