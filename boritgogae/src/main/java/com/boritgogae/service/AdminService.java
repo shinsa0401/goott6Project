@@ -1,6 +1,7 @@
 package com.boritgogae.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -92,6 +93,24 @@ public interface AdminService {
     // 상품의 상세설명을 등록하는 메서드
     public boolean registerProdContent(String prodContent, String prodNo) throws Exception;
     
- // 구매 확정된 상품들의 누적 금액을 가져오는 메서드
+    // 구매 확정된 상품들의 누적 금액을 가져오는 메서드
     public int totalSales() throws Exception;
+    
+    // 상품의 갯수를 가져오는 메서드
+    public int getProdCnt() throws Exception;
+    
+    // 상품의 이미지를 가져오는 메서드
+    public List<ProdImgVo> getProdImg() throws Exception;
+    
+    // 상품 전체 목록을 가져오는 메서드
+    public Map<String, Object> getProdList(int pageNo) throws Exception;
+    
+    // 상품의 컨텐츠를 가져오는 메서드
+    public List<ProductContentVo> getProductContent() throws Exception;
+    
+    // 상품의 정보를 수정 하는 메서드
+    public boolean updateProd(ProductVo product) throws Exception;
+    
+    // 상품을 삭제하는 메서드
+    public boolean deleteProd(String prodName) throws Exception;
 }
