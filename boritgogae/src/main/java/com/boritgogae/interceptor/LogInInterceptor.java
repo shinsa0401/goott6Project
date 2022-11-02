@@ -22,18 +22,14 @@ public class LogInInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		
-		System.out.println("Log In Interceptor : 이전 로그인 세션 삭제");
-		
+		System.out.println("이전 로그인 세션 삭제");
 		HttpSession ses = request.getSession();
-		
 		if (ses.getAttribute("logInMember") != null) { // 로그인 한 기록이 있다면
 			ses.removeAttribute("logInMember"); // 이전에 로그인 기록을 삭제
 			ses.invalidate(); // 세션 만료
 		}
 		
 		return true;
-		
 	}
 
 	@Override
@@ -64,21 +60,16 @@ public class LogInInterceptor extends HandlerInterceptorAdapter {
 
 			// "destination" = 로그인을 요청하기전의 URL의 정보
 			if (ses.getAttribute("destination") != null) {
-				
 				destination = (String) ses.getAttribute("destination");
-				
 			} else if (ses.getAttribute("destination") == null) {
-				
 				destination = "/"; // 홈, /, index.jsp
 			}
 			
 			System.out.println("로그인 성공");
-			
 		} else { // 로그인 실패시
 			destination = "/member/logIn?status=fail";
 			System.out.println("로그인 실패");
 		}
-		
 		response.sendRedirect(destination); // destination 페이지로 이동
 	}
 

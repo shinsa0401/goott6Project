@@ -59,7 +59,7 @@ public interface MemberService {
 
 
 	// 로그인을 처리하는 메서드
-	public MemberVo logIn(LogInDTO dto, HttpServletRequest request) throws Exception;
+	public MemberVo logIn(LogInDTO dto) throws Exception;
 
 	// 자동로그인을 체크했을 경우 로그인 유지를 위한 세션정보 업데이트하는 메서드
 	public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit) throws Exception;

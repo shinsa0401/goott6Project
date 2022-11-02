@@ -231,7 +231,6 @@
                             	<c:if test="${sessionScope.logInMember.isAdmin == 'N' }">
                             		<h5><a href="/member/myPage" style="color: black;">My Page</a></h5>
                             	</c:if>
-                                
                             </div>
                         </div>
                     </div>

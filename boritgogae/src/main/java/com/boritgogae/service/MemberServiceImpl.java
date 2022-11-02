@@ -40,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
 
 	// 로그인 처리하는 메서드
 	@Override
-	public MemberVo logIn(LogInDTO dto, HttpServletRequest request) throws Exception {
+	public MemberVo logIn(LogInDTO dto) throws Exception {
 		
 		MemberVo logInMember = dao.logIn(dto);
 		

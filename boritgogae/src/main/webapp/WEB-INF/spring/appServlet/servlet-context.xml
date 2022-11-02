@@ -40,7 +40,6 @@
 	<beans:bean id="authInterceptor" class="com.boritgogae.interceptor.AuthInterceptor">
 	</beans:bean>
 	
-	
 	<!-- 인터셉터에 의해 mapping되는 URI 지정 -->
 	<interceptors>
 		<!-- /member/logInPost URI에 요청이 들어오면 logInInterceptor객체가 가로채어 수행된다 -->

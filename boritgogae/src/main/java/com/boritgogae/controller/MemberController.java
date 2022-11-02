@@ -574,8 +574,8 @@ public class MemberController {
 	/**
 	 * @methodName : logIn
 	 * @author : 신태호
-	 * @date : 2022. 10. 20.
-	 * @입력 param : request, session
+	 * @date : 2022. 10. 17.
+	 * @입력 param : HttpServletRequest request, HttpSession ses
 	 * @returnType : String
 	 * 로그인 정보를 입력하기 위한 로그인 페이지 호출
 	 */
@@ -591,7 +591,6 @@ public class MemberController {
 			ses.removeAttribute("memberId");
 			ses.invalidate();
 		}
-		
 		
 		// 현재 페이지로 오기전 URL 정보를 referer에 저장
 		String referer = request.getHeader("Referer");
@@ -617,10 +616,10 @@ public class MemberController {
 	 * 로그인 정보를 입력하고 난 후 인터셉터핸들러에 의해 로그인 처리
 	 */
 	@RequestMapping(value = "/logInPost", method = RequestMethod.POST)
-	public void logInPost(LogInDTO dto, Model model, HttpSession ses, HttpServletRequest request) throws Exception {
+	public void logInPost(LogInDTO dto, Model model, HttpSession ses) throws Exception {
 		// 인터셉터 preHandle 수행하고 옴
 		
-		MemberVo logInMember = service.logIn(dto, request);
+		MemberVo logInMember = service.logIn(dto);
 		
 		if (logInMember == null) { // 로그인 실패 유저
 			return;

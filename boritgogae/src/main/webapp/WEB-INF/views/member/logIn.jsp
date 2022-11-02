@@ -19,7 +19,6 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <title>로그인</title>
 <script>
-	let prevPage = "";
 	let notLogInPage = "";
 
 	$(function () {
@@ -35,7 +34,7 @@
 		formChange(); // 회원/비회원 폼 변경 메서드
 		
 		
-		// logIn.jsp 페이지 로딩시 회원 로그인 폼 기본호출
+		// 로그인 페이지 로딩시 회원 로그인 폼 기본호출
 		$("input:radio[name=member]:input[value='member']").attr("checked", true);
 		$(".memberForm").show();
 		
@@ -58,12 +57,12 @@
 	
 	// 로그인 취소시 이전페이지로 가기
 	function logInCancel() {
-		let back = sessionStorage.getItem("page");
+		let goBack = sessionStorage.getItem("page");
 		
 		// page 세션 삭제
 		sessionStorage.removeItem("page");
 		
-		location.href = back;
+		location.href = goBack;
 	}
 	
 	
@@ -139,7 +138,7 @@
             $("#hiddenIdMsg").show();
             $("#memberId").focus();
         } 
-        /* else if (!idExp.test(memberId)) {
+        /* else if (!idExp.test(memberId) && memberId != "admin") { // 관리자 제외
         	$("#hiddenIdMsg").html("");
 			// 아이디를 정규식으로 체크해보기
         	$("#hiddenIdMsg").html("아이디는 6~12자 영문자, 숫자만 입력 가능합니다");
@@ -447,49 +446,45 @@
 				</div>
 				
     	    	<div class="memberForm" style="display:none">
-                <form class="form-horizontal" action="${contextPath }/member/logInPost" method="post">
-                    <span class="heading">Log In</span>
-                    <div id="memberFailMsgDiv" class="form-group" style="display:none">
-                    	<p class="failMsg">죄송합니다. 로그인에 실패했습니다.</p>
-                    	<p class="failMsg">
-                    		<span id="memberFailMsg1">아이디와 비밀번호</span>를 
-                    		<span id="memberFailMsg2">확인</span>하고 다시 로그인해주세요.
-                    	</p>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="memberId" name="memberId" placeholder="아이디를 입력하세요" autofocus/>
-                        <i class="fa fa-user"></i>
-                        <div id="hiddenIdMsg" class="hiddenMsg" style="color: red; text-align: left; margin-left: 20px;"></div>
-                    </div>
-                    <div class="form-group help">
-                        <input type="password" class="form-control" id="memberPwd"  name="memberPwd" placeholder="비밀번호를 입력하세요" />
-                        <i class="fa fa-lock"></i>
-                        <div id="hiddenPwdMsg" class="hiddenMsg" style="color: red; text-align: left; margin-left: 20px;"></div>
-                        
-                    </div>
-                    <div class="form-group">
-                        <div class="main-checkbox">
-                            <input type="checkbox" id="remember" name="remember">
-                            <label for="remember"></label>
-                        </div>
-                        <div class="text">자동 로그인</div>
-                    </div>
-                    <div class="form-group">
-                    	<div class="btns">
-                    		<button type="submit" class="btn btn-login" onclick="return isValidMember();">로그인</button>
-	                        <button type="reset" class="btn btn-cancel" onclick="logInCancel();">취소</button>
+	                <form class="form-horizontal" action="${contextPath }/member/logInPost" method="post">
+	                    <span class="heading">Log In</span>
+	                    <div id="memberFailMsgDiv" class="form-group" style="display:none">
+	                    	<p class="failMsg">죄송합니다. 로그인에 실패했습니다.</p>
+	                    	<p class="failMsg"><span id="memberFailMsg1">아이디와 비밀번호</span>를 
+	                    					   <span id="memberFailMsg2">확인</span>하고 다시 로그인해주세요.</p>
 	                    </div>
-                    </div>
-                    
-                    <div class="form-group">
-                    	<div class="addLink">
-                    		<a class="find" href="${contextPath }/member/findId">아이디찾기</a> │ 
-                    		<a class="find" href="${contextPath }/member/findPwd">비밀번호 재설정</a> │ 
-                    		<a class="signUp" href="${contextPath }/member/join">회원가입</a>
-                    	</div>
-                    </div>
-                    
-                </form>
+	                    <div class="form-group">
+	                        <input type="text" class="form-control" id="memberId" name="memberId" placeholder="아이디를 입력하세요" autofocus/>
+	                        <i class="fa fa-user"></i>
+	                        <div id="hiddenIdMsg" class="hiddenMsg" style="color: red; text-align: left; margin-left: 20px;"></div>
+	                    </div>
+	                    <div class="form-group help">
+	                        <input type="password" class="form-control" id="memberPwd"  name="memberPwd" placeholder="비밀번호를 입력하세요" />
+	                        <i class="fa fa-lock"></i>
+	                        <div id="hiddenPwdMsg" class="hiddenMsg" style="color: red; text-align: left; margin-left: 20px;"></div>
+	                    </div>
+	                    <div class="form-group">
+	                        <div class="main-checkbox">
+	                            <input type="checkbox" id="remember" name="remember">
+	                            <label for="remember"></label>
+	                        </div>
+	                        <div class="text">자동 로그인</div>
+	                    </div>
+	                    <div class="form-group">
+	                    	<div class="btns">
+	                    		<button type="submit" class="btn btn-login" onclick="return isValidMember();">로그인</button>
+		                        <button type="reset" class="btn btn-cancel" onclick="logInCancel();">취소</button>
+		                    </div>
+	                    </div>
+	                    
+	                    <div class="form-group">
+	                    	<div class="addLink">
+	                    		<a class="find" href="${contextPath }/member/findId">아이디찾기</a> │ 
+	                    		<a class="find" href="${contextPath }/member/findPwd">비밀번호 재설정</a> │ 
+	                    		<a class="signUp" href="${contextPath }/member/join">회원가입</a>
+	                    	</div>
+	                    </div>
+	                </form>
                 </div>
                 
                 
