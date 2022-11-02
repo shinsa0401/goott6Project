@@ -73,8 +73,7 @@
             <ul>
                 <li class="active"><a href="${contextPath}/">Home</a></li>
                 <li><a href="${contextPath}/product/category">Shop</a></li>
-                <li><a href="./blog.html">병원</a></li>
-                <li><a href="./contact.html">게시판</a>
+                <li><a href="${contextPath}/boardFree/list">게시판</a>
                    <ul class="header__menu__dropdown">
                         <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
                         <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
@@ -123,8 +122,7 @@
                         <ul>
 			                <li class="active"><a href="${contextPath}/">Home</a></li>
 			                <li><a href="${contextPath}/product/category"">Shop</a></li>
-			                <li><a href="./blog.html">병원</a></li>
-			                <li><a href="./contact.html">게시판</a>
+			                <li><a href="${contextPath}/boardFree/list">게시판</a>
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
 			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
@@ -158,10 +156,22 @@
                         	</c:when>
                         	<c:when test="${sessionScope.logInMember != null }">
                         	<!-- 로그인을 했을 경우 -->
-                        		<div class="header__top__right__auth">
+                        		<c:if test="${sessionScope.logInMember.isAdmin == 'Y' }">
+                        			<div class="header__top__right__auth">
+                        			<a href="${contextPath }/member/logOut">
+                        				<i class="fa fa-user"></i> 관리자로그아웃</a>
+                        			</div>
+                        		</c:if>
+                        		<c:if test="${sessionScope.logInMember.isAdmin == 'N' }">
+                        			<div class="header__top__right__auth">
                         			<a href="${contextPath }/member/logOut">
                         				<i class="fa fa-user"></i> 로그아웃</a>
-                        		</div>
+                        			</div>
+                        			<div class="header__top__right__auth">
+                        				<a>${sessionScope.logInMember.nickName } 님 어서오세요</a>
+                        			</div>
+                        		</c:if>
+                        		
                         	</c:when>
                         </c:choose>
                     </div>
@@ -214,7 +224,14 @@
                         </div>
                         <div class="hero__search__phone">
                             <div class="hero__search__phone__text">
-                                <h5><a href="/member/myPage" style="color: black;">My Page</a></h5>
+                            	<c:if test="${sessionScope.logInMember.isAdmin == 'Y' }">
+                            		<h5><a href="/admin/main" style="color: black;">관리자페이지</a></h5>
+                            	</c:if>
+                            	
+                            	<c:if test="${sessionScope.logInMember.isAdmin == 'N' }">
+                            		<h5><a href="/member/myPage" style="color: black;">My Page</a></h5>
+                            	</c:if>
+                                
                             </div>
                         </div>
                     </div>

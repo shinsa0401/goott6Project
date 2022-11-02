@@ -80,9 +80,8 @@ $(document).ready(function() {
 						<div class="sidebar__item">
 							<h4>Department</h4>
 							<ul>
-								<li><a href="#">병원</a></li>
 								<li><a href="/board/notice/list">공지사항</a></li>
-								<li><a href="#">자유 게시판</a></li>
+								<li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
 								<li><a href="/board/ask/list">문의 게시판</a></li>
 								<li><a href="${contextPath}/board/question?pageNo=1">질문
 										게시판</a></li>
