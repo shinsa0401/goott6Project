@@ -88,7 +88,6 @@ $(document).ready(function(){
 						<div class="sidebar__item">
 							<h4>Department</h4>
 							<ul>
-								<li><a href="#">병원</a></li>
 								<li><a href="/board/notice/list">공지사항</a></li>
 								<li><a href="#">자유 게시판</a></li>
 								<li><a href="/board/ask/list">문의 게시판</a></li>
@@ -97,7 +96,6 @@ $(document).ready(function(){
 								<li><a href="">상품 후기</a></li>
 								<li><a href="/boardTip/listAll">고개팁</a></li>
 								<li><a href="${contextPath}/boardMarket/listAll">장터 게시판</a></li>
-								<li><a href="#">병원리뷰</a></li>
 							</ul>
 						</div>
 						<div class="sidebar__item">

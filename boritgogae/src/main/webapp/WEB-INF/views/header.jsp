@@ -116,7 +116,6 @@
 				<li class="active"><a href="${contextPath}/">Home</a></li>
 				<li><a
 					href="${contextPath}/product/productCategory/All?pageNo=1">Shop</a></li>
-				<li><a href="./blog.html">병원</a></li>
 				<li><a href="./contact.html">게시판</a>
 					<ul class="header__menu__dropdown">
 						<li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
@@ -161,7 +160,6 @@
 							<li class="active"><a href="${contextPath}/">Home</a></li>
 							<li><a
 								href="${contextPath}/product/productCategory/All?pageNo=1"">Shop</a></li>
-							<li><a href="./blog.html">병원</a></li>
 							<li><a href="./contact.html">게시판</a>
 								<ul class="header__menu__dropdown">
 									<li><a href="./shop-details.html">자유게시판</a></li>
@@ -180,9 +178,9 @@
 				<div class="col-lg-3">
 					<div class="header__cart">
 						<ul>
-							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+							<li><a href="#"><i class="fa fa-heart"></i> </a></li>
 							<li><a href="${contextPath}/order/cartList"><i
-									class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+									class="fa fa-shopping-bag"></i> </a></li>
 						</ul>
 						<c:choose>
 							<c:when test="${sessionScope.logInMember == null }">
