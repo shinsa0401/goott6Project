@@ -122,9 +122,9 @@
 		
 		
 	// 인증번호 확인 이후 비밀번호 재설정
-	function emailAuthCheck() {
+	function emailAuthAfter() {
 		
-		let url = "/member/emailAuthCheck";
+		let url = "/member/emailAuthAfter";
 		let memberName = $("#memberName").val();
 		let memberEmail = $("#memberEmail").val();
 		let sendData = JSON.stringify({
@@ -343,7 +343,7 @@
 			
 			<div class="col-lg">
 				<div class="checkout__input d-grid">
-					<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthCheck();">비밀번호 재설정</button>
+					<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthAfter();">비밀번호 재설정</button>
 				</div>
 			</div>
 		</div>

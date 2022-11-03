@@ -44,7 +44,7 @@
 	 -->
 	 
 	 
-	<!-- 이메일 빈  -->
+	<!-- 이메일 bean -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
      <property name="host" value="smtp.naver.com"/> <!-- 메이서버 호스트 -->
      <property name="port" value="587"/> <!-- 메이서버 포트번호 -->

@@ -150,7 +150,7 @@
                         	<c:when test="${sessionScope.logInMember == null }">
                         	<!-- 로그인을 하지 않았을 경우 -->
                         		<div class="header__top__right__auth">
-                        			<a href="${contextPath }/member/logIn">
+                        			<a href="${pageContext.request.contextPath}/member/logIn">
                         				<i class="fa fa-user"></i> 로그인</a>
                         		</div>
                         	</c:when>
@@ -158,20 +158,19 @@
                         	<!-- 로그인을 했을 경우 -->
                         		<c:if test="${sessionScope.logInMember.isAdmin == 'Y' }">
                         			<div class="header__top__right__auth">
-                        			<a href="${contextPath }/member/logOut">
+                        			<a href="${pageContext.request.contextPath}/member/logOut">
                         				<i class="fa fa-user"></i> 관리자로그아웃</a>
                         			</div>
                         		</c:if>
                         		<c:if test="${sessionScope.logInMember.isAdmin == 'N' }">
                         			<div class="header__top__right__auth">
-                        			<a href="${contextPath }/member/logOut">
+                        			<a href="${pageContext.request.contextPath}/member/logOut">
                         				<i class="fa fa-user"></i> 로그아웃</a>
                         			</div>
                         			<div class="header__top__right__auth">
                         				<a>${sessionScope.logInMember.nickName } 님 어서오세요</a>
                         			</div>
                         		</c:if>
-                        		
                         	</c:when>
                         </c:choose>
                     </div>

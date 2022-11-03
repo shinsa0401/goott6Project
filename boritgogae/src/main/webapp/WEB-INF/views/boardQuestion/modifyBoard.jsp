@@ -171,8 +171,6 @@
 		$(obj).prev().remove(); // 파일 화면에서 지움
  		$(obj).remove(); // 삭제이미지 삭제	
 		
-		// console.log(beforeFile);
-		
 	}
 	
 	function modifySave() {
@@ -318,7 +316,8 @@
 				</div>
 				
 				<div class="btns" style="text-align: center;">
-						<button type="submit" class="btn text-white" style="background-color: #7FAD39;" onclick="return modifySave();">수정</button>
+						<!-- <button type="submit" class="btn text-white" style="background-color: #7FAD39;" onclick="return modifySave();">수정</button> -->
+						<button type="submit" class="btn text-white" style="background-color: #7FAD39;">수정</button>
 						<button type="reset" class="btn btn-secondary"
 							onclick="writeCancel(${board.no});">취소</button>
 				</div>

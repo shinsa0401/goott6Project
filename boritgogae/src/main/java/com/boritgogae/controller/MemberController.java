@@ -519,10 +519,9 @@ public class MemberController {
 	 * @returnType : String
 	 * 6자리의 임의의 인증번호 이메일 전송 - 호출한 페이지에 따라 제목과 내용을 다르게 설정 
 	 */
-	@RequestMapping (value="/mailCheck")
+	@RequestMapping(value="/mailCheck", method = RequestMethod.POST)
 	@ResponseBody
-	public String mailCheck(String email, HttpServletRequest request) throws Exception{
-		System.out.println("이메일 데이터 전송확인");
+	public String mailCheck(@RequestParam("email")String email, HttpServletRequest request) throws Exception{
 		System.out.println("인증 메일 : " + email);
 		
 		Random random = new Random();
@@ -539,18 +538,19 @@ public class MemberController {
 		System.out.println(referer);
 		
 		if (referer.contains("/join")) { // 회원가입 일 때
-			System.out.println("join 포함");
+			title = "보릿고개 회원 가입 이메일 인증";
+			content = "가입해주셔서 감사합니다."+ "<br/><br/>"
+						+"인증 번호는 "+checkNum+" 입니다.<br/>"
+						+"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
 			
-			title = "test";
-			content = "가입해주셔서 감사합니다."+ "<br/><br/>"+"인증 번호는 "+checkNum+" 입니다.<br/>"+
-								"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
-			
-			
+			System.out.println("회원가입 이메일 전송확인");
 		} else if (referer.contains("/find")) { // 아이디찾기, 비밀번호 재설정 일 때
-			System.out.println("find 포함");
+			title = "보릿고개 회원 정보 이메일 인증";
+			content = "이용해주셔서 감사합니다." + "<br/><br/>" 
+						+ "인증 번호는 " + checkNum + " 입니다.<br/>" 
+						+ "해당 인증번호를 인증번호 입력란에 기입하여 주세요.";
 			
-			title = "보릿고개 이메일 인증";
-			content = "이용해주셔서 감사합니다." + "<br/><br/>" + "인증 번호는 " + checkNum + " 입니다.<br/>" + "해당 인증번호를 인증번호 입력란에 기입하여 주세요.";
+			System.out.println("아이디찾기/비밀번호설정 이메일 전송확인");
 		}
 		
         try {
@@ -562,7 +562,7 @@ public class MemberController {
             helper.setText(content,true);
             
             mailSender.send(message);
-            
+            System.out.println("이메일 전송 완료");
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -660,11 +660,8 @@ public class MemberController {
 			
 			ses.removeAttribute("logInMember"); // 로그인 정보 삭제
 			ses.invalidate(); // 세션 만료
-			
 		}
-		
 		System.out.println("로그아웃");
-		
 		response.sendRedirect("/");
 	}
 	
@@ -683,15 +680,15 @@ public class MemberController {
 	}
 	
 	/**
-	 * @methodName : emailAuthCheck
+	 * @methodName : emailAuthAfter
 	 * @author : 신태호
 	 * @date : 2022. 10. 26.
 	 * @입력 param :
 	 * @returnType : String
 	 * 이메일 인증이 확인되고 나서 이후 단계
 	 */
-	@RequestMapping(value = "/emailAuthCheck", method = RequestMethod.POST)
-	public ResponseEntity<MemberVo> emailAuthCheck(HttpSession ses, @RequestBody MemberVo findMember) throws Exception {
+	@RequestMapping(value = "/emailAuthAfter", method = RequestMethod.POST)
+	public ResponseEntity<MemberVo> emailAuthAfter(HttpSession ses, @RequestBody MemberVo findMember) throws Exception {
 		ResponseEntity<MemberVo> result = null;
 		
 		System.out.println("컨트롤러 이메일 : " + findMember.getMemberEmail());
@@ -738,7 +735,7 @@ public class MemberController {
 	}
 	
 	/**
-	 * @methodName : findPwd
+	 * @methodName : idCheck
 	 * @author : 신태호
 	 * @date : 2022. 10. 27.
 	 * @입력 param :
@@ -758,7 +755,7 @@ public class MemberController {
 	}
 	
 	/**
-	 * @methodName : idCheck
+	 * @methodName : pwdUpdate
 	 * @author : 신태호
 	 * @date : 2022. 10. 27.
 	 * @입력 param :

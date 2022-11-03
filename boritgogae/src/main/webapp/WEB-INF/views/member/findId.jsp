@@ -33,16 +33,16 @@
 				
 				let email = $("#memberEmail").val();
 				let checkBox = $(".mailInputBox");
-
+				
 				$.ajax({
-					type:"GET",
+					type: "post",
 					url : "/member/mailCheck",
-					data : {email : email},
-					contentType :"text/plain;charset=UTF-8",
+					data : {"email" : email},
 					success : function(data){ // 인증번호를 가져옴
-						
-						alert("인증번호 발송 요청이 완료되었습니다. 인증번호가 오지 않는 경우, 입력한 이름/이메일주소를 확인 후 다시 요청해주세요.");
-						
+						alert("인증번호 발송 요청이 완료되었습니다. "  
+							+ "인증번호가 오지 않는 경우, 입력한 이름/이메일주소를 "  
+							+ "확인 후 다시 요청해주세요.");
+					
 						checkBox.attr("disabled",false); // 인증번호 입력 가능
 						checkBox.val(''); // 기존에 값이 있었으면 지워줌
 						$("#alert-success-email").hide();
@@ -85,9 +85,9 @@
 	});
 	
 	// 인증번호 확인이후 아이디찾기
-	function emailAuthCheck() {
+	function emailAuthAfter() {
 		
-		let url = "/member/emailAuthCheck";
+		let url = "/member/emailAuthAfter";
 		let memberName = $("#memberName").val();
 		let memberEmail = $("#memberEmail").val();
 		let sendData = JSON.stringify({
@@ -260,7 +260,7 @@
 			
 			<div class="col-lg">
 				<div class="checkout__input d-grid">
-					<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthCheck();">아이디 찾기</button>
+					<button id="authCheck" class="btn btn-primary btn-block" onclick="emailAuthAfter();">아이디 찾기</button>
 				</div>
 			</div>
 		</div>
