@@ -122,7 +122,7 @@
            content like concat('%', #{searchWord}, '%')
         </if>
         
-        order by ref desc, reforder asc limit #{startNum}, #{postPerPage}
+        order by no desc limit #{startNum}, #{postPerPage}
      </select>
      
      
