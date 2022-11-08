@@ -224,11 +224,11 @@
                         <div class="hero__search__phone">
                             <div class="hero__search__phone__text">
                             	<c:if test="${sessionScope.logInMember.isAdmin == 'Y' }">
-                            		<h5><a href="/admin/main" style="color: black;">관리자페이지</a></h5>
+                            		<h5><a href="/admin/main" style="color: black;"> 관리자페이지</a></h5>
                             	</c:if>
                             	
                             	<c:if test="${sessionScope.logInMember.isAdmin == 'N' }">
-                            		<h5><a href="/member/myPage" style="color: black;">My Page</a></h5>
+                            		<h5><a href="/member/myPage" style="color: black;"> My Page</a></h5>
                             	</c:if>
                             </div>
                         </div>
