@@ -37,18 +37,6 @@ public interface ProductDAO {
 	 * @returnType : int
 	 **/
 	public int updateProdReview(String prodNo);
-
-
-
-
-
-	public ProductDTO getPopular(String prodNo) throws Exception;
-
-	public List<ProductDTO> LastProduct() throws Exception;
-	
-	public List<ProductDTO> getProdInfo(TipPagingInfo pi) throws Exception;
-
-	public int getProdCnt() throws Exception;
 	
 	/**
 	 * @methodName : getProdContent
@@ -59,9 +47,23 @@ public interface ProductDAO {
 	 */
 	public ProductContentVo getProdContent(String prodNo) throws Exception;
 
-	public List<ProductDTO> getProductAll(String category, TipPagingInfo pi);
 
-	public List<ProductDTO> getSearchProductAll(String searchWord, TipPagingInfo pi);
+
+
+
+	public ProductDTO getPopular(String prodNo) throws Exception;
+	
+	public List<ProductDTO> LastProduct() throws Exception;
+	
+	public List<ProductDTO> getProdInfo(TipPagingInfo pi) throws Exception;
+
+	public int getProdCnt(int pageNo, String category) throws Exception;
+
+	public List<ProductDTO> getProductAll(String category, TipPagingInfo pi) throws Exception;
+	
+	public int getSearchProdCnt(int pageNo, String category) throws Exception;
+
+	public List<ProductDTO> getSearchProductAll(String category, TipPagingInfo pi) throws Exception;
 
 
 }

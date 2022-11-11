@@ -13,7 +13,9 @@ import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryFeeVo;
 import com.boritgogae.domain.DetailOrderDTO;
 import com.boritgogae.domain.OrderDTO;
+import com.boritgogae.domain.OrderDetailDTO;
 import com.boritgogae.domain.PointHistoryDTO;
+import com.boritgogae.domain.AdminOrdersPagingInfo;
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
@@ -174,7 +176,43 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	
+	// 관리자 주문 조회
+	@Override
+	public List<OrdersVo> getOrders(AdminOrdersPagingInfo pi) throws Exception {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("StartNum", pi.getStartNum());
+		map.put("PostPerPage", pi.getPostPerPage());
+		
+		return ses.selectList(ns+".getOrders",map);
+	}
 
+	// 관리자 주문 상세 조회
+	@Override
+	public List<OrderDetailDTO> getDetailOrderInfo(int orderNo) throws Exception {
+		System.out.println(orderNo+"이거 들어왔나?");//성공
+		System.out.println(ses.selectList(ns+".getOrdersDetailInfo", orderNo)+"여기는 DAO여");
+		return ses.selectList(ns+".getOrdersDetailInfo", orderNo);
+	}
+
+	// 관리자가 오늘 해야할일
+	@Override
+	public List<OrderDetailDTO> getAdminTodoList() throws Exception {
+
+		return ses.selectList(ns+".AdminTodoList");
+	}
+
+	@Override
+	public int countOrder() throws Exception {
+
+		return ses.selectOne(ns+".countOrder");
+	}
+
+	@Override
+	public int adminAllowOrders() throws Exception {
+
+		return ses.selectOne(ns+".adminAllowOrders");
+	}
 	
 
 

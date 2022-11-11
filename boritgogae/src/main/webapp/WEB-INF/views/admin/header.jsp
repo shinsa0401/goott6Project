@@ -42,9 +42,11 @@
 <!-- summernote -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/admin/plugins/summernote/summernote-bs4.min.css">
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
+<c:set var="name" value="${sessionScope.logInMember.memberId }"></c:set>
 	<div class="wrapper">
 		<!-- Preloader -->
 		<div
@@ -212,7 +214,8 @@
 							class="img-circle elevation-2" alt="User Image">
 					</div>
 					<div class="info">
-						<a href="#" class="d-block">님, 환영합니다!</a>
+						<a href="#" class="d-block">
+						님, 환영합니다!22</a>
 					</div>
 				</div>
 
@@ -254,19 +257,14 @@
 										<i class="far fa-circle nav-icon"></i>
 										<p>상품 등록</p>
 								</a></li>
-								<li class="nav-item"><a href="pages/layout/boxed.html"
+								<li class="nav-item"><a href="${contextPath }/admin/orders?pageNo=1"
 									class="nav-link"> <i class="far fa-circle nav-icon"></i>
 										<p>주문 조회</p> <!-- 주문 조회, 주문 수정 -->
 								</a></li>
 								<li class="nav-item"><a
 									href="pages/layout/fixed-sidebar.html" class="nav-link"> <i
 										class="far fa-circle nav-icon"></i>
-										<p>배송 등록</p> <!-- 배송 등록 -->
-								</a></li>
-								<li class="nav-item"><a
-									href="pages/layout/fixed-sidebar-custom.html" class="nav-link">
-										<i class="far fa-circle nav-icon"></i>
-										<p>배송 조회</p> <!-- 배송 중인 상품 조회, 수정-->
+										<p>배송 조회</p> <!-- 배송 등록 -->
 								</a></li>
 							</ul></li>
 						<li class="nav-item"><a href="#" class="nav-link"> <i

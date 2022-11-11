@@ -10,6 +10,7 @@ import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryFeeVo;
 import com.boritgogae.domain.OrderDTO;
+import com.boritgogae.domain.OrderDetailDTO;
 import com.boritgogae.domain.OrderSheetDTO;
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
@@ -59,5 +60,20 @@ public interface OrderService {
 
 	// 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트
 	public int updateGuestPwd(int orderNo, String tempPwd) throws Exception;
+	
+	// 관리자 주문조회
+		public Map<String, Object> getOrders(int pageNo) throws Exception;
+		
+		// 관리자 주문 상세조회
+		public List<OrderDetailDTO> getDetailOrdersInfo(int orderNo) throws Exception;
+		
+		// 관리자 오늘 해야할일
+		public List<OrderDetailDTO> getAdminTodoList() throws Exception;
+		
+		// 총주문 카운트
+		public int countOrder() throws Exception;
+		
+		// 관리자 승인주문
+		public int adminAllowOrders() throws Exception;
 
 }

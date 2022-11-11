@@ -193,19 +193,28 @@ $(document).ready(function() {
 								<c:forEach var="prod" items="${prodLst}">
 									<div class="col-lg-4">
 										<div class="product__discount__item">
-											<div class="product__discount__item__pic set-bg"
-												data-setbg="${prod.originalFile }">
-												<div class="product__discount__percent">-20%</div>
-												<ul class="product__item__pic__hover">
-													<li><a href="#"><i class="fa fa-heart"></i></a></li>
-													<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-													<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-												</ul>
-											</div>
+											<c:if test="${prod.prodQuantity != 0}">
+												<div class="product__discount__item__pic set-bg"
+													data-setbg="${prod.originalFile }"
+													onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';">
+													<div class="product__discount__percent">-20%</div>
+													<ul class="product__item__pic__hover">
+														<li><a href="#"><i class="fa fa-heart"></i></a></li>
+														<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+														<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+													</ul>
+												</div>
+											</c:if>
+											<c:if test="${prod.prodQuantity == 0}">
+												<img src="../resources/img/soldout.jpg"
+													style="height: 270px"
+													onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';" />
+											</c:if>
+
 											<div class="product__discount__item__text">
 												<span>[${prod.brand }]</span>
 												<h5>
-													<a href="#">${prod.prodName }</a>
+													<a href="/product/category/detail?prodNo=${prod.prodNo }">${prod.prodName }</a>
 												</h5>
 												<div class="product__item__price">
 													${prod.prodPrice } <span></span>

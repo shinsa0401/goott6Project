@@ -35,7 +35,23 @@
     
     
 <title>header</title>
-
+<script>
+	$(document).ready(function() {
+		$("#searchWord").keyup(function(e) {
+			if (e.keyup == 13) {
+				let searchWord = $("#searchWord").val();
+				alert(searchWord);
+				searchProduct();
+			}
+		});
+	});
+	
+	function searchProduct() {
+		let searchWord = $("#searchWord").val();
+	
+		location.href = "/product/" + searchWord + "?pageNo=1";
+	}
+</script>
 </head>
 <body>
 	<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
@@ -72,7 +88,7 @@
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="${contextPath}/">Home</a></li>
-                <li><a href="${contextPath}/product/category">Shop</a></li>
+                <li><a href="${contextPath}/product/productCategory/All?pageNo=1">Shop</a></li>
                 <li><a href="${contextPath}/boardFree/list">게시판</a>
                    <ul class="header__menu__dropdown">
                         <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
@@ -120,7 +136,7 @@
                     <nav class="header__menu">
                         <ul>
 			                <li class="active"><a href="${contextPath}/">Home</a></li>
-			                <li><a href="${contextPath}/product/category"">Shop</a></li>
+			                <li><a href="${contextPath}/product/productCategory/All?pageNo=1">Shop</a></li>
 			                <li><a href="${contextPath}/boardFree/list">게시판</a>
 			                	<ul class="header__menu__dropdown">
 			                        <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
@@ -186,53 +202,52 @@
     <section class="hero hero-normal">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="hero__categories">
-                        <div class="hero__categories__all">
-                            <i class="fa fa-bars"></i>
-                            <span>All departments</span>
-                        </div>
-                        <ul>
-                            <li><a href="#">wgty</a></li>
-                            <li><a href="#">Vegetables</a></li>
-                            <li><a href="#">Fruit & Nut Gifts</a></li>
-                            <li><a href="#">Fresh Berries</a></li>
-                            <li><a href="#">Ocean Foods</a></li>
-                            <li><a href="#">Butter & Eggs</a></li>
-                            <li><a href="#">Fastfood</a></li>
-                            <li><a href="#">Fresh Onion</a></li>
-                            <li><a href="#">Papayaya & Crisps</a></li>
-                            <li><a href="#">Oatmeal</a></li>
-                            <li><a href="#">Fresh Bananas</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-9">
-                    <div class="hero__search">
-                        <div class="hero__search__form">
-                            <form action="#">
-                                <div class="hero__search__categories">
-                                    All Categories
-                                    <span class="arrow_carrot-down"></span>
-                                </div>
-                                <input type="text" placeholder="What do yo u need?">
-                                <button type="submit" class="site-btn">SEARCH</button>
-                            </form>
-                        </div>
-                        <div class="hero__search__phone">
-                            <div class="hero__search__phone__text">
-                            	<c:if test="${sessionScope.logInMember.isAdmin == 'Y' }">
-                            		<h5><a href="/admin/main" style="color: black;"> 관리자페이지</a></h5>
-                            	</c:if>
-                            	
-                            	<c:if test="${sessionScope.logInMember.isAdmin == 'N' }">
-                            		<h5><a href="/member/myPage" style="color: black;"> My Page</a></h5>
-                            	</c:if>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+				<div class="col-lg-3">
+					<a href="${contextPath}/"> <img
+						src="${contextPath}/resources/img/boritgogae.png" style="height: 150px">
+					</a>
+				</div>
+				<div class="col-lg-9">
+				
+					<div class="hero__search">
+						<c:choose>
+							<c:when
+								test="${sessionScope.logInMember != null && sessionScope.logInMember.isAdmin != 'Y' }">
+								<div class="hero__search__phone">
+									<div class="hero__search__phone__text">
+										<h5>
+											<a href="/member/myPage" style="color: black;">My Page</a>
+										</h5>
+									</div>
+								</div>
+							</c:when>
+							<c:when
+								test="${sessionScope.logInMember != null && sessionScope.logInMember.isAdmin == 'Y' }">
+								<div class="hero__search__phone">
+									<div class="hero__search__phone__text">
+										<h5>
+											<a href="/admin/main" style="color: black;">Admin Page</a>
+										</h5>
+									</div>
+								</div>
+							</c:when>
+						</c:choose>
+
+					</div>
+
+					<div class="mx-auto mt-5 search-bar input-group mb-3">
+						<input name="searchWord" id="searchWord" type="text"
+							class="form-control rounded-pill" placeholder="What do you need?"
+							aria-label="Recipient's username"
+							aria-describedby="button-addon2"
+							onKeypress="javascript:if(event.keyCode==13) {searchProduct();}">
+						<button type="button" id="moveFocus" class="site-btn"
+							onclick="searchProduct();">SEARCH</button>
+						<div class="input-group-append"></div>
+					</div>
+					
+				</div>
+			</div>
         </div>
     </section>
     <!-- Hero Section End -->
