@@ -1,6 +1,7 @@
 package com.boritgogae.board.prodReply.service;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.OrderDetailVo;
-import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;

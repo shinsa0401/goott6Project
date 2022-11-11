@@ -2,6 +2,7 @@ package com.boritgogae.service;
 
 import java.util.List;
 
+
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -13,7 +14,6 @@ import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDTO;
 import com.boritgogae.domain.OrderSheetDTO;
-import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
@@ -40,25 +40,12 @@ public interface OrderService {
 	 **/
 	public DeliveryFeeVo getDeliveryOption(OrderDTO order);
 	
-	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet);
+	public OrdersVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet);
 
 
-	//장바구니 추가 
-	public boolean addCart(CartDTO cart)throws Exception;
-	//장바구니 조회
-	public List<CartDTO> getCartList(String memberId)throws Exception;
+
 
 	
-	/**
-	 * @methodName : getDeliveryOption
-	 * @author : kjy
-	 * @date : 2022. 10. 21.
-	 * @입력 param : DeliveryInfoVo(memberId, addr, detailAddress)
-	 * @returnType : DeliveryFeeVo
-	 **/
-	public DeliveryFeeVo getDeliveryOption(OrderDTO order);
-	
-	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet);
 
 	//장바구니 추가 
 	public void addCartMem(CartDTO cart)throws Exception;
@@ -83,8 +70,8 @@ public interface OrderService {
 	 * @입력 param : 
 	 * @returnType : List<OrderVo>
 	 */
-	public List<OrderVo> getordersByMemberId(String memberId) throws Exception;
+	public List<OrdersVo> getordersByMemberId(String memberId) throws Exception;
 	
-	public OrderVo getorderByOrderNo(int orderNo) throws Exception;
+	public OrdersVo getorderByOrderNo(int orderNo) throws Exception;
 
 }

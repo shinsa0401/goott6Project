@@ -18,9 +18,6 @@
   		select b.*,a.originalFile from prodImg as a, product as b where a.prodNo = b.prodNo order by prodNo desc limit #{startNum},#{postPerPage}
   	</select>
   	
-  	<select id="prodCnt" resultType="int">
-  		select count(*) from product
-  	</select>
   	
   	<!-- 하나의 상품 가져오기 -->
 	<select id="getProd" resultType="com.boritgogae.domain.ProductVo">
@@ -45,20 +42,6 @@
 
 
 
-
-	<select id="popularProduct"
-		resultType="com.boritgogae.domain.ProductDTO">
-		select substring_index(prodName,' ',1) as brand,a.*, b.originalFile from
-		product as a , prodImg as b where a.prodNo= #{prodNo} and b.prodNo =
-		#{prodNo} limit 0,1
-	</select>
-
-	<select id="LastProduct"
-		resultType="com.boritgogae.domain.ProductDTO">
-		select substring_index(prodName,' ',1) as brand,a.*, b.originalFile from
-		product as a , prodImg as b where a.prodNo=b.prodNo order by
-		a.prodPutDate desc limit 0,6
-	</select>
 
 	<select id="productSearchCnt" resultType="int">
 		select count(*) from product where prodName like concat('%',#{category},'%')

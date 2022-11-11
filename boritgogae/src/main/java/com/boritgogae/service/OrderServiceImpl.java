@@ -1,6 +1,7 @@
 package com.boritgogae.service;
 
 import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -21,7 +22,6 @@ import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDTO;
 import com.boritgogae.domain.OrderProductDTO;
 import com.boritgogae.domain.OrderSheetDTO;
-import com.boritgogae.domain.OrderVo;
 import com.boritgogae.domain.PointHistoryDTO;
 import com.boritgogae.domain.ProductVo;
 import com.boritgogae.persistence.MemberDAO;
@@ -120,14 +120,14 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 
 	@Transactional
 	@Override
-	public OrderVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet) {
+	public OrdersVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet) {
 		//order에 넣기
 		int orderRow = orderDao.insertOrder(order);
 		System.out.println("주문인서트"+orderRow);
 		//마지막으로 insert된 order의 no 불러오기
 		int orderNo = orderDao.lastOrderNo();
 		
-		OrderVo currentOrder = orderDao.getOrderByOrderNo(orderNo);
+		OrdersVo currentOrder = orderDao.getOrderByOrderNo(orderNo);
 		
 		//detailorder에 넣기, initialOrderDetailNo 업데이트
 		List<OrderProductDTO> orderProds = ordersheet.getOrderProducts();
@@ -232,15 +232,18 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 
 
 	@Override
-	public List<OrderVo> getordersByMemberId(String memberId) throws Exception {
+	public List<OrdersVo> getordersByMemberId(String memberId) throws Exception {
 		
 		return orderDao.getOrdersByMemberId(memberId);
 	}
 
 
 	@Override
-	public OrderVo getorderByOrderNo(int orderNo) throws Exception {
+	public OrdersVo getorderByOrderNo(int orderNo) throws Exception {
 		return orderDao.getOrderByOrderNo(orderNo);
 	}
+
+
+
 
 }
