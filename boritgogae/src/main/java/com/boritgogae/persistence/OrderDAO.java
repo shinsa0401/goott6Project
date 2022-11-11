@@ -1,8 +1,5 @@
 package com.boritgogae.persistence;
 
-import java.sql.Timestamp;
-
-
 import java.util.List;
 
 import com.boritgogae.domain.CouponUsedVo;
@@ -13,8 +10,6 @@ import com.boritgogae.domain.OrderDTO;
 import com.boritgogae.domain.OrderDetailDTO;
 import com.boritgogae.domain.PointHistoryDTO;
 import com.boritgogae.domain.AdminOrdersPagingInfo;
-import com.boritgogae.domain.ProductVo;
-import java.util.List;
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
@@ -168,10 +163,11 @@ public interface OrderDAO {
 	
 	// 관리자승인주문
 	public int adminAllowOrders() throws Exception;
-
+	
 	//멤버아이디로 주문내역 가져옴
 	public List<OrdersVo> getOrdersByMemberId(String memberId) throws Exception;
 	
 	//멤버아이디로 주문상세내역 가져옴
 	public List<DetailOrderVo> getDetailOrderByMemberId(String memberId) throws Exception;
+
 }

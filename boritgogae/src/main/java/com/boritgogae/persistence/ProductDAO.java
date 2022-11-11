@@ -2,6 +2,7 @@ package com.boritgogae.persistence;
 
 import java.util.List;
 
+
 import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.domain.ProductVo;
@@ -18,9 +19,12 @@ public interface ProductDAO {
 	
 	//리뷰 수 업데이트
 	public int updateProdReviewCnt(String prodNo) throws Exception;
-
+	
 	//상품상세 가져옴
 	public ProductContentVo getProdContent(String prodNo) throws Exception;
+
+
+
 
 
 	public ProductDTO getPopular(String prodNo) throws Exception;
@@ -36,7 +40,6 @@ public interface ProductDAO {
 	public int getSearchProdCnt(int pageNo, String category) throws Exception;
 
 	public List<ProductDTO> getSearchProductAll(String category, TipPagingInfo pi) throws Exception;
-	
 
 
 }

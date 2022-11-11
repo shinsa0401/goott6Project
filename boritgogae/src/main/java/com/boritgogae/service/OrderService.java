@@ -2,7 +2,6 @@ package com.boritgogae.service;
 
 import java.util.List;
 
-
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -10,12 +9,9 @@ import org.springframework.stereotype.Service;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryFeeVo;
-import com.boritgogae.domain.DeliveryInfoVo;
-import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDTO;
 import com.boritgogae.domain.OrderDetailDTO;
 import com.boritgogae.domain.OrderSheetDTO;
-import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
@@ -56,7 +52,8 @@ public interface OrderService {
 
 
 	
-
+	
+	
 	//장바구니 추가 
 	public void addCartMem(CartDTO cart)throws Exception;
 	public void addCartGuest(CartDTO cart)throws Exception;
@@ -68,9 +65,8 @@ public interface OrderService {
 	//장바구니 수량 업데이트 메서드
 	public void qtyCartUpdate(int cartNo, int qty)throws Exception;
 	
+	public List<DetailOrderVo> popularProd() throws Exception;
 	
-	public List<DetailOrderVo> popularProd() throws Exception;	
-
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
 	public OrdersVo guestOrderInfo(GuestOrderDTO gdto) throws Exception;
 
@@ -94,7 +90,5 @@ public interface OrderService {
 	
 	// 관리자 승인주문
 	public int adminAllowOrders() throws Exception;
-	
-	
 
 }

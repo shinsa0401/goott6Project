@@ -1,7 +1,6 @@
 package com.boritgogae.service;
 
 import java.sql.Timestamp;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -33,7 +32,6 @@ import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
 import com.boritgogae.domain.OrdersVo;
-import com.boritgogae.persistence.OrderDAO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -46,54 +44,68 @@ public class OrderServiceImpl implements OrderService {
    
    @Inject
    private MemberDAO memDao;
+   
+   @Inject
+   private OrderDAO dao;
 
-@Override
-public Map<CouponVo, CouponUsedVo> getAvailableCoupon(String memberId) {
-	Map<CouponVo, CouponUsedVo> couponMap = new HashMap<CouponVo, CouponUsedVo>();
-	
-	//couponUsed와 coupon을 가져와서 issueDate와 useDate 비교 후 리턴
-	List<CouponUsedVo> couponLst = orderDao.getUsableCoupon(memberId);
-	
-	Timestamp now = new Timestamp(System.currentTimeMillis());
-	
-	for(CouponUsedVo vo : couponLst) {
-		CouponVo coupon = orderDao.getCouponByCouponName(vo.getCouponName());
-		if(vo != null) {
-			if(vo.getExpirationDate().compareTo(now) > 0) {
-				couponMap.put(coupon, vo);
+	@Override
+	public Map<CouponVo, CouponUsedVo> getAvailableCoupon(String memberId) {
+		Map<CouponVo, CouponUsedVo> couponMap = new HashMap<CouponVo, CouponUsedVo>();
+		
+		//couponUsed와 coupon을 가져와서 issueDate와 useDate 비교 후 리턴
+		List<CouponUsedVo> couponLst = orderDao.getUsableCoupon(memberId);
+		
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		
+		for(CouponUsedVo vo : couponLst) {
+			CouponVo coupon = orderDao.getCouponByCouponName(vo.getCouponName());
+			if(vo != null) {
+				if(vo.getExpirationDate().compareTo(now) > 0) {
+					couponMap.put(coupon, vo);
+				}
 			}
 		}
+	
+		return couponMap;
 	}
 
-	return couponMap;
-}
 
-
-@Override
-public DeliveryFeeVo getDeliveryOption(OrderDTO order) { 
-	List<String> expensive = new ArrayList<String>();
-	expensive.add("제주특별자치도");
-	expensive.add("울릉군");
-	expensive.add("거제시");
-
-	String addr = order.getAddress();
-	DeliveryFeeVo result = new DeliveryFeeVo();
-	System.out.println(addr);
+	@Override
+	public DeliveryFeeVo getDeliveryOption(OrderDTO order) { 
+		List<String> expensive = new ArrayList<String>();
+		expensive.add("제주특별자치도");
+		expensive.add("울릉군");
+		expensive.add("거제시");
 	
-	MemberVo member = memDao.getMemInfo(order.getMemberId());
-	
-	
-	//orders에 isMember세팅해서 오기
-	//ismember이 y일때 - isAdmin이 y일때 - 무료
-	//ismember가 y일때 - prodTotalPrice가 50000이상일 때 -무료 - 도서산간이면서 5만원 이상일 때 무료
-	//address가 도서산간일 때 - 8000원
-	//도서산간이 아닐 때 - 3000원
-	if (member != null) {
-		if(memDao.getMemInfo(order.getMemberId()).getIsAdmin().equals("Y")) {
-			result = orderDao.getdeliFee("관리");
-		}else if (order.getProdTotalPrice() > 50000) {
-			result = orderDao.getdeliFee("무료");
-		}else {
+		String addr = order.getAddress();
+		DeliveryFeeVo result = new DeliveryFeeVo();
+		System.out.println(addr);
+		
+		MemberVo member = memDao.getMemInfo(order.getMemberId());
+		
+		
+		//orders에 isMember세팅해서 오기
+		//ismember이 y일때 - isAdmin이 y일때 - 무료
+		//ismember가 y일때 - prodTotalPrice가 50000이상일 때 -무료 - 도서산간이면서 5만원 이상일 때 무료
+		//address가 도서산간일 때 - 8000원
+		//도서산간이 아닐 때 - 3000원
+		if (member != null) {
+			if(memDao.getMemInfo(order.getMemberId()).getIsAdmin().equals("Y")) {
+				result = orderDao.getdeliFee("관리");
+			}else if (order.getProdTotalPrice() > 50000) {
+				result = orderDao.getdeliFee("무료");
+			}else {
+				for(String s : expensive) {
+					if(addr.contains(s)) {
+						result = orderDao.getdeliFee("도서");
+						break;
+					}else {
+						result =orderDao.getdeliFee("기본");
+					}
+				}
+			}
+		}
+		else {
 			for(String s : expensive) {
 				if(addr.contains(s)) {
 					result = orderDao.getdeliFee("도서");
@@ -103,22 +115,11 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 				}
 			}
 		}
+		
+		
+		
+		return result;
 	}
-	else {
-		for(String s : expensive) {
-			if(addr.contains(s)) {
-				result = orderDao.getdeliFee("도서");
-				break;
-			}else {
-				result =orderDao.getdeliFee("기본");
-			}
-		}
-	}
-	
-	
-	
-	return result;
-}
 
 	@Transactional
 	@Override
@@ -165,12 +166,22 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		
 		//회원 테이블의 포인트 업데이트
 		int pointrow = memDao.updateMemberPoint(currentOrder.getMemberId());
-
+	
 		return currentOrder;
 	}
+	
+	@Override
+	public List<OrdersVo> getordersByMemberId(String memberId) throws Exception {
+		
+		return orderDao.getOrdersByMemberId(memberId);
+	}
 
-	@Inject
-	public OrderDAO dao;
+
+	@Override
+	public OrdersVo getorderByOrderNo(int orderNo) throws Exception {
+		return orderDao.getOrderByOrderNo(orderNo);
+	}
+
 	
 	@Override
 	public void addCartMem(CartDTO cart) throws Exception {
@@ -232,17 +243,17 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		return dao.selectGuestOrderInfo(gdto);
 	}
 
-
+	// 주문비밀번호 찾기위해 주문건 검색하는 메서드
 	@Override
-	public List<OrdersVo> getordersByMemberId(String memberId) throws Exception {
-		
-		return orderDao.getOrdersByMemberId(memberId);
+	public OrdersVo findGuestPwdSelectOrder(OrdersVo order) throws Exception {
+		return dao.findGuestPwdSelectOrder(order);
 	}
 
-
+	// 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트
 	@Override
-	public OrdersVo getorderByOrderNo(int orderNo) throws Exception {
-		return orderDao.getOrderByOrderNo(orderNo);
+	public int updateGuestPwd(int orderNo, String tempPwd) throws Exception {
+		System.out.println("서비스 임시비밀번호 업데이트" + orderNo + ", " + tempPwd);
+		return dao.updateGuestPwd(orderNo, tempPwd);
 	}
 	
 	
@@ -303,8 +314,5 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 
 		return dao.adminAllowOrders();
 	}
-
-
-
 
 }

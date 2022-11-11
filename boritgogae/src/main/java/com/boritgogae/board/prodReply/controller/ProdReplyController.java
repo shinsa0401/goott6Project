@@ -112,7 +112,7 @@ public class ProdReplyController {
 	}
 	
 	//리뷰 대댓글 작성하기
-	@RequestMapping(value = "writeReReply", method = RequestMethod.POST)
+	@RequestMapping(value = "/writeReReply", method = RequestMethod.POST)
 	public String writeReReply(ReplyDTO reply, @RequestParam("prodNo") String prodNo) throws Exception {
 		service.writeReReply(reply);
 		

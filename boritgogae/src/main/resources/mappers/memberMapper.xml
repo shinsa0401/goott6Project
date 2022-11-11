@@ -4,273 +4,273 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.boritgogae.memberMapper">
-      
-      <!-- 로그인하기위해 id와 pwd로 회원정보를 검색 -->
-     <select id="logIn" resultType="MemberVo">
-        select * from members where memberId = #{memberId} and memberPwd = sha1(md5(#{memberPwd})) and delStatus = 'N'
-     </select>
-     
-     <!-- 자동로그인을 체크한 회원의 로그인유지를 위한 세션 정보 업데이트 -->
-     <update id="updateMemberSession">
-        update members set sessionId = #{sessionId}, sessionLimit = #{sessionLimit} where memberId = #{memberId}
-     </update>
-     
-     <!-- 자동로그인 체크한 회원인지 검색 -->
-     <select id="selectAutoLogIn" resultType="MemberVo">
-        select * from members where sessionId = #{sessionId}
-     </select>
-     
-     <!-- 로그인 시간 업데이트 -->
-     <update id="updateLogInDate">
-        update members set logInDate = now() where memberId = #{memberId}
-     </update>
-     
-     <!-- 로그아웃 시간 업데이트 -->
-   <update id="updateLogOutDate">
-      update members set logOutDate = now() where memberId = #{memberId}
-   </update>
-   
-   <!-- 이메일로 회원아이디 검색 -->
-   <select id="selectMemberId" resultType="MemberVo">
-      select * from members where memberEmail = #{memberEmail}
-   </select>
-   
-   <!-- 회원의 아이디가 맞는지 체크 -->
-   <select id="checkMemberId" resultType="int">
-      select count(*) from members where memberId = #{memberId}
-   </select>
-   
-   <!-- 회원 비밀번호 업데이트 -->
-   <update id="updatePwd">
-      update members set memberPwd = sha1(md5(#{memberPwd})) where memberId = #{memberId}
-   </update>
-   
-   <!-- 회원 비밀번호 업데이트 이후 lastPwdUpdate 컬럼 업데이트 -->
-   <update id="updateLastPwdUpdate">
-      update members set lastPwdUpdate = now() where memberId = #{memberId}
-   </update>
-   
+   	
+   	<!-- 로그인하기위해 id와 pwd로 회원정보를 검색 -->
+  	<select id="logIn" resultType="MemberVo">
+  		select * from members where memberId = #{memberId} and memberPwd = sha1(md5(#{memberPwd})) and delStatus = 'N'
+  	</select>
+  	
+  	<!-- 자동로그인을 체크한 회원의 로그인유지를 위한 세션 정보 업데이트 -->
+  	<update id="updateMemberSession">
+  		update members set sessionId = #{sessionId}, sessionLimit = #{sessionLimit} where memberId = #{memberId}
+  	</update>
+  	
+  	<!-- 자동로그인 체크한 회원인지 검색 -->
+  	<select id="selectAutoLogIn" resultType="MemberVo">
+  		select * from members where sessionId = #{sessionId}
+  	</select>
+  	
+  	<!-- 로그인 시간 업데이트 -->
+  	<update id="updateLogInDate">
+  		update members set logInDate = now() where memberId = #{memberId}
+  	</update>
+  	
+  	<!-- 로그아웃 시간 업데이트 -->
+	<update id="updateLogOutDate">
+		update members set logOutDate = now() where memberId = #{memberId}
+	</update>
+	
+	<!-- 이메일로 회원아이디 검색 -->
+	<select id="selectMemberId" resultType="MemberVo">
+		select * from members where memberEmail = #{memberEmail}
+	</select>
+	
+	<!-- 회원의 아이디가 맞는지 체크 -->
+	<select id="checkMemberId" resultType="int">
+		select count(*) from members where memberId = #{memberId}
+	</select>
+	
+	<!-- 회원 비밀번호 업데이트 -->
+	<update id="updatePwd">
+		update members set memberPwd = sha1(md5(#{memberPwd})) where memberId = #{memberId}
+	</update>
+	
+	<!-- 회원 비밀번호 업데이트 이후 lastPwdUpdate 컬럼 업데이트 -->
+	<update id="updateLastPwdUpdate">
+		update members set lastPwdUpdate = now() where memberId = #{memberId}
+	</update>
+	
 
-   <!-- 등급혜택을 가져오는 메서드 -->
-   <select id="showGradeBenefit" resultType="GradesVo">
-      select * from grades
-      order by gradeValue asc
-   </select>
+	<!-- 등급혜택을 가져오는 메서드 -->
+	<select id="showGradeBenefit" resultType="GradesVo">
+		select * from grades
+		order by gradeValue asc
+	</select>
 
-   <!-- 쿠폰혜택을 가져오는 메서드 -->
-   <select id="showCouponBenefit" resultType="CouponVo">
-      select * from coupon
-      order by couponName asc
-   </select>
+	<!-- 쿠폰혜택을 가져오는 메서드 -->
+	<select id="showCouponBenefit" resultType="CouponVo">
+		select * from coupon
+		order by couponName asc
+	</select>
 
-   <!-- 유저가 보유한 포인트를 가져오는 메서드 -->
-   <select id="pointNow" resultType="int">
-      select memberPoint from members
-      where memberId= #{memberId}
-   </select>
+	<!-- 유저가 보유한 포인트를 가져오는 메서드 -->
+	<select id="pointNow" resultType="int">
+		select memberPoint from members
+		where memberId= #{memberId}
+	</select>
 
-   <!-- 유저의 포인트 내역을 가져오는 메서드 -->
-   <select id="showPointHistory" resultType="PointHistoryVo">
-      select * from
-      pointHistory where memberId= #{memberId}
-   </select>
+	<!-- 유저의 포인트 내역을 가져오는 메서드 -->
+	<select id="showPointHistory" resultType="PointHistoryVo">
+		select * from
+		pointHistory where memberId= #{memberId}
+	</select>
 
-   <!-- 유저의 쿠폰 보유 내역을 가져오는 메서드 -->
-   <select id="showCouponHaveList" resultType="CouponUsedVo">
-      select * from
-      couponUsed where memberId = #{memberId} and useDate is null
-   </select>
+	<!-- 유저의 쿠폰 보유 내역을 가져오는 메서드 -->
+	<select id="showCouponHaveList" resultType="CouponUsedVo">
+		select * from
+		couponUsed where memberId = #{memberId} and useDate is null
+	</select>
 
-   <!-- 유저의 쿠폰 사용 내역을 가져오는 메서드 -->
-   <select id="showCouponUsedList" resultType="CouponUsedVo">
-      select * from
-      couponUsed where memberId = #{memberId} and useDate is not null
-   </select>
+	<!-- 유저의 쿠폰 사용 내역을 가져오는 메서드 -->
+	<select id="showCouponUsedList" resultType="CouponUsedVo">
+		select * from
+		couponUsed where memberId = #{memberId} and useDate is not null
+	</select>
 
-   <!-- 유저의 작성글을 가져오는 메서드 -->
-   <select id="showUserBoardList" resultType="UserBoardVo">
-      select writer,
-      writtenDate, title, readCount, '문의' as board from askBoard
-      where writer
-      = #{memberId}
-      union all select memberId, writtenDate, title, readCount,
-      '공지' as board
-      from noticeBoard where memberId = #{memberId}
-      union all
-      select memberId, createDate, title, readCount, '팁' as board from
-      tipBoard where memberId = #{memberId}
-      union all select writer,
-      writtenDate, title, readCount, '질문' as board from
-      questionBoard where
-      writer = #{memberId}
-      union all select writer, writtenDate, title,
-      readCount, '장터' as board from
-      marketBoard where writer = #{memberId}
-      union all select writer, createDate, title, readCount, '자유' as board
-      from
-      freeboard where writer = #{memberId} order by writtenDate desc
-   </select>
+	<!-- 유저의 작성글을 가져오는 메서드 -->
+	<select id="showUserBoardList" resultType="UserBoardVo">
+		select writer,
+		writtenDate, title, readCount, '문의' as board from askBoard
+		where writer
+		= #{memberId}
+		union all select memberId, writtenDate, title, readCount,
+		'공지' as board
+		from noticeBoard where memberId = #{memberId}
+		union all
+		select memberId, createDate, title, readCount, '팁' as board from
+		tipBoard where memberId = #{memberId}
+		union all select writer,
+		writtenDate, title, readCount, '질문' as board from
+		questionBoard where
+		writer = #{memberId}
+		union all select writer, writtenDate, title,
+		readCount, '장터' as board from
+		marketBoard where writer = #{memberId}
+		union all select writer, createDate, title, readCount, '자유' as board
+		from
+		freeboard where writer = #{memberId} order by writtenDate desc
+	</select>
 
-   <!-- 유저의 작성 댓글을 가져오는 메서드 -->
-   <select id="showUserReplyList" resultType="UserReplyVo">
-      select memberId,
-      writtenTime, contents, '질문' as board from askReplyBoard
-      where memberId
-      = #{memberId}
-      union all select memberId, writtenDate, content, '공지' as
-      board from
-      noticeReplyBoard where memberId = #{memberId}
-      union all
-      select memberId, createDate, content, '팁' as board from tipReply
-      where
-      memberId = #{memberId}
-      union all select replyWriter, replyWrittenDate,
-      replyContent, '질문' as board
-      from questionReply where replyWriter =
-      #{memberId}
-      union all select replyer, replyWrittenDate, replyContent,
-      '장터' as board
-      from marketReply where replyer = #{memberId}
-      union all
-      select replyer, replyWittenDate, replyContent, '자유' as board from
-      freeReply where replyer = #{memberId} order by writtenTime desc
-   </select>
+	<!-- 유저의 작성 댓글을 가져오는 메서드 -->
+	<select id="showUserReplyList" resultType="UserReplyVo">
+		select memberId,
+		writtenTime, contents, '질문' as board from askReplyBoard
+		where memberId
+		= #{memberId}
+		union all select memberId, writtenDate, content, '공지' as
+		board from
+		noticeReplyBoard where memberId = #{memberId}
+		union all
+		select memberId, createDate, content, '팁' as board from tipReply
+		where
+		memberId = #{memberId}
+		union all select replyWriter, replyWrittenDate,
+		replyContent, '질문' as board
+		from questionReply where replyWriter =
+		#{memberId}
+		union all select replyer, replyWrittenDate, replyContent,
+		'장터' as board
+		from marketReply where replyer = #{memberId}
+		union all
+		select replyer, replyWittenDate, replyContent, '자유' as board from
+		freeReply where replyer = #{memberId} order by writtenTime desc
+	</select>
 
-   <!-- 유저가 쓴 리뷰 리스트를 가져오는 메서드 -->
-   <select id="showUserReviewList" resultType="ReviewVO">
-      select * from review
-      where writer = #{memberId}
-   </select>
-
-
-   <!-- 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드 -->
-   <select id="userAbleReviewList" resultType="OrderDetailVo">
-      select * from
-      detailOrder where memberId = #{memberId} and reviewStatus = 'N' and
-      purchaseConfirm = 'Y'
-   </select>
-
-   <!-- 상품코드에 맞는 상품명을 반환하는 메서드 -->
-   <select id="convertProdNoToProdName" resultType="String">
-      select prodName
-      from product where prodNo = #{prodCode}
-   </select>
-
-     <!-- 멤버vo를 id로 가져오는 메서드 -->
-     <select id="getMemberInfo" resultType="MemberVo">
-        select * from members where memberId = #{memberId}
-     </select>
-     
-     <!-- 유저 주소를 list로 가져오는 메서드 -->
-     <select id="getMemAddrs" resultType="DeliveryInfoVo">
-        select * from deliveryInfo where memberId = #{memberId}
-     </select>
-     
-     <select id="getGrade" resultType="GradesVo">
-        select * from grades where grade = (select grade from members where memberId = #{memberId})
-     </select>
-     
-     <update id="updateMemberPoint">
-        update members set memberPoint = (select sum(pointHistory) from pointHistory where memberId = #{memberId}) where memberId = #{memberId};
-     </update>
-
-   <!-- 회원정보를 가져오는 메서드 -->
-   <select id="showUserInfo" resultType="MemberVo">
-      select memberImg, memberId,
-      memberName, birthDay, joinDate, nickName, memberEmail, phoneNumber,
-      isAdmin from members where memberId = #{memberId}
-   </select>
+	<!-- 유저가 쓴 리뷰 리스트를 가져오는 메서드 -->
+	<select id="showUserReviewList" resultType="ReviewVO">
+		select * from review
+		where writer = #{memberId}
+	</select>
 
 
-   <!-- 회원 아이디에 맞는 비번인지 확인하는 메서드 -->
-   <select id="checkPwd" resultType="int">
-      select count(*) from members
-      where memberId = #{memberId} and memberPwd = sha1(md5(#{pwd}))
-   </select>
+	<!-- 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드 -->
+	<select id="userAbleReviewList" resultType="OrderDetailVo">
+		select * from
+		detailOrder where memberId = #{memberId} and reviewStatus = 'N' and
+		purchaseConfirm = 'Y'
+	</select>
 
-   <!-- 회원 정보 수정 메서드 -->
-   <update id="changeInfo">
-      update members set
-      <if test="target == 'memberPwd'">
-         memberPwd = sha1(md5(#{value}))
-      </if>
-      <if test="target == 'nickName'">
-         nickName = #{value}
-      </if>
-      <if test="target == 'phoneNumber'">
-         phoneNumber = #{value}
-      </if>
-      where memberId = #{memberId}
-   </update>
+	<!-- 상품코드에 맞는 상품명을 반환하는 메서드 -->
+	<select id="convertProdNoToProdName" resultType="String">
+		select prodName
+		from product where prodNo = #{prodCode}
+	</select>
 
-   <!-- 회원의 주소지 정보들을 불러오는 메서드 -->
-   <select id="showDeliveryInfo" resultType="DeliveryInfoVo">
-      select * from deliveryInfo where memberId = #{memberId}
-   </select>
+	  <!-- 멤버vo를 id로 가져오는 메서드 -->
+  	<select id="getMemberInfo" resultType="MemberVo">
+  		select * from members where memberId = #{memberId}
+  	</select>
+  	
+  	<!-- 유저 주소를 list로 가져오는 메서드 -->
+  	<select id="getMemAddrs" resultType="DeliveryInfoVo">
+  		select * from deliveryInfo where memberId = #{memberId}
+  	</select>
+  	
+  	<select id="getGrade" resultType="GradesVo">
+  		select * from grades where grade = (select grade from members where memberId = #{memberId})
+  	</select>
+  	
+  	<update id="updateMemberPoint">
+  		update members set memberPoint = (select sum(pointHistory) from pointHistory where memberId = #{memberId}) where memberId = #{memberId};
+  	</update>
 
-   <!-- 회원의 주소지를 삭제하는 메서드 -->
-   <delete id="deleteAddr">
-      delete from deliveryInfo where memberId =
-      #{memberId}
-      and deliveryInfo = #{deliveryInfo}
-   </delete>
+	<!-- 회원정보를 가져오는 메서드 -->
+	<select id="showUserInfo" resultType="MemberVo">
+		select memberImg, memberId,
+		memberName, birthDay, joinDate, nickName, memberEmail, phoneNumber,
+		isAdmin from members where memberId = #{memberId}
+	</select>
 
-   <!-- 회원의 주소지를 추가하는 메서드 -->
-   <insert id="addAddr">
-      insert into deliveryInfo(memberId, address, detailAddress, recipient,
-      recipientPhoneNumber, postCode) values(#{memberId}, #{address}, #{detailAddress}, 
-      #{recipient}, #{recipientPhoneNumber}, #{postCode})
-   </insert>
-   
-   
-   <!-- 회원의 주소지를 추가하는 메서드 -->
-   <update id="addMemberImg">
-      update members set memberImg = #{memberImg} where
-      memberId = #{memberId}
-   </update>   
-   
-      
-   <!-- 회원 이메일 변경 메서드 -->
-   <update id="changeMemberEmail">
-      update members set memberEmail = #{memberEmail} where
-      memberId = #{memberId}
-   </update>   
-   
-   
-   <insert id="memberjoin">
-         insert into members(memberId,memberName,memberPwd,nickName,phoneNumber,memberEmail)
+
+	<!-- 회원 아이디에 맞는 비번인지 확인하는 메서드 -->
+	<select id="checkPwd" resultType="int">
+		select count(*) from members
+		where memberId = #{memberId} and memberPwd = sha1(md5(#{pwd}))
+	</select>
+
+	<!-- 회원 정보 수정 메서드 -->
+	<update id="changeInfo">
+		update members set
+		<if test="target == 'memberPwd'">
+			memberPwd = sha1(md5(#{value}))
+		</if>
+		<if test="target == 'nickName'">
+			nickName = #{value}
+		</if>
+		<if test="target == 'phoneNumber'">
+			phoneNumber = #{value}
+		</if>
+		where memberId = #{memberId}
+	</update>
+
+	<!-- 회원의 주소지 정보들을 불러오는 메서드 -->
+	<select id="showDeliveryInfo" resultType="DeliveryInfoVo">
+		select * from deliveryInfo where memberId = #{memberId}
+	</select>
+
+	<!-- 회원의 주소지를 삭제하는 메서드 -->
+	<delete id="deleteAddr">
+		delete from deliveryInfo where memberId =
+		#{memberId}
+		and deliveryInfo = #{deliveryInfo}
+	</delete>
+
+	<!-- 회원의 주소지를 추가하는 메서드 -->
+	<insert id="addAddr">
+		insert into deliveryInfo(memberId, address, detailAddress, recipient,
+		recipientPhoneNumber, postCode) values(#{memberId}, #{address}, #{detailAddress}, 
+		#{recipient}, #{recipientPhoneNumber}, #{postCode})
+	</insert>
+	
+	
+	<!-- 회원의 주소지를 추가하는 메서드 -->
+	<update id="addMemberImg">
+		update members set memberImg = #{memberImg} where
+		memberId = #{memberId}
+	</update>	
+	
+		
+	<!-- 회원 이메일 변경 메서드 -->
+	<update id="changeMemberEmail">
+		update members set memberEmail = #{memberEmail} where
+		memberId = #{memberId}
+	</update>	
+	
+	
+	<insert id="memberjoin">
+   		insert into members(memberId,memberName,memberPwd,nickName,phoneNumber,memberEmail)
 values(#{memberId},#{memberName},sha1(md5(#{memberPwd})),#{nickName},#{phoneNumber},#{memberEmail})
-      
-      </insert>
-      
-      
-      <insert id="joindelivery">
-      
-      insert into deliveryInfo(memberId,address,detailAddress,postCode,recipient,recipientPhoneNumber)
+   	
+   	</insert>
+   	
+   	
+   	<insert id="joindelivery">
+   	
+   	insert into deliveryInfo(memberId,address,detailAddress,postCode,recipient,recipientPhoneNumber)
 values(#{memberId},#{address},#{detailAddress},#{postCode},#{recipient},#{recipientPhoneNumber})
-      
-      </insert>
-      
-      
+   	
+   	</insert>
+   	
+   	
  
-        
-        <select id="checkid" resultType="int">
-           select count(*) from members where memberId= #{memberId}
-        </select>
-        
-         <select id="checkname" resultType="int">
-           select count(*) from members where memberName= #{memberName}
-        </select>
-        
-         <select id="checkemail" resultType="int">
-           select count(*) from members where memberEmail = #{memberEmail}
-        </select>
-        
-        
-        
-        
-        
-        <select id="selectLike" resultType="ProductVo">
+   	  
+   	  <select id="checkid" resultType="int">
+   	  	select count(*) from members where memberId= #{memberId}
+   	  </select>
+   	  
+   	   <select id="checkname" resultType="int">
+   	  	select count(*) from members where memberName= #{memberName}
+   	  </select>
+   	  
+   	   <select id="checkemail" resultType="int">
+   	  	select count(*) from members where memberEmail = #{memberEmail}
+   	  </select>
+   	  
+   	  
+   	  
+   	  
+   	  
+   	  <select id="selectLike" resultType="ProductVo">
   select *from likes where memberId=#{memberId}
   </select>
   
@@ -284,7 +284,7 @@ values(#{memberId},#{address},#{detailAddress},#{postCode},#{recipient},#{recipi
  
  
  <insert id="snedDm">
-    insert into dm(receiverId,senderId,noteContent)values(#{receiverId},#{senderId},#{noteContent});
+ 	insert into dm(receiverId,senderId,noteContent)values(#{receiverId},#{senderId},#{noteContent});
  </insert>
  
  
@@ -295,7 +295,7 @@ values(#{memberId},#{address},#{detailAddress},#{postCode},#{recipient},#{recipi
  
  
  <insert id="insertWriter">
-    insert into dm(receiverId,noteContent) values(#{receiverId},#{noteContent})
+ 	insert into dm(receiverId,noteContent) values(#{receiverId},#{noteContent})
  </insert>
  
  
@@ -344,10 +344,8 @@ values(#{memberId},#{address},#{detailAddress},#{postCode},#{recipient},#{recipi
     
     
     <update id="sendDel">
-       update dm set sendNoteDel='Y' where no=#{no}
+    	update dm set sendNoteDel='Y' where no=#{no}
     </update>
-    
-
-      
+   	
   
   </mapper>

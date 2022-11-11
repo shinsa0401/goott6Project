@@ -57,4 +57,7 @@ public interface ReviewService {
 	
 	//대댓글 저장하는 메서드
 	public boolean writeReReply(ReplyDTO reply) throws Exception;
+	
+	//리뷰를 쓸 수 있는지 판단하는 메서드
+	public String canReview(String memberId, String prodNo) throws Exception;
 }
