@@ -44,107 +44,104 @@
 
 	
 	<!-- Humberger Begin 모바일 -->
-    <div class="humberger__menu__overlay"></div>
-    <div class="humberger__menu__wrapper">
-        <div class="humberger__menu__logo">
-            
-        </div>
-        <div class="humberger__menu__cart">
-            <ul>
-                <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                <li><a href="${contextPath}/order/cart"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
-            </ul>
-            <div class="header__cart__price">item: <span>$150.00</span></div>
-        </div>
-        <div class="humberger__menu__widget">
-            <div class="header__top__right__language">
-                
-                <div>Korean</div>
-                <span class="arrow_carrot-down"></span>
-                <ul>
-                    <li><a href="#">Korean</a></li>
-                    <li><a href="#">English</a></li>
-                </ul>
-            </div>
-            
-        </div>
-        <!-- 모바일 메뉴 -->
-        <nav class="humberger__menu__nav mobile-menu">
-            <ul>
-                <li class="active"><a href="${contextPath}/">Home</a></li>
-                <li><a href="${contextPath}/product/category">Shop</a></li>
-                <li><a href="${contextPath}/boardFree/list">게시판</a>
-                   <ul class="header__menu__dropdown">
-                        <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
-                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
-                        <li><a href="${contextPath}/board/market/listAll">장터게시판</a></li>
-                        <li><a href="/boardTip/listAll">고개팁</a></li>
-                    </ul>
-                </li>
-                <li><a href="/board/notice/list">고객센터</a>
-               <ul class="header__menu__dropdown">
-                  <li><a href="/board/notice/list">공지사항</a></li>
-                  <li><a href="/board/ask/list">문의게시판</a></li>
-               </ul>
-            </li>
-            </ul>
-        </nav>
-        <div id="mobile-menu-wrap"></div>
-        <div class="header__top__right__social">
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-linkedin"></i></a>
-            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-        </div>
-        <div class="humberger__menu__contact">
-            <ul>
-                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                <li>Free Shipping for all Order of $99</li>
-            </ul>
-        </div>
-    </div>
-    <!-- Humberger End -->
-    
-   
-   <!-- Header Section Begin PC버전 -->
-    <header class="header">
-        
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="header__logo">
-                        
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <nav class="header__menu">
-                        <ul>
-			                <li class="active"><a href="${contextPath}/">Home</a></li>
-			                <li><a href="${contextPath}/product/category"">Shop</a></li>
-			                <li><a href="${contextPath}/boardFree/list">게시판</a>
-			                	<ul class="header__menu__dropdown">
-			                        <li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
-			                        <li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
-			                        <li><a href="${contextPath}/board/market/listAll">장터게시판</a></li>
-			                        <li><a href="/boardTip/listAll">고개팁</a></li>
-			                    </ul>
-			                </li>
-			                <li><a href="/board/notice/list">고객센터</a>
+	<div class="humberger__menu__overlay"></div>
+	<div class="humberger__menu__wrapper">
+		<div class="humberger__menu__logo"></div>
+		<div class="humberger__menu__cart">
+			<ul>
+				<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+				<li><a href="${contextPath}/order/cartList"><i
+						class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+			</ul>
+			<div class="header__cart__price">
+				item: <span>$150.00</span>
+			</div>
+		</div>
+		<div class="humberger__menu__widget">
+			<div class="header__top__right__language">
+
+				<div>Korean</div>
+				<span class="arrow_carrot-down"></span>
+				<ul>
+					<li><a href="#">Korean</a></li>
+					<li><a href="#">English</a></li>
+				</ul>
+			</div>
+
+		</div>
+		<!-- 모바일 메뉴 -->
+		<nav class="humberger__menu__nav mobile-menu">
+			<ul>
+				<li class="active"><a href="${contextPath}/">Home</a></li>
+				<li><a
+					href="${contextPath}/product/productCategory/All?pageNo=1">Shop</a></li>
+				<li><a href="${contextPath}/boardFree/list">게시판</a>
+					<ul class="header__menu__dropdown">
+						<li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
+						<li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
+						<li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
+						<li><a href="/boardTip/listAll">고개팁</a></li>
+					</ul></li>
+				<li><a href="/board/notice/list">고객센터</a>
+					<ul class="header__menu__dropdown">
+						<li><a href="/board/notice/list">공지사항</a></li>
+						<li><a href="/board/ask/list">문의게시판</a></li>
+					</ul></li>
+			</ul>
+		</nav>
+		<div id="mobile-menu-wrap"></div>
+		<div class="header__top__right__social">
+			<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
+				class="fa fa-twitter"></i></a> <a href="#"><i class="fa fa-linkedin"></i></a>
+			<a href="#"><i class="fa fa-pinterest-p"></i></a>
+		</div>
+		<div class="humberger__menu__contact">
+			<ul>
+				<li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+				<li>Free Shipping for all Order of $99</li>
+			</ul>
+		</div>
+	</div>
+	<!-- Humberger End -->
+
+
+	<!-- Header Section Begin PC버전 -->
+	<header class="header">
+
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="header__logo"></div>
+				</div>
+				<div class="col-lg-6">
+					<nav class="header__menu">
+						<ul>
+							<li class="active"><a href="${contextPath}/">Home</a></li>
+							<li><a
+								href="${contextPath}/product/productCategory/All?pageNo=1">Shop</a></li>
+							<li><a href="${contextPath}/boardFree/list">게시판</a>
+								<ul class="header__menu__dropdown">
+									<li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
+									<li><a href="${contextPath}/board/question?pageNo=1">질문게시판</a></li>
+									<li><a href="${contextPath}/boardMarket/listAll">장터게시판</a></li>
+									<li><a href="/boardTip/listAll">고개팁</a></li>
+								</ul></li>
+							<li><a href="/board/notice/list">고객센터</a>
 								<ul class="header__menu__dropdown">
 									<li><a href="/board/notice/list">공지사항</a></li>
 									<li><a href="/board/ask/list">문의게시판</a></li>
-								</ul>
-							</li>
-			            </ul>
-                    </nav>
-                </div>
-                <div class="col-lg-3">
-                    <div class="header__cart">
-                        <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="${contextPath}/order/cart"><i class="fa fa-shopping-bag"></i> <span>4</span></a></li>
-                        </ul>
-                        <c:choose>
+								</ul></li>
+						</ul>
+					</nav>
+				</div>
+				<div class="col-lg-3">
+					<div class="header__cart">
+						<ul>
+							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+							<li><a href="${contextPath}/order/cartList"><i
+									class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+						</ul>
+						<c:choose>
                         	<c:when test="${sessionScope.logInMember == null }">
                         	<!-- 로그인을 하지 않았을 경우 -->
                         		<div class="header__top__right__auth">
