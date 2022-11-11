@@ -15,15 +15,24 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
-
+	
 </script>
 <style>
+a {
+	text-decoration-line: none !important
+}
 </style>
 </head>
 <body>
-	<jsp:include page="../header.jsp"></jsp:include>
-	<jsp:include page="myPageHeader.jsp"></jsp:include>
-	<jsp:include page="myPageNav.jsp"></jsp:include>
-	<jsp:include page="../footer.jsp"></jsp:include>
+	<header>
+		<jsp:include page="../header.jsp"></jsp:include>
+	</header>
+	<section>
+		<jsp:include page="myPageHeader.jsp"></jsp:include>
+		<jsp:include page="myPageNav.jsp"></jsp:include>
+	</section>
+	<footer>
+		<jsp:include page="../footer.jsp"></jsp:include>
+	</footer>
 </body>
 </html>

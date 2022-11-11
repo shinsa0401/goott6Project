@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
+import org.junit.internal.matchers.Each;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,10 @@ import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DM;
 import com.boritgogae.domain.DeliveryInfoVo;
+import com.boritgogae.domain.DeliveryVo;
+import com.boritgogae.domain.DetailOrderVo;
+import com.boritgogae.domain.ExchangeVo;
+import com.boritgogae.domain.TotalOrderListVo;
 import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.GuestOrderDTO;
 import com.boritgogae.domain.PointHistoryVo;
@@ -73,9 +78,43 @@ public class MemberController {
 	private MemberService service;
 
 	@RequestMapping(value = "/myPage")
-	public String myPage(Model model, HttpServletRequest request) throws Exception {
+	public String myPage(Model model, HttpServletRequest request, HttpSession ses) throws Exception {
+		System.out.println("컨트롤러 : 마이페이지 열기 ");
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+		
+		
+		int reviewQty = service.showUserReviewList(memberId).size();
+		int couponQty = service.showCouponHaveList(memberId).size();
+		MemberVo memberInfo = service.showUserInfo(memberId);
+		int requiredAmountForNextGrade = requiredAmountForNextGrade(memberInfo.getGrade(), memberInfo.getPurchaseAmount());
+
+		System.out.println("리뷰갯수 : " + reviewQty + ", 쿠폰갯수" + couponQty + ", 다음 등급까지 필요액" + requiredAmountForNextGrade);
+		
+		// 바인딩
+		model.addAttribute("reviewQty", reviewQty); 
+		model.addAttribute("couponQty", couponQty); 
+		model.addAttribute("memberInfo", memberInfo);
+		model.addAttribute("requiredAmountForNextGrade", requiredAmountForNextGrade);
+		
 		return "member/myPage";
 	}
+	
+	// 다음 등급까지 필요한 구매액을 구하는 메서드
+	public int requiredAmountForNextGrade(String grade, int purchaseAmount) throws Exception {
+		List<GradesVo> gradeList = service.showGradeBenefit();
+		boolean flag = false;
+		for(GradesVo gradesVo : gradeList) { // 등급리스트를 작은 등급부터 나열해준다.
+			if(flag == true) { // 회원등급 윗단계일 때
+				flag = false;
+				return gradesVo.getGradeValue()-purchaseAmount;
+			} else if(gradesVo.getGrade().equals(grade)) { // 등급과 같은 상황. 가장 윗단계이면 return 0으로 넘어감!!
+				flag = true;
+			} 
+		}
+		return 0;
+	}
+	
 
 	// 회원혜택 (포인트, 쿠폰)을 불러오는 메서드
 	@ResponseBody
@@ -98,10 +137,9 @@ public class MemberController {
 	public JSONObject showPointHistory(Model model, HttpSession ses) throws Exception {
 		System.out.println("컨트롤러 : 포인트 불러오기 ");
 
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
-
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+		
 		int pointNow = service.pointNow(memberId);
 		List<PointHistoryVo> pointList = service.showPointHistory(memberId);
 		System.out.println("보유포인트" + pointNow);
@@ -117,9 +155,9 @@ public class MemberController {
 	@RequestMapping(value = "/myPage/userCoupon")
 	public JSONObject showCouponUsed(Model model, HttpSession ses) throws Exception {
 		System.out.println("컨트롤러 : 쿠폰 불러오기 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
+
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
 
 		List<CouponUsedVo> couponHaveList = service.showCouponHaveList(memberId);
 		List<CouponUsedVo> couponUsedList = service.showCouponUsedList(memberId);
@@ -138,9 +176,9 @@ public class MemberController {
 	@RequestMapping(value = "/myPage/userBoard")
 	public JSONObject showUserBoard(Model model, HttpSession ses) throws Exception {
 		System.out.println("컨트롤러 : 유저 작성글 불러오기 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
+
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
 
 		List<UserBoardVo> userBoardList = service.showUserBoardList(memberId);
 
@@ -156,9 +194,9 @@ public class MemberController {
 	@RequestMapping(value = "/myPage/userReply")
 	public JSONObject showUserReply(Model model, HttpSession ses) throws Exception {
 		System.out.println("컨트롤러 : 유저 댓글 불러오기 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
+
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
 
 		List<UserReplyVo> userReplyList = service.showUserReplyList(memberId);
 
@@ -174,10 +212,9 @@ public class MemberController {
 	@RequestMapping(value = "/myPage/userReview")
 	public JSONObject showUserReview(Model model, HttpSession ses) throws Exception {
 		System.out.println("컨트롤러 : 유저 후기 관련 정보들 불러오기 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
 
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
 		List<ReviewVO> userReviewList = service.showUserReviewList(memberId);
 
 		System.out.println(userReviewList.toString());
@@ -201,10 +238,10 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping(value = "/myPage/userInfo")
 	public JSONObject showUserInfo(Model model, HttpSession ses, HttpServletRequest request) throws Exception {
-		System.out.println("컨트롤러 : 유저 후기 관련 정보들 불러오기 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
+		System.out.println("컨트롤러 : 회원정보들 불러오기 ");
+
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
 		
 
 		MemberVo memberInfo = service.showUserInfo(memberId);
@@ -219,15 +256,59 @@ public class MemberController {
 		return json;
 	}
 
+	
+
+	// 회원의 주문내역을 가져오는 메서드 (중요)
+	@ResponseBody
+	@RequestMapping(value = "/myPage/orders")
+	public JSONObject showOrders(Model model, HttpSession ses, HttpServletRequest request) throws Exception {
+		System.out.println("컨트롤러 : 회원의 주문내역을 가져오기 ");
+
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+
+		// 회원의 주문번호 리스트를 가져온다
+		List<Integer> orderList = service.getMemberOrders(memberId);
+		System.out.println("주문내역 : " + orderList);
+
+		Map<String, Object> totalOrderMap = new HashMap<>();
+		for (Integer orderNo : orderList) {
+			// 주문번호에 맞는 주문테이블의 내용을 가져온다.
+			OrdersVo orders = service.getOrdersContents(orderNo);
+			System.out.println(orders.toString());
+			
+			// 특정 주문번호에 맞는 상세주문+배송을 가져온다.
+			List<TotalOrderListVo> TotalOrderListVo = service.getTotalOrderListVo(orderNo);
+			
+			// 특정 주문번호에 사용한 쿠폰 내역을 가져온다.
+			CouponUsedVo usedCoupon = service.getUsedCouponByOrderNo(orderNo);
+
+			Map<String, Object> orderMap = new HashMap<>();
+			orderMap.put("orders", orders);
+			orderMap.put("usedCoupon", usedCoupon);
+			orderMap.put("TotalOrderListVo", TotalOrderListVo);
+			totalOrderMap.put(Integer.toString(orders.getOrderNo()), orderMap);
+		}	
+		
+
+		
+//		MemberVo memberInfo = service.showUserInfo(memberId);
+		JSONObject json = new JSONObject();
+//		json.put("memberInfo", memberInfo);
+		json.put("totalOrderMap", totalOrderMap);
+
+		return json;
+	}
+
 	// 회원의 비밀번호가 맞는지 체크하고, 맞다면 쿠키를 생성해줌.
 	@RequestMapping(value = "/myPage/secretInfoCheck")
 	public ResponseEntity<String> secretInfoCheck(@RequestParam("pwd") String pwd, Model model, HttpSession ses,
 			HttpServletResponse response) {
 		System.out.println("컨트롤러 : 비번 맞는지 체크 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+		
 		ResponseEntity<String> result = null;
-		String memberId = "test";
 		int correctCheck = 0;
 
 		try {
@@ -254,6 +335,63 @@ public class MemberController {
 		
 		return result;
 	}
+
+	
+	// 주문취소
+	@RequestMapping(value = "/myPage/orderCancle")
+	public ResponseEntity<String> orderCancle(@RequestParam("orderCancleOrderNo") String orderCancleOrderNo, Model model, HttpSession ses,
+			HttpServletResponse response) {
+		System.out.println("컨트롤러 : 주문취소 ");
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+		
+		ResponseEntity<String> result = null;
+		
+		try {
+			// 주문취소시 포인트 및 쿠폰까지 작업하는 프로세스
+			orderCancleProcess(orderCancleOrderNo, memberId, "cancle");
+			
+			result = new ResponseEntity<String>("orderCancleSuccess", HttpStatus.OK);
+			
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			result = new ResponseEntity<String>("orderCancleFail", HttpStatus.BAD_REQUEST);
+		}
+
+		return result;
+	}
+	
+	
+	// 구매확정
+		@RequestMapping(value = "/myPage/orderPurchaseConfirm")
+		public ResponseEntity<String> orderPurchaseConfirm(@RequestParam("orderNo") String orderNo, Model model, HttpSession ses,
+				HttpServletResponse response) {
+			System.out.println("컨트롤러 : 구매확정 ");
+			MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+			String memberId = member.getMemberId();
+			
+			ResponseEntity<String> result = null;
+			
+			try {
+				// 구매확정시 주문상세내역 업데이트
+				service.orderPurchaseConfirmDetailOrder(orderNo);
+				// 구매확정시 배송 업데이트
+				service.orderPurchaseConfirmDelivery(orderNo);
+				
+				result = new ResponseEntity<String>("orderPurchaseConfirmSuccess", HttpStatus.OK);
+				
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				result = new ResponseEntity<String>("orderPurchaseConfirmFail", HttpStatus.BAD_REQUEST);
+			}
+
+			return result;
+		}
+		
+	
+	
 	
 	
 	// 회원의 비밀번호가 맞는지 체크.
@@ -261,10 +399,9 @@ public class MemberController {
 	public ResponseEntity<String> pwdCheck(@RequestParam("pwd") String pwd, Model model, HttpSession ses,
 			HttpServletResponse response) {
 		System.out.println("컨트롤러 : 비번 맞는지 체크 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
 		ResponseEntity<String> result = null;
-		String memberId = "test";
 		int correctCheck = 0;
 
 		try {
@@ -294,10 +431,10 @@ public class MemberController {
 		
 		System.out.println("컨트롤러 : 정보변경!");
 				
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+		
 		ResponseEntity<String> result = null;
-		String memberId = "test";
 		int correctCheck = 0;
 		
 		try {
@@ -332,9 +469,9 @@ public class MemberController {
 	public JSONObject showDeliveryInfo(Model model, HttpSession ses) throws Exception {
 		System.out.println("컨트롤러 : 주소지 불러오기 ");
 
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+		
 		List<DeliveryInfoVo> deliveryList = service.showDeliveryInfo(memberId);
 		System.out.println(deliveryList.toString());
 		JSONObject json = new JSONObject();
@@ -349,10 +486,10 @@ public class MemberController {
 			HttpServletResponse response) {		
 		System.out.println("컨트롤러 : 주소 삭제");
 				
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+		
 		ResponseEntity<String> result = null;
-		String memberId = "test";
 		int correctCheck = 0;
 		
 		try {
@@ -381,11 +518,13 @@ public class MemberController {
 			HttpServletResponse response) {
 		
 		System.out.println("컨트롤러 : 주소 추가!");
-				
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
+		System.out.println("address : " + address + " detailAddress : " + detailAddress + " postCode : " + postCode
+				 + " recipient : " + recipient + " recipientPhoneNumber : " + recipientPhoneNumber);
+		
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+		
 		ResponseEntity<String> result = null;
-		String memberId = "test";
 		int correctCheck = 0;
 		
 		try {
@@ -409,10 +548,9 @@ public class MemberController {
 	
 	// 파일 업로드 메서드
 	@RequestMapping(value = "/myPage/uploadProfilImg", method = RequestMethod.POST)
-	public @ResponseBody String uploadProfilImg(MultipartFile upfile, HttpServletRequest request) {
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
-		String memberId = "test";
+	public @ResponseBody String uploadProfilImg(MultipartFile upfile, HttpServletRequest request, HttpSession ses) {
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
 		
 		System.out.println("컨트롤러 : 파일 업로드");
 		System.out.println("업로드된 파일 이름 : " + upfile.getOriginalFilename());
@@ -485,10 +623,10 @@ public class MemberController {
 	public ResponseEntity<String> changeMemberEmail(@RequestParam("emailAddress") String memberEmail, Model model, HttpSession ses,
 			HttpServletResponse response) {
 		System.out.println("컨트롤러 : 이메일주소 업데이트 ");
-		// 추후 로그인 기능이 생겼을 때 변경해야 함.
-		// String memberId = (String)ses.getAttribute("loginMember");
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+		
 		ResponseEntity<String> result = null;
-		String memberId = "test";
 		int correctCheck = 0;
 
 		try {
@@ -509,6 +647,289 @@ public class MemberController {
 			result = new ResponseEntity<String>("emailUpdateFail", HttpStatus.OK);
 		}
 		return result;
+	}
+	
+	// 회원탈퇴 메서드
+	@RequestMapping(value = "/myPage/membershipWithdrawal")
+	public ResponseEntity<String> membershipWithdrawal(@RequestParam("code") String code, @RequestParam("contents") String contents, Model model, HttpSession ses,
+			HttpServletResponse response) {
+		
+		System.out.println("컨트롤러 : 주소 추가!");
+		System.out.println("code : " + code + " contents : " + contents);
+		
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+		
+		ResponseEntity<String> result = null;
+		int correctCheck = 0;
+		int correctCheck2 = 0;
+		
+		try {
+			// 회원정보에서 탈퇴로 바꾼다
+			correctCheck = service.membershipWithdrawalUpdate(memberId);
+			// 탈퇴 테이블에 정보를 넣는다.
+			correctCheck2 = service.membershipWithdrawalInsert(memberId, code, contents);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(correctCheck == 1 || correctCheck2 == 1) {
+			try { // 입력이 잘 되었을 시
+				System.out.println("탈퇴완료");
+				result = new ResponseEntity<String>("membershipWithdrawalSuccess", HttpStatus.OK);
+				ses.invalidate();
+			} catch (Exception e) {
+				result = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
+		}else{ // 비번 틀렸을 시
+			System.out.println("탈퇴실패");
+			result = new ResponseEntity<String>("membershipWithdrawalFail", HttpStatus.OK);
+		}
+		return result;
+	}	
+	
+	// 반품신청 메서드
+	@RequestMapping(value = "/myPage/orderRtnOrEx", method = RequestMethod.POST)
+	public ResponseEntity<String> membershipWithdrawal(@RequestBody List<ExchangeVo> list, Model model, HttpSession ses,
+			HttpServletResponse response) {
+		
+		System.out.println("컨트롤러 : 교환반품신청");
+		System.out.println(list);
+		
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+	
+		ResponseEntity<String> result = null;
+		
+		// [{orderDetailNo=107, exchangeType=E, reasonNo=1, reasonContent=}, {orderDetailNo=108, exchangeType=E, reasonNo=1, reasonContent=}]
+		
+		
+		for(ExchangeVo exchangeVo : list) { // 등급리스트를 작은 등급부터 나열해준다.
+			try {
+				
+				//교환반품 테이블 insert
+				service.insertExchangeTable(exchangeVo);
+				
+				//주문상세 - 반품/교환 update
+				service.exchangeStatusUpdateDetailOrder(exchangeVo.getOrderDetailNo(), exchangeVo.getExchangeType());
+				
+				//배송 - 배송상태(반품요청) update
+				service.exchangeStatusUpdateDelivery(exchangeVo.getOrderDetailNo(), exchangeVo.getExchangeType());
+
+				result = new ResponseEntity<String>("orderRtnOrExSuccess", HttpStatus.OK);
+			} catch (Exception e) {
+				result = new ResponseEntity<String>("orderRtnOrExFail", HttpStatus.OK);
+			}
+		}
+		return result;
+	}	
+	
+	// 추가기능
+	// 교환 및 반품 승인 메서드
+	@RequestMapping(value = "/myPage/orderRtnOrExConfirm", method = RequestMethod.GET)
+	public ResponseEntity<String> orderRtnOrExConfirm(@RequestParam("orderNo") String orderNo, Model model, HttpSession ses,
+			HttpServletResponse response) {
+		
+		System.out.println("컨트롤러 : 교환 및 반품 승인");
+		System.out.println(orderNo);
+		
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
+	
+		ResponseEntity<String> result = null;
+
+		List<Integer> detailOrderNoList;
+		try {
+			// 주문 중 교환요청과 반품요청 상태인 상세주문번호를 찾는다.
+			detailOrderNoList = service.findRtnOrExForOrder(orderNo);
+			System.out.println(detailOrderNoList);
+			// 주문 중 배송완료 상태인 주문의 상품합을 구한다.
+			int orderCompletedAmount = 0; 
+			orderCompletedAmount = service.orderCompletedAmount(orderNo);
+			
+			
+		
+			boolean isAllReturnCheck = true;
+			boolean isAllExchangeCheck = true;
+			float notExchangeAccount = 0;
+			// 리스트의 번호에 하나씩 접근한다. 
+			for(Integer detailOrderNo : detailOrderNoList) {
+				// 배송테이블에서 현재 배송상태를 가져온다.
+				String status = service.deliveryStatusCheck(detailOrderNo);
+				System.out.println(status);
+				
+				// 모든 상품이 반품요청상태인지 확인한다. 만약 반품요청이 아닌상태가 있다면 false로 만든다
+				if(!status.equals("반품요청") && isAllReturnCheck == true) {
+					isAllReturnCheck = false;
+				}
+				// 모든 상품이 교환요청상태인지 확인한다. 만약 교환요청이 아닌상태가 있다면 false로 만든다
+				if(!status.equals("교환요청") && isAllExchangeCheck == true) {
+					isAllExchangeCheck = false;
+				}	
+			}
+			
+			// 만약 모든 상품이 반품요청이라면
+			if(isAllReturnCheck == true) {
+				// 취소와 똑같은 알고리즘으로 포인트와 쿠폰을 모두 돌려준다. (반품의 경우는 반품승인여부를 Y로 바꿔준다.)
+				orderCancleProcess(orderNo, memberId, "return");
+			} else if(isAllExchangeCheck == true) {			// 만약 모든 상품이 교환요청이라면
+				for(Integer detailOrderNo : detailOrderNoList) {
+					
+					// 기존의 주문상세와 배송테이블의 정보를 바꿔준다
+					// 주문상세에의 returnOrExchangeConfirm을 E로 변경
+					service.changeReturnOrExchangeConfirm(detailOrderNo, "E");
+					// 배송에서 교환완료로 변경
+					service.exchangeStatusUpdateDelivery(detailOrderNo, "교환완료");
+
+					
+					// 주문상세 정보 가져오기
+					DetailOrderVo detailOrder = service.getDetailOrderInfo(detailOrderNo);
+					// 주문상세번호를 추출하고, 이니셜오더넘버에 넣어준다.
+					detailOrder.setInitialOrderDetailNo(detailOrderNo);
+					// 주문상세의 마지막 번호를 받아오고 그 다음번호를 입력해준다.
+					int lastNo = service.getDetailOrdersLastNo();
+					detailOrder.setOrderDetailNo(lastNo+1);
+					// 몇몇 정보들 추가적으로 초기화시켜준다.
+					detailOrder.setReturnOrExchange("N");
+					detailOrder.setReturnOrExchangeConfirm("N");
+					// 수정된 정보가 포함된 컬럼을 새로 넣어준다.
+					service.insertDetailOrder(detailOrder);
+					
+					// 기존의 배송지 정보를 가져온다(임시)
+					DeliveryVo delivery = service.getDeliveryInfo(detailOrderNo);
+					// 직전 생성한 주문상세번호의 값을 지정해주고, 그 값을 배송테이블에 넣어준다.
+					delivery.setOrderDetailNo(lastNo+1);
+					delivery.setDeliveryStatus("배송중"); // 값 초기화
+					service.insertDelivery(delivery);
+				}
+			} else { // 반품과 교환이 섞여있는 상태 (중요) + 기존 주문중 배송완료의 총액정보 필요함!!!
+				int totalPrice = orderCompletedAmount;
+				// 기존의 주문상세와 배송테이블의 정보를 바꿔준다.
+				for(Integer detailOrderNo : detailOrderNoList) {
+					// 교환이라면 E , 반품이라면 R로 변경해준다.
+					if(service.deliveryStatusCheck(detailOrderNo).equals("교환요청")) {
+						service.changeReturnOrExchangeConfirm(detailOrderNo, "E");
+						service.exchangeStatusUpdateDelivery(detailOrderNo, "교환완료");
+						
+						// 주문상세 정보 가져오기
+						DetailOrderVo detailOrder = service.getDetailOrderInfo(detailOrderNo);
+						
+						
+
+						// 교환요청인 테이블들의 상품가격합을 더한다
+						System.out.println("테스트중입니다 : " + detailOrder.getProdSubTotalPrice());
+						totalPrice += detailOrder.getProdSubTotalPrice();
+						System.out.println("테스트중입니다 : " + totalPrice);
+						
+						// 주문상세번호를 추출하고, 이니셜오더넘버에 넣어준다.
+						detailOrder.setInitialOrderDetailNo(detailOrderNo);
+						// 주문상세의 마지막 번호를 받아오고 그 다음번호를 입력해준다.
+						int lastNo = service.getDetailOrdersLastNo();
+						detailOrder.setOrderDetailNo(lastNo+1);
+						// 몇몇 정보들 추가적으로 초기화시켜준다.
+						detailOrder.setReturnOrExchange("N");
+						detailOrder.setReturnOrExchangeConfirm("N");
+						// 수정된 정보가 포함된 컬럼을 새로 넣어준다.
+						service.insertDetailOrder(detailOrder);
+						
+						// 기존의 배송지 정보를 가져온다(임시)
+						DeliveryVo delivery = service.getDeliveryInfo(detailOrderNo);
+						// 직전 생성한 주문상세번호의 값을 지정해주고, 그 값을 배송테이블에 넣어준다.
+						delivery.setOrderDetailNo(lastNo+1);
+						delivery.setDeliveryStatus("배송중"); // 값 초기화
+						service.insertDelivery(delivery);
+						
+						
+					}else if(service.deliveryStatusCheck(detailOrderNo).equals("반품요청")) {
+						service.changeReturnOrExchangeConfirm(detailOrderNo, "R");
+						service.exchangeStatusUpdateDelivery(detailOrderNo, "반품완료");
+					}
+				}
+
+
+				// 주문을 참조하는 쿠폰내역을 가져온다
+ 				CouponUsedVo usedCoupon = service.getUsedCouponByOrderNo(Integer.parseInt(orderNo));
+ 				System.out.println(usedCoupon);
+ 				float discountRate = 0;
+ 				if(usedCoupon != null) {
+ 	 				// 쿠폰 이름에 맞는 할인율을 가져오는 메서드
+ 	 				discountRate = service.getCouponDiscount(usedCoupon.getCouponName());
+ 				}
+ 				System.out.println("discountRate : " +discountRate);
+				// 주문을 참조하는 포인트량을 가져온다 				
+ 				Integer usedPoint = service.orderCancleUsedPoint(orderNo);
+ 				System.out.println(usedPoint);
+ 				if(usedPoint == null) {
+ 					usedPoint = 0;
+ 				}
+				// 상품가격합에서 쿠폰을 적용 후 포인트를 빼고, 만약 음수일 경우에는 포인트를 최대치까지 사용하고 다시 돌려준다.
+				float newTotalPrice = totalPrice - (totalPrice * discountRate) - usedPoint;
+				System.out.println(newTotalPrice);
+				if(newTotalPrice > 0) { // 포인트를 그대로 사용할 경우
+					// 기존 정보를 가져온다.
+					System.out.println("여기냐?");
+					OrdersVo newOrder = service.getOrdersContents(Integer.parseInt(orderNo));
+					System.out.println(newOrder);
+					System.out.println((int)newTotalPrice);
+					newOrder.setProdTotalPrice((int)newTotalPrice+usedPoint);
+					newOrder.setTotalPrice((int)newTotalPrice+3000);
+					// 주문테이블 업데이트 
+					service.updateOrdersTable(newOrder, orderNo);
+				} else { // 포인트가 남은 상품의 금액보다 많을 경우
+					// 그 금액만큼 포인트를 재적립한다.
+					service.orderCancleUsedPointReset(memberId, orderNo, (int)Math.abs(newTotalPrice));
+					// 기존 정보를 가져온다.
+					OrdersVo newOrder = service.getOrdersContents(Integer.parseInt(orderNo));
+					// 0원으로 기록
+					newOrder.setTotalPrice(0);
+					// 주문테이블 업데이트 
+					service.updateOrdersTable(newOrder, orderNo);
+				}				
+			}
+
+
+			result = new ResponseEntity<String>("orderRtnOrExConfirmSuccess", HttpStatus.OK);			
+			
+
+		} catch (Exception e) {
+
+			result = new ResponseEntity<String>("orderRtnOrExConfirmFail", HttpStatus.OK);		
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
+	}		
+	
+
+	// 주문취소시 프로세스(반품의 경우는 반품승인여부를 Y로 바꿔준다.)
+	public void orderCancleProcess(String orderNo, String memberId, String status) throws Exception {
+		
+		// 주문취소시 주문상세내역 업데이트
+		service.orderCancleDetailOrder(orderNo, status);
+		// 주문취소시 배송 업데이트
+		service.orderCancleDelivery(orderNo, status);
+		
+		// 주문취소시 쿠폰 업데이트
+		service.orderCancleCoupon(orderNo);
+		
+		// 주문취소시 사용했던 포인트 가져오기
+		int usedPoint = service.orderCancleUsedPoint(orderNo);
+		// 주문취소시 사용했던 포인트 재적립
+		if(usedPoint != 0) {
+			service.orderCancleUsedPointReset(memberId, orderNo, usedPoint);
+		}
+		// 주문취소시 적립되었던 포인트 가져오기
+		int savedPoint = service.orderCancleSavedPoint(orderNo);
+		// 주문취소시 적립되었던 포인트 차감
+		if(savedPoint != 0) {
+			service.orderCancleSavedPointReset(memberId, orderNo, savedPoint);
+		}		
+		// 회원의 현재 포인트 가져오기
+		int memberPoint = service.pointNow(memberId);
+		
+		int pointUpdate = memberPoint+usedPoint-savedPoint;
+		// 주문취소시 재적립된 포인트 업데이트
+		service.orderCanclePointUpdate(memberId, pointUpdate);
 	}
 	
 	/**

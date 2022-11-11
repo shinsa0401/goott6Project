@@ -8,9 +8,13 @@
 <meta charset="UTF-8">
 <title>문의게시판</title>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
 	window.onload = function() {
 		let pageNo = request.getParameter("pageNo");
@@ -30,7 +34,7 @@
 		if (st != "" || sw != "") {
 			result = true;
 		} else {
-			alert("검색대상과 검색어를 바르게 입력하세요!");
+			notificationModalOpen("검색대상과 검색어를 바르게 입력하세요!");	
 		}
 	}
 
@@ -39,6 +43,16 @@
 	}
 
 	
+	// 알림용 모달 열기
+	function notificationModalOpen(msg) {
+		document.getElementById("notificationModal").style.display = "block";
+		document.getElementById("notificationModalContent").innerHTML = msg;
+	}
+	
+	// 알림용 모달 닫기
+	function notificationModalClose() {
+		document.getElementById("notificationModal").style.display = "none";
+	}
 </script>
 <style type="text/css">
 .icon {
@@ -68,7 +82,7 @@
 					<col width="12%">
 					<col width="30%">
 					<col width="9%">
-					<col width="13%">	
+					<col width="13%">
 					<col width="9%">
 					<col width="9%">
 					<col width="9%">
@@ -86,108 +100,180 @@
 					</tr>
 				</thead>
 				<!-- 실제 글 목록 테이블 -->
-				
+
 				<!-- 여기는 FAQ 상위 3개 -->
 				<tbody>
 					<c:forEach var="board" items="${FAQList }">
-						<tr class="table-info" onclick="viewAskBoard(${board.askBno})" >
-						<td
-							style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${board.askBno }</td>
+						<tr class="table-info" onclick="viewAskBoard(${board.askBno})">
+							<td
+								style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${board.askBno }</td>
 
-						<c:forEach var="askCode" items="${askCodeList }">
-							<c:if test="${board.askCode eq askCode.askCode }">
-								<td
-									style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${askCode.askOption }</td>
-							</c:if>
-						</c:forEach>
+							<c:forEach var="askCode" items="${askCodeList }">
+								<c:if test="${board.askCode eq askCode.askCode }">
+									<td
+										style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${askCode.askOption }</td>
+								</c:if>
+							</c:forEach>
 
-						<c:choose>
-							<c:when test="${board.isSecret eq 'Y'}">
-								<td
-									style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;"><c:forEach
-										var="step" begin="1" end="${board.step }">
-										<img src="../../../resources/img/ask_reply.png"
-											style="max-width: 24px" ;/>
-									</c:forEach><img src="../../../resources/img/ask_lock.png" class="icon">
-									비밀글입니다</td>
-								<td></td>
-							</c:when>
-
-							<c:when test="${board.isDelete eq 'Y'}">
-								<td
-									style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;"><c:forEach
-										var="step" begin="1" end="${board.step }">
-										<img src="../../../resources/img/ask_reply.png"
-											style="max-width: 24px" ;/>
-									</c:forEach><img src="../../../resources/img/ask_delete.png" class="icon">
-									삭제된 글입니다.</td>
-								<td></td>
-							</c:when>
-							<c:otherwise>
-								<td
-									style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">
-									<c:forEach var="step" begin="1" end="${board.step }">
-										<img src="../../../resources/img/ask_reply.png"
-											style="max-width: 24px" ;/>
-									</c:forEach> ${board.title }
-								</td>
-								<td
-									style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${board.writer }</td>
-							</c:otherwise>
-						</c:choose>
-						<td
-							style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;"><fmt:formatDate
-								pattern="yyyy-MM-dd" value="${board.writtenDate }" /></td>
-						<td
-							style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${board.readCount }</td>
-						<td
-							style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${board.likeCount }</td>
-						<td
-							style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">
 							<c:choose>
-								<c:when test="${board.isFAQ eq 'Y'}">
+								<c:when test="${board.isSecret eq 'Y'}">
+									<td
+										style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;"><c:forEach
+											var="step" begin="1" end="${board.step }">
+											<img src="../../../resources/img/ask_reply.png"
+												style="max-width: 24px" ;/>
+										</c:forEach><img src="../../../resources/img/ask_lock.png" class="icon">
+										비밀글입니다</td>
+									<td></td>
+								</c:when>
+
+								<c:when test="${board.isDelete eq 'Y'}">
+									<td
+										style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;"><c:forEach
+											var="step" begin="1" end="${board.step }">
+											<img src="../../../resources/img/ask_reply.png"
+												style="max-width: 24px" ;/>
+										</c:forEach><img src="../../../resources/img/ask_delete.png" class="icon">
+										삭제된 글입니다.</td>
+									<td></td>
+								</c:when>
+								<c:otherwise>
+									<td
+										style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">
+										<c:forEach var="step" begin="1" end="${board.step }">
+											<img src="../../../resources/img/ask_reply.png"
+												style="max-width: 24px" ;/>
+										</c:forEach> ${board.title }
+									</td>
+									<td
+										style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${board.writer }</td>
+								</c:otherwise>
+							</c:choose>
+							<td
+								style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;"><fmt:formatDate
+									pattern="yyyy-MM-dd" value="${board.writtenDate }" /></td>
+							<td
+								style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${board.readCount }</td>
+							<td
+								style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${board.likeCount }</td>
+							<td
+								style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">
+								<c:choose>
+									<c:when test="${board.isFAQ eq 'Y'}">
 										FAQ
 								</c:when>
-								<c:when test="${board.answerStatus eq 'Y'}">
+									<c:when test="${board.answerStatus eq 'Y'}">
 										답변완료
 								</c:when>
-								<c:when test="${board.answerStatus eq 'A'}">
+									<c:when test="${board.answerStatus eq 'A'}">
 										답글
 								</c:when>
-								<c:when test="${board.answerStatus eq '-'}">
+									<c:when test="${board.answerStatus eq '-'}">
 										-
 								</c:when>
-								<c:when test="${board.answerStatus eq 'N'}">
+									<c:when test="${board.answerStatus eq 'N'}">
 										답변대기
 								</c:when>
-							</c:choose>
-						</td>
+								</c:choose>
+							</td>
 					</c:forEach>
-					<tr style="height:15px;"><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-					<!-- 여기서부터가 진짜 작성글들 -->					
+					<tr style="height: 15px;">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<!-- 여기서부터가 진짜 작성글들 -->
 					<c:forEach var="board" items="${askBoardList }">
 						<c:choose>
-							<c:when test="${board.isFAQ eq 'Y'}">
+							<c:when test="${board.isDelete eq 'Y' && !(sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-secondary">
+							</c:when>
+							<c:when test="${board.isDelete eq 'Y' && (sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-secondary"
+									onclick="viewAskBoard(${board.askBno})">
+							</c:when>
+
+							<c:when test="${board.isFAQ eq 'Y' && board.isSecret eq 'N'}">
 								<tr class="table-info" onclick="viewAskBoard(${board.askBno})">
 							</c:when>
-							<c:when test="${board.answerStatus eq 'Y'}">
+							<c:when
+								test="${board.answerStatus eq 'Y' && board.isSecret eq 'N'}">
 								<tr class="table-success"
 									onclick="viewAskBoard(${board.askBno})">
 							</c:when>
-							<c:when test="${board.answerStatus eq '-'}">
+							<c:when
+								test="${board.answerStatus eq '-' && board.isSecret eq 'N'}">
 								<tr class="table-secondary"
 									onclick="viewAskBoard(${board.askBno})">
 							</c:when>
-							<c:when test="${board.answerStatus eq 'A'}">
+							<c:when
+								test="${board.answerStatus eq 'A' && board.isSecret eq 'N'}">
 								<tr class="table-secondary"
 									onclick="viewAskBoard(${board.askBno})">
 							</c:when>
-							<c:otherwise>
-								<tr  class="table-danger" onclick="viewAskBoard(${board.askBno})">
-							</c:otherwise>
+							<c:when
+								test="${board.answerStatus eq 'N' && board.isSecret eq 'N'}">
+								<tr class="table-danger" onclick="viewAskBoard(${board.askBno})">
+							</c:when>
+
+							<c:when
+								test="${board.isFAQ eq 'Y' && board.isSecret eq 'Y' && !(sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-info">
+							</c:when>
+							<c:when
+								test="${board.isFAQ eq 'Y' && board.isSecret eq 'Y' && (sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-info" onclick="viewAskBoard(${board.askBno})">
+							</c:when>
+
+
+							<c:when
+								test="${board.answerStatus eq 'Y' && board.isSecret eq 'Y' && !(sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-success">
+							</c:when>
+							<c:when
+								test="${board.answerStatus eq 'Y' && board.isSecret eq 'Y' && (sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-success"
+									onclick="viewAskBoard(${board.askBno})">
+							</c:when>
+
+
+							<c:when
+								test="${board.answerStatus eq '-' && board.isSecret eq 'Y' && !(sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-secondary">
+							</c:when>
+							<c:when
+								test="${board.answerStatus eq '-' && board.isSecret eq 'Y' && (sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-secondary"
+									onclick="viewAskBoard(${board.askBno})">
+							</c:when>
+
+
+							<c:when
+								test="${board.answerStatus eq 'A' && board.isSecret eq 'Y' && !(sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-secondary">
+							</c:when>
+							<c:when
+								test="${board.answerStatus eq 'A' && board.isSecret eq 'Y' && (sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-secondary"
+									onclick="viewAskBoard(${board.askBno})">
+							</c:when>
+
+
+							<c:when
+								test="${board.answerStatus eq 'N' && board.isSecret eq 'Y' && !(sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-danger">
+							</c:when>
+							<c:when
+								test="${board.answerStatus eq 'N' && board.isSecret eq 'Y' && (sessionScope.logInMember.memberId eq board.writer || sessionScope.logInMember.isAdmin eq 'Y')}">
+								<tr class="table-danger" onclick="viewAskBoard(${board.askBno})">
+							</c:when>
 						</c:choose>
-						
-						
+
 						<td
 							style="overflow: hidden; text-overflow: ellipsis; word-break: break-all; white-space: nowrap;">${board.askBno }</td>
 
@@ -261,7 +347,6 @@
 						</td>
 						</tr>
 					</c:forEach>
-					
 				</tbody>
 			</table>
 		</div>
@@ -271,21 +356,22 @@
 			<div class="col-sm-10">
 				<div id="searchBar">
 					<form action="/board/ask/list" method="get">
-						<select name="searchType" id="searchType" class="form-select" >
+						<select name="searchType" id="searchType" class="form-select">
 							<option value="">검색옵션</option>
 							<option value="writer">글쓴이</option>
 							<option value="title">제목</option>
 							<option value="contents">본문</option>
-						</select>
-						 <input type="text" name="searchWord" id="searchWord" style="height:42px;"/>
-						<button type="submit" onclick="return validate();"style="height:42px;">검색</button>
+						</select> <input type="text" name="searchWord" id="searchWord"
+							style="height: 42px;" />
+						<button type="submit" onclick="return validate();"
+							style="height: 42px;">검색</button>
 					</form>
 
 				</div>
 			</div>
 			<div class="col-sm-2">
 				<div id="btns">
-					<button type="button" class="btn btn-info float-right" 
+					<button type="button" class="btn btn-info float-right"
 						onclick="location.href='/board/ask/register';">문의하기</button>
 				</div>
 
@@ -385,6 +471,30 @@
 			</ul>
 		</div>
 	</div>
+
+	<!-- 알림용 모달 -->
+	<div class="modal" id="notificationModal">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">알림</h4>
+				</div>
+
+				<!-- Modal body -->
+				<div id="notificationModalContent" class="modal-body"></div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						data-bs-dismiss="modal" onclick="notificationModalClose();">확인</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
 	<jsp:include page="../footer.jsp"></jsp:include>
 </body>
 </html>

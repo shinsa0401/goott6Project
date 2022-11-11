@@ -226,10 +226,111 @@ update members set memberPwd = sha1(md5('1234')) where memberId = 'test';
 select * from members where memberId =  'test' and memberPwd = sha1(md5('1234'));
 
 
+
+
+update members set nickName = "미스터쏜" where memberId = 'abcd';
+
+
+
+
 select * from members where memberId =  'test';
 update members set memberPwd = sha1(md5('1234')) where memberId = 'test';
 update members set memberPwd = sha1(md5('1234')) where memberId = 'test';
 
 -- 주소지 추가하는 쿼리문
 insert into deliveryInfo(memberId, address, detailAddress, recipient, recipientPhoneNumber, postCode)  values('test', '울릉도 동남쪽', '뱃길따라이백리', '몰루', 01012122323, '12345');
-        
+
+--
+show grants for event@'%';
+
+show VARIABLES like 'event%';
+
+-- 탈퇴테스트용 회원 추가하는 쿼리문
+INSERT INTO `elrek1991`.`members` (`memberId`, `memberName`, `memberPwd`, `nickName`, `birthDay`, `phoneNumber`, `memberEmail`, `memberImg`) VALUES ('test99', '탈퇴테스트', '63982e54a7aeb0d89910475ba6dbd3ca6dd4e5a1', '탈테', '2022-10-25 12:05:15', '01031232421', 'kaebi1995@gmail.com', 'img/noImg.jpg');
+
+-- 임의의 주문내역 생성
+INSERT INTO `elrek1991`.`orders` (`orderNo`, `memberId`, `prodTotalPrice`, `deliveryOption`, `totalPrice`, `orderDate`, `isMember`, `phoneNumber`, `name`, `usedPoint`, `accumPoint`) VALUES ('78', 'test', '41000', '기본', '44000', '2022-10-27 13:01:36', 'Y', '01041103923', '테슷트', '0', '410');
+
+-- 임의의 주문상세내역 생성
+INSERT INTO `elrek1991`.`detailOrder` (`orderDetailNo`, `orderNo`, `prodNo`, `qty`, `prodSubTotalPrice`, `cancelStatus`, `returnOrExchange`, `purchaseConfirm`, `returnOrExchangeConfirm`, `reviewStatus`, `memberId`) VALUES ('', '77', 'DT1RX37W00M00S00C00E00', '4', '6000', 'N', 'N', 'N', 'N', 'N', 'test');
+INSERT INTO `elrek1991`.`detailOrder` (`orderNo`, `prodNo`, `qty`, `prodSubTotalPrice`, `cancelStatus`, `returnOrExchange`, `purchaseConfirm`, `returnOrExchangeConfirm`, `reviewStatus`, `memberId`) VALUES ('77', 'DT1RX37W00M00S00C00E00', '1', '35000', 'N', 'N', 'N', 'N', 'N', 'test');
+
+-- 임의의 배송내역 생성
+
+
+-- 특정 회원의 주문 목록을 가져오는 쿼리
+select orderNo from orders where memberId = 'test' order by orderNo desc;
+
+-- 주문 번호에 따른 주문번호 컬럼내용을 가져오는 쿼리
+select * from orders where orderNo = 77;
+
+select memberId from orders where orderNo = 77;
+
+-- 특정 회원의 주문에 따른 주문상세내역과 배송내역을 같이 보여주는 쿼리 (equi조인)
+select d.*, v.deliveryNo, v.recipient, v.phoneNumber, v.address, v.detailAddress, v.postCode, v.deliveryRequest, v.deliveryStatus, v.returnDeliveryNo, v.deliveryCmplDate, p.prodName, p.prodPrice, i.originalFile
+from detailOrder d inner JOIN delivery v inner join product p inner join prodImg i
+on d.orderDetailNo = v.orderDetailNo and d.prodNo = p.prodNo and d.prodNo = i.prodN
+where d.orderNo = 77
+order by d.orderNo desc;
+
+-- 특정 회원의 주문에 따른 주문상세내역과 배송내역을 같이 보여주는 쿼리 (equi조인) + 다중행 서브쿼리까지
+select d.*, v.deliveryNo, v.recipient, v.phoneNumber, v.address, v.detailAddress, v.postCode, v.deliveryRequest, v.deliveryStatus, v.returnDeliveryNo, v.deliveryCmplDate
+from detailOrder d inner JOIN delivery v
+on d.orderDetailNo = v.orderDetailNo 
+where d.orderNo = any(select orderNo from orders where memberId = 'test')
+order by d.orderNo desc;
+
+-- 주문취소시 주문상세내역 업데이트.
+update detailOrder set cancelStatus = 'Y' where orderNo = '69';
+
+-- 주문취소시 배송 업데이트.
+update delivery set deliveryStatus = '취소' where orderNo = '14' and deliveryStatus = '결제완료';
+
+-- 주문취소시 쿠폰 업데이트.
+update couponUsed set useDate = null, orderNo = null where orderNo = '18';
+
+-- 주문취소시 사용했던 포인트 가져오기
+select usedPoint from orders where orderNo = 3;
+
+-- 주문취소시 사용했던 포인트 재적립
+insert into pointHistory(memberId, pointNo, pointHistory, orderNo) values('test', 5, 300, 5);
+
+-- 주문취소시 적립되었던 포인트 가져오기
+select accumPoint from orders where orderNo = 3;
+
+-- 주문취소시 적립되었던 포인트 차감
+insert into pointHistory(memberId, pointNo, pointHistory, orderNo) values('test', 5, -300, 5);
+
+-- 주문취소시 재적립된 포인트 업데이트
+
+
+-- 교환반품 테이블 인서트
+insert into exchange(orderDetailNo, exchangeType, reasonNo, reasonContent) values('107', '교환' , '1', '없음');
+
+-- 주문 중 교환요청과 반품요청 상태인 상세주문번호를 찾는다. --
+select * from detailOrder where orderNo = 77 and returnOrExchange != 'N';
+
+select * from delivery;
+
+-- 배송테이블에서 현재 배송상태를 가져온다. 
+select deliveryStatus from delivery where orderDetailNo = 108;
+
+
+-- 주문상세 정보 가져오기
+select * from detailOrder where orderDetailNo = 107;
+
+select max(orderDetailNo) from detailOrder;
+
+select * from delivery where orderDetailNo = 107;
+
+
+
+-- 주문취소시 쿠폰 업데이트.
+-- update orders set prodTotalPrice = #{prodTotalPrice} where orderNo = #{orderNo};
+
+select * from detailOrder where orderNo = 77;
+select orderDetailNo from detailOrder where orderNo = 77;
+select sum(prodSubTotalPrice) from detailOrder where orderNo = 77;
+
+
+
