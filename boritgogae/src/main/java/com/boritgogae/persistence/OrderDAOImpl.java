@@ -1,8 +1,5 @@
 package com.boritgogae.persistence;
 
-import java.sql.Timestamp;
-
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +13,9 @@ import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryFeeVo;
 import com.boritgogae.domain.DetailOrderDTO;
 import com.boritgogae.domain.OrderDTO;
+import com.boritgogae.domain.OrderDetailDTO;
 import com.boritgogae.domain.PointHistoryDTO;
-import com.boritgogae.domain.ProductVo;
+import com.boritgogae.domain.AdminOrdersPagingInfo;
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
@@ -132,19 +130,27 @@ public class OrderDAOImpl implements OrderDAO {
 		System.out.println("DAO : 비회원 주문내역 조회");
 		return ses.selectOne(ns + ".selectGuestOrderInfo", gdto);
 	}
-
+	
+	// 주문비밀번호 찾기위해 주문건 검색하는 메서드
 	@Override
-	public List<OrdersVo> getOrdersByMemberId(String memberId) throws Exception {
-		
-		return ses.selectList(ns+".getOrdersByMemberId", memberId);
+	public OrdersVo findGuestPwdSelectOrder(OrdersVo order) throws Exception {
+		System.out.println("DAO : 비회원 주문비밀번호찾기");
+		return ses.selectOne(ns + ".findGuestPwdSelectOrder", order);
 	}
-
+	
+	// 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트
 	@Override
-	public List<DetailOrderVo> getDetailOrderByMemberId(String memberId) throws Exception {
-		// TODO Auto-generated method stub
-		return ses.selectList(ns+".getDetailOrderByMemberId", memberId);
+	public int updateGuestPwd(int orderNo, String tempPwd) throws Exception {
+		System.out.println("DAO : 비회원 임시비밀번호 업데이트");
+		System.out.println("DAO : " + orderNo + ", " + tempPwd);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("orderNo", orderNo);
+		map.put("tempPwd", tempPwd);
+		return ses.update(ns + ".updateGuestPwd", map);
 	}
-
+	
+	
+	
 	@Override
 	public void delCart(int cartNo) throws Exception {
 		System.out.println("다오"+cartNo);
@@ -168,6 +174,58 @@ public class OrderDAOImpl implements OrderDAO {
 	
 		return ses.selectList(ns+".popularList");
 	}
+
+	
+	// 관리자 주문 조회
+	@Override
+	public List<OrdersVo> getOrders(AdminOrdersPagingInfo pi) throws Exception {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("StartNum", pi.getStartNum());
+		map.put("PostPerPage", pi.getPostPerPage());
+		
+		return ses.selectList(ns+".getOrders",map);
+	}
+
+	// 관리자 주문 상세 조회
+	@Override
+	public List<OrderDetailDTO> getDetailOrderInfo(int orderNo) throws Exception {
+		System.out.println(orderNo+"이거 들어왔나?");//성공
+		System.out.println(ses.selectList(ns+".getOrdersDetailInfo", orderNo)+"여기는 DAO여");
+		return ses.selectList(ns+".getOrdersDetailInfo", orderNo);
+	}
+
+	// 관리자가 오늘 해야할일
+	@Override
+	public List<OrderDetailDTO> getAdminTodoList() throws Exception {
+
+		return ses.selectList(ns+".AdminTodoList");
+	}
+
+	@Override
+	public int countOrder() throws Exception {
+
+		return ses.selectOne(ns+".countOrder");
+	}
+
+	@Override
+	public int adminAllowOrders() throws Exception {
+
+		return ses.selectOne(ns+".adminAllowOrders");
+	}
+	
+	@Override
+	public List<OrdersVo> getOrdersByMemberId(String memberId) throws Exception {
+		
+		return ses.selectList(ns+".getOrdersByMemberId", memberId);
+	}
+
+	@Override
+	public List<DetailOrderVo> getDetailOrderByMemberId(String memberId) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.selectList(ns+".getDetailOrderByMemberId", memberId);
+	}
+	
 
 
 }

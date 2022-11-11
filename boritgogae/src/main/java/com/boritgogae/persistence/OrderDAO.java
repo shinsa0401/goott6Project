@@ -1,8 +1,5 @@
 package com.boritgogae.persistence;
 
-import java.sql.Timestamp;
-
-
 import java.util.List;
 
 import com.boritgogae.domain.CouponUsedVo;
@@ -10,9 +7,9 @@ import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryFeeVo;
 import com.boritgogae.domain.DetailOrderDTO;
 import com.boritgogae.domain.OrderDTO;
+import com.boritgogae.domain.OrderDetailDTO;
 import com.boritgogae.domain.PointHistoryDTO;
-import com.boritgogae.domain.ProductVo;
-import java.util.List;
+import com.boritgogae.domain.AdminOrdersPagingInfo;
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
@@ -144,11 +141,33 @@ public interface OrderDAO {
 
 	// 비회원 로그인 하기 위해 주문내역 조회하는 메서드
 	public OrdersVo selectGuestOrderInfo(GuestOrderDTO gdto) throws Exception;
-	
 
+	// 주문비밀번호 찾기위해 주문건 검색하는 메서드
+	public OrdersVo findGuestPwdSelectOrder(OrdersVo order) throws Exception;
+
+	// 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트
+	public int updateGuestPwd(int orderNo, String tempPwd) throws Exception;
+	
+	
+	// 관리자 주문조회용
+	public List<OrdersVo> getOrders(AdminOrdersPagingInfo pi) throws Exception;
+	
+	// 관리자 주문상세조회용
+	public List<OrderDetailDTO> getDetailOrderInfo(int orderNo) throws Exception;
+	
+	// 오늘 처리해야할 관리자의 일
+	public List<OrderDetailDTO> getAdminTodoList() throws Exception;
+	
+	// 주문 카운트
+	public int countOrder() throws Exception;
+	
+	// 관리자승인주문
+	public int adminAllowOrders() throws Exception;
+	
 	//멤버아이디로 주문내역 가져옴
 	public List<OrdersVo> getOrdersByMemberId(String memberId) throws Exception;
 	
 	//멤버아이디로 주문상세내역 가져옴
 	public List<DetailOrderVo> getDetailOrderByMemberId(String memberId) throws Exception;
+
 }
