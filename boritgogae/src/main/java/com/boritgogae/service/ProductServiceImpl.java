@@ -2,9 +2,9 @@ package com.boritgogae.service;
 
 import java.util.ArrayList;
 
-
 import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -17,8 +17,11 @@ import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.domain.ProductVo;
 import com.boritgogae.persistence.ProductDAO;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
+import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductDTO;
+import com.boritgogae.persistence.ProductDAO;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -77,18 +80,6 @@ public class ProductServiceImpl implements ProductService {
 		
 		return dao.LastProduct();
 	}
-	
-	@Override
-	public Map<String,Object> getProductAll(String category,int pageNo) throws Exception {
-		TipPagingInfo pi = pagingProcess(pageNo,category);
-		List<ProductDTO> prodLst = dao.getProductAll(category,pi); 
-		
-		Map<String,Object> map = new HashMap<>();
-		map.put("pi", pi);
-		map.put("prodLst", prodLst);
-		
-		return map;
-	}
 
 	private TipPagingInfo pagingProcess(int pageNo, String category) throws Exception {
 		TipPagingInfo result = new TipPagingInfo();
@@ -143,9 +134,22 @@ public class ProductServiceImpl implements ProductService {
 		return map;
 		
 	}
-
-
 	
+	@Override
+	public Map<String, Object> getProductAll(String category, int pageNo) throws Exception {
 
+		Map<String, Object> map = new HashMap<String, Object>();
+		TipPagingInfo pi = pagingProcess(pageNo);
+		
+		
+		int total = dao.getProdCnt();
+		List<ProductDTO> prodLst = dao.getProdInfo(pi);
+		map.put("prodLst", prodLst);
+		map.put("cnt", total);
+		map.put("pi", pi);
+		return map;
+	}
+	
+	
 
 }

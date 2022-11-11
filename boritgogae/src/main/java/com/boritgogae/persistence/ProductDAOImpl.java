@@ -13,6 +13,7 @@ import com.boritgogae.domain.ProductDTO;
 import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductVo;
 
 @Repository
 public class ProductDAOImpl implements ProductDAO {
@@ -53,8 +54,14 @@ public class ProductDAOImpl implements ProductDAO {
 		return ses.update(ns+".updateProdReview", prodNo);
 	}
 	
-
+	@Override
+	public int updateProdReviewCnt(String prodNo) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.update(ns+".updateReviewCnt", prodNo);
+	}
 	
+	
+
 	
 	
 	@Override
@@ -118,7 +125,7 @@ public class ProductDAOImpl implements ProductDAO {
 		return ses.selectList(ns+".productSearchList", map);
 	}
 
-
-
 	
+
+
 }

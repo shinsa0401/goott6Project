@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,12 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.service.ReviewService;
+import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OptionVo;
+import com.boritgogae.domain.OrderSheetDTO;
+import com.boritgogae.domain.ProdImgVo;
+import com.boritgogae.domain.ProductContentVo;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.board.tip.domain.TipPagingInfo;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.ProductDTO;
@@ -40,7 +47,59 @@ public class ProductController {
 
    @Inject
    private ReviewService reviewService;
+		
+	//상세페이지
+	/**
+	 * @methodName : prodDetail
+	 * @author : kjy
+	 * @date : 2022. 10. 17.
+	 * @입력 param : 쿼리스트링의 prodNo, pageNo
+	 * @returnType : String
+	 **/
+	@RequestMapping(value = "/category/detail")
+	public ModelAndView prodDetail(@RequestParam(value="prodNo", required=true) String prodNo, @RequestParam(value="pageNo", required=false, defaultValue="1") int pageNo, HttpServletRequest request, ModelAndView mav) throws Exception {
+		ProductVo prod = prodService.getProd(prodNo);
+		List<ProdImgVo> prodImgLst = prodService.getProdImg(prodNo);
+		
+		mav.setViewName("/product/prodDetail");
+		
+		Map<String, Object> reviewMap = reviewService.getReviews(prodNo, pageNo);
+		List<UploadImg> imgLst = new ArrayList<>();
 
+		List<ReviewVO> reviews = (List<ReviewVO>) reviewMap.get("reviews");
+		Paging page = (Paging) reviewMap.get("page");
+		ProductContentVo prodContent = prodService.getProdContent(prodNo);
+		
+		
+		for (ReviewVO vo : reviews) {
+			List<UploadImg> imgs = reviewService.getReviewImgs(vo.getReviewNo());
+			for (UploadImg img : imgs) {
+				imgLst.add(img);
+			}
+		}
+		
+		List<ProdReplyVo> replies = reviewService.getReplies(prodNo);
+		
+		MemberVo member = (MemberVo) request.getSession().getAttribute("logInMember");
+		
+		if(member != null) {
+			String canReview = reviewService.canReview(member.getMemberId(), prodNo);
+			System.out.println(canReview);
+			mav.addObject("canReview", canReview);
+		}
+		
+		mav.addObject("reviews",reviews);
+		mav.addObject("reviewImg", imgLst);
+		mav.addObject("page", page);
+		mav.addObject("replies", replies);
+		mav.addObject("product", prod);
+		mav.addObject("prodImg", prodImgLst);
+		mav.addObject("prodContent", prodContent);
+		
+		return mav;
+	}
+	
+	
    @Inject
    private ProductService prodService;
 
@@ -97,7 +156,7 @@ public class ProductController {
       
    }
    
-   // 상품리스트페이지
+// 상품리스트페이지
    @RequestMapping(value = "/productCategory/{category}")
    public ModelAndView prodList(@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
          @PathVariable(value = "category") String category) throws Exception {
@@ -152,33 +211,8 @@ public class ProductController {
 
    }
 
-   // 상세페이지
-   @RequestMapping(value = "/category/detail")
-   public String prodDetail(@RequestParam("prodNo") String prodNo,
-         @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo, Model model)
-         throws Exception {
 
-      Map<String, Object> reviewMap = reviewService.getReviews(prodNo, pageNo);
-      List<UploadImg> imgLst = new ArrayList<>();
 
-      List<ReviewVO> reviews = (List<ReviewVO>) reviewMap.get("reviews");
-      Paging page = (Paging) reviewMap.get("page");
-
-      for (ReviewVO vo : reviews) {
-         List<UploadImg> imgs = reviewService.getReviewImgs(vo.getReviewNo());
-         for (UploadImg img : imgs) {
-            imgLst.add(img);
-         }
-      }
-
-      List<ProdReplyVo> replies = reviewService.getReplies(prodNo);
-
-      model.addAttribute("reviews", reviews);
-      model.addAttribute("reviewImg", imgLst);
-      model.addAttribute("page", page);
-      model.addAttribute("replies", replies);
-
-      return "/product/prodDetail";
-   }
 
 }
+

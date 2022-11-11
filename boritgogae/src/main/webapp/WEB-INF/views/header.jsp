@@ -149,18 +149,18 @@
 								<ul class="header__menu__dropdown">
 									<li><a href="/board/notice/list">공지사항</a></li>
 									<li><a href="/board/ask/list">문의게시판</a></li>
-								</ul>
-							</li>
-			            </ul>
-                    </nav>
-                </div>
-                <div class="col-lg-3">
-                    <div class="header__cart">
-                        <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="${contextPath}/order/cart"><i class="fa fa-shopping-bag"></i> <span>4</span></a></li>
-                        </ul>
-                        <c:choose>
+								</ul></li>
+						</ul>
+					</nav>
+				</div>
+				<div class="col-lg-3">
+					<div class="header__cart">
+						<ul>
+							<li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+							<li><a href="${contextPath}/order/cartList"><i
+									class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+						</ul>
+						<c:choose>
                         	<c:when test="${sessionScope.logInMember == null }">
                         	<!-- 로그인을 하지 않았을 경우 -->
                         		<div class="header__top__right__auth">

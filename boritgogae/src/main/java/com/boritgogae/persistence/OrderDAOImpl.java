@@ -1,5 +1,8 @@
 package com.boritgogae.persistence;
 
+import java.sql.Timestamp;
+
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +19,7 @@ import com.boritgogae.domain.OrderDTO;
 import com.boritgogae.domain.OrderDetailDTO;
 import com.boritgogae.domain.PointHistoryDTO;
 import com.boritgogae.domain.AdminOrdersPagingInfo;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
@@ -130,27 +134,19 @@ public class OrderDAOImpl implements OrderDAO {
 		System.out.println("DAO : 비회원 주문내역 조회");
 		return ses.selectOne(ns + ".selectGuestOrderInfo", gdto);
 	}
-	
-	// 주문비밀번호 찾기위해 주문건 검색하는 메서드
+
 	@Override
-	public OrdersVo findGuestPwdSelectOrder(OrdersVo order) throws Exception {
-		System.out.println("DAO : 비회원 주문비밀번호찾기");
-		return ses.selectOne(ns + ".findGuestPwdSelectOrder", order);
+	public List<OrdersVo> getOrdersByMemberId(String memberId) throws Exception {
+		
+		return ses.selectList(ns+".getOrdersByMemberId", memberId);
 	}
-	
-	// 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트
+
 	@Override
-	public int updateGuestPwd(int orderNo, String tempPwd) throws Exception {
-		System.out.println("DAO : 비회원 임시비밀번호 업데이트");
-		System.out.println("DAO : " + orderNo + ", " + tempPwd);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("orderNo", orderNo);
-		map.put("tempPwd", tempPwd);
-		return ses.update(ns + ".updateGuestPwd", map);
+	public List<DetailOrderVo> getDetailOrderByMemberId(String memberId) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.selectList(ns+".getDetailOrderByMemberId", memberId);
 	}
-	
-	
-	
+
 	@Override
 	public void delCart(int cartNo) throws Exception {
 		System.out.println("다오"+cartNo);

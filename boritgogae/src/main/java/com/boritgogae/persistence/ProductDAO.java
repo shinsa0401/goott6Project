@@ -2,7 +2,6 @@ package com.boritgogae.persistence;
 
 import java.util.List;
 
-
 import com.boritgogae.domain.ProdImgVo;
 import com.boritgogae.domain.ProductContentVo;
 import com.boritgogae.domain.ProductVo;
@@ -11,44 +10,17 @@ import com.boritgogae.domain.ProductDTO;
 
 public interface ProductDAO {
 	
-	/**
-	 * @methodName : getProd
-	 * @author : kjy
-	 * @date : 2022. 10. 17.
-	 * @입력 param : 상품번호 prodNo
-	 * @returnType : ProductVO
-	 **/
+	//상품번호로 상품 가져옴
 	public ProductVo getProd(String prodNo);
 	
-	/**
-	 * @methodName : getProdImg
-	 * @author : kjy
-	 * @date : 2022. 10. 17.
-	 * @입력 param : 상품번호
-	 * @returnType : List<ProdImgVO>
-	 **/
+	//상품번호로 상품이미지 가져옴
 	public List<ProdImgVo> getProdImg(String prodNo);
 	
-	/**
-	 * @methodName : updateProdReview
-	 * @author : kjy
-	 * @date : 2022. 10. 18.
-	 * @입력 param : 상품번호
-	 * @returnType : int
-	 **/
-	public int updateProdReview(String prodNo);
-	
-	/**
-	 * @methodName : getProdContent
-	 * @author : kjy
-	 * @date : 2022. 10. 25.
-	 * @입력 param : prodNo
-	 * @returnType : ProductContentVo
-	 */
+	//리뷰 수 업데이트
+	public int updateProdReviewCnt(String prodNo) throws Exception;
+
+	//상품상세 가져옴
 	public ProductContentVo getProdContent(String prodNo) throws Exception;
-
-
-
 
 
 	public ProductDTO getPopular(String prodNo) throws Exception;
@@ -64,6 +36,7 @@ public interface ProductDAO {
 	public int getSearchProdCnt(int pageNo, String category) throws Exception;
 
 	public List<ProductDTO> getSearchProductAll(String category, TipPagingInfo pi) throws Exception;
+	
 
 
 }

@@ -1,6 +1,7 @@
 package com.boritgogae.service;
 
 import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import com.boritgogae.domain.CartDTO;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.GuestOrderDTO;
 import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.persistence.OrderDAO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -121,14 +123,6 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 	@Transactional
 	@Override
 	public OrdersVo placeOrder(OrderDTO order, String couponName, OrderSheetDTO ordersheet) {
-		if(order.getIsMember() != null) {
-			order.setIsMember("Y");
-		}else {
-			order.setIsMember("N");
-		}
-		System.out.println(order.toString());
-		
-		//트랜잭션 처리 해보기
 		//order에 넣기
 		int orderRow = orderDao.insertOrder(order);
 		System.out.println("주문인서트"+orderRow);
@@ -159,6 +153,7 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		}
 		
 		// 포인트 사용, 적립 내역 업데이트(pointWhy불러와서)
+		
 		int usePointNo = orderDao.getPointNo("구매사용");
 		PointHistoryDTO usedPoint = new PointHistoryDTO(order.getMemberId(), usePointNo, -order.getUsedPoint(), orderNo);
 		
@@ -171,7 +166,6 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		//회원 테이블의 포인트 업데이트
 		int pointrow = memDao.updateMemberPoint(currentOrder.getMemberId());
 
-		
 		return currentOrder;
 	}
 
@@ -238,17 +232,17 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 		return dao.selectGuestOrderInfo(gdto);
 	}
 
-	// 주문비밀번호 찾기위해 주문건 검색하는 메서드
+
 	@Override
-	public OrdersVo findGuestPwdSelectOrder(OrdersVo order) throws Exception {
-		return dao.findGuestPwdSelectOrder(order);
+	public List<OrdersVo> getordersByMemberId(String memberId) throws Exception {
+		
+		return orderDao.getOrdersByMemberId(memberId);
 	}
 
-	// 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트
+
 	@Override
-	public int updateGuestPwd(int orderNo, String tempPwd) throws Exception {
-		System.out.println("서비스 임시비밀번호 업데이트" + orderNo + ", " + tempPwd);
-		return dao.updateGuestPwd(orderNo, tempPwd);
+	public OrdersVo getorderByOrderNo(int orderNo) throws Exception {
+		return orderDao.getOrderByOrderNo(orderNo);
 	}
 	
 	
@@ -309,5 +303,8 @@ public DeliveryFeeVo getDeliveryOption(OrderDTO order) {
 
 		return dao.adminAllowOrders();
 	}
+
+
+
 
 }
