@@ -9,9 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import com.boritgogae.domain.DeliveryInfoVo;
+import com.boritgogae.domain.DeliveryVo;
+import com.boritgogae.domain.DetailOrderVo;
+import com.boritgogae.domain.ExchangeVo;
+import com.boritgogae.domain.TotalOrderListVo;
 import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
@@ -90,7 +95,7 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println("서비스단 : 포인트 가져오기");
 		return dao.pointNow(memberId);
 	}
-
+	
 	// 유저의 포인트 내역을 가져오는 메서드
 	@Override
 	public List<PointHistoryVo> showPointHistory(String memberId) throws Exception {
@@ -203,5 +208,238 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println("서비스단 : 회원 이메일 변경");
 		return dao.changeMemberEmail(memberId, memberEmail);
 	}
+	
+	// 회원정보의 탈퇴여부를 Y로 바꾼다.
+	@Override
+	public int membershipWithdrawalUpdate(String memberId) throws Exception {
+		System.out.println("서비스단 : 회원 탈퇴여부 변경");
+		return dao.membershipWithdrawalUpdate(memberId);
+	}
+	
+	// 회원탈퇴 테이블에 정보를 기입한다.
+	@Override
+	public int membershipWithdrawalInsert(String memberId, String code, String contents) throws Exception {
+		System.out.println("서비스단 : 회원탈퇴 테이블 인서트");
+		return dao.membershipWithdrawalInsert(memberId, code, contents);
+	}	
+
+	// 회원의 주문내역을 가져오는 메서드.
+	@Override
+	public List<Integer> getMemberOrders(String memberId) throws Exception {
+		System.out.println("서비스단 : 회원의 주문내역을 가져오기");
+		return dao.getMemberOrders(memberId);
+	}
+
+	// 주문번호에 따른 주문테이블의 내용을 가져오는 메서드
+	@Override
+	public OrdersVo getOrdersContents(Integer orderNo) throws Exception {
+		System.out.println("서비스단 : 회원 주문번호에 따른 주문테이블의 내용을 가져오기");
+		return dao.getOrdersContents(orderNo);
+	}
+
+	// 주문번호에 따른 상세주문+배송을 가져오는 메서드
+	@Override
+	public List<TotalOrderListVo> getTotalOrderListVo(Integer orderNo) throws Exception {
+		System.out.println("서비스단 : 주문번호에 따른 상세주문+배송을 가져오기");
+		return dao.getTotalOrderListVo(orderNo);
+	}
+
+
+	// 주문취소시 주문상세내역 업데이트
+	@Override
+	public int orderCancleDetailOrder(String orderCancleOrderNo, String status) throws Exception {
+		System.out.println("서비스단 : 주문취소시 주문상세내역 업데이트");
+		return dao.orderCancleDetailOrder(orderCancleOrderNo, status);
+	}
+
+	// 주문취소시 배송 업데이트
+	@Override
+	public int orderCancleDelivery(String orderCancleOrderNo, String status) throws Exception {
+		System.out.println("서비스단 : 주문취소시 배송 업데이트");
+		return dao.orderCancleDelivery(orderCancleOrderNo, status);
+	}
+
+	// 주문취소시 쿠폰 업데이트
+	@Override
+	public int orderCancleCoupon(String orderCancleOrderNo) throws Exception {
+		System.out.println("서비스단 : 주문취소시 쿠폰 업데이트");
+		return dao.orderCancleCoupon(orderCancleOrderNo);
+	}
+
+	
+	
+	
+	
+	// 주문취소시 사용했던 포인트 가져오기
+	@Override
+	public int orderCancleUsedPoint(String orderCancleOrderNo) throws Exception {
+		System.out.println("서비스단 : 주문취소시 사용했던 포인트 가져오기");
+		return dao.orderCancleUsedPoint(orderCancleOrderNo);
+	}
+
+	// 주문취소시 사용했던 포인트 재적립
+	@Override
+	public int orderCancleUsedPointReset(String memberId, String orderNo, int usedPoint) throws Exception {
+		System.out.println("서비스단 : 주문취소시 쿠폰 업데이트");
+		return dao.orderCancleUsedPointReset(memberId, orderNo, usedPoint);
+	}
+
+	// 주문취소시 적립되었던 포인트 가져오기
+	@Override
+	public int orderCancleSavedPoint(String orderCancleOrderNo) throws Exception {
+		System.out.println("서비스단 : 주문취소시 쿠폰 업데이트");
+		return dao.orderCancleSavedPoint(orderCancleOrderNo);
+	}
+
+	// 주문취소시 적립되었던 포인트 차감
+	@Override
+	public int orderCancleSavedPointReset(String memberId, String orderNo, int savedPoint) throws Exception {
+		System.out.println("서비스단 : 주문취소시 쿠폰 업데이트");
+		return dao.orderCancleSavedPointReset(memberId, orderNo, savedPoint);
+	}
+
+	// 주문취소시 재적립된 포인트 업데이트
+	@Override
+	public int orderCanclePointUpdate(String memberId, int pointUpdate) throws Exception {
+		System.out.println("서비스단 : 주문취소시 쿠폰 업데이트");
+		return dao.orderCanclePointUpdate(memberId, pointUpdate);
+	}
+
+
+	// 구매확정시 주문상세내역 업데이트
+	@Override
+	public int orderPurchaseConfirmDetailOrder(String orderNo) throws Exception {
+		System.out.println("서비스단 : 구매확정시 주문상세내역 업데이트");
+		return dao.orderPurchaseConfirmDetailOrder(orderNo);
+	}
+
+	// 구매확정시 배송 업데이트
+	@Override
+	public int orderPurchaseConfirmDelivery(String orderNo) throws Exception {
+		System.out.println("서비스단 : 구매확정시 배송 업데이트");
+		return dao.orderPurchaseConfirmDelivery(orderNo);
+	}
+	
+	// 특정 주문번호에 사용한 쿠폰 내역을 가져온다.
+	@Override
+	public CouponUsedVo getUsedCouponByOrderNo(Integer orderNo) throws Exception {
+		System.out.println("서비스단 : 특정 주문번호에 사용한 쿠폰 내역을 가져온다");
+		return dao.getUsedCouponByOrderNo(orderNo);
+	}
+
+	//교환반품 테이블 insert
+	@Override
+	public int insertExchangeTable(ExchangeVo exchangeVo) throws Exception {
+		System.out.println("서비스단 : 교환반품 테이블 insert");
+		return dao.insertExchangeTable(exchangeVo);
+	}
+
+	// 주문상세 - 반품/교환 update
+	@Override
+	public int exchangeStatusUpdateDetailOrder(int orderDetailNo, String exchangeType) throws Exception {
+		System.out.println("서비스단 : 반품/교환 update");
+		return dao.exchangeStatusUpdateDetailOrder(orderDetailNo, exchangeType);
+	}
+
+	// 배송 - 배송상태(반품요청) update
+	@Override
+	public int exchangeStatusUpdateDelivery(int orderDetailNo, String exchangeType) throws Exception {
+		System.out.println("서비스단 : 배송상태(반품요청) update");
+		return dao.exchangeStatusUpdateDelivery(orderDetailNo, exchangeType);
+	}
+
+	// 주문 중 교환요청과 반품요청 상태인 상세주문번호를 찾는다.
+	@Override
+	public List<Integer> findRtnOrExForOrder(String orderNo) throws Exception {
+		System.out.println("서비스단 : 교환요청과 반품요청 상태인 상세주문번호를 찾기");
+		return dao.findRtnOrExForOrder(orderNo);
+	}
+
+	// 주문 중 배송완료 상태인 주문의 상품합을 구한다.
+	@Override
+	public int orderCompletedAmount(String orderNo) throws Exception {
+		System.out.println("서비스단 : 주문 중 배송완료 상태인 주문의 상품합을 구한다.");
+		// 1. 딜리버리 테이블에서 배송완료 상태인 디테일오더주문번호 리스트를 찾는다.
+			List<Integer> orderCompletedList = dao.getOrderCompletedList(orderNo);
+		// 2. 리스트를 통해 총액을 구하고 리턴해준다.
+			int orderCompletedAmount = 0;
+			for(Integer detailOrderNo : orderCompletedList) {
+				orderCompletedAmount += dao.getDetailOrderInfo(detailOrderNo).getProdSubTotalPrice();
+			}
+			return orderCompletedAmount;
+	}
+
+	
+	
+	
+	// 배송테이블에서 현재 배송상태를 가져온다.
+	@Override
+	public String deliveryStatusCheck(Integer detailOrderNo) throws Exception {
+		System.out.println("서비스단 : 배송테이블에서 현재 배송상태를 가져온다.");
+		return dao.deliveryStatusCheck(detailOrderNo);
+	}
+
+	
+
+	// 주문상세 정보 가져오기	
+	@Override
+	public DetailOrderVo getDetailOrderInfo(Integer detailOrderNo) throws Exception {
+		System.out.println("서비스단 : 주문상세 정보 가져오기");
+		return dao.getDetailOrderInfo(detailOrderNo);
+	}
+
+	// 주문상세테이블의 마지막 번호를 받아오기
+	@Override
+	public int getDetailOrdersLastNo() throws Exception {
+		System.out.println("서비스단 : 주문상세테이블의 마지막 번호를 받아오기");
+		return dao.getDetailOrdersLastNo();
+	}
+
+	// 주문상세테이블 컬럼을 새로 넣어준다.
+	@Override
+	public int insertDetailOrder(DetailOrderVo detailOrder) throws Exception {
+		System.out.println("서비스단 : 배송테이블에서 현재 배송상태를 가져온다.");
+		return dao.insertDetailOrder(detailOrder);
+		
+	}
+
+	// 배송지 정보를 가져온다
+	@Override
+	public DeliveryVo getDeliveryInfo(Integer detailOrderNo) throws Exception {
+		System.out.println("서비스단 : 배송지 정보를 가져온다");
+		return dao.getDeliveryInfo(detailOrderNo);
+	}
+
+	// 수정된 정보가 포함된 배송테이블 컬럼을 새로 넣어준다.
+	@Override
+	public int insertDelivery(DeliveryVo delivery) throws Exception {
+		System.out.println("서비스단 : 수정된 정보가 포함된 배송테이블 컬럼을 새로 넣어준다.");
+		return dao.insertDelivery(delivery);
+		
+	}
+
+	// 주문상세 returnOrExchangeConfirm 정보를 변경
+	@Override
+	public int changeReturnOrExchangeConfirm(Integer detailOrderNo, String status) throws Exception {
+		System.out.println("서비스단 : 주문상세 returnOrExchangeConfirm 정보를 변경");
+		return dao.changeReturnOrExchangeConfirm(detailOrderNo, status);
+	}
+
+	// 쿠폰 이름에 맞는 할인율을 가져오는 메서드
+	@Override
+	public float getCouponDiscount(String couponName) throws Exception {
+		System.out.println("서비스단 : 쿠폰 이름에 맞는 할인율을 가져오는 메서드");
+		return dao.getCouponDiscount(couponName);
+	}
+	
+	
+	// 주문테이블 업데이트 
+	@Override
+	public int updateOrdersTable(OrdersVo newOrder, String orderNo) throws Exception {
+		System.out.println("서비스단 : 주문테이블 업데이트");
+		return dao.updateOrdersTable(newOrder, orderNo);
+	}
+
+
 
 }

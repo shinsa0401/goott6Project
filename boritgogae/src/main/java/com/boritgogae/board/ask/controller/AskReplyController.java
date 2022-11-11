@@ -3,6 +3,7 @@ package com.boritgogae.board.ask.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,8 @@ public class AskReplyController {
 	@Inject
 	private AskReplyService service;
 
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<String> addReply(@RequestBody AskReplyVo reply) {
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<String> addReply(@RequestBody AskReplyVo reply, HttpSession ses) {
 		System.out.println("댓글 등록 시작 : " + reply.toString());
 
 		ResponseEntity<String> result = null;

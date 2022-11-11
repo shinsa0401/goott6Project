@@ -60,8 +60,27 @@
 			<mapping path="/questionReply/remove"/> <!-- 댓글삭제 -->
 			<mapping path="/questionReply/reReply"/> <!-- 대댓글쓰기 -->
 			
-			
 			<!-- 문의게시판 정인식 -->
+			<mapping path="/board/ask/register"/> <!-- 글 쓰기 -->
+			<mapping path="/board/ask/answer"/> <!-- 답글쓰기 -->
+			<mapping path="/board/ask/modify"/> <!-- 글 수정 -->
+			<mapping path="/board/ask/uploadFile"/> <!-- 파일관련 -->			
+			<mapping path="/board/ask/uploadFileModify"/> <!-- 파일관련 -->
+			<mapping path="/board/ask/delFile"/> <!-- 파일관련 -->
+			<mapping path="/board/ask/delFileModify"/> <!-- 파일관련 -->
+			<mapping path="/board/ask/create"/> <!-- 글 등록 -->
+			<mapping path="/board/ask/modifyComplete"/> <!-- 글 수정등록 -->
+			<mapping path="/board/ask/remove"/> <!-- 글 삭제 -->
+			<mapping path="/board/ask/modifyComplete"/> <!-- 글 수정등록 -->
+			<mapping path="/reply/ask/register"/> <!-- 댓글 등록 -->
+			<mapping path="/reply/ask/modify"/> <!-- 댓글 수정 -->
+			<mapping path="/reply/ask/nested"/> <!-- 대댓글 등록 -->
+			<mapping path="/reply/ask/delete"/> <!-- 댓글 삭제 -->
+			<mapping path="/member/myPage"/> <!-- 마이페이지 접근 -->
+			
+			
+			
+			
 			
 			
 			<!-- 자유게시판 강무진 -->
@@ -80,7 +99,6 @@
 			
 			
 			<!-- 팁게시판 이중현 -->
-			
 			
 			
 			<beans:ref bean="authInterceptor"/>

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,7 @@ import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.domain.UploadAskFileVo;
 import com.boritgogae.board.ask.etc.AskUploadFileProcess;
 import com.boritgogae.board.ask.service.AskBoardService;
+import com.boritgogae.domain.MemberVo;
 
 @Controller // 컨트롤러단
 @RequestMapping("/board/ask/") // board/ 인 요청들 매핑
@@ -78,19 +80,21 @@ public class AskBoardController {
 		rttr.addFlashAttribute("pageNo", pageNo);
 		return "boardAsk/viewAskAll";
 	}
-	
-	// 글 등록
+	// 글 등록 진입
 	@RequestMapping(value = "/register")
-	public String registerBoard(Model model) throws Exception {
+	public String registerBoard(Model model, HttpSession ses) throws Exception {
+		MemberVo member = (MemberVo)ses.getAttribute("logInMember");
+		String memberId = member.getMemberId();
 		System.out.println("컨트롤러 : 게시판 글쓰기 요청");
 		System.out.println("컨트롤러 : 문의코드 가져오기");
 		List<AskCodeVo> askCodeList = service.loadAskCode();
 		model.addAttribute("askCodeList", askCodeList); // 바인딩
+		model.addAttribute("memberId", memberId); // 바인딩
 		System.out.println(askCodeList);
 		return "boardAsk/writeAskBoard";
 	}
 	
-	// 답글 페이지
+	// 답글 페이지 진입
 	@RequestMapping(value = "/answer")
 	public String answerBoard(Model model, @RequestParam("no") String no) throws Exception {
 		System.out.println("컨트롤러 : 문의 답변");
@@ -134,7 +138,7 @@ public class AskBoardController {
 		if (upfile.getSize() > 0) {
 			UploadAskFile upFile;
 			try {
-				// 실제로 파일이 넘어가는 구문임
+				// 실제로 파일이 넘어가는 구문
 				upFile = AskUploadFileProcess.uploadFileProcess(upPath, upfile.getOriginalFilename(), upfile.getBytes(),
 						upfile.getContentType());
 				this.UploadFileLst.add(upFile); // 업로드 될 파일이 여러개일 경우를 대비해 리스트에 넣어둠
@@ -179,7 +183,6 @@ public class AskBoardController {
 			} catch (IOException e) {
 				result = new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 통신상태 "실패"
 			}
-
 		} else {
 			result = new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 통신상태 "실패"
 		}
@@ -317,6 +320,12 @@ public class AskBoardController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String createBoard(AskBoardVo board, RedirectAttributes rttr) throws Exception {
 		System.out.println(board.toString());
+		if(board.getIsSecret()==null) {
+			board.setIsSecret("N");
+		}
+		if(board.getIsFAQ()==null) {
+			board.setIsFAQ("N");
+		}		
 		
 		if(service.create(board, this.UploadFileLst)) {
 			rttr.addFlashAttribute("status", "success");
@@ -334,7 +343,12 @@ public class AskBoardController {
 	@RequestMapping(value = "/modifyComplete", method = RequestMethod.POST)
 	public String modifyComplete(AskBoardVo board, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
 		System.out.println("modifyComplete : " + board.toString());
-		
+		if(board.getIsSecret()==null) {
+			board.setIsSecret("N");
+		}
+		if(board.getIsFAQ()==null) {
+			board.setIsFAQ("N");
+		}		
 		String upPath = request.getSession().getServletContext().getRealPath("resources/askBoard/uploads");
 		
 		// strTempFileLst 목록에 있는 파일들을 실제로 삭제시킨다.
@@ -366,7 +380,7 @@ public class AskBoardController {
 	}
 	
 	
-		
+	// 답글 등록
 	@RequestMapping(value = "/answerCreate", method = RequestMethod.POST)
 	public String answerCreateBoard(AskBoardVo board, RedirectAttributes rttr) throws Exception {
 		if(board.getAnswerStatus().equals("A,-")) {
@@ -401,6 +415,7 @@ public class AskBoardController {
 		return "redirect:/board/ask/list"; // /board/ask 로 Redirect
 	}
 	
+	// 글 보기
 	@RequestMapping(value="/view")
 	public String viewAskBoard(@RequestParam("no") String no, Model model, HttpServletRequest request) {
 		int bno = Integer.parseInt(no);
@@ -445,6 +460,7 @@ public class AskBoardController {
 	}
 	
 
+	// 파일목록 가져오기
 	@RequestMapping(value = "/loadFileNames", method = RequestMethod.GET)
 	public ResponseEntity<List<UploadAskFile>> loadFileNames(@RequestParam("bno") int bno) {
 		System.out.println(bno + "번 글의 파일목록을 얻어오자");

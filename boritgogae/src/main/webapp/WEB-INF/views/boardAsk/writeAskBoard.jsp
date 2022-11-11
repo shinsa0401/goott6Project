@@ -222,6 +222,7 @@
 			<div class="mb-3 mt-3">
 				<label for="title" class="form-label">제목 : </label> <input
 					type="text" class="form-control" id="title" name="title">
+					<input type="hidden" name="writer" value="${sessionScope.logInMember.memberId }">
 			</div>
 
 			<div class="mb-3 mt-3">
@@ -233,18 +234,26 @@
 								<option value="${ask.askCode }">${ask.askOption }</option>
 							</c:forEach>
 						</select>
-
 					</div>
+					
 					<div class="col-4">
 						<div class="form-check">
 							<input type="checkbox" class="form-check-input" id="isSecret"
 								name="isSecret" value="Y" checked> <label
 								class="form-check-label">비밀글</label>
 						</div>
-						<div class="form-check">
-							<input type="checkbox" class="form-check-input" id="isFAQ"
-								name="isFAQ" value="Y"> <label class="form-check-label">FAQ등록</label>
-						</div>
+						
+					<c:choose>
+						<c:when test="${memberId eq 'admin'}">
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input" id="isFAQ"
+									name="isFAQ" value="Y"> <label class="form-check-label">FAQ등록</label>
+							</div>
+						</c:when>
+						<c:otherwise>
+
+						</c:otherwise>
+					</c:choose>
 					</div>
 				</div>
 			</div>

@@ -208,9 +208,7 @@
 	</update>
 
 	<update id="removeBoard">
-		update askBoard set isDelete = 'Y'
-		where askBno =
-		#{no}
+		update askBoard set isDelete = 'Y', isSecret = 'N' where askBno = #{no}
 	</update>
 
 	<select id="getboardVo" resultType="AskBoardVo">

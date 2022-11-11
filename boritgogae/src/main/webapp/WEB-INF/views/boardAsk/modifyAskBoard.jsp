@@ -268,6 +268,7 @@
 			<div class="mb-3 mt-3">
 				<label for="title" class="form-label">제목 : </label> <input
 					type="text" class="form-control" id="title" name="title">
+				<input type="hidden" name="writer" value="${sessionScope.logInMember.memberId }">
 			</div>
 
 			<input type="hidden" id="askBno" name="askBno"

@@ -20,7 +20,10 @@
 <script type="text/javascript">
 	var changeInfoCode = 0;
 	var uploadFileQty = 0;
+	let exchangeBoxArr = [];
 	let formData = new FormData();
+	let orderCancleOrderNo = 0;
+	
 	
 	$(document).ready(
 			function() {
@@ -46,15 +49,15 @@
 							if (window.FileReader) {
 								var filename = $(this)[0].files[0].name;
 								if (!validFileType(filename)) {
-									alert("허용하지 않는 확장자 파일입니다.");
+									notificationModalOpen("허용하지 않는 확장자 파일입니다.");
 									return false;
 								} else {
 									if (!validFileSize($(this)[0].files[0])) {
-										alert("파일 사이즈가 10MB를 초과합니다.");
+										notificationModalOpen("파일 사이즈가 10MB를 초과합니다.");
 										return false;
 									} else {
 										if (!validFileNameSize(filename)) {
-											alert("파일명이 30자를 초과합니다.");
+											notificationModalOpen("파일명이 30자를 초과합니다.");
 											return false;
 										}
 									}
@@ -66,7 +69,7 @@
 							$("#previewImg").css("display","flex");
 							$(this).prev().val(filename); //input upload-name 에 파일명 설정해주기
 							readImage($(this)[0]); //미리보기
-							
+							console.log($(this));
 							console.log($(this)[0].files[0]);
 							formData.delete("upfile");
 							formData.append("upfile", $(this)[0].files[0]);							
@@ -131,12 +134,12 @@
 				console.log(data);
 				if (data == "emailUpdateSuccess") {
 					emailChangeModalClose();
-					showUserInfo();
-					alert("정보가 변경되었습니다.");
+					showUserInfo();				
+					notificationModalOpen("이메일이 변경되었습니다.");		
 				} else if (data == "emailUpdateFail") {
-					alert("정보 변경에 실패했습니다.");
+					notificationModalOpen("정보 변경에 실패했습니다.");
 				} else {
-					alert("비밀번호 체크 실패");
+					notificationModalOpen("비밀번호 체크 실패");
 				}
 			},
 			error : function(e) {
@@ -144,46 +147,43 @@
 			}
 		});
 	}
-	
 
-	if (data == "infoChangeSuccess") { // 정보변경에 성공했을 시
-		pwdChangeModalClose();
-		infoChangeModalClose();
-		showUserInfo();
-	}	
 		
 	// 프로필이미지 올리는 메서드
 	function uploadProfilImg(){
-		let url = "/member/myPage/uploadProfilImg";
-		$.ajax({
-			url : url, // 데이터 송수신될 주소 
-			type : "post", // 통신 방식(get, post)
-			dataType : "text", // 수신받을 데이터 타입
-			processData : false, // 전송하는 데이터를 텍스트 변환하지 않는다.
-			contentType : false,
-			// 기본값(application/x-www-form-urlencoded)을 사용하지 않는다.
-			async : false,
-			data : formData,
-			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
-				console.log(data);
-				imgModalClose();
-				showUserInfo();
-			},
-			error : function(request, status, error) {
-				console.log("code: " + request.status)
-				console.log("message: " + request.responseText)
-				console.log("error: " + error);
-			}
-		});
+		if($(".upload-name").val()=="선택된 파일 없음"){
+			notificationModalOpen("파일등록 후 올릴 수 있습니다.");
+		} else{
+			let url = "/member/myPage/uploadProfilImg";
+			$.ajax({
+				url : url, // 데이터 송수신될 주소 
+				type : "post", // 통신 방식(get, post)
+				dataType : "text", // 수신받을 데이터 타입
+				processData : false, // 전송하는 데이터를 텍스트 변환하지 않는다.
+				contentType : false,
+				// 기본값(application/x-www-form-urlencoded)을 사용하지 않는다.
+				async : false,
+				data : formData,
+				success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+					notificationModalOpen("대표이미지가 변경되었습니다");
+				},
+				error : function(request, status, error) {
+					console.log("code: " + request.status)
+					console.log("message: " + request.responseText)
+					console.log("error: " + error);
+				}
+			});
+		}
 	}
 	
-
+	// 파일타입 확인하는 메서드
 	function validFileType(filename) {
 		const fileTypes = [ "png", "jpg", "jpeg" ];
 		return fileTypes.indexOf(filename.substring(
 				filename.lastIndexOf(".") + 1, filename.length).toLowerCase()) >= 0;
 	}
 
+	// 파일 사이즈 확인하는 메서드
 	function validFileSize(file) {
 		if (file.size > 10000000) { //10MB
 			return false;
@@ -191,7 +191,8 @@
 			return true;
 		}
 	}
-
+	
+	// 파일 이름 길이 확인하는 메서드
 	function validFileNameSize(filename) {
 		if (filename.length > 30) { //30자
 			return false;
@@ -259,6 +260,7 @@
 		$("#userReviewBox").hide();
 		$("#userBoardBox").hide();
 		$("#userReplyBox").hide();
+		$("#userOrdersBox").hide();
 
 		$("#userBenefitBox").show();
 		let url = "/member/myPage/benefit"
@@ -315,6 +317,7 @@
 		$("#userReviewBox").hide();
 		$("#userBoardBox").hide();
 		$("#userReplyBox").hide();
+		$("#userOrdersBox").hide();
 
 		// div 보여주기
 		$("#userPointBox").show();
@@ -350,6 +353,8 @@
 													output += "<td>구매적립</td>";
 												} else if (e.pointNo == '4') {
 													output += "<td>이벤트적립</td>";
+												}else if (e.pointNo == '5') {
+													output += "<td>주문취소/교환환불</td>";
 												}
 												let pointSavedate = new Date(
 														e.pointSaveDate);
@@ -384,6 +389,7 @@
 		$("#userReviewBox").hide();
 		$("#userBoardBox").hide();
 		$("#userReplyBox").hide();
+		$("#userOrdersBox").hide();
 
 		// div 보여주기
 		$("#userCouponBox").show();
@@ -458,6 +464,7 @@
 		$("#userReviewBox").hide();
 		$("#userReplyBox").hide();
 		$("#userPointBox").hide();
+		$("#userOrdersBox").hide();
 
 		// div 보여주기
 		$("#userBoardBox").show();
@@ -517,6 +524,7 @@
 		$("#userReviewBox").hide();
 		$("#userPointBox").hide();
 		$("#userBoardBox").hide();
+		$("#userOrdersBox").hide();
 
 		// div 보여주기
 		$("#userReplyBox").show();
@@ -536,25 +544,22 @@
 						output += "<thead class='table-success'>";
 						output += "<table class='table'>";
 						output += "<tr><th>게시판명</th><th>내용</th><th>작성일</th></tr></thead><tbody>";
-						$
-								.each(
-										data.userReplyList,
-										function(i, e) {
-											if (e.memberId != null) {
-												output += "<tr>";
-												output += "<td>" + e.board
-														+ "</td>";
-												output += "<td>" + e.contents
-														+ "</td>";
-												let writtenTime = new Date(
-														e.writtenTime);
-												let formatWrittenTime = formatDate(writtenTime);
-												output += "<td>"
-														+ formatWrittenTime
-														+ "</td>";
-												output += "</tr>";
-											}
-										});
+						$.each(data.userReplyList,function(i, e) {
+							if (e.memberId != null) {
+								output += "<tr>";
+								output += "<td>" + e.board
+										+ "</td>";
+								output += "<td>" + e.contents
+										+ "</td>";
+								let writtenTime = new Date(
+										e.writtenTime);
+								let formatWrittenTime = formatDate(writtenTime);
+								output += "<td>"
+										+ formatWrittenTime
+										+ "</td>";
+								output += "</tr>";
+							}
+						});
 						output += "</tbody></table>";
 						$("#userReplyBox").html(output);
 					},
@@ -574,6 +579,7 @@
 		$("#userPointBox").hide();
 		$("#userBoardBox").hide();
 		$("#userReplyBox").hide();
+		$("#userOrdersBox").hide();
 
 		// div 보여주기
 		$("#userReviewBox").show();
@@ -636,6 +642,7 @@
 		$("#userBoardBox").hide();
 		$("#userReplyBox").hide();
 		$("#userReviewBox").hide();
+		$("#userOrdersBox").hide();
 
 		// div 보여주기
 		$("#userInfoBox").show();
@@ -664,10 +671,10 @@
 						output += "<table class='table table-borderless'>";
 						output += "<tr>";
 						output += "<th>이미지</th>";
-						if(data.memberInfo.memberImg == ""){
-							output += "<td><img src='../../../resources/img/myPage/myPage_person.png'style='height : 48px; width: 48px; display: inline-block;' class='rounded-pill'></td>";
+						if(data.memberInfo.memberImg == "img/noImg.jpg"){
+							output += "<td><img src='../../../resources/img/myPage/myPage_person.png'style='height : 100px; width: 100px; display: inline-block;' class='rounded-pill'></td>";
 						} else {
-							output += "<td><img src='../../../resources/members/uploads" + data.memberInfo.memberImg +"'style='height : 48px; width: 48px; display: inline-block;' class='rounded-pill'></td>";							
+							output += "<td><img src='../../../resources/members/uploads" + data.memberInfo.memberImg +"'style='height : 100px; width: 100px; display: inline-block;' class='rounded-pill'></td>";							
 						}
 						output += "<td><button type='button' class='btn btn-light' onclick='imgModalOpen();'>이미지 변경</button></td>";
 						output += "</tr>";
@@ -725,6 +732,16 @@
 						output += "<td></td>";
 						output += "<td><button type='button' class='btn btn-light' onclick='changeInfo(4)'>배송지 확인/수정</button></td>";
 						output += "</tr>";
+						output += "<tr>";
+						output += "<th></th>";
+						output += "<td></td>";
+						output += "<td>&nbsp;</td>";
+						output += "</tr>";
+						output += "<tr>";
+						output += "<th></th>";
+						output += "<td></td>";
+						output += "<td><button type='button' class='btn btn-danger' onclick='changeInfo(5);'>회원탈퇴</button></td>";
+						output += "</tr>";
 						output += "</table>";
 						output += "</div>";
 						$("#userInfoBox").html(output);
@@ -735,6 +752,150 @@
 					}
 				});
 	}
+
+	
+	
+	
+	// 회원의 구매내역을 가져오는 메서드. (각오합시다)
+	function showOrders() {
+		// 여기서 다른 DIV들 숨겨야 한다.
+		$("#userBenefitBox").hide();
+		$("#userCouponBox").hide();
+		$("#userPointBox").hide();
+		$("#userBoardBox").hide();
+		$("#userReplyBox").hide();
+		$("#userReviewBox").hide();
+		$("#userInfoBox").hide();
+
+		// div 보여주기
+		$("#userOrdersBox").show();
+		let url = "/member/myPage/orders"
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "get", // 전송 방식
+			dataType : "json",
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				let output = "";
+				$.each(data, function(i, e){
+					console.log("e");
+					console.log(e); // 76, 77
+						$.each(e, function(i2, e2){
+							let deliveryStatusPaymentCompleted = true;
+							let deliveryStatusDeliveryCompleted = true;
+							let deliveryStatusOrderCancle = true;
+							let deliveryStatusPurchaseConfirm = true;
+							let deliveryStatusExchange = false; 
+							
+							$.each(e2.TotalOrderListVo, function(i3, e3){
+								if(e3.deliveryStatus != "결제완료"){
+									deliveryStatusPaymentCompleted = false;
+								}
+								if(e3.deliveryStatus != "배송완료"){
+									deliveryStatusDeliveryCompleted = false;
+								}
+								if(e3.deliveryStatus != "취소" || e3.deliveryStatus != "교환요청" || e3.deliveryStatus != "반품요청"  ){
+									deliveryStatusOrderCancle = false;
+								}
+								if(e3.deliveryStatus != "구매확정"){
+									deliveryStatusPurchaseConfirm = false;
+								}
+								if(e3.deliveryStatus == "반품요청" || e3.deliveryStatus == "교환요청" ){
+									deliveryStatusExchange = true;
+								}
+							});
+							console.log("e2");
+							console.log(e2);
+							output += "<div><table class='table' style='table-layout: fixed;'>";
+							output += "<colgroup><col width='8%'><col width='14%'><col width='27%'><col width='12%'><col width='15%'><col width='10%'><col width='14%'></colgroup>";
+							output += "<thead><tr class='table-success'><th>주문번호</th><th>상품사진</th><th>상품명</th><th>주문일자</th><th>주문금액(수량)</th><th>주문상태</th><th>교환/반품 체크</th></tr></thead>";
+							output += "<tbody>";
+							var flag = false;
+							$.each(e2.TotalOrderListVo, function(i3, e3){
+								console.log("e3");
+								console.log(e3);
+								
+								output += "<tr class='table-Light'>";
+								if(flag == false){
+									output += "<td rowspan='"+e2.TotalOrderListVo.length+"'align=center>" + e2.orders.orderNo +"</td>";
+									flag = true;
+								}
+								output += "<td><img src='"+e3.originalFile+"' style='width:100px; height:100px;' id='prodImg"+e3.orderDetailNo+"'></td>";
+								output += "<td id='prodName"+e3.orderDetailNo+"'>" + e3.prodName +"</td>";							
+								let orderDate = new Date(e2.orders.orderDate);
+								let formatOrderDate = formatDate2(orderDate);
+								output += "<td>" + formatOrderDate + "</td>";
+								
+								output += "<td id='prodPrice"+e3.orderDetailNo+"'>" + e3.prodSubTotalPrice+ "(" + e3.qty+ ")"  +"</td>";
+								output += "<td>" + e3.deliveryStatus +"</td>";
+								// 배송완료 상품 + 교환반품 없을시 + 교환완료+반품완료 체크박스 오픈.
+								if(deliveryStatusDeliveryCompleted == true && deliveryStatusExchange != true){ 
+									output += "<td align='center' valign='middle'><input type='checkbox' class='form-check-input' name='checkBox"+e2.orders.orderNo+"' value='" + e3.orderDetailNo + "'></td>";
+								}else{
+									output += "<td></td>";
+								}
+								
+								output += "</tr>";
+							});
+							
+							if(deliveryStatusOrderCancle == false){
+								output += "<tr class = 'table-secondary'><td></td><td>상품총액 : "+ e2.orders.prodTotalPrice + "</td><td colspan='2'>" + "쿠폰사용 : - "; 
+								if(e2.usedCoupon == null){
+									output += 0;
+								} else if(e2.usedCoupon.couponName == "생일쿠폰"){
+									output += "<span id='usedCoupon"+e2.orders.orderNo+"' value = '0.1'>" + e2.orders.prodTotalPrice * 0.1 + "</span>";
+								} else if(e2.usedCoupon.couponName == "이벤트쿠폰A"){
+									output += "<span id='usedCoupon"+e2.orders.orderNo+"' value = '0.05'>" + e2.orders.prodTotalPrice * 0.05 + "</span>";
+								} else if(e2.usedCoupon.couponName == "이벤트쿠폰B"){
+									output += "<span id='usedCoupon"+e2.orders.orderNo+"' value = '0.1'>" + e2.orders.prodTotalPrice * 0.1 + "</span>";
+								} else{
+									output += 0;
+								}
+								
+								output += "&nbsp;&nbsp;&nbsp;&nbsp;포인트사용 : - "+ e2.orders.usedPoint + "&nbsp;&nbsp;&nbsp;&nbsp;배송비 : + ";
+								if(e2.orders.deliveryOption == "반품"){
+									output += "6000"
+								}else if(e2.orders.deliveryOption == "관리"){
+									output += "3000"
+								}else if(e2.orders.deliveryOption == "무료"){
+									output += "3000"
+								}else if(e2.orders.deliveryOption == "도서"){
+									output += "8000"
+								}else{
+									output += "3000"
+								}
+								output += "</td><td>구매액 : "+ e2.orders.totalPrice + "</td><td colspan='2'>";
+								// 구매확정이라면
+								if(deliveryStatusPurchaseConfirm == true){
+									output += "<button type='button'class='btn btn-info btn-sm'>리뷰쓰기</button>";									
+								} else if(deliveryStatusPaymentCompleted == true){
+									output += "<button type='button' class='btn btn-danger btn-sm' onclick='orderCancleModalOpen("+ e2.orders.orderNo +")'>주문취소</button>&nbsp;";
+								} else if(deliveryStatusDeliveryCompleted == true){
+									output += "<button type='button' class='btn btn-primary btn-sm' onclick='orderRtnOrExModalOpen("+ e2.orders.orderNo +")'>교환/반품</button>&nbsp;";
+									output += "<button type='button'class='btn btn-success btn-sm' onclick='orderPurchaseConfirm("+ e2.orders.orderNo +")'>구매확정</button>";
+								} else if(deliveryStatusExchange == true){
+									output += "<span>교환 및 반품이 진행중인 거래입니다.</span>";
+									output += "<button type='button'class='btn btn-success btn-sm' onclick='orderRtnOrExConfirm("+ e2.orders.orderNo +")'>교환 및 반품 승인</button>";
+								}
+								output += "</td>";
+								output += "</tr>";
+							}
+							
+							output += "</tbody>";
+							output += "</table></div>";
+						});
+				});
+
+				$("#userOrdersBox").html(output);
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+	
+	
+	
 
 	// 날짜 변환 함수
 	function formatDate(date) {
@@ -771,7 +932,17 @@
 		$("#secretInfoModalContentPassword").val("");
 	}
 
-	
+	// 주문취소 모달 열기
+	function orderCancleModalOpen(orderNo) {
+		$("#orderCancleModal").css('display', 'flex');
+		orderCancleOrderNo = orderNo;
+		console.log("주문취소요청번호 : " + orderNo);
+	}
+
+	// 주문취소 모달 닫기
+	function orderCancleModalClose() {
+		$("#orderCancleModal").css('display', 'none');
+	}	
 	
 	// 이메일 추가 모달 열기
 	function emailChangeModalOpen() {
@@ -781,18 +952,13 @@
 	// 이메일 추가 모달 닫기
 	function emailChangeModalClose() {
 		$("#emailChangeModal").css('display', 'none');
-		$("#address").val('');
-		$("#detailAddress").val('');
-		$("#postCode").val('');
-		$("#recipient").val('');
-		$("#recipientPhoneNumber").val('');
-		$("#addAddrModalWarning").text("");
+		$("#alert-success-email").hide();
+		$("#alert-danger-email").hide();	
+		$("#memberEmail").text("");
+		$(".mail_check_input").text("");	
+		$("#memberEmail").val('');
+		$(".mail_check_input").val('');
 	}
-	
-	
-	
-	
-	
 	
 	
 	// 주소지 추가 모달 열기
@@ -868,7 +1034,7 @@
 					} else if (data == "correctCheckFail") {
 						$("#secretInfoValidateContent").text("비밀번호가 틀렸습니다.");
 					} else {
-						alert("비밀번호 체크 실패");
+						notificationModalOpen("비밀번호 체크 실패");
 					}
 				},
 				error : function(e) {
@@ -880,6 +1046,64 @@
 		return isValid;
 	}
 
+	// 주문취소 메서드
+	function orderCancle() {	
+		// ajax를 통해 주문취소번호를 보냄.
+		let url = "/member/myPage/orderCancle"
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "get", // 전송 방식
+			data : {
+				"orderCancleOrderNo" : orderCancleOrderNo
+			}, // 전송할 데이터
+			dataType : "text", // 수신할 데이터
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				if (data == "orderCancleSuccess") {
+					notificationModalOpen("주문이 취소되었습니다.");
+					orderCancleModalClose();
+					showOrders();
+				} else if (data == "orderCancleFail") {
+					notificationModalOpen("주문취소 실패");
+				} else {
+					notificationModalOpen("주문취소 실패");
+				}
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+	
+
+	// 구매확정 메서드
+	function orderPurchaseConfirm(orderNo) {	
+		// ajax를 통해 주문취소번호를 보냄.
+		let url = "/member/myPage/orderPurchaseConfirm"
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "get", // 전송 방식
+			data : {
+				"orderNo" : orderNo
+			}, // 전송할 데이터
+			dataType : "text", // 수신할 데이터
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				if (data == "orderPurchaseConfirmSuccess") {
+					notificationModalOpen("구매확정 되었습니다.");
+				} else if (data == "orderPurchaseConfirmFail") {
+					notificationModalOpen("구매확정 실패");
+				} else {
+					notificationModalOpen("구매확정 실패");
+				}
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+	
+	
 	// 회원정보 변경시 쓰는 공용 메서드 (비밀번호 확인용 모달 열기)
 	function changeInfo(info) {
 		changeInfoCode = info;
@@ -895,8 +1119,9 @@
 
 	// 유효성 검사 후 주소값 인서트하기
 	function addAddr() {
-		let recipientCheck = /^.{1,20}$/;
-		let recipientPhoneNumberCheck = /^[0-9]+/g;
+		// 정규식
+		let recipientCheck = /^[가-힣]{2,4}$/;
+		let recipientPhoneNumberCheck = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
 		let addressCheck = /^.{1,100}$/;
 		if (!recipientCheck.test($("#recipient").val())) {
 			$("#addAddrModalWarning").text("이름을 10자 이내로 입력해 주십시오.");
@@ -924,9 +1149,9 @@
 						addAddrModalClose();
 						showDeliveryInfo();
 					} else if (data == "addAddrFail") {
-						alert("주소 추가 실패");
+						notificationModalOpen("주소 추가 실패");
 					} else {
-						alert("주소 추가 실패");
+						notificationModalOpen("주소 추가 실패");
 					}
 				},
 				error : function(e) {
@@ -970,7 +1195,7 @@
 					} else if (data == "pwdCheckFail") {
 						$("#pwdCheckModalWarning").text("비밀번호가 틀렸습니다.");
 					} else {
-						alert("비밀번호 체크 실패");
+						notificationModalOpen("비밀번호 체크 실패");
 					}
 				},
 				error : function(e) {
@@ -987,9 +1212,67 @@
 			$("#pwdChangeModal").css('display', 'flex');
 		} else if (changeInfoCode == 2 || changeInfoCode == 3) { // 비번변경모달이 아닐때
 			$("#infoChangeModal").css('display', 'flex');
-		} else { // 주소 확인모달일때
+		} else if (changeInfoCode == 4){ // 주소 확인모달일때
 			showDeliveryInfo();
+		} else if (changeInfoCode == 5){ // 회원탈퇴 모달일때
+			membershipWithdrawalModalOpen();
 		}
+	}
+	
+	// 회원탈퇴용 모달 열기
+	function membershipWithdrawalModalOpen(){
+		$("#membershipWithdrawalModal").css('display', 'flex');
+	}
+	
+	// 회원탈퇴용 모달 닫기
+	function membershipWithdrawalModalClose(){
+		$("#membershipWithdrawalModal").css('display', 'none');
+		$("#membershipWithdrawalCode").val(8);
+		$("#membershipWithdrawalContents").val("");
+	}
+	
+	// 회원탈퇴용 모달 열기
+	function membershipWithdrawalModal2Open(){
+		$("#membershipWithdrawalModal2").css('display', 'flex');
+	}
+	
+	// 회원탈퇴용 모달 닫기
+	function membershipWithdrawalModal2Close(){
+		$("#membershipWithdrawalModal2").css('display', 'none');
+	}
+
+	// 회원탈퇴 메서드
+	function membershipWithdrawal(){
+		// 유효성 검사
+		let membershipWithdrawalCode = $("#membershipWithdrawalCode").val();
+		let membershipWithdrawalContents = $("#membershipWithdrawalContents").val();
+		if(membershipWithdrawalContents == null){
+			membershipWithdrawalContents = "사유없음";
+		}
+
+			let url = "/member/myPage/membershipWithdrawal"
+			$.ajax({
+				url : url, // 데이터 송수신될 주소 
+				type : "get", // 전송 방식
+				data : {
+					"code" : membershipWithdrawalCode,
+					"contents" : membershipWithdrawalContents
+				}, // 전송할 데이터
+				dataType : "text", // 수신할 데이터
+				success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+					console.log(data);
+					if (data == "membershipWithdrawalSuccess"){
+						notificationModalOpen("회원탈퇴가 완료되었습니다.");
+					} else if (data == "membershipWithdrawalFail") {
+						notificationModalOpen("회원탈퇴 실패");
+					} else {
+						notificationModalOpen("회원탈퇴 실패");
+					}
+				},
+				error : function(e) {
+					console.log(e);
+				}
+			});
 	}
 
 	// 비밀번호 변경용 모달 닫기
@@ -1042,7 +1325,7 @@
 				changeInfoAjax("nickName", newInfo);
 			}
 		} else if (changeInfoCode == 3) { // 전화번호 변경
-			let infoCheck = /^[0-9]+/g;
+			let infoCheck = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
 			if (!infoCheck.test($("#infoChangeModalContent").val())) { // 전화번호 규약이 틀렸을 시
 				console.log($("#infoChangeModalContent").val());
 				$("#infoChangeModalWarning").text("전화번호는 숫자만 입력할 수 있습니다.");
@@ -1072,12 +1355,12 @@
 					pwdChangeModalClose();
 					infoChangeModalClose();
 					showUserInfo();
-					alert("정보가 변경되었습니다.");
+					notificationModalOpen("정보가 변경되었습니다.");
 				} else if (data == "infoChangeFail") { // 정보변경에 실패했을 시
 					pwdChangeModalClose();
 					infoChangeModalClose();
 					showUserInfo();
-					alert("정보변경에 실패했습니다.");
+					notificationModalOpen("정보변경에 실패했습니다.");
 				}
 			},
 			error : function(e) {
@@ -1129,6 +1412,71 @@
 		$("#deleteAddrModal").css('display', 'none');
 	}
 
+	// 교환환불용 모달 열기
+	function orderRtnOrExModalOpen(orderNo){
+		exchangeBoxArr.splice(0, exchangeBoxArr.length);
+		let checkBoxName = "checkBox"+orderNo;
+		let checkedLength = document.getElementsByName(checkBoxName).length;
+		let checkBoxArr = [];
+		for(let i = 0 ; i<checkedLength ; i++){
+            if (document.getElementsByName(checkBoxName)[i].checked == true) {
+                checkBoxArr.push(document.getElementsByName(checkBoxName)[i].value);
+                exchangeBoxArr.push(document.getElementsByName(checkBoxName)[i].value);
+            }
+		}
+		if(checkBoxArr != 0){
+			console.log(checkBoxArr);
+			
+			let output = "";
+			
+			$.each(checkBoxArr, function(i, e){
+				output += "<div><table class='table' style='table-layout: fixed;'>";
+				output += "<colgroup><col width='30%'><col width='40%'><col width='30%'></colgroup>";
+				output += "<thead><tr class='table-success'><th>상품사진</th><th>상품명</th><th>주문금액(수량)</th></tr></thead>";
+				output += "<tbody>";
+				
+				output += "<tr class='table-Light'>";
+				
+				let checkBoxProdImg = "prodImg" + e; // prodName108
+				let checkBoxProdImgText = document.getElementById(checkBoxProdImg).src;
+				console.log(checkBoxProdImgText);
+				output += "<td><img src='" + checkBoxProdImgText +"' style='width:40px; height:40px;'></td>";
+				
+				let checkBoxProdName = "prodName" + e; // prodName108
+				let checkBoxProdNameText = document.getElementById(checkBoxProdName).innerHTML;
+				output += "<td>";
+				output += checkBoxProdNameText;
+				output += "</td>";							
+
+				let checkBoxProdPrice = "prodPrice" + e; // prodName108
+				let checkBoxProdPriceText = document.getElementById(checkBoxProdPrice).innerHTML;
+				output += "<td>"+ checkBoxProdPriceText +"</td>";
+				output += "</tr>";
+				output += "</tbody>";
+				output += "</table></div>";
+				output += "<label for='comment'>구분:</label><select class='form-select' id ='sort" + e + "'><option>교환</option><option>반품</option></select>";
+				output += "<p></p>"
+				output += "<label for='comment'>사유:</label><select class='form-select' id = 'why" + e + "'><option>단순변심</option><option>사이즈가 맞지 않음</option><option>원하는 색상과 다름</option><option>상품이 파손되어 도착</option><option>주문한 상품과 다름</option></select>";
+				output += "<p></p>"
+				output += "<label for='comment'>상세사유:</label><textarea class='form-control' rows='3' id='comment" + e +"' name='text'></textarea>"
+				output += "<p></p>"
+			});
+			
+			
+			$("#orderRtnOrExModalContents").html(output);
+			
+			$("#orderRtnOrExModal").css('display', 'flex');
+		} else{
+			notificationModalOpen("교환/환불을 원하시는 상품을 체크해주세요.");
+		}
+	}	
+
+	// 교환환불용 모달 닫기
+	function orderRtnOrExModalClose() {
+		$("#orderRtnOrExModal").css('display', 'none');
+	}	
+	
+	
 	// 저장주소를 삭제하는 메서드
 	function deleteAddr(deliveryInfo) {
 		let url = "/member/myPage/deleteAddr"
@@ -1146,7 +1494,131 @@
 					showDeliveryInfo();
 					deleteAddrModalClose();
 				} else if (data == "deleteAddrFail") { // 정보변경에 실패했을 시
-					alert("주소삭제에 실패했습니다.");
+					notificationModalOpen("주소삭제에 실패했습니다.");
+				}
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+	
+	// 알림용 모달 열기
+	function notificationModalOpen(msg) {
+		document.getElementById("notificationModal").style.display = "block";
+		document.getElementById("notificationModalContent").innerHTML = msg;
+	}
+	
+	// 알림용 모달 닫기
+	function notificationModalClose() {
+		if(document.getElementById("notificationModalContent").innerHTML == "대표이미지가 변경되었습니다"){
+			location.href = "/member/myPage";
+		}else if(document.getElementById("notificationModalContent").innerHTML == "회원탈퇴가 완료되었습니다."){
+			location.href = "/";
+		}else if(document.getElementById("notificationModalContent").innerHTML == "구매확정 되었습니다."){
+			showOrders();
+		}else if(document.getElementById("notificationModalContent").innerHTML == "쿠폰과 포인트의 경우, 남은 주문건에 대해 자동적용됩니다."){
+			orderRtnOrExModalClose();
+			orderRtnOrEx();
+		}else if(document.getElementById("notificationModalContent").innerHTML == "교환 및 반품접수가 완료되었습니다"){
+			showOrders();
+		}
+		
+		
+		document.getElementById("notificationModal").style.display = "none";
+	}
+
+	// 교환반품 요청 넣기
+	function orderRtnOrEx(){
+		console.log(exchangeBoxArr);
+		var exchangeArray = new Array();
+		
+		$.each(exchangeBoxArr, function(i, e){
+			var data = new Object();
+			
+			data.orderDetailNo = e;
+			
+			let exchangeSort = "sort" + e; // sort108
+			let exchangeSortSelected = document.getElementById(exchangeSort);
+			if(exchangeSortSelected.options[exchangeSortSelected.selectedIndex].value == "교환"){
+				data.exchangeType = 'E';
+			} else if(exchangeSortSelected.options[exchangeSortSelected.selectedIndex].value == "반품"){
+				data.exchangeType = 'R';
+			}
+			
+			
+			let exchangeWhy = "why" + e; // exchangeWhy108
+			let exchangeWhySelected = document.getElementById(exchangeWhy);
+			if(exchangeWhySelected.options[exchangeWhySelected.selectedIndex].value == "단순변심"){
+				data.reasonNo = 1;
+			}else if(exchangeWhySelected.options[exchangeWhySelected.selectedIndex].value == "사이즈가 맞지 않음"){
+				data.reasonNo = 2;
+			}else if(exchangeWhySelected.options[exchangeWhySelected.selectedIndex].value == "원하는 색상이 아님"){
+				data.reasonNo = 3;
+			}else if(exchangeWhySelected.options[exchangeWhySelected.selectedIndex].value == "상품이 파손되어 옴"){
+				data.reasonNo = 4;
+			}else if(exchangeWhySelected.options[exchangeWhySelected.selectedIndex].value == "주문한 상품과 다름"){
+				data.reasonNo = 5;
+			}else{
+				data.reasonNo = 1;				
+			}
+			
+			let exchangeComment = "comment" + e; // comment108
+			let exchangeCommentText = document.getElementById(exchangeComment).value;
+			data.reasonContent = exchangeCommentText;
+			
+			exchangeArray.push(data);
+					
+		});
+		console.log(exchangeArray);
+		
+		// 이 데이터를 보냄.
+		var jsonData = JSON.stringify(exchangeArray);
+		console.log(jsonData);
+		
+		let url = "/member/myPage/orderRtnOrEx"
+			$.ajax({
+				url : url, // 데이터 송수신될 주소 
+				type : "post", // 전송 방식
+				contentType: 'application/json',
+				data : jsonData, // 전송할 데이터
+				dataType : "text", // 수신할 데이터
+				success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+					console.log(data);
+					if (data == "orderRtnOrExSuccess") { // 정보변경에 성공했을 시
+						notificationModalOpen("교환 및 반품접수가 완료되었습니다");
+					} else if (data == "orderRtnOrExFail") { // 정보변경에 실패했을 시
+						notificationModalOpen("교환반품에 실패했습니다");
+					}
+				},
+				error : function(e) {
+					console.log(e);
+				}
+			});
+	}
+	
+	
+	
+	// 추가기능
+	// 교환 및 반품 승인하기
+	function orderRtnOrExConfirm(orderNo){
+		console.log(orderNo);
+		let url = "/member/myPage/orderRtnOrExConfirm"
+		$.ajax({
+			url : url, // 데이터 송수신될 주소 
+			type : "get", // 전송 방식
+			dataType : "text", // 수신할 데이터
+			data : {
+				"orderNo" : orderNo
+			}, // 전송할 데이터
+			success : function(data) { // 통신이 성공했을 때 호출되는 콜백함수
+				console.log(data);
+				if (data == "orderRtnOrExConfirmSuccess") { // 정보변경에 성공했을 시
+					notificationModalOpen("교환 및 반품 승인");
+					showOrders();
+				} else if (data == "orderRtnOrExConfirmFail") { // 정보변경에 실패했을 시
+					notificationModalOpen("교환 및 반품 승인 실패");
+					showOrders();
 				}
 			},
 			error : function(e) {
@@ -1246,11 +1718,13 @@ img#previewImg {
 	-moz-appearance: none;
 	appearance: none;
 }
+
+
 </style>
 </head>
 <body>
 
-	<div class="container mt-3" style="height: 1000px;">
+	<div class="container mt-3">
 		<ul class="nav nav-tabs">
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" data-bs-toggle="dropdown">내 정보</a>
@@ -1268,9 +1742,9 @@ img#previewImg {
 				class="nav-link dropdown-toggle" data-bs-toggle="dropdown">쇼핑</a>
 				<ul class="dropdown-menu">
 					<!--  -->
-					<li><a class="dropdown-item" href="#">주문내역</a></li>
+					<li><a class="dropdown-item" href="javascript:showOrders()">주문내역</a></li>
 					<!-- 무진씨 링크 받기 -->
-					<li><a class="dropdown-item" href="javascript:goPopup()">관심상품</a></li>
+					<li><a class="dropdown-item" href="#">관심상품</a></li>
 					<!--  -->
 					<li><a class="dropdown-item"
 						href="javascript:showUserReview()">작성후기</a></li>
@@ -1294,6 +1768,7 @@ img#previewImg {
 			<div id="userBoardBox" style="display: none;"></div>
 			<div id="userReplyBox" style="display: none;"></div>
 			<div id="userReviewBox" style="display: none;"></div>
+			<div id="userOrdersBox" style="display: none;"></div>
 		</div>
 	</div>
 
@@ -1542,7 +2017,7 @@ img#previewImg {
 				<!-- Modal Header -->
 				<div class="modal-header">
 					<h4 class="modal-title">내 이미지 업로드</h4>
-					<br></br> <a style="font-size: 8px">&nbsp;&nbsp;(48px * 48px
+					<br></br> <a style="font-size: 8px">&nbsp;&nbsp;(100px * 100px
 						사이즈로 리사이즈됩니다.)</a>
 				</div>
 
@@ -1612,6 +2087,174 @@ img#previewImg {
 		</div>
 	</div>
 
+
+
+	<!-- 교환 반품 모달 -->
+	<div class="modal" id="orderRtnOrExModal">
+		<div class="modal-dialog modal-80size">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">교환 및 반품 신청</h4>
+				</div>
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div id="orderRtnOrExModalContents"></div>
+				</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						data-bs-dismiss="modal" onclick="notificationModalOpen('쿠폰과 포인트의 경우, 남은 주문건에 대해 자동적용됩니다.');">교환/환불요청</button>
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal" onclick="orderRtnOrExModalClose();">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+	<!-- 회원탈퇴 모달 -->
+	<div class="modal" id="membershipWithdrawalModal">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">한번 더 생각해주세요!</h4>
+				</div>
+				<!-- Modal body -->
+				<div class="modal-body">
+					<a style="font-size: 8px; color: red;">회원탈퇴시 정보를 되돌릴 수 없습니다.</a> <select
+						class="form-select mt-3" id="membershipWithdrawalCode">
+						<option value="1">더 좋은 사이트 찾음</option>
+						<option value="2">불친절한 서비스</option>
+						<option value="3">이용빈도 낮음</option>
+						<option value="4">개인정보 누출 우려</option>
+						<option value="5">사이트 편의성 부족</option>
+						<option value="6">상품의 다양성 및 품질 불만</option>
+						<option value="7">배송 및 교환 환불 불만</option>
+						<option value="8" selected>기타 사유</option>
+					</select> <br></br>
+					<textarea rows="5" class="form-control"
+						id="membershipWithdrawalContents"
+						placeholder="사유를 입력해주시면 운영에 도움이 됩니다."
+						style="width: 400px; height: 300px;"></textarea>
+				</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						data-bs-dismiss="modal"
+						onclick="membershipWithdrawalModal2Open();">확인</button>
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal"
+						onclick="membershipWithdrawalModalClose();">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 회원탈퇴 한번 더 모달 -->
+	<div class="modal" id="membershipWithdrawalModal2">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">회원탈퇴</h4>
+				</div>
+				<!-- Modal body -->
+				<div class="modal-body">정말 회원탈퇴 하시겠습니까??</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						data-bs-dismiss="modal" onclick="membershipWithdrawal();">탈퇴하기</button>
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal"
+						onclick="membershipWithdrawalModal2Close();">취소</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- 주문취소 시 알림모달 -->
+	<div class="modal" id="orderCancleModal">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">주문취소</h4>
+				</div>
+				<!-- Modal body -->
+				<div class="modal-body">정말 주문을 취소하시겠습니까? 취소 후 재주문 시에는 다시 주문작성을
+					해야합니다.</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal" onclick="orderCancle();">주문취소하기</button>
+					<button type="button" class="btn btn-primary"
+						data-bs-dismiss="modal" onclick="orderCancleModalClose();">돌아가기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 알림용 모달 -->
+	<div class="modal" id="notificationModal">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">알림</h4>
+				</div>
+
+				<!-- Modal body -->
+				<div id="notificationModalContent" class="modal-body"></div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						data-bs-dismiss="modal" onclick="notificationModalClose();">확인</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- The Modal -->
+	<div class="modal" id="infoChangeModal">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">알림</h4>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">새로운 정보를 입력해주세요</div>
+				<div class="pwdHideDiv">
+					<input type="text" class="form-control" id="infoChangeModalContent"
+						placeholder="정보 입력 : ">
+				</div>
+				<div id="infoChangeModalWarning" class="modal-body"
+					style="color: red;"></div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						data-bs-dismiss="modal" onclick="submitInfo(changeInfoCode);">확인</button>
+					<button type="button" class="btn btn-danger"
+						data-bs-dismiss="modal" onclick="infoChangeModalClose();">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

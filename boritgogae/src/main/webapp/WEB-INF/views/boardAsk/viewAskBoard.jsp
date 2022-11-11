@@ -22,7 +22,7 @@
 		let askBno = ${board.askBno}
 		let memberId = $("#memberId").val();
 		let contents = $("#replyContent").val();
-		let url = "/reply/ask"
+		let url = "/reply/ask/register"
 		let sendData = JSON.stringify({
 			askBno : askBno, memberId : memberId, contents : contents
 		}); // json 문자 형식(json 문자열)으로 바꿔줌
@@ -44,7 +44,7 @@
             	if(data == "success") {
             		viewAskReply();
             	} else if(data == "fail") {
-            		alert("댓글 등록 실패");
+        			notificationModalOpen("댓글 등록 실패");	
             	}
             }, error : function(e) {
 				console.log(e);
@@ -102,9 +102,13 @@
 			output += "<div class='col'></div>";
 			output += "<div class='col'>"; // 2
 			if(item.isDelete == 'N'){
-				output += "<span onclick='modifyReplyModalOpen("+ item.askRno +");'>수정&nbsp&nbsp</span>";
-				output += "<span onclick='deleteReplyModalOpen("+ item.askRno +");'>삭제&nbsp&nbsp</span>";
-				output += "<span onclick='nestedReplyModalOpen(" +item.ref  +","+item.refOrder  +","+item.step + ");'>답글&nbsp&nbsp</span>";
+				if("${sessionScope.logInMember.memberId}" == item.memberId || "${sessionScope.logInMember.isAdmin }" == "Y"){
+					output += "<span onclick='modifyReplyModalOpen("+ item.askRno +");'>수정&nbsp&nbsp</span>";
+					output += "<span onclick='deleteReplyModalOpen("+ item.askRno +");'>삭제&nbsp&nbsp</span>";
+				}
+				if(${not empty sessionScope.logInMember.memberId}){
+					output += "<span onclick='nestedReplyModalOpen(" +item.ref  +","+item.refOrder  +","+item.step + ");'>답글&nbsp&nbsp</span>";
+				}
 			}
 			
 			output += "</div>"; // 2
@@ -184,7 +188,7 @@
             	if(data == "success") {
             		viewAskReply();
             	} else if(data == "fail") {
-            		alert("댓글 수정 실패");
+        			notificationModalOpen("댓글 수정 실패");	
             	}
             }, error : function(e) {
 				console.log(e);
@@ -195,7 +199,7 @@
 	// 대댓글 기능
 	function nestedReply() {
 		let askBno = ${board.askBno}
-		let memberId = "admin";
+		let memberId = $("#memberId").val();
 		let contents = $("#nestedReply").val();
 		let ref = $("#targetRef").val();
 		let refOrder = $("#targetRefOrder").val();
@@ -227,7 +231,7 @@
             		viewAskReply();
             		$("#nestedReply").val("");
             	} else if(data == "fail") {
-            		alert("답글 등록 실패");
+        			notificationModalOpen("답글 등록 실패");	
             	}
             }, error : function(e) {
 				console.log(e);
@@ -261,7 +265,7 @@
             	if(data == "success") {
             		viewAskReply();
             	} else if(data == "fail") {
-            		alert("답글 삭제 실패");
+        			notificationModalOpen("답글 삭제 실패");	
             	}
             }, error : function(e) {
 				console.log(e);
@@ -299,7 +303,7 @@
             		changeLikeStatus("register");
             	}
             	else {
-            		alert("좋아요 상태전환 실패");
+        			notificationModalOpen("좋아요 상태전환 실패");	
             	}
             }, error : function(e) {
 				console.log(e);
@@ -318,6 +322,66 @@
 			$("#likeBox").html("<img src='../../../resources/img/ask_like_1.png' />	");
 		}
 	}
+	
+	// 글 수정 시 글쓴이와 세션로그인 인원이 같은지 체크하고, 같으면 수정권한을 줌 + 어드민 가능
+	function modifyAskBoard(){
+		if("${sessionScope.logInMember.memberId }" == "${board.writer }" || "${sessionScope.logInMember.isAdmin }" == "Y"){
+			location.href='/board/ask/modify?no=${board.askBno}';
+		}else{
+			notificationModalOpen("수정권한이 없습니다.");	
+		}
+	}
+
+	// 글 삭제 시 글쓴이와 세션로그인 인원이 같은지 체크하고, 같으면 수정권한을 줌 + 어드민 가능
+	function deleteAskBoard(){
+		if("${sessionScope.logInMember.memberId }" == "${board.writer }" || "${sessionScope.logInMember.isAdmin }" == "Y"){
+			location.href='/board/ask/remove?no=${board.askBno}';
+		}else{
+			notificationModalOpen("삭제권한이 없습니다.");	
+		}
+	}
+	
+	// 답글달기 시 어드민에게만 권한 있음
+	function answerAskBoard(){
+		if("${sessionScope.logInMember.isAdmin }" == "Y"){
+			location.href='/board/ask/answer?no=${board.askBno}';
+		}else{
+			notificationModalOpen("답글권한은 관리자에게만 있습니다.");	
+		}
+	}	
+	
+	
+	// 답글달기 시 어드민에게만 권한 있음
+	function answerAskBoard(){
+		if("${sessionScope.logInMember.isAdmin }" == "Y"){
+			location.href='/board/ask/answer?no=${board.askBno}';
+		}else{
+			notificationModalOpen("답글권한은 관리자에게만 있습니다.");	
+		}
+	}	
+	
+	// 댓글 달 시 로그인을 해야만 권한 있음
+	function addAskReplyCheck(){
+		if(${not empty sessionScope.logInMember.memberId }){
+			addAskReply();
+		}else{
+			notificationModalOpen("댓글을 쓰려면 로그인 해 주십시오");	
+		}
+	}	
+
+	
+	// 알림용 모달 열기
+	function notificationModalOpen(msg) {
+		document.getElementById("notificationModal").style.display = "block";
+		document.getElementById("notificationModalContent").innerHTML = msg;
+	}
+	
+	// 알림용 모달 닫기
+	function notificationModalClose() {
+		document.getElementById("notificationModal").style.display = "none";
+	}
+
+	
 </script>
 <style type="text/css">
 .inline {
@@ -329,6 +393,7 @@
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
 	<div class="container">
+		<div></div>
 		<div class="container p-5 my-5 text-white"
 			style="background-color: #7FAD39;">
 			<a href="/board/ask/list"><h3>문의게시판</h3></a>
@@ -426,14 +491,14 @@
 			<div class="col">
 				<div class="btns">
 					<button type="button" class="btn btn-primary"
-						onclick="location.href='/board/ask/modify?no=${board.askBno}';">글
+						onclick="modifyAskBoard();">글
 						수정</button>
-					<button type="button" class="btn btn-warning"
-						onclick="location.href='/board/ask/remove?no=${board.askBno}';">
-						글삭제</button>
-					<button type="button" class="btn btn-warning"
-						onclick="location.href='/board/ask/answer?no=${board.askBno}';">
-						답글달기</button>
+					<button type="button" class="btn btn-primary"
+						onclick="deleteAskBoard();">글
+						삭제</button>
+					<button type="button" class="btn btn-primary"
+						onclick="answerAskBoard();">답글달기
+						</button>
 					<button type="button" class="btn btn-info"
 						onclick="location.href='/board/ask/list';">목록으로</button>
 				</div>
@@ -463,11 +528,11 @@
 		<div style="font-size: 0; display: flex;">
 			<button type="button" class="btn"
 				style="vertical-align: top; height: 100px; width: 100px"
-				id="memberId" value="test" disabled>작성자</button>
+				id="memberId" value="${sessionScope.logInMember.memberId }" disabled>${sessionScope.logInMember.memberId }</button>
 			<textarea class="form-control" rows="3" id="replyContent" name="text"
 				style="flex-grow: 1; display: inline-block; vertical-align: top; height: 100px"></textarea>
 			<button type="button" class="btn btn-info float-right"
-				id="addAskReplyBtn" onclick="addAskReply();"
+				id="addAskReplyBtn" onclick="addAskReplyCheck();"
 				style="vertical-align: top; height: 100px; width: 100px">등록</button>
 		</div>
 	</div>
@@ -543,6 +608,30 @@
 					<button type="button" class="btn btn-danger"
 						data-bs-dismiss="modal" onclick="deleteReplyModalClose();">Close</button>
 				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!-- 알림용 모달 -->
+	<div class="modal" id="notificationModal">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">알림</h4>
+				</div>
+
+				<!-- Modal body -->
+				<div id="notificationModalContent" class="modal-body"></div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						data-bs-dismiss="modal" onclick="notificationModalClose();">확인</button>
+				</div>
+
 			</div>
 		</div>
 	</div>
