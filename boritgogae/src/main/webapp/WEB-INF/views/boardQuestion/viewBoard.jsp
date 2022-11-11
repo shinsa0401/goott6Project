@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -143,7 +144,7 @@
 		let output = "<div id='replyTop' onclick='replyTop();'><a class='list-group-item list-group-item-action'><div>댓글 ${board.replyCount} 개</div></a></div>";
 		output += "<div class='list-group replyAllCon'>";
 		$.each(data, function(i, item) {
-			
+				
 			step = data[i].step;
 			
 			//style='position: relective; left: 30px;'
@@ -167,10 +168,18 @@
 				output += "<div class='replyWriter'>" + item.replyWriter + "</div>";
 				output += "<div class='replyWrittenDate'>" + item.replyWrittenDate + "</div>";
 				output += "<div class='iconsDiv'>";
-				output += "<span id='toggle"+item.rno+"' onclick='showModifyReply(" + item.rno + ")'><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_modify.png'; />수정</span>";
-				output += "<span onclick='showRemoveReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_trash.png' />삭제</span>";
-				output += "<span onclick='showReReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_reply.png' />댓글</span>";
-				output += "</div>";
+				
+				if ("${sessionScope.logInMember.memberId }" == item.replyWriter) {
+					
+					output += "<span id='toggle"+item.rno+"' onclick='showModifyReply(" + item.rno + ")'><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_modify.png'; />수정</span>";
+					output += "<span onclick='showRemoveReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_trash.png' />삭제</span>";
+				}
+				
+				if (${sessionScope.logInMember != null }) {
+					output += "<span onclick='showReReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_reply.png' />댓글</span>";
+				}
+				
+				output += "</div>";	
 				output += "<div class='replyContent'>" + item.replyContent + "</div>";
 				output += "</div></a></div>";
 				output += "</div>";
@@ -183,9 +192,16 @@
 				output += "<div class='replyWriter'>" + item.replyWriter + "</div>";
 				output += "<div class='replyWrittenDate'>" + item.replyWrittenDate + "</div>";
 				output += "<div class='iconsDiv'>";
-				output += "<span id='toggle"+item.rno+"' onclick='showModifyReply(" + item.rno + ")'><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_modify.png'; />수정</span>";
-				output += "<span onclick='showRemoveReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_trash.png' />삭제</span>";
-				output += "<span onclick='showReReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_reply.png' />댓글</span>";
+				
+				if ("${sessionScope.logInMember.memberId}" == item.replyWriter) {
+					output += "<span id='toggle"+item.rno+"' onclick='showModifyReply(" + item.rno + ")'><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_modify.png'; />수정</span>";
+					output += "<span onclick='showRemoveReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_trash.png' />삭제</span>";
+				}
+				
+				if (${sessionScope.logInMember != null }) {
+					output += "<span onclick='showReReply(" + item.rno + ")';><img class='icons' src='${pageContext.request.contextPath}/resources/img/sth_reply.png' />댓글</span>";
+				}
+				
 				output += "</div>";
 				output += "<div class='replyContent'>" + item.replyContent + "</div>";
 				output += "</div></a></div>";
@@ -195,7 +211,7 @@
 			output += "<div class='replyForm' id='replyForm"+item.rno+"'>";
 			output += "<a class='list-group-item list-group-item-action'>";
 			output += "<div>"
-			output += "<input type='text' class='form-control' id='replyWriter"+item.rno+"' value='${sessionScope.loginMember.userId }' />"
+			output += "<input type='text' class='form-control' id='replyWriter"+item.rno+"' value='${sessionScope.logInMember.memberId }' readonly />"
 			output += "<textarea rows='5' class='form-control' id='replyContent"+item.rno+"'>"+item.replyContent+"</textarea>"
 			output += "<button type='button' class='btn btn-info' onclick='modifyReply("+item.rno+");'>수정</button>"
 			output += "</div></a></div>"
@@ -204,7 +220,7 @@
 			output += "<div class='reReplyForm' id='reReplyForm"+item.rno+"'>";
 			output += "<a class='list-group-item list-group-item-action'>";
 			output += "<div>"
-			output += "<input type='text' class='form-control' id='reReplyWriter"+item.rno+"' value='${sessionScope.loginMember.userId }' />"
+			output += "<input type='text' class='form-control' id='reReplyWriter"+item.rno+"' value='${sessionScope.logInMember.memberId }' readonly />"
 			output += "<textarea rows='5' class='form-control' id='reReplyContent"+item.rno+"'></textarea>"
 			output += "<button type='button' class='btn btn-info' onclick='reReply("+item.rno+");'>추가</button>"
 			output += "</div></a></div>"
@@ -562,8 +578,11 @@
 	
 	
 		<div id="btns">
-	         <button type="button" class="btn btn-primary" onclick="location.href='/board/question/modify?no=${board.no}';">수정</button>
-	         <button type="button" class="btn btn-danger" onclick="removeModal();">삭제</button>
+			 <c:if test="${sessionScope.logInMember != null }">
+			 	<button type="button" class="btn btn-primary" onclick="location.href='/board/question/modify?no=${board.no}';">수정</button>
+	         	<button type="button" class="btn btn-danger" onclick="removeModal();">삭제</button>
+			 </c:if>
+	         
 	         <button type="button" class="btn btn-secondary" onclick="javascript:history.back();">뒤로가기</button>
 	         <button type="button" class="btn text-white" style="background-color: #7FAD39;"
 	            onclick="location.href='/board/question?pageNo=1';">전체목록</button>

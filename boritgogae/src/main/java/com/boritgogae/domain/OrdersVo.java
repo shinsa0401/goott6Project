@@ -20,6 +20,7 @@ public class OrdersVo {
 	private String detailAddress;
 	private int postCode;
 	private int accumPoint;
+	
 	public int getOrderNo() {
 		return orderNo;
 	}
@@ -131,6 +132,7 @@ public class OrdersVo {
 				+ ", address=" + address + ", detailAddress=" + detailAddress + ", postCode=" + postCode
 				+ ", accumPoint=" + accumPoint + "]";
 	}
+
 	public OrdersVo(int orderNo, String memberId, int prodTotalPrice, String deliveryOption, int totalPrice,
 			Timestamp orderDate, String isMember, String phoneNumber, String guestEmail, String guestPwd, String name,
 			String memo, int usedPoint, String address, String detailAddress, int postCode, int accumPoint) {

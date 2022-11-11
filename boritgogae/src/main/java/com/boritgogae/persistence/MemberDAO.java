@@ -1,41 +1,75 @@
 package com.boritgogae.persistence;
 
 import java.util.List;
-import java.sql.Timestamp;
 
-import com.boritgogae.domain.LogInDTO;
-import com.boritgogae.board.prodReply.domain.ReviewVO;
-import com.boritgogae.domain.CouponUsedVo;
-import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.DeliveryVo;
 import com.boritgogae.domain.DetailOrderVo;
 import com.boritgogae.domain.ExchangeVo;
 import com.boritgogae.domain.TotalOrderListVo;
 import com.boritgogae.domain.GradesVo;
+import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.PointHistoryVo;
+
+import java.sql.Timestamp;
+
+import java.util.Map;
+
+import com.boritgogae.board.free.domain.FreeSearchCondition;
+import com.boritgogae.board.prodReply.domain.ReviewVO;
+import com.boritgogae.domain.CouponUsedVo;
+import com.boritgogae.domain.CouponVo;
+import com.boritgogae.domain.DM;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
 
 public interface MemberDAO {
+	
+	//멤버정보 가져오는 메서드
+	public MemberVo getMemInfo(String memberId);
+	   
+	//멤버 주소지 가져오는메서드
+	public List<DeliveryInfoVo> getMemAddrs(String memberId);
+	   
+	//멤버 등급 가져오는 메서드
+	public GradesVo getGrade(String memberId);
+	
+	public int updateMemberPoint(String memberId);
+
+
+
 
 	// 로그인하기 위해 회원정보를 얻어오는 메서드
 	public MemberVo logIn(LogInDTO dto) throws Exception;
 
-	// 자동로그인을 체크한 회원의 세션의 정보를 업데이트
+	// 자동로그인을 체크한 회원의 세션의 정보를 업데이트하는 메서드
 	public int updateMemberSession(String memberId, String sessionId, Timestamp sessionLimit) throws Exception;
 
-	// 자동로그인 체크한 회원인지 검색
+	// 자동로그인 체크한 회원인지 검색하는 메서드
 	public MemberVo selectAutoLogIn(String sessionId) throws Exception;
 
-	// 로그인시 로그인시간 업데이트
+	// 로그인시 로그인시간 업데이트하는 메서드
 	public int updateLogInDate(String memberId) throws Exception;
 	
-	// 로그아웃시 로그아웃시간 업데이트
+	// 로그아웃시 로그아웃시간 업데이트하는 메서드
 	public int updateLogOutDate(String memberId) throws Exception;
+	
+	// 이메일로 회원 아이디 검색하는 메서드
+	public MemberVo selectMemberId(String memberEmail) throws Exception;
+	
+	// 회원 아이디가 맞는지 체크하는 메서드
+	public int checkMemberId(String memberId) throws Exception;
+	
+	// 회원 비밀번호 업데이트하는 메서드
+	public int updatePwd(String memberId, String memberPwd) throws Exception;
+	
+	// 회원 비밀번호 업데이트 이후 lastPwdUpdate 컬럼 업데이트
+	public int updateLastPwdUpdate(String memberId) throws Exception;
+	
 	
 	// 등급혜택을 가져오는 메서드
 	public List<GradesVo> showGradeBenefit() throws Exception;
@@ -66,7 +100,6 @@ public interface MemberDAO {
 
 	// 유저가 리뷰를 쓰지 않은 구매확정 리스트를 가져오는 메서드
 	public List<OrderDetailVo> userAbleReviewList(String memberId) throws Exception;
-
 
 	// 상품코드에 맞는 상품명을 반환해준다.
 	public String convertProdNoToProdName(String prodCode) throws Exception;
@@ -119,7 +152,6 @@ public interface MemberDAO {
 
 	// 주문취소시 쿠폰 업데이트
 	public int orderCancleCoupon(String orderCancleOrderNo) throws Exception;
-
 	
 	// 주문취소시 사용했던 포인트 가져오기
 	public int orderCancleUsedPoint(String orderCancleOrderNo) throws Exception;
@@ -189,6 +221,38 @@ public interface MemberDAO {
 	public List<Integer> getOrderCompletedList(String orderNo);
 
 
+
+
+	public List<ProductVo> selectLike (String memberId)throws Exception;
+
+	public int likeProduct (String prodNo)throws Exception;
+	
+	
+	
+	
+	
+	
+	public int memberjoin(MemberVo vo) throws Exception;
+	
+	public void joindelivery(DeliveryInfoVo dv)throws Exception;
+	
+	public int checkid(String memberId)throws Exception;
+	
+	public int checkname(String memberName)throws Exception;
+
+
+	public int checkemail(String memberEmail)throws Exception;
+
+	public int searchResultCnt(FreeSearchCondition sc) throws Exception;
+
+	public List<DM> searchSelectPage(FreeSearchCondition sc) throws Exception;
+
+	public int sendDel(String no) throws Exception;
+	public DM detaildm(int no)throws Exception;
+	
+	public int insertWriter(DM dm)throws Exception;
+
+	
 
 
 }

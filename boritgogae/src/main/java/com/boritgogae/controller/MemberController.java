@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
 
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,14 +38,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.ask.etc.AskUploadFileProcess;
+import com.boritgogae.board.free.domain.FreePageHandler;
+import com.boritgogae.board.free.domain.FreeSearchCondition;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
+import com.boritgogae.domain.DM;
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.DeliveryVo;
 import com.boritgogae.domain.DetailOrderVo;
@@ -54,6 +58,7 @@ import com.boritgogae.domain.TotalOrderListVo;
 import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.GuestOrderDTO;
 import com.boritgogae.domain.PointHistoryVo;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
 import com.boritgogae.service.MemberService;
@@ -61,8 +66,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrdersVo;
-import com.boritgogae.domain.OrderDetailVo;
-import com.boritgogae.service.MemberService;
 
 @Controller
 @RequestMapping(value="/member/*") // member 요청들 매핑
@@ -929,23 +932,48 @@ public class MemberController {
 		service.orderCanclePointUpdate(memberId, pointUpdate);
 	}
 	
-	// 무진씨 이메일 관련
-	@RequestMapping (value="/mailCheck")
+	/**
+	 * @methodName : mailCheck
+	 * @author : 강무진 - 수정 신태호
+	 * @date : 2022. 10. 31.
+	 * @입력 param : 
+	 * @returnType : String
+	 * 6자리의 임의의 인증번호 이메일 전송 - 호출한 페이지에 따라 제목과 내용을 다르게 설정 
+	 */
+	@RequestMapping(value="/mailCheck", method = RequestMethod.POST)
 	@ResponseBody
-	public String mailCheck(String email) throws Exception{
-		System.out.println("이메일 데이터 전송확인");
-		System.out.println("인증 메일 : "+email);
+	public String mailCheck(@RequestParam("email")String email, HttpServletRequest request) throws Exception{
+		System.out.println("인증 메일 : " + email);
 		
 		Random random = new Random();
 		int checkNum = random.nextInt(888888)+111111; 
-		System.out.println("인증번호 : "+checkNum);
+		System.out.println("인증번호 : " + checkNum);
 		
 		//이메일 보내기
-		String setFrom = "eliaqua@naver.com"; // 네이버 아이디
+		String setFrom = "goott6@naver.com"; // 네이버 아이디
 		String toEmail = email;
-		String title = "test";
-		String content = "가입해주셔서 감사합니다."+ "<br/><br/>"+"인증 번호는 "+checkNum+" 입니다.<br/>"+
-							"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+		String title = "";
+		String content = "";
+		// 요청한 이전페이지를 판단해서 제목과 내용 달라짐
+		String referer = request.getHeader("referer");
+		System.out.println(referer);
+		
+		if (referer.contains("/join")) { // 회원가입 일 때
+			title = "보릿고개 회원 가입 이메일 인증";
+			content = "가입해주셔서 감사합니다."+ "<br/><br/>"
+						+"인증 번호는 "+checkNum+" 입니다.<br/>"
+						+"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+			
+			System.out.println("회원가입 이메일 전송확인");
+		} else if (referer.contains("/find")) { // 아이디찾기, 비밀번호 재설정 일 때
+			title = "보릿고개 회원 정보 이메일 인증";
+			content = "이용해주셔서 감사합니다." + "<br/><br/>" 
+						+ "인증 번호는 " + checkNum + " 입니다.<br/>" 
+						+ "해당 인증번호를 인증번호 입력란에 기입하여 주세요.";
+			
+			System.out.println("아이디찾기/비밀번호설정 이메일 전송확인");
+		}
+		
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
@@ -953,9 +981,10 @@ public class MemberController {
             helper.setTo(toEmail);
             helper.setSubject(title);
             helper.setText(content,true);
-            mailSender.send(message);
             
-        }catch(Exception e) {
+            mailSender.send(message);
+            System.out.println("이메일 전송 완료");
+        } catch(Exception e) {
             e.printStackTrace();
         }
         
@@ -966,25 +995,35 @@ public class MemberController {
 	/**
 	 * @methodName : logIn
 	 * @author : 신태호
-	 * @date : 2022. 10. 20.
-	 * @입력 param : request, session
+	 * @date : 2022. 10. 17.
+	 * @입력 param : HttpServletRequest request, HttpSession ses
 	 * @returnType : String
 	 * 로그인 정보를 입력하기 위한 로그인 페이지 호출
 	 */
 	@RequestMapping(value = "/logIn")
 	public String logIn(HttpServletRequest request, HttpSession ses) {
+		System.out.println("로그인 페이지");
+		
+		String memberId = (String) ses.getAttribute("memberId");
+		System.out.println(memberId);
+		
+		// 아이디찾기에서 세션에 저장된 memberId 삭제
+		if (ses.getAttribute("memberId") != null) {
+			ses.removeAttribute("memberId");
+			ses.invalidate();
+		}
 		
 		// 현재 페이지로 오기전 URL 정보를 referer에 저장
 		String referer = request.getHeader("Referer");
 		
 		// 이전페이지로 돌아가기 위한 Referer 헤더값을 세션의 destination에 저장
 		// (로그인 여러회 실패시 이전페이지로 제대로 돌아가기 위함)
-	    if (referer != null && !referer.contains("logIn")) {
-	        request.getSession().setAttribute("destination", referer);
+	    if (referer != null && !referer.contains("logIn")) { // 로그인페이지 제외
+	    	if (!referer.contains("find")) { // + 찾기페이지 제외
+	    		ses.setAttribute("destination", referer);
+	    	}
 	    }
 		
-		System.out.println("로그인 하기");
-
 		return "member/logIn";
 	}
 	 
@@ -998,10 +1037,10 @@ public class MemberController {
 	 * 로그인 정보를 입력하고 난 후 인터셉터핸들러에 의해 로그인 처리
 	 */
 	@RequestMapping(value = "/logInPost", method = RequestMethod.POST)
-	public void logInPost(LogInDTO dto, Model model, HttpSession ses, HttpServletRequest request) throws Exception {
+	public void logInPost(LogInDTO dto, Model model, HttpSession ses) throws Exception {
 		// 인터셉터 preHandle 수행하고 옴
 		
-		MemberVo logInMember = service.logIn(dto, request);
+		MemberVo logInMember = service.logIn(dto);
 		
 		if (logInMember == null) { // 로그인 실패 유저
 			return;
@@ -1042,15 +1081,252 @@ public class MemberController {
 			
 			ses.removeAttribute("logInMember"); // 로그인 정보 삭제
 			ses.invalidate(); // 세션 만료
-			
+		}
+		System.out.println("로그아웃");
+		response.sendRedirect("/");
+	}
+	
+	/**
+	 * @methodName : findId
+	 * @author : 신태호
+	 * @date : 2022. 10. 26.
+	 * @입력 param : 
+	 * @returnType : String
+	 * 아이디 찾기 페이지 호출
+	 */
+	@RequestMapping(value = "/findId")
+	public String findId() throws Exception {
+		System.out.println("컨트롤러 : 아이디 찾기 페이지로 이동");
+		return "member/findId";
+	}
+	
+	/**
+	 * @methodName : emailAuthAfter
+	 * @author : 신태호
+	 * @date : 2022. 10. 26.
+	 * @입력 param :
+	 * @returnType : String
+	 * 이메일 인증이 확인되고 나서 이후 단계
+	 */
+	@RequestMapping(value = "/emailAuthAfter", method = RequestMethod.POST)
+	public ResponseEntity<MemberVo> emailAuthAfter(HttpSession ses, @RequestBody MemberVo findMember) throws Exception {
+		ResponseEntity<MemberVo> result = null;
+		
+		System.out.println("컨트롤러 이메일 : " + findMember.getMemberEmail());
+		String memberEmail = findMember.getMemberEmail();
+		
+		// 입력받은 이메일로 아이디 검색
+		MemberVo member = service.selectMemberId(memberEmail);
+		System.out.println(member.toString());
+		
+		// 검색결과가 있다면
+		if (member != null) {
+			// 찾은 아이디 세션에 저장(비밀번호재설정 인증없이 바로 넘기기위함)
+			ses.setAttribute("memberId", member.getMemberId());
+			System.out.println("아이디 찾기 성공");
+			result = new ResponseEntity<>(member, HttpStatus.OK);
+		} 
+		
+		return result;
+		
+	}
+	
+	/**
+	 * @methodName : findPwd
+	 * @author : 신태호
+	 * @date : 2022. 10. 26.
+	 * @입력 param :
+	 * @returnType : String
+	 * 비밀번호 재설정 페이지 호출
+	 */
+	@RequestMapping(value = "/findPwd")
+	public String findPwd(HttpSession ses, Model model) throws Exception {
+		System.out.println("컨트롤러 : 비밀번호 재설정 페이지로 이동");
+		
+		String memberId = (String) ses.getAttribute("memberId");
+		System.out.println("세션에저장된 아이디 : " + memberId);
+		
+		if (ses.getAttribute("memberId") != null) {
+			System.out.println("세션에 저장된 아이디가 있다");
+			model.addAttribute("memberId", memberId); // 뷰단으로 바인딩
 		}
 		
-		System.out.println("로그아웃");
+		return "member/findPwd";
 		
-		response.sendRedirect("/");
+	}
+	
+	/**
+	 * @methodName : idCheck
+	 * @author : 신태호
+	 * @date : 2022. 10. 27.
+	 * @입력 param :
+	 * @returnType : String
+	 */
+	@RequestMapping(value = "/idCheck")
+	public ResponseEntity<String> idCheck(@RequestParam("memberId")String memberId) throws Exception {
+		ResponseEntity<String> result = null;
+		
+		if (service.checkMemberId(memberId) == 1) { // 회원 아이디가 맞다면
+			result = new ResponseEntity<String>("success", HttpStatus.OK);
+		} else { // 검색되는 아이디가 없다면
+			result = new ResponseEntity<String>("fail", HttpStatus.OK);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * @methodName : pwdUpdate
+	 * @author : 신태호
+	 * @date : 2022. 10. 27.
+	 * @입력 param :
+	 * @returnType : ResponseEntity<String>
+	 */
+	@RequestMapping(value = "/pwdUpdate")
+	public ResponseEntity<String> pwdUpdate(@RequestParam("memberId")String memberId, @RequestParam("memberPwd")String memberPwd) throws Exception {
+		ResponseEntity<String> result = null;
+		
+		if (service.updatePwd(memberId, memberPwd) == 1) {
+			result = new ResponseEntity<String>("success", HttpStatus.OK);
+		} else {
+			result = new ResponseEntity<String>("fail", HttpStatus.OK);
+		}
+		
+		return result;
+	}
+	
+	
+
+	@RequestMapping(value = "/joinOk", method = RequestMethod.POST)
+	public String joinOk(DeliveryInfoVo dv, MemberVo vo, HttpServletResponse response)  {
+		
+	
+		
+		try {
+			service.memberjoin(vo, response,dv);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	 System.out.println("확인!!!!!!!!!!!!!!!!!!!!!!!!"+vo);
+	 System.out.println("확인!!!!!!!!!!!!!!!!!!!!!!!!"+dv);
+		return"/member/join";
+	}
+	 @RequestMapping(value = "/ex")
+		public String test() throws Exception {
+			
+			
+			
+			 return "/member/ex";
+			
+		}
+	 
+	 
+	 @RequestMapping(value = "/send")
+
+		public void sendtest(DM dm, @RequestParam("noteContent")String noteContent,@RequestParam("receiverId")String receiverId) throws Exception {
+			
+				service.insertWriter(dm);
+			
+			
+		}
+	
+	
+	 @RequestMapping(value = "/join")
+	public String join( ) {
+		 
+		 return "/member/join";
+		
 	}
 	
 	
 	
+	@RequestMapping(value = "/like")
+	public ModelAndView like(Model m, ProductVo pv ) throws Exception {
+		
+		 ModelAndView mav = new ModelAndView();
+		 
+		 mav.setViewName("member/like");
+		 
+		
+		String memberId = "haha";
+		List<ProductVo> list = service.selectLike(memberId);
 	
+        m.addAttribute("list", list);
+        
+        
+
+   
+       
+        
+		
+		System.out.println("확인!!!!!!!");
+		
+		return mav;
+	}
+	
+	
+	
+	 @RequestMapping(value = "/DM")
+	    public ModelAndView list(Model m, FreeSearchCondition sc, HttpServletRequest request) throws Exception {
+		 ModelAndView mav = new ModelAndView();
+			
+				mav.setViewName("member/DM");
+
+	            int totalCnt = service.getSearchResultCnt(sc);
+	            m.addAttribute("totalCnt", totalCnt);
+
+	            FreePageHandler pageHandler = new FreePageHandler(totalCnt, sc);
+
+	            List<DM> list = service.getSearchResultPage(sc);
+	            m.addAttribute("list", list);
+	            m.addAttribute("ph", pageHandler);
+	            System.out.println("list"+list);
+	           
+
+	        return mav; // 로그인을 한 상태이면, 게시판 화면으로 이동
+	           
+
+			
+	    }
+	
+	 //@RequestParam("tdArr")List[] tdArr
+	 @RequestMapping(value = "/delDM")
+		public ModelAndView delBoard(@RequestParam("tdArr[]")List<String> tdArr)throws Exception{
+		 ModelAndView mav = new ModelAndView();
+		 mav.setViewName("member/DM");
+		System.out.println(tdArr);
+		
+	
+		
+		 for(String no : tdArr) {
+			 service.sendDel(no);
+		 }
+		 
+		
+			return mav;
+		}
+
+
+	@RequestMapping(value = "/dmdetail")
+		public ModelAndView boardDetail( Model model,@RequestParam("no") String no)throws Exception{
+		 int bno = Integer.parseInt(no);
+		 
+		 ModelAndView mav = new ModelAndView();
+			mav.setViewName("member/dmdetail");
+		 
+		 Map<String,Object> map = service.detaildm(bno);
+		 
+		 DM dm = (DM)map.get("dm");
+		 
+		 model.addAttribute("dm", dm);
+		 
+		 return mav;
+		 
+		 
+	}
+
 }

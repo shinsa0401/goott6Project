@@ -26,6 +26,8 @@
     padding: 0 20px 0 45px;
     height: 40px;
     transition: all 0.3s ease 0s;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 .form-horizontal .form-control:focus{
     background: #e0e0e0;

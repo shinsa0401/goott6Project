@@ -40,7 +40,6 @@
 	<beans:bean id="authInterceptor" class="com.boritgogae.interceptor.AuthInterceptor">
 	</beans:bean>
 	
-	
 	<!-- 인터셉터에 의해 mapping되는 URI 지정 -->
 	<interceptors>
 		<!-- /member/logInPost URI에 요청이 들어오면 logInInterceptor객체가 가로채어 수행된다 -->
@@ -55,10 +54,7 @@
 			<!-- 질문게시판 신태호 -->
 			<mapping path="/board/question/write"/> <!-- 글 쓰기 -->
 			<mapping path="/board/question/modify"/> <!-- 글 수정 -->
-			<mapping path="/questionReply/write"/> <!-- 댓글쓰기 -->
-			<mapping path="/questionReply/modify"/> <!-- 댓글수정 -->
-			<mapping path="/questionReply/remove"/> <!-- 댓글삭제 -->
-			<mapping path="/questionReply/reReply"/> <!-- 대댓글쓰기 -->
+			
 			
 			<!-- 문의게시판 정인식 -->
 			<mapping path="/board/ask/register"/> <!-- 글 쓰기 -->

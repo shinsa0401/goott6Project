@@ -1,10 +1,14 @@
 package com.boritgogae.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
 
@@ -17,13 +21,14 @@ import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.board.free.domain.FreeSearchCondition;
 import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
+import com.boritgogae.domain.DM;
 import com.boritgogae.domain.GradesVo;
-import com.boritgogae.domain.MemberVo;
-import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.PointHistoryVo;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
 import com.boritgogae.persistence.MemberDAO;
@@ -34,9 +39,13 @@ public class MemberServiceImpl implements MemberService {
 	@Inject 
 	private MemberDAO dao;
 
+	@Inject
+	private MemberDAO memDao;
+
+
 	// 로그인 처리하는 메서드
 	@Override
-	public MemberVo logIn(LogInDTO dto, HttpServletRequest request) throws Exception {
+	public MemberVo logIn(LogInDTO dto) throws Exception {
 		
 		MemberVo logInMember = dao.logIn(dto);
 		
@@ -52,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
 		return logInMember;
 	}
 
-	// 자동로그인을 체크했을 경우 로그인 유지를 위한 sessionId, sessionLimit 업데이트 
+	// 자동로그인을 체크했을 경우 로그인 유지를 위한 세션정보 업데이트하는 메서드
 	@Override
 	public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit) throws Exception {
 		
@@ -66,14 +75,40 @@ public class MemberServiceImpl implements MemberService {
 		return dao.selectAutoLogIn(sessionId);
 	}
 	
-	// 기존 회원 로그아웃 시간 업데이트
+	// 기존 회원 로그아웃 시간 업데이트하는 메서드
 	@Override
 	public int updateLogOutDate(String memberId) throws Exception {
 		
 		return dao.updateLogOutDate(memberId);
 	}
 	
+	// 이메일로 회원 아이디 검색하는 메서드
+	@Override
+	public MemberVo selectMemberId(String memberEmail) throws Exception {
+		System.out.println("서비스 : 이메일로 회원 아이디 검색");
+		return dao.selectMemberId(memberEmail);
+		
+	}
 	
+	// 비밀번호 재설정 전 회원 아이디 확인하는 메서드
+	@Override
+	public int checkMemberId(String memberId) throws Exception {
+		
+		return dao.checkMemberId(memberId);
+	}
+	
+	// 회원 비밀번호 업데이트하는 메서드
+	@Override
+	public int updatePwd(String memberId, String memberPwd) throws Exception {
+		int result = 0;
+		
+		// 비밀번호 업데이트하고나서 lastPwdUpdate 컬럼 현재시간으로 업데이트
+		if (dao.updatePwd(memberId, memberPwd) == 1) {
+			result = dao.updateLastPwdUpdate(memberId);
+		}
+		
+		return result;
+	}
 	
 	// 등급혜택을 가져오는 메서드
 	@Override
@@ -439,6 +474,134 @@ public class MemberServiceImpl implements MemberService {
 		System.out.println("서비스단 : 주문테이블 업데이트");
 		return dao.updateOrdersTable(newOrder, orderNo);
 	}
+
+
+
+
+
+	@Override
+	public MemberVo getMemberInfo(String memberId) {
+		
+		return memDao.getMemInfo(memberId);
+	}
+
+	@Override
+	public List<DeliveryInfoVo> getMemAddrs(String memberId) {
+		
+		return memDao.getMemAddrs(memberId);
+	}
+
+	@Override
+	public GradesVo getGrade(String memberId) {
+		
+		return memDao.getGrade(memberId);
+	}
+
+
+	@Override
+	public int memberjoin(MemberVo vo,HttpServletResponse response,DeliveryInfoVo dv) throws Exception {
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		dv.setMemberId(vo.getMemberId());
+		dv.setRecipient(vo.getMemberName());
+		dv.setRecipientPhoneNumber(vo.getPhoneNumber());
+		
+		
+		
+		if (dao.checkid(vo.getMemberId()) == 1) {
+			out.println("<script>");
+			out.println("alert('동일한 아이디가 있습니다.');");
+			out.println("history.go(-1);");
+			out.println("</script>");
+			out.close();
+			return 0;
+		} else {
+			dao.memberjoin(vo);
+			dao.joindelivery(dv);
+			return 1;
+		}
+	
+		
+	}
+
+	@Override
+	public void checkid(String memberId, HttpServletResponse response) throws Exception {
+		PrintWriter out = response.getWriter();
+		out.println(dao.checkid(memberId));
+		out.close();
+		
+	}
+
+	@Override
+	public void checkname(String memberName,HttpServletResponse response) throws Exception {
+		PrintWriter out = response.getWriter();
+		out.println(dao.checkname(memberName));
+		out.close();
+		
+	}
+
+	@Override
+	public void checkemail(String memberEmail,HttpServletResponse response) throws Exception {
+		PrintWriter out = response.getWriter();
+		out.println(dao.checkemail(memberEmail));
+		out.close();
+		
+	}
+
+	@Override
+	public List<ProductVo> selectLike(String memberId) throws Exception {
+	 
+		
+		return dao.selectLike(memberId);
+	}
+
+
+
+	@Override
+	public int likeProduct(String prodNo) throws Exception {
+		
+		return dao.likeProduct(prodNo);
+	}
+
+	@Override
+    public int getSearchResultCnt(FreeSearchCondition sc) throws Exception {
+        return dao.searchResultCnt(sc);
+    }
+
+    @Override
+    public List<DM> getSearchResultPage(FreeSearchCondition sc) throws Exception {
+        return dao.searchSelectPage(sc);
+    }
+	
+    @Override
+    public int sendDel(String no)throws Exception{
+    	
+    	
+    	return dao.sendDel(no);
+    }
+
+
+
+	@Override
+	public Map<String, Object> detaildm(int no) throws Exception {
+		
+		DM dm = dao.detaildm(no);
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("dm", dm);
+
+		return map;
+	}
+
+
+
+	@Override
+	public int insertWriter(DM dm) throws Exception {
+		
+		return dao.insertWriter(dm);
+	}
+
+	
 
 
 

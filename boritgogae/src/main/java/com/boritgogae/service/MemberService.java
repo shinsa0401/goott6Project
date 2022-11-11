@@ -1,10 +1,10 @@
 package com.boritgogae.service;
 
 import java.util.List;
-import java.sql.Timestamp;
+import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.boritgogae.domain.DeliveryInfoVo;
+import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDetailVo;
@@ -21,15 +21,53 @@ import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.MemberVo;
 import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.PointHistoryVo;
+import java.sql.Timestamp;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Service;
+import com.boritgogae.board.free.domain.FreeSearchCondition;
+import com.boritgogae.board.prodReply.domain.ReviewVO;
+import com.boritgogae.domain.DM;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
 
+@Service
 public interface MemberService {
+	
+	/**
+	 * @methodName : getMemberInfo
+	 * @author : kjy
+	 * @date : 2022. 10. 19.
+	 * @입력 param : memberId
+	 * @returnType : MemberVo
+	 **/
+	public MemberVo getMemberInfo(String memberId);
+	
+	/**
+	 * @methodName : getMemAddrs
+	 * @author : kjy
+	 * @date : 2022. 10. 21.
+	 * @입력 param : memberId
+	 * @returnType : List<DeliveryInfoVo>
+	 **/
+	public List<DeliveryInfoVo> getMemAddrs(String memberId);
+	
+	/**
+	 * @methodName : getGrade
+	 * @author : kjy
+	 * @date : 2022. 10. 23.
+	 * @입력 param : memberId
+	 * @returnType : GradeVo
+	 **/
+	public GradesVo getGrade(String memberId);
+
+
 
 	// 로그인을 처리하는 메서드
-	public MemberVo logIn(LogInDTO dto, HttpServletRequest request) throws Exception;
+	public MemberVo logIn(LogInDTO dto) throws Exception;
 
-	// 자동로그인을 체크했을 경우 로그인 유지를 위한 sessionId, sessionLimit 업데이트하는 메서드
+	// 자동로그인을 체크했을 경우 로그인 유지를 위한 세션정보 업데이트하는 메서드
 	public int keepLogIn(String memberId, String sessionId, Timestamp sessionLimit) throws Exception;
 	
 	// 자동 로그인을 체크한 회원인지 검색하는 메서드
@@ -37,6 +75,15 @@ public interface MemberService {
 	
 	// 회원 로그아웃시 로그아웃시간 업데이트하는 메서드
 	public int updateLogOutDate(String memberId) throws Exception;
+	
+	// 이메일로 회원 아이디 검색하는 메서드
+	public MemberVo selectMemberId(String memberEmail) throws Exception;
+	
+	// 비밀번호 재설정 전 회원 아이디 확인하는 메서드
+	public int checkMemberId(String memberId) throws Exception;
+	
+	// 회원 비밀번호 업데이트하는 메서드
+	public int updatePwd(String memberId, String memberPwd) throws Exception;
 
 	// 등급혜택을 가져오는 메서드
 	public List<GradesVo> showGradeBenefit() throws Exception;
@@ -87,8 +134,7 @@ public interface MemberService {
 	public int deleteAddr(String memberId, String deliveryInfo) throws Exception;
 
 	// 회원이 주소지를 추가할 때의 메서드
-	public int addAddr(String memberId, String address, String detailAddress, String postCode, String recipient,
-			String recipientPhoneNumber) throws Exception;
+	public int addAddr(String memberId, String address, String detailAddress, String postCode, String recipient, String recipientPhoneNumber) throws Exception;
 
 	// 회원이미지를 추가하는 메서드
 	public int addMemberImg(String memberId, String memberImg) throws Exception;
@@ -186,9 +232,25 @@ public interface MemberService {
 	// 주문테이블 업데이트 
 	public int updateOrdersTable(OrdersVo newOrder, String orderNo) throws Exception;
 
-
+	public int likeProduct(String prodNo) throws Exception;
 	
-
+	public List<ProductVo> selectLike(String memberId) throws Exception;
 	
+	public int memberjoin(MemberVo vo,HttpServletResponse response,DeliveryInfoVo dv) throws Exception;
+	
+	public void checkid(String memberId,HttpServletResponse response) throws Exception;
+	
+	public void checkname(String memberName,HttpServletResponse response)throws Exception;
+	
+	public void checkemail(String memberEmail,HttpServletResponse response)throws Exception;
 
+	int getSearchResultCnt(FreeSearchCondition sc) throws Exception;
+
+	List<DM> getSearchResultPage(FreeSearchCondition sc) throws Exception;
+
+	int sendDel(String no) throws Exception;
+	
+	public Map<String, Object> detaildm(int no)throws Exception;
+	
+	public int insertWriter(DM dm)throws Exception;
 }

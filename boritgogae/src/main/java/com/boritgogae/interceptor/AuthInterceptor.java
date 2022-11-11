@@ -35,9 +35,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		// 로그인 페이지로 이동하기 전에 세션에 저장
 		ses.setAttribute("destination", destination);
 		
-		
 		if (ses.getAttribute("logInMember") == null) { // 로그인 하지 않았다
-			
 			// AutoLogInCookie이름의 쿠키를 찾아줌
 			Cookie AutoLogInCookie = WebUtils.getCookie(request, "AutoLogInCookie");
 			
@@ -49,11 +47,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 					return true; // 컨트롤러 단으로 돌아감
 				}
 			}
-			
 			response.sendRedirect("/member/logIn"); // 로그인 페이지로 이동
 			return false;
 		}
-		
 		return true;
 	}
 

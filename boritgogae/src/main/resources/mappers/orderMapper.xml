@@ -4,23 +4,162 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.boritgogae.orderMapper">
-  	<!-- 장바구니 -->
-  	<insert id="addCart">
-  		insert into cart (prodNo, memberId, qty, sessionId,sessionLimit) values('CB1AR05W00M03S03C00E00',null,1 ,'7as8d787s8a78dada',now())
-  	</insert>
-  	<select id="selectCartList" resultType="com.boritgogae.domain.CartDTO">
-  		select * from cart where memberId='haha' or sessionId =''
+  
+  <!-- 사용가능한 쿠폰 얻어옴 -->
+  	<select id="getUsableCoupon" resultType="com.boritgogae.domain.CouponUsedVo">
+  		select * from couponUsed where memberId = #{memberId} and orderNo is null
   	</select>
+  	
+  	<!-- 쿠폰이름으로 쿠폰vo얻어옴 -->
+  	<select id="getCouponByCouponName" resultType="com.boritgogae.domain.CouponVo">
+  		select * from coupon where couponName = #{couponName}
+  	</select>
+  	
+  	<!-- 배송비정보 얻어옴 -->
+  	<select id="getDeliveryFeeVo" resultType="com.boritgogae.domain.DeliveryFeeVo">
+  		select * from deliveryFee where deliveryOption = #{deliveryOption}
+  	</select>
+  	
+  	<!-- 주문 인서트 -->
+  	<insert id="insertOrder">
+  	insert into orders (memberId, prodTotalPrice, deliveryOption, totalPrice, isMember, phoneNumber, guestEmail, guestPwd, name, memo, usedPoint, address, detailAddress, postCode, accumPoint) values (#{memberId}, #{prodTotalPrice}, #{deliveryOption}, #{totalPrice}, #{isMember}, #{phoneNumber}, #{guestEmail}, #{guestPwd}, #{name},#{memo}, #{usedPoint}, #{address}, #{detailAddress}, #{postCode}, #{accumPoint})
+  	</insert>
+  	
+  	<!-- 마지막 주문번호 불러오기 -->
+  	<select id="getLastOrderNo" resultType="int">
+  		select max(orderNo) from orders
+  	</select>
+  	
+  	<!-- 주문상세 인서트 -->
+  	<insert id="insertDetailOrder">
+  		insert into detailOrder (orderNo, prodNo, qty, prodSubTotalPrice, memberId) values(#{orderNo}, #{prodNo}, #{qty}, #{prodSubTotalPrice}, #{memberId})
+  	</insert>
+  	
+  	<!-- 마지막 주문상세 번호 불러오기 -->
+  	<select id="getLastDetailNo" resultType="int">
+  		select max(orderDetailNo) from detailOrder
+  	</select>
+  	
+  	<!-- 주문상세 최초상세번호 업데이트 -->
+  	<update id="updateDetailInit">
+  		update detailOrder set initialOrderDetailNo = orderDetailNo where orderDetailNo = #{lastDetailNo}
+  	</update>
+  	
+  	<!-- 포인트 번호 가져오기 -->
+  	<select id="getPointNo" resultType="int">
+  		select pointNo from pointWhy where pointWhy = #{pointWhy}
+  	</select>
+  	
+  	<!-- 포인트내역에 인서트 -->
+  	<insert id="insertPointHistory">
+  		insert into pointHistory (memberId, pointNo, pointHistory, orderNo) values(#{memberId}, #{pointNo}, #{pointHistory}, #{orderNo})
+  	</insert>
+  	
+  	<!-- 쿠폰사용내역 업데이트 -->
+  	<update id="updateCouponUsed">
+  		update couponUsed set orderNo = #{orderNo}, useDate = #{useDate} where memberId = #{memberId} and couponName =#{couponName}
+  	</update>
+  	
+  	<!-- 주문번호로 주문건 가져오기 -->
+  	<select id="getOrderByOrderNo" resultType="com.boritgogae.domain.OrdersVo">
+  		select * from orders where orderNo = #{orderNo}
+  	</select>
+
+	
+	<!-- 장바구니 -->
+  	 
+  	<!-- 장바구니 담기 -->
+  	<insert id="addCartMem">
+  		insert into cart(prodNo, memberId, qty) values(#{prodNo},#{memberId},#{qty});
+  	</insert>
+  	<insert id="addCartGuest">
+  		insert into cart(prodNo, sessionId, qty) values(#{prodNo},#{sessionId},#{qty});
+  	</insert>
+  	
+  	<!-- 장바구니 목록 -->
+  	<select id="selectCartListMem" resultType="com.boritgogae.domain.CartDTO" >
+  		select c.cartNo, c.prodNo, c.memberId, c.qty, p.prodNo, m.memberId, p.prodQuantity, p.prodName,p.prodPrice, pi.originalFile
+		from cart c
+		left outer join product p  on c.prodNo = p.prodNo
+		left outer join prodImg pi  on c.prodNo = pi.prodNo
+		left outer join members m on c.memberId = m.memberId
+		where c.memberId = #{memberId}
+  	</select>
+  	<select id="selectCartListGuest" resultType="com.boritgogae.domain.CartDTO" >
+  		select c.cartNo, c.prodNo, c.memberId, c.qty, p.prodNo, m.memberId, p.prodQuantity, p.prodName,p.prodPrice, pi.originalFile
+		from cart c
+		left outer join product p  on c.prodNo = p.prodNo
+		left outer join prodImg pi  on c.prodNo = pi.prodNo
+		left outer join members m on c.memberId = m.memberId
+		where c.sessionId = #{sessionId}
+  	</select>
+  	
+  	<!-- 장바구니 선택 삭제 -->
   	<delete id="delCartProd">
-  		delete from cart where memberId='haha' and prodNo='CB1AR05W00M03S03C00E00'
+  		delete from cart where cartNo = #{cartNo}
   	</delete>
+  	
+  	<!-- 장바구니 수량 업데이트 -->
+  	<update id="qtyCartUpdate">
+  		update cart set qty=#{qty} where cartNo=#{cartNo}
+  	</update>
+  	
   	<select id="popularList" resultType="DetailOrderVo">
   		select count(prodNo) as orderCnt, prodNo from detailOrder group by prodNo order by orderCnt desc limit 0,6
   	</select>
+  	
   	
   	<!-- 비회원 로그인하기위해 주문내역 검색 -->
   	<select id="selectGuestOrderInfo" resultType="OrdersVo">
   		select * from orders where name = #{name} and phoneNumber = #{phoneNumber} and guestPwd = sha1(md5(#{guestPwd}))
   	</select>
+
+  	<!-- 주문비밀번호 찾기위해 주문건 검색 -->
+  	<select id="findGuestPwdSelectOrder" resultType="OrdersVo">
+  		select * from orders where name = #{name} and guestEmail = #{guestEmail} and orderNo = #{orderNo}
+  	</select>
+  	
+  	<!-- 주문번호로 비회원 주문비밀번호를 임시비밀번호로 업데이트 -->
+  	<update id="updateGuestPwd">
+  		update orders set guestPwd = sha1(md5(#{tempPwd})) where orderNo = #{orderNo}
+  	</update>
+
+  	<!-- 관리자 주문조회용 -->
+	<select id="getOrders" resultType="OrdersVo">
+		select * from orders order by orderNo desc limit #{StartNum}, #{PostPerPage}
+	</select>
+
+	<!-- 관리자 주문상세조회용 -->
+	<select id="getOrdersDetailInfo" resultType="OrderDetailDTO">
+		select p.originalFile ,o.*,d.deliveryStatus
+		from detailOrder as o, delivery as d, prodImg as p
+		where o.orderDetailNo = d.orderDetailNo and d.orderNo = #{orderNo} and p.prodNo = o.prodNo
+	</select>
+	
+	<!-- 관리자 TodoList -->
+	<select id="AdminTodoList" resultType="OrderDetailDTO">
+		select o.*,d.deliveryStatus from detailOrder as o, delivery as d
+		 where o.orderDetailNo = d.orderDetailNo and (d.deliveryStatus = '교환요청' or d.deliveryStatus = '반품요청' or d.deliveryStatus = '취소' or d.deliveryStatus = '결제완료' or d.deliveryStatus = '배송전')
+	</select>
+	
+	<!-- 주문 카운트 -->
+	<select id="countOrder" resultType="int">
+		select count(*) from orders
+	</select>
+
+	<!-- 관리자 승인주문 -->
+	<select id="adminAllowOrders" resultType="int">
+		select count(*) from detailOrder as o, delivery as d
+		 where o.orderDetailNo = d.orderDetailNo and (d.deliveryStatus = '교환요청' or d.deliveryStatus = '반품요청' or d.deliveryStatus = '취소' or d.deliveryStatus = '결제완료')
+	</select>
+
+
+	<select id="getOrdersByMemberId" resultType="com.boritgogae.domain.OrdersVo">
+		select * from orders where memberId = #{memberId}
+	</select>
+	
+	<select id="getDetailOrderByMemberId" resultType="com.boritgogae.domain.DetailOrderVo">
+		select * from detailOrder where memberId = #{memberId}
+	</select>
   	
   </mapper>

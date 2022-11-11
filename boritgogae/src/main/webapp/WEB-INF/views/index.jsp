@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@ page session="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,16 +80,14 @@ $(document).ready(function() {
 						<div class="sidebar__item">
 							<h4>Department</h4>
 							<ul>
-								<li><a href="#">병원</a></li>
 								<li><a href="/board/notice/list">공지사항</a></li>
-								<li><a href="#">자유 게시판</a></li>
+								<li><a href="${contextPath}/boardFree/list">자유게시판</a></li>
 								<li><a href="/board/ask/list">문의 게시판</a></li>
 								<li><a href="${contextPath}/board/question?pageNo=1">질문
 										게시판</a></li>
 								<li><a href="">상품 후기</a></li>
 								<li><a href="/boardTip/listAll">고개팁</a></li>
-								<li><a href="${contextPath}/boardMarket/listAll">장터 게시판</a></li>
-								<li><a href="#">병원리뷰</a></li>
+								<li><a href="${contextPath}/board/market/listAll">장터 게시판</a></li>
 							</ul>
 						</div>
 						<div class="sidebar__item">
@@ -196,19 +193,28 @@ $(document).ready(function() {
 								<c:forEach var="prod" items="${prodLst}">
 									<div class="col-lg-4">
 										<div class="product__discount__item">
-											<div class="product__discount__item__pic set-bg"
-												data-setbg="${prod.originalFile }">
-												<div class="product__discount__percent">-20%</div>
-												<ul class="product__item__pic__hover">
-													<li><a href="#"><i class="fa fa-heart"></i></a></li>
-													<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-													<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-												</ul>
-											</div>
+											<c:if test="${prod.prodQuantity != 0}">
+												<div class="product__discount__item__pic set-bg"
+													data-setbg="${prod.originalFile }"
+													onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';">
+													<div class="product__discount__percent">-20%</div>
+													<ul class="product__item__pic__hover">
+														<li><a href="#"><i class="fa fa-heart"></i></a></li>
+														<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+														<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+													</ul>
+												</div>
+											</c:if>
+											<c:if test="${prod.prodQuantity == 0}">
+												<img src="../resources/img/soldout.jpg"
+													style="height: 270px"
+													onclick="javascript:location.href='/product/category/detail?prodNo=${prod.prodNo }';" />
+											</c:if>
+
 											<div class="product__discount__item__text">
 												<span>[${prod.brand }]</span>
 												<h5>
-													<a href="#">${prod.prodName }</a>
+													<a href="/product/category/detail?prodNo=${prod.prodNo }">${prod.prodName }</a>
 												</h5>
 												<div class="product__item__price">
 													${prod.prodPrice } <span></span>

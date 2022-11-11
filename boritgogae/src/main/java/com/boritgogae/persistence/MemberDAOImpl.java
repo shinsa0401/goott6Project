@@ -2,7 +2,6 @@ package com.boritgogae.persistence;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +17,9 @@ import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
+import com.boritgogae.board.free.domain.FreeSearchCondition;
+import com.boritgogae.domain.DM;
+
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.DeliveryVo;
 import com.boritgogae.domain.DetailOrderVo;
@@ -25,14 +27,19 @@ import com.boritgogae.domain.ExchangeVo;
 import com.boritgogae.domain.TotalOrderListVo;
 import com.boritgogae.domain.GradesVo;
 import com.boritgogae.domain.MemberVo;
+import com.boritgogae.board.prodReply.domain.ReviewVO;
+import com.boritgogae.domain.LogInDTO;
 import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.PointHistoryVo;
+import com.boritgogae.domain.CouponUsedVo;
+import com.boritgogae.domain.CouponVo;
+import com.boritgogae.domain.ProductVo;
 import com.boritgogae.domain.UserBoardVo;
 import com.boritgogae.domain.UserReplyVo;
 
 @Repository
 public class MemberDAOImpl implements MemberDAO {
-
+	
 	private static String ns = "com.boritgogae.memberMapper";
 
 	@Inject
@@ -45,7 +52,7 @@ public class MemberDAOImpl implements MemberDAO {
 		return ses.selectOne(ns + ".logIn", dto);
 	}
 
-	// 자동로그인 체크한 회원 세션의 정보를 업데이트
+	// 자동로그인 체크한 회원 세션의 정보를 업데이트하는 메서드
 	@Override
 	public int updateMemberSession(String memberId, String sessionId, Timestamp sessionLimit) throws Exception {
 		System.out.println("DAO : 자동로그인 체크 회원 세션 업데이트");
@@ -64,20 +71,53 @@ public class MemberDAOImpl implements MemberDAO {
 		System.out.println("DAO : 자동로그인 체크한 회원 검색");
 		return ses.selectOne(ns + ".selectAutoLogIn", sessionId);
 	}
-
-	// 기존 로그인시 로그인시간 업데이트
+	
+	// 기존 로그인시 로그인시간 업데이트하는 메서드
 	@Override
 	public int updateLogInDate(String memberId) throws Exception {
 		System.out.println("DAO : 로그인 시간 업데이트");
 		return ses.update(ns + ".updateLogInDate", memberId);
 	}
-
-	// 기존 회원 로그아웃시 로그아웃시간 업데이트
+	
+	// 기존 회원 로그아웃시 로그아웃시간 업데이트하는 메서드
 	@Override
 	public int updateLogOutDate(String memberId) throws Exception {
 		System.out.println("DAO : 로그아웃시간 업데이트");
 		return ses.update(ns + ".updateLogOutDate", memberId);
 	}
+	
+	// 이메일로 회원 아이디 검색하는 메서드
+	@Override
+	public MemberVo selectMemberId(String memberEmail) throws Exception {
+		System.out.println("DAO : 이메일로 회원 아이디 검색");
+		return ses.selectOne(ns + ".selectMemberId", memberEmail);
+	}
+	
+	// 회원 아이디가 맞는지 체크하는 메서드
+	@Override
+	public int checkMemberId(String memberId) throws Exception {
+		System.out.println("DAO : 회원의 아이디가 맞는지 체크");
+		return ses.selectOne(ns + ".checkMemberId", memberId);
+	}
+	
+	// 회원 비밀번호 업데이트하는 메서드
+	@Override
+	public int updatePwd(String memberId, String memberPwd) throws Exception {
+		System.out.println("DAO : 회원 비밀번호 재설정");
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("memberPwd", memberPwd);
+		return ses.update(ns + ".updatePwd", map);
+	}
+	
+	// 회원 비밀번호 업데이트 이후 lastPwdUpdate 컬럼 업데이트
+	@Override
+	public int updateLastPwdUpdate(String memberId) throws Exception {
+		System.out.println("DAO : lastPwdUpdate 컬럼 업데이트");
+		return ses.update(ns + ".updateLastPwdUpdate", memberId);
+	}
+	
+	
 
 	// 등급혜택을 가져오는 메서드
 	@Override
@@ -530,5 +570,104 @@ public class MemberDAOImpl implements MemberDAO {
 		return ses.update(ns + ".updateOrdersTable", map);
 	}
 
+
+
+	@Override
+	public int memberjoin(MemberVo vo) throws Exception{
+		
+		return ses.insert(ns+".memberjoin", vo);
+	}
+
+	@Override
+	public void joindelivery( DeliveryInfoVo dv ) throws Exception {
+		
+		
+		ses.insert(ns+".joindelivery", dv);
+	}
+
+	@Override
+	public int checkid(String memberId) throws Exception {
+		
+		return ses.selectOne(ns+".checkid", memberId);
+	}
+
+	@Override
+	public int checkname(String memberName) throws Exception {
+		
+		return ses.selectOne(ns+".checkname", memberName);
+	}
+
+	@Override
+	public int checkemail(String memberEmail) throws Exception {
+		
+		return ses.selectOne(ns+".checkemail", memberEmail);
+	}
+
+	@Override
+	public List<ProductVo> selectLike(String memberId) throws Exception {
+		
+		return ses.selectList(ns+".selectLike", memberId);
+	}
+
+	@Override
+	public int likeProduct(String prodNo) throws Exception {
+		
+		return ses.selectOne(ns+".likeProduct", prodNo);
+	}
+
+	@Override
+	public int searchResultCnt(FreeSearchCondition sc) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.selectOne(ns+".searchResultCnt", sc);
+	}
+
+	@Override
+	public List<DM> searchSelectPage(FreeSearchCondition sc) throws Exception {
+		 return ses.selectList(ns+".searchSelectPage", sc);
+		
+	}
+	
+	@Override
+	public int sendDel(String no)throws Exception{
+		
+		
+		return ses.update(ns+".sendDel", no);
+	}
+
+	@Override
+	public DM detaildm(int no) throws Exception {
+		
+		return ses.selectOne(ns+".detaildm", no);
+	}
+
+	@Override
+	public int insertWriter(DM dm) throws Exception {
+		// TODO Auto-generated method stub
+		return ses.insert(ns+".insertWriter", dm);
+	}
+
+	@Override
+	public MemberVo getMemInfo(String memberId) {
+		
+		return ses.selectOne(ns+".getMemberInfo", memberId);
+	}
+
+	@Override
+	public List<DeliveryInfoVo> getMemAddrs(String memberId) {
+		// TODO Auto-generated method stub
+		return ses.selectList(ns+".getMemAddrs", memberId);
+	}
+
+	@Override
+	public GradesVo getGrade(String memberId) {
+		
+		return ses.selectOne(ns+".getGrade", memberId);
+	}
+
+	@Override
+	public int updateMemberPoint(String memberId) {
+		   
+		return ses.update(ns+".updateMemberPoint", memberId);
+	}
 
 }

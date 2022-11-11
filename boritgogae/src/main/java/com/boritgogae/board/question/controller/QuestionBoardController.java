@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.boritgogae.board.ask.domain.UploadAskFile;
 import com.boritgogae.board.question.domain.QuestionBoardVo;
 import com.boritgogae.board.question.domain.QuestionUploadFileVo;
 import com.boritgogae.board.question.etc.QuestionPagingInfo;
@@ -348,6 +349,63 @@ public class QuestionBoardController {
 		this.uploadFileLst.clear(); // 리스트의 모든 아이템 삭제
 		
 		return "success";
+		
+	}
+	
+	
+	/**
+	 * @methodName : deleteBeforeFile
+	 * @author : 신태호
+	 * @date : 2022. 10. 31.
+	 * @입력 param :
+	 * @returnType : String
+	 */
+	@RequestMapping(value = "/question/deleteBeforeFile", method = RequestMethod.POST)
+	public @ResponseBody String deleteBeforeFile(@RequestParam(value = "deleteBeforeFile[]") List<String> deleteBeforeFile, HttpServletRequest request) {
+		
+		System.out.println(deleteBeforeFile.toString() + "을 지웁니다");
+		
+		boolean origin = false, thumb = false;
+		
+	    for(String delFile : deleteBeforeFile) {
+	    	System.out.println(delFile);
+	    	// 파일삭제, DB삭제 -----------미완
+	    	
+	            
+	    	// 파일이 실제 저장 될 경로
+	    	String upPath = request.getSession().getServletContext().getRealPath("resources/uploads");
+	    	File deleteFile = new File(upPath + delFile);
+	    	System.out.println("deleteFile" + deleteFile);
+	    	
+	    	
+    		for (QuestionUploadFile uf : this.uploadFileLst) {
+    			System.out.println(this.uploadFileLst.toString());
+    			if (uf.getSavedOriginImageFileName().equals(deleteFile)) { // 지워져야 할 파일이 있다
+    				origin = new File(upPath + uf.getSavedOriginImageFileName()).delete(); // 원본파일 삭제
+    				System.out.println("origin : " + origin);
+    				if (uf.isImage()) {
+    					thumb = new File(upPath + uf.getThumbnailFileName()).delete(); // 썸네일 삭제
+    					break;
+    				} else {
+    					break;
+    				}
+    			}
+    			// this.uploadFileLst.remove(uf); // 리스트에서 삭제
+    		}
+    		
+    		// System.out.println("현재 업로드 파일 리스트 : " + Arrays.toString(this.uploadFileLst.toArray()));
+    		
+    	}
+	        
+        String result = null;
+		if (origin) { // 삭제되었다면
+			result = "success";
+		} else {
+			result = "fail";
+		}
+		System.out.println(deleteBeforeFile.toString() + "을 지웁니다");
+		
+		return result;
 		
 	}
 	

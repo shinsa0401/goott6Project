@@ -1,11 +1,14 @@
 package com.boritgogae.controller;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +22,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boritgogae.domain.OrdersVo;
+import com.boritgogae.domain.AdminOrdersPagingInfo;
 import com.boritgogae.domain.CouponUsedVo;
 import com.boritgogae.domain.CouponVo;
 import com.boritgogae.domain.DeleteAccountVo;
 import com.boritgogae.domain.DeleteReasonVo;
 import com.boritgogae.domain.DeliveryInfoVo;
 import com.boritgogae.domain.MemberVo;
+import com.boritgogae.domain.OrderDetailDTO;
 import com.boritgogae.domain.ProductVo;
 import com.boritgogae.service.AdminService;
+import com.boritgogae.service.OrderService;
 
 @Controller
 @RequestMapping(value = "/admin/*")
@@ -34,6 +40,9 @@ public class AdminController {
 
 	@Inject
 	private AdminService service;
+	
+	@Inject
+	private OrderService orderService;
 
 	@RequestMapping(value = "/main")
 	public String adminMainPage(Model model) throws Exception {
@@ -233,6 +242,51 @@ public class AdminController {
 		
 		
 		return result;
+	}
+	
+	
+	// 관리자 주문조회
+	@RequestMapping(value = "/orders")
+	public String adminOrderInfo(Model model ,@RequestParam(value="pageNo", required = false, defaultValue = "1") int pageNo) throws Exception {
+		
+		if (pageNo < 1) {
+			pageNo = 1;
+		}
+		
+		Map<String,Object> map = new HashMap<>();
+		
+		map = orderService.getOrders(pageNo); 
+		
+		List<OrdersVo> order = (List<OrdersVo>) map.get("order");
+		AdminOrdersPagingInfo pi = (AdminOrdersPagingInfo) map.get("pi");
+		
+		if (pageNo > pi.getTotalPage()) {
+			pageNo = pi.getTotalPage();
+		}
+		
+		List<OrderDetailDTO> todo = orderService.getAdminTodoList();
+		int orderCnt = orderService.countOrder();
+		int adminAllowOrders = orderService.adminAllowOrders();
+		System.out.println(pageNo+"@@@@@@@@");
+		model.addAttribute("orderList", order);
+		model.addAttribute("todo", todo);
+		model.addAttribute("count", orderCnt);
+		model.addAttribute("adminAllowOrders", adminAllowOrders);
+		model.addAttribute("pi", pi);
+		model.addAttribute("pageNo", pageNo);
+		
+		return "/admin/orderInfo"; 
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/orders/detailOrderInfo")
+	public JSONObject adminDetailOrderInfo(Model model,@RequestParam(value="orderNo") int orderNo) throws Exception {
+		List<OrderDetailDTO> order = orderService.getDetailOrdersInfo(orderNo);
+		JSONObject json = new JSONObject();
+		json.put("order",order);
+		System.out.println(json);
+		
+		return json; 
 	}
 	
 }

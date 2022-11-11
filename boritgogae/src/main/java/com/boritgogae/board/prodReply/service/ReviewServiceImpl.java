@@ -10,6 +10,9 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.boritgogae.domain.DetailOrderVo;
+import com.boritgogae.domain.OrderDetailVo;
+import com.boritgogae.domain.OrdersVo;
 import com.boritgogae.board.prodReply.domain.ReplyDTO;
 import com.boritgogae.board.prodReply.domain.ProdReplyVo;
 import com.boritgogae.board.prodReply.domain.ReviewDTO;
@@ -17,27 +20,51 @@ import com.boritgogae.board.prodReply.domain.ReviewVO;
 import com.boritgogae.board.prodReply.etc.Paging;
 import com.boritgogae.board.prodReply.etc.UploadImg;
 import com.boritgogae.board.prodReply.persistence.ReviewDAO;
+import com.boritgogae.persistence.MemberDAO;
+import com.boritgogae.persistence.OrderDAO;
+import com.boritgogae.persistence.ProductDAO;
 import com.boritgogae.domain.OrderDetailVo;
 import com.boritgogae.domain.OrdersVo;
+
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
 	
 	@Inject
 	private ReviewDAO dao;
+	
+	@Inject
+	private ProductDAO prodDao;
+	
+	@Inject
+	private OrderDAO orderDao;
+	
+	@Inject
+	private MemberDAO memDao;
 
 	//리뷰쓰는 메서드
-	@Override
-	public boolean addReview(ReviewDTO dto) throws Exception{
-		dto.setReviewContent(dto.getReviewContent().replace("\r\n", "<br />"));
-		
-		int row =dao.insertReview(dto);
-		boolean result = false;
-		if (row == 1) {
-			result = true;
+		@Override
+		public boolean addReview(ReviewDTO dto) throws Exception{
+			
+			dto.setReviewContent(dto.getReviewContent().replace("\r\n", "<br />"));
+			
+			int row =dao.insertReview(dto);
+			boolean result = false;
+			if (row == 1) {
+				//포인트 부여
+				//등급으로 구매적립포인트 가져오기
+				//주문테이블에서 구매액수 가져오기
+				//계산하기
+				//insert하기
+				//회원의 총 포인트 업데이트 해주기
+				
+				//상품의 reviewCount 업데이트
+				System.out.println(dto.getProdNo());
+				prodDao.updateProdReviewCnt(dto.getProdNo());
+				result = true;
+			}
+			return result;
 		}
-		return result;
-	}
 
 	//리뷰이미지 데이터베이스에 저장
 	@Override
@@ -93,18 +120,21 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	//리뷰 삭제하는 메서드
-	@Override
-	public boolean deleteReview(int reviewNo) throws Exception {
-		boolean result = false;
-		
-		int row = dao.deleteReview(reviewNo);
-		
-		if (row == 1) {
-			result = true;
+		@Override
+		public boolean deleteReview(int reviewNo) throws Exception {
+			boolean result = false;
+			
+			ReviewVO review = dao.getReviewByRno(reviewNo);
+			
+			int row = dao.deleteReview(reviewNo);
+			
+			if (row == 1) {
+				prodDao.updateProdReviewCnt(review.getProdNo());
+				result = true;
+			}
+			
+			return result;
 		}
-		
-		return result;
-	}
 	
 	
 	
@@ -171,14 +201,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public boolean deleteReviewImg(int reviewNo) throws Exception {
+	public void deleteReviewImg(int reviewNo) throws Exception {
 		int row = dao.deleteReviewImg(reviewNo);
-		boolean result = false;
-		if(row>0) {
-			result=true;
-		}
-		
-		return result;
 	}
 
 	@Override
@@ -202,6 +226,25 @@ public class ReviewServiceImpl implements ReviewService {
 			return false;
 		}
 	}
+	
+	//리뷰를 쓸 수 있는지 판단하는 메서드
+		@Override
+		public String canReview(String memberId, String prodNo) throws Exception {
+			List<DetailOrderVo> detailorders = orderDao.getDetailOrderByMemberId(memberId);
+			List<ReviewVO> reviews = memDao.showUserReviewList(memberId);
+			
+			if(detailorders.size()<1) { //로그인한 회원의 상품에 대한 주문내역 리스트
+				return "N";
+			}
+			else{
+				for(ReviewVO review : reviews) { //로그인한 회원이 쓴 리뷰의 리스트
+					if(review.getProdNo().equals(prodNo)) { // 리뷰의 상품번호와 해당 상품번호가 같다면
+						return "N";
+					}
+				}
+				return "Y"; //반복문을 다 돌면서 n을 리턴하지 않았다면 y를 리턴하게 됨
+			}
+		}
 
 //	@Override
 //	public List<OrdersVo> getOrder(String userId, String prodNo) {

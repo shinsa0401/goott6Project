@@ -15,7 +15,7 @@
 	<jsp:include page="../header.jsp"></jsp:include>
 		<h3 style="font: bold; text-align: center; text-decoration: underline;" >장터 게시판</h3>
 		
-	<form action="/boardMarket/modifyContent" method="post" >
+	<form action="/board/market/modifyContent" method="post" >
 	
 		<div class="viewcontent" style="padding: 100px;">	
 		<div class="mb-3 mt-3">
@@ -41,7 +41,7 @@
 			
 			
 			<button type="submit" class="btn btn-success">등록</button>
-			<button type="button" class="btn btn-success" onclick="location.href='/boardMarket/listAll';">목록</button>
+			<button type="button" class="btn btn-success" onclick="location.href='/board/market/listAll';">목록</button>
 		</div>
 		</form>
 	<jsp:include page="../footer.jsp"></jsp:include>
