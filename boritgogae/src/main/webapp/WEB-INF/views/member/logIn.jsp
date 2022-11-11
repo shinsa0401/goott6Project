@@ -242,7 +242,7 @@
                     <span class="heading">Guest</span>
                     <div class="form-group" id="guestFailMsgDiv" style="display:none">
                     	<p class="failMsg">
-                    		<span class="guestFailMsg">주문 시 입력한 주문자 명과 휴대폰 번호,</span>
+                    		<span class="guestFailMsg">주문 시 입력한 주문자 명과 휴대폰 번호, </span>
                     	</p>
                     	<p class="failMsg">
                     		<span class="guestFailMsg">주문 비밀번호를 정확히 입력해주세요.</span>
